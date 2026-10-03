@@ -1,0 +1,15 @@
+# Secrets & server files
+data.json
+server.ps1
+*.ps1
+*.bat
+*.zip
+*.env
+.env*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node (if ever added)
+node_modules/
