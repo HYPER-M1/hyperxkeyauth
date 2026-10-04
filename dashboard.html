@@ -248,7 +248,12 @@
                     var dDesc = document.getElementById('dash-welcome-role-desc');
                     if (dDesc) { dDesc.innerHTML = 'Reseller Portal Session | Logged in as: <strong style="color:#00f0ff;">' + uName + '</strong> | Available Balance: <strong style="color:#38bdf8;">' + (res.balance || 0) + ' Keys</strong>'; }
                     var dQuotaBox = document.getElementById('dash-welcome-quota-box');
-                    if (dQuotaBox) { dQuotaBox.innerHTML = '⚡ Reseller Balance: <strong id="dash-welcome-quota-num" style="color:#00f0ff;font-weight:700;">' + (res.balance || 0) + '</strong> Keys'; }
+                    var dQuotaNum = document.getElementById('dash-welcome-quota-num');
+                    if (dQuotaBox && dQuotaNum) {
+                      if (dQuotaBox.childNodes && dQuotaBox.childNodes[0]) dQuotaBox.childNodes[0].textContent = '⚡ Reseller Balance: ';
+                      dQuotaNum.style.color = '#00f0ff';
+                      dQuotaNum.textContent = (res.balance || 0);
+                    }
                     var sLimit = document.getElementById('stat-key-limit');
                     if (sLimit) { sLimit.textContent = uName; sLimit.style.fontSize = '14.5px'; sLimit.style.color = '#00f0ff'; }
                     var sLimitT = document.getElementById('stat-key-limit-title');
@@ -504,6 +509,8 @@
                 </tbody>
               </table>
             </div>
+          </div>
+
           <!-- RESELLER REGISTERED CLIENT USERS & LICENSES CARD -->
           <div class="dashboard-card-box" id="dashboard-reseller-users-box" style="margin-top:20px;display:none;">
             <div class="card-title-bar">

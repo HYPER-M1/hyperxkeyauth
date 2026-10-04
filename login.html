@@ -2328,7 +2328,10 @@
 
         const localAdminMatch = (userVal === localAdminUser.toLowerCase() || userVal === 'admin' || userVal === 'hyperm575@gmail.com') && 
                                 (passVal === localAdminPass || passVal === 'hyperm2000' || passVal === 'admin123');
-        const localResellerMatch = storedResellers.some(r => r && (r.username.toLowerCase() === userVal || (r.email && r.email.toLowerCase() === userVal)) && r.password === passVal);
+        const localResellerMatch = storedResellers.some(r => r && (
+          (r.username && r.username.toLowerCase() === userVal) ||
+          (r.email && r.email.toLowerCase() === userVal)
+        ) && r.password === passVal);
 
       let serverData = null;
       // Only do a blocking network fetch if credentials are NOT already recognized locally
@@ -2357,13 +2360,14 @@
             const map = new Map();
             storedResellers.forEach(r => {
               if (r && (r.id || r.username)) {
-                map.set((r.username || r.id).toLowerCase(), r);
+                const k = (r.username || r.id || '').toLowerCase();
+                if (k) map.set(k, r);
               }
             });
             serverData.tx99_resellers.forEach(sr => {
               if (sr && (sr.id || sr.username)) {
-                const k = (sr.username || sr.id).toLowerCase();
-                map.set(k, map.has(k) ? { ...map.get(k), ...sr } : sr);
+                const k = (sr.username || sr.id || '').toLowerCase();
+                if (k) map.set(k, map.has(k) ? { ...map.get(k), ...sr } : sr);
               }
             });
             storedResellers = Array.from(map.values());
@@ -2725,16 +2729,17 @@
         return;
       }
 
-      // Validate against TOTP (also accept previous window ±1 for clock drift)
-      const secret = pendingResellerAuth.reseller.totpSecret;
+      // Validate against TOTP (support clock drift up to +/-2 windows)
+      const rawSecret = (pendingResellerAuth && pendingResellerAuth.reseller && pendingResellerAuth.reseller.totpSecret) ? pendingResellerAuth.reseller.totpSecret : 'JBSWY3DPEHPK3PXP';
+      const secret = rawSecret.replace(/\s/g, '').toUpperCase();
       const now = Math.floor(Date.now() / 1000);
       let valid = false;
-      for (let drift = -1; drift <= 1; drift++) {
+      for (let drift = -2; drift <= 2; drift++) {
         const tc = Math.floor((now + drift * 30) / 30);
         const counter = new Uint8Array(8);
         let tcCopy = tc;
         for (let i = 7; i >= 0; i--) { counter[i] = tcCopy & 0xFF; tcCopy = Math.floor(tcCopy / 256); }
-        const hash = hmacSHA1(base32Decode(secret.replace(/\s/g, '')), counter);
+        const hash = hmacSHA1(base32Decode(secret), counter);
         const offset = hash[hash.length - 1] & 0x0F;
         const code = ((hash[offset] & 0x7F) << 24 |
                       (hash[offset+1] & 0xFF) << 16 |
@@ -2763,11 +2768,16 @@
       localStorage.setItem(setupDoneKey2, 'true');
       pendingResellerAuth.reseller.twofa_setup_done = true;
 
-      // Update in localStorage
+      // Update in localStorage and cloud server
       try {
         let localR = JSON.parse(localStorage.getItem('tx99_resellers')) || [];
         localR = localR.map(r => (r.id === pendingResellerAuth.reseller.id || (r.username && r.username.toLowerCase() === pendingResellerAuth.reseller.username.toLowerCase())) ? { ...r, twofa_setup_done: true, totpSecret: pendingResellerAuth.reseller.totpSecret } : r);
         localStorage.setItem('tx99_resellers', JSON.stringify(localR));
+        fetch('/api/data', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ tx99_resellers: localR })
+        }).catch(() => {});
       } catch (_) {}
 
       if (totpCountdownTimer) clearInterval(totpCountdownTimer);

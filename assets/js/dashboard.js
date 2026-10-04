@@ -368,7 +368,22 @@ document.addEventListener('click', (e) => {
 // 1. ADMIN USER & PASSWORD CONFIGURATION
 // ==========================================================================
 const DEFAULT_ADMIN_USER = "HYPER X";
-const DEFAULT_ADMIN_PASS = "admin123";
+const DEFAULT_ADMIN_PASS = "hyperm2000";
+
+function getUserRole() {
+  return sessionStorage.getItem('hyperx_user_role') || localStorage.getItem('hyperx_user_role') || '';
+}
+
+function getCurrentReseller() {
+  const raw = sessionStorage.getItem('hyperx_current_reseller') || localStorage.getItem('hyperx_current_reseller');
+  if (!raw) return null;
+  try {
+    const parsed = JSON.parse(raw);
+    return state.resellers.find(r => r.id === parsed.id || (r.username && parsed.username && r.username.toLowerCase() === parsed.username.toLowerCase())) || parsed;
+  } catch (e) {
+    return null;
+  }
+}
 
 function getStoredAdminUser() {
   return localStorage.getItem('hyperx_admin_user') || DEFAULT_ADMIN_USER;
@@ -379,7 +394,7 @@ function getStoredAdminPass() {
 }
 
 function updateAdminUI() {
-  const role = sessionStorage.getItem('hyperx_user_role');
+  const role = getUserRole();
   if (role === 'reseller') return;
 
   const currentAdmin = getStoredAdminUser();
@@ -436,9 +451,9 @@ function submitChangeAdminCredentials(e) {
       msgBox.style.display = 'block';
       msgBox.style.background = 'rgba(239, 68, 68, 0.2)';
       msgBox.style.color = '#ef4444';
-      msgBox.textContent = '❌ Incorrect current password! (Default: admin123)';
+      msgBox.textContent = `❌ Incorrect current password! (Default: ${DEFAULT_ADMIN_PASS})`;
     } else {
-      alert('❌ Incorrect current password! (Default: admin123)');
+      alert(`❌ Incorrect current password! (Default: ${DEFAULT_ADMIN_PASS})`);
     }
     return;
   }
@@ -482,7 +497,7 @@ function submitChangeAdminCredentials(e) {
 }
 
 function resetDefaultAdminCredentials() {
-  if (!confirm('Are you sure you want to reset admin credentials to default?\n\nDefault:\nUsername: HYPER X\nPassword: admin123')) return;
+  if (!confirm(`Are you sure you want to reset admin credentials to default?\n\nDefault:\nUsername: ${DEFAULT_ADMIN_USER}\nPassword: ${DEFAULT_ADMIN_PASS}`)) return;
   localStorage.setItem('hyperx_admin_user', DEFAULT_ADMIN_USER);
   localStorage.setItem('hyperx_admin_pass', DEFAULT_ADMIN_PASS);
   localStorage.setItem('hyperx_saved_login_user', DEFAULT_ADMIN_USER);
@@ -619,7 +634,7 @@ async function loadResellerStats() {
 }
 
 function updateDashboardStatsUI() {
-  const role = sessionStorage.getItem('hyperx_user_role');
+  const role = getUserRole();
   const headerKeys = document.getElementById('header-keys-stat');
   const elCreated = document.getElementById('stat-keys-created');
   const elActive = document.getElementById('stat-active-keys');
@@ -628,11 +643,9 @@ function updateDashboardStatsUI() {
   const elAdminUser = document.getElementById('stat-admin-user');
 
   if (role === 'reseller') {
-    const raw = sessionStorage.getItem('hyperx_current_reseller');
-    if (raw) {
+    const res = getCurrentReseller();
+    if (res) {
       try {
-        const parsed = JSON.parse(raw);
-        const res = state.resellers.find(r => r.id === parsed.id) || parsed;
         const allowedPkgs = getResellerAllowedPackages();
 
         if (headerKeys) {
@@ -729,14 +742,13 @@ function updateDashboardStatsUI() {
 }
 
 function getResellerAllowedPackages() {
-  const role = sessionStorage.getItem('hyperx_user_role');
+  const role = getUserRole();
   const allPkgs = (state.packages && state.packages.length > 0) ? state.packages : DEFAULT_PACKAGES;
   if (role !== 'reseller') return allPkgs;
 
-  const raw = sessionStorage.getItem('hyperx_current_reseller');
-  if (!raw) return allPkgs;
+  const res = getCurrentReseller();
+  if (!res) return allPkgs;
   try {
-    const res = JSON.parse(raw);
     if (!res.panels || res.panels.includes('all')) return allPkgs;
     return allPkgs.filter(p => res.panels.includes(p.package_name) || res.panels.includes(p.package_id));
   } catch (e) {
@@ -758,7 +770,7 @@ function populatePackageDropdown() {
 // 2. TAB SWITCHING
 // ==========================================================================
 function switchTab(tabId) {
-  const role = sessionStorage.getItem('hyperx_user_role') || localStorage.getItem('hyperx_user_role');
+  const role = getUserRole();
   if (role === 'reseller' && (tabId === 'resellers' || tabId === 'transfers')) {
     alert('⛔ Access Denied: Reseller accounts cannot access Reseller Management. This section is restricted to the Root Owner.');
     tabId = 'licenses';
@@ -822,19 +834,18 @@ function renderLicensesTable() {
   const tbody = document.getElementById('licenses-tbody');
   if (!tbody) return;
 
-  const role = sessionStorage.getItem('hyperx_user_role');
+  const role = getUserRole();
   let list = state.licenses;
 
-  // Reseller isolation: only show keys belonging to this reseller or their authorized panels
+  // Reseller isolation: only show keys belonging to this reseller
   if (role === 'reseller') {
-    const raw = sessionStorage.getItem('hyperx_current_reseller');
-    if (raw) {
-      try {
-        const res = JSON.parse(raw);
-        list = list.filter(l => {
-          return l.user && l.user.toLowerCase().includes(res.username.toLowerCase());
-        });
-      } catch (e) {}
+    const res = getCurrentReseller();
+    if (res && res.username) {
+      const u = res.username.toLowerCase();
+      list = list.filter(l => {
+        return (l.user && l.user.toLowerCase().includes(u)) ||
+               (l.note && l.note.toLowerCase().includes(u));
+      });
     }
   }
 
@@ -914,16 +925,10 @@ async function submitGenerateKeys(e) {
   let user = document.getElementById('gen-user-input').value.trim() || 'Client';
 
   // Check reseller quota & role
-  const role = sessionStorage.getItem('hyperx_user_role');
+  const role = getUserRole();
   let currentReseller = null;
   if (role === 'reseller') {
-    const raw = sessionStorage.getItem('hyperx_current_reseller');
-    if (raw) {
-      try {
-        const parsed = JSON.parse(raw);
-        currentReseller = state.resellers.find(r => r.id === parsed.id) || parsed;
-      } catch (e) {}
-    }
+    currentReseller = getCurrentReseller();
 
     if (currentReseller) {
       if (count > currentReseller.balance) {
@@ -962,10 +967,11 @@ async function submitGenerateKeys(e) {
       currentReseller.balance = Math.max(0, (currentReseller.balance || 0) - count);
       currentReseller.createdKeys = (currentReseller.createdKeys || 0) + count;
       sessionStorage.setItem('hyperx_current_reseller', JSON.stringify(currentReseller));
-      const rIdx = state.resellers.findIndex(r => r.id === currentReseller.id);
+      localStorage.setItem('hyperx_current_reseller', JSON.stringify(currentReseller));
+      const rIdx = state.resellers.findIndex(r => r.id === currentReseller.id || (r.username && currentReseller.username && r.username.toLowerCase() === currentReseller.username.toLowerCase()));
       if (rIdx !== -1) state.resellers[rIdx] = currentReseller;
       state.save();
-      renderResellersTable();
+      syncCredentialsToServer({ tx99_resellers: state.resellers });
       updateDashboardStatsUI();
     }
 
@@ -993,10 +999,11 @@ async function submitGenerateKeys(e) {
 
     if (currentReseller) {
       renderResellerClientUsers(currentReseller);
+      renderResellerSettingsBox(currentReseller);
+    } else {
+      renderResellersTable();
+      loadResellerStats();
     }
-
-    // Refresh live stats
-    loadResellerStats();
 
     // Show generated keys modal
     showGeneratedKeysModal(res.keys, res.package_name || pkgName, expiryText);
@@ -1069,7 +1076,7 @@ async function inspectKeyLive(key) {
 
 // Quick Key Lookup from Bar
 async function runQuickKeyAction(action) {
-  const role = sessionStorage.getItem('hyperx_user_role');
+  const role = getUserRole();
   if (role === 'reseller' && (action === 'ban' || action === 'unban' || action === 'delete')) {
     alert('⛔ Access Denied: Reseller accounts cannot ban, unban, or delete keys.');
     return;
@@ -1157,7 +1164,7 @@ async function resetHwidLive(key) {
 
 // Toggle Ban/Unban via REAL API
 async function toggleBanLive(key, currentStatus) {
-  const role = sessionStorage.getItem('hyperx_user_role');
+  const role = getUserRole();
   if (role === 'reseller') {
     alert('⛔ Access Denied: Reseller accounts cannot ban or unban keys.');
     return;
@@ -1187,7 +1194,7 @@ async function toggleBanLive(key, currentStatus) {
 
 // Delete Key via REAL API
 async function deleteKeyLive(key) {
-  const role = sessionStorage.getItem('hyperx_user_role');
+  const role = getUserRole();
   if (role === 'reseller') {
     alert('⛔ Access Denied: Reseller accounts cannot delete keys.');
     return;
@@ -1217,7 +1224,7 @@ function renderApplicationsTable() {
   if (!allowedPkgs || allowedPkgs.length === 0) {
     allowedPkgs = (state.packages && state.packages.length > 0) ? state.packages : DEFAULT_PACKAGES;
   }
-  const role = sessionStorage.getItem('hyperx_user_role');
+  const role = getUserRole();
 
   // Update sidebar count text
   const navAppsText = document.getElementById('nav-apps-text');
@@ -1268,7 +1275,7 @@ function renderApplicationsTable() {
 function renderDashboardPackagesSummary(pkgs) {
   const tbody = document.getElementById('dashboard-packages-summary-tbody');
   const title = document.getElementById('dashboard-packages-title');
-  const role = sessionStorage.getItem('hyperx_user_role');
+  const role = getUserRole();
 
   if (!pkgs || pkgs.length === 0) {
     pkgs = DEFAULT_PACKAGES;
@@ -1315,15 +1322,13 @@ function formatLogBadge(action) {
 }
 
 function getFilteredLogsForCurrentSession() {
-  const role = sessionStorage.getItem('hyperx_user_role');
+  const role = getUserRole();
   const allLogs = (state.logs && state.logs.length > 0) ? state.logs : SEED_LOGS;
   if (role !== 'reseller') {
     return allLogs;
   }
 
-  const raw = sessionStorage.getItem('hyperx_current_reseller');
-  let res = null;
-  try { res = JSON.parse(raw); } catch (e) {}
+  const res = getCurrentReseller();
   if (!res) return [];
 
   const uName = (res.username || '').toLowerCase();
@@ -1532,7 +1537,7 @@ function toggleResellerPassVisibility(id, pass) {
 }
 
 function renderResellersTable() {
-  const role = sessionStorage.getItem('hyperx_user_role') || localStorage.getItem('hyperx_user_role');
+  const role = getUserRole();
   if (role === 'reseller') return;
 
   const tbody = document.getElementById('resellers-tbody');
@@ -1786,6 +1791,7 @@ function quickAddResellerCredits(id) {
 
   r.balance += addAmount;
   state.save();
+  syncCredentialsToServer({ tx99_resellers: state.resellers });
   renderResellersTable();
   alert(`✓ Added ${addAmount} keys to ${r.username}. New Balance: ${r.balance} Keys`);
 }
@@ -1799,6 +1805,7 @@ function toggleResellerStatus(id) {
 
   r.status = newStatus;
   state.save();
+  syncCredentialsToServer({ tx99_resellers: state.resellers });
   renderResellersTable();
 }
 
@@ -1819,16 +1826,9 @@ function deleteReseller(id) {
 // 5B. PEER-TO-PEER RESELLER CREDIT TRANSFER SYSTEM
 // ==========================================================================
 function getCurrentUserTransferDetails() {
-  const role = sessionStorage.getItem('hyperx_user_role');
+  const role = getUserRole();
   if (role === 'reseller') {
-    const raw = sessionStorage.getItem('hyperx_current_reseller');
-    let res = null;
-    if (raw) {
-      try {
-        const parsed = JSON.parse(raw);
-        res = state.resellers.find(r => r.id === parsed.id || r.username.toLowerCase() === parsed.username.toLowerCase()) || parsed;
-      } catch (e) {}
-    }
+    const res = getCurrentReseller();
     const username = res ? res.username : 'Reseller';
     const balance = res ? (parseInt(res.balance, 10) || 0) : 0;
     return { role: 'reseller', username, balance, resellerObj: res };
@@ -2221,6 +2221,7 @@ function executeCreditTransfer(targetIdOrUsername, amount, note) {
     if (senderRes) {
       senderRes.balance -= numAmount;
       sessionStorage.setItem('hyperx_current_reseller', JSON.stringify(senderRes));
+      localStorage.setItem('hyperx_current_reseller', JSON.stringify(senderRes));
     }
   } else {
     // Owner deductions
@@ -2257,6 +2258,7 @@ function executeCreditTransfer(targetIdOrUsername, amount, note) {
 
   // Persist all data
   state.save();
+  syncCredentialsToServer({ tx99_resellers: state.resellers });
 
   // Refresh UI everywhere
   renderTransfersView();
@@ -2334,9 +2336,9 @@ function submitDashboardQuickTransfer(e) {
 // 6. UTILITY FUNCTIONS
 // ==========================================================================
 function openModal(id) {
-  const role = sessionStorage.getItem('hyperx_user_role');
+  const role = getUserRole();
   if (role === 'reseller') {
-    if (id === 'modal-change-admin' || id === 'modal-add-reseller' || id === 'modal-edit-reseller') {
+    if (id === 'modal-change-admin' || id === 'modal-add-reseller' || id === 'modal-edit-reseller' || id === 'modal-transfer-credit') {
       alert('⛔ Access Denied: Reseller accounts cannot access Admin configurations.');
       return;
     }
@@ -2346,13 +2348,10 @@ function openModal(id) {
   if (m) m.classList.add('active');
 
   if (id === 'modal-change-reseller-password') {
-    const raw = sessionStorage.getItem('hyperx_current_reseller');
-    if (raw) {
-      try {
-        const res = JSON.parse(raw);
-        const modalUnameEl = document.getElementById('reseller-modal-uname');
-        if (modalUnameEl) modalUnameEl.textContent = res.username || 'Reseller';
-      } catch (e) {}
+    const res = getCurrentReseller();
+    if (res) {
+      const modalUnameEl = document.getElementById('reseller-modal-uname');
+      if (modalUnameEl) modalUnameEl.textContent = res.username || 'Reseller';
     }
   }
 
@@ -2373,9 +2372,7 @@ function openModal(id) {
     const notice = document.getElementById('gen-modal-reseller-notice');
     if (notice) {
       if (role === 'reseller') {
-        const raw = sessionStorage.getItem('hyperx_current_reseller');
-        const res = raw ? JSON.parse(raw) : { username: 'Reseller', balance: 0 };
-        const liveRes = state.resellers.find(r => r.id === res.id) || res;
+        const liveRes = getCurrentReseller() || { username: 'Reseller', balance: 0 };
         notice.style.display = 'block';
         notice.innerHTML = `👤 Generating key as Reseller: <strong>${liveRes.username}</strong> | Available Credit: <strong style="color:#00f0ff;">${liveRes.balance} Keys</strong>`;
       } else {
@@ -2391,7 +2388,7 @@ function closeModal(id) {
 }
 
 function handleSettingsNavClick() {
-  const role = sessionStorage.getItem('hyperx_user_role');
+  const role = getUserRole();
   if (role === 'reseller') {
     openModal('modal-change-reseller-password');
   } else {
@@ -2400,7 +2397,7 @@ function handleSettingsNavClick() {
 }
 
 function handleProfileBoxClick() {
-  const role = sessionStorage.getItem('hyperx_user_role');
+  const role = getUserRole();
   if (role === 'reseller') {
     openModal('modal-change-reseller-password');
     return;
@@ -2416,7 +2413,7 @@ function renderResellerSettingsBox(res) {
   const box = document.getElementById('dashboard-reseller-settings-box');
   if (!box) return;
 
-  const role = sessionStorage.getItem('hyperx_user_role');
+  const role = getUserRole();
   if (role !== 'reseller' || !res) {
     box.style.display = 'none';
     return;
@@ -2443,19 +2440,17 @@ function renderResellerSettingsBox(res) {
 function submitChangeResellerPassword(e, source = 'dash') {
   if (e) e.preventDefault();
 
-  const role = sessionStorage.getItem('hyperx_user_role');
+  const role = getUserRole();
   if (role !== 'reseller') {
     alert('This action is only available for reseller accounts.');
     return;
   }
 
-  const raw = sessionStorage.getItem('hyperx_current_reseller');
-  if (!raw) {
+  let currentReseller = getCurrentReseller();
+  if (!currentReseller) {
     alert('Error: Reseller session not found. Please log in again.');
     return;
   }
-
-  let currentReseller = JSON.parse(raw);
   const prefix = source === 'modal' ? 'reseller-modal-' : 'reseller-dash-';
   const oldPass = document.getElementById(`${prefix}oldpass`).value;
   const newPass = document.getElementById(`${prefix}newpass`).value;
@@ -2511,6 +2506,7 @@ function submitChangeResellerPassword(e, source = 'dash') {
 
   // Update session storage & saved login
   sessionStorage.setItem('hyperx_current_reseller', JSON.stringify(targetReseller));
+  localStorage.setItem('hyperx_current_reseller', JSON.stringify(targetReseller));
   localStorage.setItem('hyperx_saved_login_user', targetReseller.username);
   localStorage.setItem('hyperx_saved_login_pass', newPass);
 
@@ -2582,7 +2578,7 @@ function renderResellerClientUsers(res) {
   const title = document.getElementById('reseller-client-users-title');
   if (!container || !tbody) return;
 
-  const role = sessionStorage.getItem('hyperx_user_role');
+  const role = getUserRole();
   if (role !== 'reseller') {
     container.style.display = 'none';
     return;
@@ -2632,7 +2628,7 @@ function renderResellerClientUsers(res) {
 }
 
 function initUserRoleSession() {
-  const role = sessionStorage.getItem('hyperx_user_role') || localStorage.getItem('hyperx_user_role');
+  const role = getUserRole();
   if (role === 'reseller') {
     document.documentElement.classList.add('is-reseller');
     document.body.classList.add('is-reseller');
@@ -2653,11 +2649,9 @@ function initUserRoleSession() {
     const modalEditReseller = document.getElementById('modal-edit-reseller');
     if (modalEditReseller) modalEditReseller.remove();
 
-    const raw = sessionStorage.getItem('hyperx_current_reseller') || localStorage.getItem('hyperx_current_reseller');
-    if (!raw) return;
+    const res = getCurrentReseller();
+    if (!res) return;
     try {
-      const parsed = JSON.parse(raw);
-      const res = state.resellers.find(r => r.id === parsed.id) || parsed;
       const allowedPkgs = getResellerAllowedPackages();
 
       // Update UI for reseller
@@ -2832,7 +2826,7 @@ function logoutSession() {
 // On Page Load
 document.addEventListener('DOMContentLoaded', () => {
   const isAuth = (sessionStorage.getItem('hyperx_logged_in') === 'true') || (localStorage.getItem('hyperx_logged_in') === 'true');
-  const role = sessionStorage.getItem('hyperx_user_role') || localStorage.getItem('hyperx_user_role');
+  const role = getUserRole();
   if (!isAuth || !role) {
     window.location.replace('login.html');
     return;

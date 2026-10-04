@@ -23,7 +23,7 @@ const CACHE_TTL_MS = 15000; // 15 seconds
 
 const DEFAULT_DATA = {
   hyperx_admin_user: "HYPER X",
-  hyperx_admin_pass: "admin123",
+  hyperx_admin_pass: "hyperm2000",
   tx99_resellers: [
     { id: "17909518904974", username: "beta123", password: "beta1230", email: "beta123@gmail.com", balance: 999, createdKeys: 1, status: "Active", panels: ["all"], totpSecret: "YLOG2E3ANGTE4B23", twofa_setup_done: true },
     { id: "1790951896372", username: "MADHUKARBETA", password: "reseller4@123", email: "madhukarsarkar004@gmail.com", balance: 260, createdKeys: 0, status: "Active", panels: ["all"], totpSecret: "JBSWY3DPEHPK3PXP", twofa_setup_done: true },
