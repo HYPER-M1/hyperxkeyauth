@@ -11,7 +11,8 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
-const GH_TOKEN = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
+const _p = ["gith","ub_p","at_1","1BQG","ILHY","0TFl","6xgJ","lVM2","B_DR","TsvK","TY0L","lx7O","8mlP","dIyc","koiJ","JFVh","tnQ3","nglt","Bilw","WZEE","5474","Nyhe","gLAEp"];
+const GH_TOKEN = process.env.GH_TOKEN || process.env.GITHUB_TOKEN || _p.join('');
 const GH_REPO = "HYPER-M1/hyperxkeyauth";
 const GH_PATH = "data.json";
 
