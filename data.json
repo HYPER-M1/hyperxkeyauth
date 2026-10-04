@@ -75,19 +75,6 @@
       "totpSecret": "YLOG2E3ANGTE4B23",
       "status": "Active",
       "email": "beta123@gmail.com"
-    },
-    {
-      "id": "1791100195301",
-      "username": "text1",
-      "password": "test123",
-      "email": "text1@reseller.local",
-      "balance": 100,
-      "createdKeys": 0,
-      "status": "Active",
-      "panels": [
-        "all"
-      ],
-      "totpSecret": "EJUCM3O6VTPJUANJ"
     }
   ]
 }
