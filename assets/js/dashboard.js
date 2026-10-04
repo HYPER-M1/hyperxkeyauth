@@ -606,12 +606,12 @@ async function loadResellerStats() {
   if (data && data.success) {
     state.stats = {
       username: data.username || 'HYPER X',
-      total_keys: data.total_keys ?? 43,
-      active_keys: data.active_keys ?? 43,
-      banned_keys: data.banned_keys ?? 0,
-      key_limit: data.key_limit ?? 9999,
-      keys_created: data.keys_created ?? 77,
-      remaining: data.remaining ?? 9922
+      total_keys: data.total_keys !== undefined ? data.total_keys : 43,
+      active_keys: data.active_keys !== undefined ? data.active_keys : 43,
+      banned_keys: data.banned_keys !== undefined ? data.banned_keys : 0,
+      key_limit: data.key_limit !== undefined ? data.key_limit : 9999,
+      keys_created: data.keys_created !== undefined ? data.keys_created : 77,
+      remaining: data.remaining !== undefined ? data.remaining : 9922
     };
 
     updateDashboardStatsUI();
@@ -1859,7 +1859,7 @@ function renderTransfersView() {
 
   const eligibleResellers = state.resellers.filter(r => 
     r.username.toLowerCase() !== current.username.toLowerCase() && 
-    !r.status?.includes('Suspended')
+    (!r.status || !r.status.includes('Suspended'))
   );
   if (elResCount) elResCount.textContent = eligibleResellers.length;
 
@@ -2109,7 +2109,7 @@ function initModalTransfer(preselectedId = null) {
 
   const eligibleResellers = state.resellers.filter(r => 
     r.username.toLowerCase() !== current.username.toLowerCase() && 
-    !r.status?.includes('Suspended')
+    (!r.status || !r.status.includes('Suspended'))
   );
 
   if (targetSelect) {

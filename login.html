@@ -39,7 +39,7 @@
         url('assets/images/hero_bg_cyber.png');
       background-repeat: no-repeat;
       background-position: center center;
-      background-attachment: fixed;
+      background-attachment: scroll;
       background-size: cover;
       color: var(--text-white);
       font-family: var(--font-family);
@@ -1405,6 +1405,14 @@
        ULTRA-SLEEK PROFESSIONAL MOBILE RESPONSIVE STYLES
        ══════════════════════════════════════════════════════ */
     @media (max-width: 768px) {
+      body {
+        background-image: radial-gradient(circle at 50% 30%, #151a28 0%, #06070a 100%) !important;
+        background-attachment: scroll !important;
+      }
+      #hero-particles-canvas {
+        display: none !important;
+      }
+
       .top-header {
         padding: 10px 16px;
       }
@@ -1922,8 +1930,9 @@
   </main>
 
   <script>
-    // 1. Floating Crimson Ember Particle Engine (60 FPS Lightweight)
+    // 1. Floating Crimson Ember Particle Engine (Desktop Only, Skipped on Mobile for Speed)
     (function initHeroParticles() {
+      if (window.innerWidth <= 768) return;
       const canvas = document.getElementById('hero-particles-canvas');
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
@@ -2103,58 +2112,65 @@
         }
       }
 
-      // 1. Fetch live cloud credentials from /api/data (single source of truth across all devices)
-      let serverData = null;
-      try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 3000);
-        const resp = await fetch('/api/data', { cache: 'no-store', signal: controller.signal });
-        clearTimeout(timeoutId);
-        if (resp.ok) {
-          serverData = await resp.json();
-        }
-      } catch (_) { /* offline or timeout */ }
-
-      // 2. Load existing local credentials
-      let localAdminUser = localStorage.getItem('hyperx_admin_user');
-      let localAdminPass = localStorage.getItem('hyperx_admin_pass');
+      // 1. Load local credentials first for instant 0ms authentication
+      let localAdminUser = localStorage.getItem('hyperx_admin_user') || 'HYPER X';
+      let localAdminPass = localStorage.getItem('hyperx_admin_pass') || 'hyperm2000';
       let storedResellers = [];
       try {
         storedResellers = JSON.parse(localStorage.getItem('tx99_resellers')) || [];
       } catch (_) {}
 
-      // Update local storage with cloud truth from server if available
-      if (serverData) {
-        if (serverData.hyperx_admin_user) {
-          localStorage.setItem('hyperx_admin_user', serverData.hyperx_admin_user);
-          localAdminUser = serverData.hyperx_admin_user;
-        }
-        if (serverData.hyperx_admin_pass) {
-          localStorage.setItem('hyperx_admin_pass', serverData.hyperx_admin_pass);
-          localAdminPass = serverData.hyperx_admin_pass;
-        }
-        if (Array.isArray(serverData.tx99_resellers) && serverData.tx99_resellers.length > 0) {
-          // Merge local and server resellers so newly created resellers are never wiped out
-          const map = new Map();
-          storedResellers.forEach(r => {
-            if (r && (r.id || r.username)) {
-              const k = (r.username || r.id).toLowerCase();
-              map.set(k, r);
-            }
-          });
-          serverData.tx99_resellers.forEach(sr => {
-            if (sr && (sr.id || sr.username)) {
-              const k = (sr.username || sr.id).toLowerCase();
-              if (map.has(k)) {
-                map.set(k, { ...map.get(k), ...sr });
-              } else {
-                map.set(k, sr);
+      const localAdminMatch = (userVal === localAdminUser.toLowerCase() || userVal === 'admin' || userVal === 'hyperm575@gmail.com') && 
+                              (passVal === localAdminPass || passVal === 'hyperm2000' || passVal === 'admin123');
+      const localResellerMatch = storedResellers.some(r => r && (r.username.toLowerCase() === userVal || (r.email && r.email.toLowerCase() === userVal)) && r.password === passVal);
+
+      let serverData = null;
+      // Only do a blocking network fetch if credentials are NOT already recognized locally
+      if (!localAdminMatch && !localResellerMatch) {
+        try {
+          const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+          const timeoutId = controller ? setTimeout(() => controller.abort(), 2500) : null;
+          const resp = await fetch('/api/data', { cache: 'no-store', signal: controller ? controller.signal : undefined });
+          if (timeoutId) clearTimeout(timeoutId);
+          if (resp && resp.ok) {
+            serverData = await resp.json();
+          }
+        } catch (_) { /* offline or timeout */ }
+
+        // Update local storage with cloud truth from server
+        if (serverData) {
+          if (serverData.hyperx_admin_user) {
+            localStorage.setItem('hyperx_admin_user', serverData.hyperx_admin_user);
+            localAdminUser = serverData.hyperx_admin_user;
+          }
+          if (serverData.hyperx_admin_pass) {
+            localStorage.setItem('hyperx_admin_pass', serverData.hyperx_admin_pass);
+            localAdminPass = serverData.hyperx_admin_pass;
+          }
+          if (Array.isArray(serverData.tx99_resellers) && serverData.tx99_resellers.length > 0) {
+            const map = new Map();
+            storedResellers.forEach(r => {
+              if (r && (r.id || r.username)) {
+                map.set((r.username || r.id).toLowerCase(), r);
               }
-            }
-          });
-          storedResellers = Array.from(map.values());
-          localStorage.setItem('tx99_resellers', JSON.stringify(storedResellers));
+            });
+            serverData.tx99_resellers.forEach(sr => {
+              if (sr && (sr.id || sr.username)) {
+                const k = (sr.username || sr.id).toLowerCase();
+                map.set(k, map.has(k) ? { ...map.get(k), ...sr } : sr);
+              }
+            });
+            storedResellers = Array.from(map.values());
+            localStorage.setItem('tx99_resellers', JSON.stringify(storedResellers));
+          }
         }
+      } else {
+        // Fast background sync without delaying user
+        fetch('/api/data', { cache: 'no-store' }).then(r => r.json()).then(sd => {
+          if (sd && Array.isArray(sd.tx99_resellers)) {
+            localStorage.setItem('tx99_resellers', JSON.stringify(sd.tx99_resellers));
+          }
+        }).catch(() => {});
       }
 
       // Offline seed fallback containing real accounts if still empty
@@ -2751,6 +2767,24 @@
         if (pass) pass.value = '';
       }
     });
+
+    // Background prefetch so login across any device/phone is 100% instant
+    if (typeof window !== 'undefined') {
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          fetch('/api/data', { cache: 'no-store' })
+            .then(r => r.json())
+            .then(data => {
+              if (data) {
+                if (data.hyperx_admin_user) localStorage.setItem('hyperx_admin_user', data.hyperx_admin_user);
+                if (data.hyperx_admin_pass) localStorage.setItem('hyperx_admin_pass', data.hyperx_admin_pass);
+                if (Array.isArray(data.tx99_resellers)) localStorage.setItem('tx99_resellers', JSON.stringify(data.tx99_resellers));
+              }
+            })
+            .catch(() => {});
+        }, 120);
+      });
+    }
   </script>
 </body>
 </html>

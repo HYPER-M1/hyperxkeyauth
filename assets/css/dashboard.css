@@ -51,7 +51,7 @@ body {
   background-repeat: no-repeat;
   background-position: center top;
   background-size: cover;
-  background-attachment: fixed;
+  background-attachment: scroll;
   color: var(--text-main);
   font-family: var(--font-sans);
   font-size: 13px;
@@ -1276,6 +1276,10 @@ body.is-reseller #quick-tool-delete {
 }
 
 @media (max-width: 900px) {
+  body {
+    background-image: radial-gradient(circle at 50% 0%, #151a28 0%, #07090e 100%) !important;
+    background-attachment: scroll !important;
+  }
   .dashboard-transfer-widget form {
     grid-template-columns: 1fr !important;
   }
