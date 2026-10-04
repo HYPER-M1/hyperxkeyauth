@@ -7,15 +7,61 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/dashboard.css">
+  <link rel="stylesheet" href="assets/css/dashboard.css?v=2.2">
+  <style>
+    /* Reseller Isolation - Absolute Guaranteed Hiding on all devices */
+    html.is-reseller .admin-only-feature,
+    body.is-reseller .admin-only-feature,
+    html.is-reseller #nav-resellers,
+    body.is-reseller #nav-resellers,
+    html.is-reseller #view-resellers,
+    body.is-reseller #view-resellers,
+    html.is-reseller #modal-add-reseller,
+    body.is-reseller #modal-add-reseller,
+    html.is-reseller #modal-edit-reseller,
+    body.is-reseller #modal-edit-reseller,
+    html.is-reseller #modal-change-admin,
+    body.is-reseller #modal-change-admin,
+    html.is-reseller #quick-tool-ban,
+    body.is-reseller #quick-tool-ban,
+    html.is-reseller #quick-tool-unban,
+    body.is-reseller #quick-tool-unban,
+    html.is-reseller #quick-tool-delete,
+    body.is-reseller #quick-tool-delete {
+      display: none !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      height: 0 !important;
+      width: 0 !important;
+      overflow: hidden !important;
+      opacity: 0 !important;
+    }
+  </style>
   <script>
     (function() {
       try {
-        var role = sessionStorage.getItem('hyperx_user_role');
-        if (role === 'reseller') {
-          document.documentElement.classList.add('is-reseller');
+        var isAuth = (sessionStorage.getItem('hyperx_logged_in') === 'true') || (localStorage.getItem('hyperx_logged_in') === 'true');
+        var role = sessionStorage.getItem('hyperx_user_role') || localStorage.getItem('hyperx_user_role');
+
+        if (!isAuth || !role) {
+          window.location.replace('login.html');
+          return;
         }
-      } catch (e) {}
+
+        if (role === 'reseller') {
+          sessionStorage.setItem('hyperx_user_role', 'reseller');
+          sessionStorage.setItem('hyperx_logged_in', 'true');
+          document.documentElement.classList.add('is-reseller');
+        } else if (role === 'admin') {
+          sessionStorage.setItem('hyperx_user_role', 'admin');
+          sessionStorage.setItem('hyperx_logged_in', 'true');
+        } else {
+          window.location.replace('login.html');
+          return;
+        }
+      } catch (e) {
+        window.location.replace('login.html');
+      }
     })();
   </script>
 </head>
@@ -168,9 +214,15 @@
           <script>
             (function() {
               try {
-                var role = sessionStorage.getItem('hyperx_user_role');
+                var role = sessionStorage.getItem('hyperx_user_role') || localStorage.getItem('hyperx_user_role');
                 if (role === 'reseller') {
-                  var raw = sessionStorage.getItem('hyperx_current_reseller');
+                  document.documentElement.classList.add('is-reseller');
+                  if (document.body) document.body.classList.add('is-reseller');
+                  var nRes = document.getElementById('nav-resellers');
+                  if (nRes) { nRes.style.display = 'none'; nRes.remove(); }
+                  var vRes = document.getElementById('view-resellers');
+                  if (vRes) { vRes.style.display = 'none'; vRes.remove(); }
+                  var raw = sessionStorage.getItem('hyperx_current_reseller') || localStorage.getItem('hyperx_current_reseller');
                   if (raw) {
                     var res = JSON.parse(raw);
                     var uName = res.username || 'Reseller';
@@ -1495,6 +1547,6 @@
     </div>
   </div>
 
-  <script src="assets/js/dashboard.js"></script>
+  <script src="assets/js/dashboard.js?v=2.2"></script>
 </body>
 </html>

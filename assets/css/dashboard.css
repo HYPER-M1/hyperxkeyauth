@@ -1189,6 +1189,12 @@ body.is-reseller #quick-tool-unban,
 html.is-reseller #quick-tool-delete,
 body.is-reseller #quick-tool-delete {
   display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  height: 0 !important;
+  width: 0 !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
 }
 
 /* ==========================================================================

@@ -2428,6 +2428,9 @@
         sessionStorage.setItem('hyperx_logged_in', 'true');
         sessionStorage.setItem('hyperx_user_role', 'admin');
         sessionStorage.removeItem('hyperx_current_reseller');
+        localStorage.setItem('hyperx_logged_in', 'true');
+        localStorage.setItem('hyperx_user_role', 'admin');
+        localStorage.removeItem('hyperx_current_reseller');
 
         setTimeout(() => {
           window.location.href = 'dashboard.html';
@@ -2787,6 +2790,9 @@
       sessionStorage.setItem('hyperx_logged_in', 'true');
       sessionStorage.setItem('hyperx_user_role', 'reseller');
       sessionStorage.setItem('hyperx_current_reseller', JSON.stringify(pendingResellerAuth.reseller));
+      localStorage.setItem('hyperx_logged_in', 'true');
+      localStorage.setItem('hyperx_user_role', 'reseller');
+      localStorage.setItem('hyperx_current_reseller', JSON.stringify(pendingResellerAuth.reseller));
 
       // Persist twofa_setup_done to server so other phones skip QR setup
       try {

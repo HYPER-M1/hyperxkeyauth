@@ -758,10 +758,10 @@ function populatePackageDropdown() {
 // 2. TAB SWITCHING
 // ==========================================================================
 function switchTab(tabId) {
-  const role = sessionStorage.getItem('hyperx_user_role');
-  if (role === 'reseller' && tabId === 'resellers') {
-    alert('⛔ Access Denied: Reseller accounts cannot access Admin Reseller Management.');
-    tabId = 'dashboard';
+  const role = sessionStorage.getItem('hyperx_user_role') || localStorage.getItem('hyperx_user_role');
+  if (role === 'reseller' && (tabId === 'resellers' || tabId === 'transfers')) {
+    alert('⛔ Access Denied: Reseller accounts cannot access Reseller Management. This section is restricted to the Root Owner.');
+    tabId = 'licenses';
   }
 
   document.querySelectorAll('.tab-view').forEach(v => v.classList.remove('active'));
@@ -1532,6 +1532,9 @@ function toggleResellerPassVisibility(id, pass) {
 }
 
 function renderResellersTable() {
+  const role = sessionStorage.getItem('hyperx_user_role') || localStorage.getItem('hyperx_user_role');
+  if (role === 'reseller') return;
+
   const tbody = document.getElementById('resellers-tbody');
 
   // Update Reseller Summary Strip Stats
@@ -2629,10 +2632,28 @@ function renderResellerClientUsers(res) {
 }
 
 function initUserRoleSession() {
-  const role = sessionStorage.getItem('hyperx_user_role');
+  const role = sessionStorage.getItem('hyperx_user_role') || localStorage.getItem('hyperx_user_role');
   if (role === 'reseller') {
+    document.documentElement.classList.add('is-reseller');
     document.body.classList.add('is-reseller');
-    const raw = sessionStorage.getItem('hyperx_current_reseller');
+
+    // Guarantee Resellers navigation, view, and modals are completely removed
+    const navResellers = document.getElementById('nav-resellers');
+    if (navResellers) {
+      navResellers.style.display = 'none';
+      navResellers.remove();
+    }
+    const viewResellers = document.getElementById('view-resellers');
+    if (viewResellers) {
+      viewResellers.style.display = 'none';
+      viewResellers.remove();
+    }
+    const modalAddReseller = document.getElementById('modal-add-reseller');
+    if (modalAddReseller) modalAddReseller.remove();
+    const modalEditReseller = document.getElementById('modal-edit-reseller');
+    if (modalEditReseller) modalEditReseller.remove();
+
+    const raw = sessionStorage.getItem('hyperx_current_reseller') || localStorage.getItem('hyperx_current_reseller');
     if (!raw) return;
     try {
       const parsed = JSON.parse(raw);
@@ -2802,11 +2823,21 @@ function logoutSession() {
   sessionStorage.removeItem('hyperx_user_role');
   sessionStorage.removeItem('hyperx_current_reseller');
   sessionStorage.removeItem('hyperx_logged_in');
+  localStorage.removeItem('hyperx_user_role');
+  localStorage.removeItem('hyperx_current_reseller');
+  localStorage.removeItem('hyperx_logged_in');
   window.location.href = 'login.html';
 }
 
 // On Page Load
 document.addEventListener('DOMContentLoaded', () => {
+  const isAuth = (sessionStorage.getItem('hyperx_logged_in') === 'true') || (localStorage.getItem('hyperx_logged_in') === 'true');
+  const role = sessionStorage.getItem('hyperx_user_role') || localStorage.getItem('hyperx_user_role');
+  if (!isAuth || !role) {
+    window.location.replace('login.html');
+    return;
+  }
+
   // 1. Initialize role session (Admin or Reseller) FIRST before anything else
   initUserRoleSession();
 
@@ -2815,12 +2846,18 @@ document.addEventListener('DOMContentLoaded', () => {
   renderDashboardRecentActivity();
   renderLicensesTable();
   renderFullLogsTable();
-  renderResellersTable();
+  if (role !== 'reseller') {
+    renderResellersTable();
+  }
   renderApplicationsTable();
-  renderTransfersView();
+  if (role !== 'reseller') {
+    renderTransfersView();
+  }
   startRealtimeSimulation();
 
   // Load real API data
   loadAdminPackages();
-  loadResellerStats();
+  if (role !== 'reseller') {
+    loadResellerStats();
+  }
 });
