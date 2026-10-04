@@ -1461,6 +1461,40 @@
     </div>
   </div>
 
+  <!-- ============================================================
+       PREMIUM CYBERPUNK HYPERX SYSTEM DIALOG & ALERT MODAL
+       ============================================================ -->
+  <div class="hyper-dialog-overlay" id="hyper-dialog-overlay">
+    <div class="hyper-dialog-card" id="hyper-dialog-card">
+      <div class="hyper-dialog-stripe"></div>
+      <div class="hyper-dialog-header">
+        <span class="hyper-dialog-badge" id="hyper-dialog-badge">⚡ HYPERX // SYSTEM NOTICE</span>
+        <button type="button" class="hyper-dialog-close-btn" id="hyper-dialog-close-btn" onclick="closeHyperDialog()">✕</button>
+      </div>
+      <div class="hyper-dialog-body">
+        <div class="hyper-dialog-icon-wrap success" id="hyper-dialog-icon-wrap">
+          <span id="hyper-dialog-icon">✓</span>
+        </div>
+        <h3 class="hyper-dialog-title" id="hyper-dialog-title">Notification</h3>
+        <div class="hyper-dialog-msg" id="hyper-dialog-msg"></div>
+        <div class="hyper-dialog-info-card" id="hyper-dialog-info-card" style="display:none;">
+          <div id="hyper-dialog-kv-list"></div>
+          <button type="button" class="hyper-dialog-copy-btn" id="hyper-dialog-copy-btn" onclick="copyHyperDialogCreds()">
+            <span>📋</span>
+            <span id="hyper-dialog-copy-text">Copy Credentials</span>
+          </button>
+        </div>
+        <div class="hyper-dialog-actions" id="hyper-dialog-actions">
+          <button type="button" class="hyper-dialog-btn-secondary" id="hyper-dialog-btn-cancel" style="display:none;" onclick="handleHyperDialogCancel()">Cancel</button>
+          <button type="button" class="hyper-dialog-btn-primary" id="hyper-dialog-btn-ok" onclick="handleHyperDialogOk()">
+            <span>✓</span>
+            <span id="hyper-dialog-btn-ok-text">Acknowledge</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="assets/js/dashboard.js"></script>
 </body>
 </html>

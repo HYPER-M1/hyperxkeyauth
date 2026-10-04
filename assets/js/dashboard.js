@@ -129,6 +129,242 @@ class AppState {
 const state = new AppState();
 
 // ==========================================================================
+// PREMIUM CYBERPUNK HYPERX SYSTEM DIALOG SYSTEM
+// ==========================================================================
+let _hyperDialogCallback = null;
+let _hyperDialogCancelCallback = null;
+let _hyperDialogCopyData = '';
+
+function showHyperAlert(message, options = {}) {
+  let overlay = document.getElementById('hyper-dialog-overlay');
+  
+  // If overlay doesn't exist yet, dynamically inject it into DOM
+  if (!overlay) {
+    const div = document.createElement('div');
+    div.className = 'hyper-dialog-overlay';
+    div.id = 'hyper-dialog-overlay';
+    div.innerHTML = `
+      <div class="hyper-dialog-card" id="hyper-dialog-card">
+        <div class="hyper-dialog-stripe"></div>
+        <div class="hyper-dialog-header">
+          <span class="hyper-dialog-badge" id="hyper-dialog-badge">⚡ HYPERX // SYSTEM NOTICE</span>
+          <button type="button" class="hyper-dialog-close-btn" id="hyper-dialog-close-btn" onclick="closeHyperDialog()">✕</button>
+        </div>
+        <div class="hyper-dialog-body">
+          <div class="hyper-dialog-icon-wrap success" id="hyper-dialog-icon-wrap">
+            <span id="hyper-dialog-icon">✓</span>
+          </div>
+          <h3 class="hyper-dialog-title" id="hyper-dialog-title">Notification</h3>
+          <div class="hyper-dialog-msg" id="hyper-dialog-msg"></div>
+          <div class="hyper-dialog-info-card" id="hyper-dialog-info-card" style="display:none;">
+            <div id="hyper-dialog-kv-list"></div>
+            <button type="button" class="hyper-dialog-copy-btn" id="hyper-dialog-copy-btn" onclick="copyHyperDialogCreds()">
+              <span>📋</span>
+              <span id="hyper-dialog-copy-text">Copy Credentials</span>
+            </button>
+          </div>
+          <div class="hyper-dialog-actions" id="hyper-dialog-actions">
+            <button type="button" class="hyper-dialog-btn-secondary" id="hyper-dialog-btn-cancel" style="display:none;" onclick="handleHyperDialogCancel()">Cancel</button>
+            <button type="button" class="hyper-dialog-btn-primary" id="hyper-dialog-btn-ok" onclick="handleHyperDialogOk()">
+              <span>✓</span>
+              <span id="hyper-dialog-btn-ok-text">Acknowledge</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(div);
+    overlay = div;
+  }
+
+  const iconWrap = document.getElementById('hyper-dialog-icon-wrap');
+  const iconEl = document.getElementById('hyper-dialog-icon');
+  const badgeEl = document.getElementById('hyper-dialog-badge');
+  const titleEl = document.getElementById('hyper-dialog-title');
+  const msgEl = document.getElementById('hyper-dialog-msg');
+  const infoCard = document.getElementById('hyper-dialog-info-card');
+  const kvList = document.getElementById('hyper-dialog-kv-list');
+  const copyBtn = document.getElementById('hyper-dialog-copy-btn');
+  const copyText = document.getElementById('hyper-dialog-copy-text');
+  const okBtnText = document.getElementById('hyper-dialog-btn-ok-text');
+  const cancelBtn = document.getElementById('hyper-dialog-btn-cancel');
+
+  _hyperDialogCallback = options.onOk || null;
+  _hyperDialogCancelCallback = options.onCancel || null;
+  _hyperDialogCopyData = '';
+
+  const str = String(message || '');
+  const lines = str.split('\n').map(l => l.trim()).filter(Boolean);
+
+  let type = options.type || 'info';
+  let title = options.title || '';
+  let subtitleLines = [];
+  let kvPairs = [];
+
+  // Auto-detect type from emojis and keywords
+  if (!options.type) {
+    if (str.includes('✓') || /success|created|updated|reset|operational/i.test(str)) {
+      type = 'success';
+    } else if (str.includes('❌') || str.includes('⛔') || /error|failed|denied|incorrect|invalid/i.test(str)) {
+      type = 'error';
+    } else if (str.includes('⚠️') || /insufficient|warning|caution/i.test(str)) {
+      type = 'warning';
+    }
+  }
+
+  // Parse Title and Key-Values
+  if (!title) {
+    if (lines.length > 0) {
+      let firstLine = lines[0]
+        .replace(/^[✓❌⛔⚠️ℹ️\?]\s*/, '')
+        .replace(/^(SUCCESS|ERROR|WARNING|NOTICE):\s*/i, '');
+      title = firstLine;
+    } else {
+      title = type === 'success' ? 'Operation Successful' : (type === 'error' ? 'Action Failed' : 'System Notice');
+    }
+  }
+
+  for (let i = 1; i < lines.length; i++) {
+    const line = lines[i];
+    const colonIdx = line.indexOf(':');
+    if (colonIdx > 0 && colonIdx < 30) {
+      const k = line.substring(0, colonIdx).trim();
+      const v = line.substring(colonIdx + 1).trim();
+      if (k && v) {
+        kvPairs.push({ key: k, value: v });
+        continue;
+      }
+    }
+    subtitleLines.push(line);
+  }
+
+  // Setup Visuals
+  if (iconWrap) {
+    iconWrap.className = 'hyper-dialog-icon-wrap ' + type;
+  }
+
+  if (iconEl) {
+    if (type === 'success') {
+      iconEl.innerHTML = `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>`;
+    } else if (type === 'error') {
+      iconEl.innerHTML = `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`;
+    } else if (type === 'warning') {
+      iconEl.innerHTML = `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`;
+    } else {
+      iconEl.innerHTML = `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`;
+    }
+  }
+
+  if (badgeEl) {
+    if (type === 'success') badgeEl.textContent = '⚡ HYPERX // SUCCESS';
+    else if (type === 'error') badgeEl.textContent = '⛔ HYPERX // ERROR';
+    else if (type === 'warning') badgeEl.textContent = '⚠️ HYPERX // WARNING';
+    else badgeEl.textContent = '⚡ HYPERX // SYSTEM NOTICE';
+  }
+
+  if (titleEl) titleEl.textContent = title;
+
+  if (msgEl) {
+    if (subtitleLines.length > 0) {
+      msgEl.textContent = subtitleLines.join('\n');
+      msgEl.style.display = 'block';
+    } else {
+      msgEl.style.display = 'none';
+    }
+  }
+
+  // Key-value pairs display (e.g. Credentials)
+  if (infoCard && kvList) {
+    if (kvPairs.length > 0) {
+      infoCard.style.display = 'block';
+      kvList.innerHTML = kvPairs.map(item => `
+        <div class="hyper-dialog-kv-row">
+          <span class="hyper-dialog-kv-label">${item.key.toUpperCase()}</span>
+          <span class="hyper-dialog-kv-val">${item.value}</span>
+        </div>
+      `).join('');
+
+      _hyperDialogCopyData = kvPairs.map(p => `${p.key}: ${p.value}`).join('\n');
+      if (copyBtn) {
+        copyBtn.style.display = 'flex';
+        if (copyText) copyText.textContent = 'Copy Credentials';
+      }
+    } else {
+      infoCard.style.display = 'none';
+    }
+  }
+
+  if (cancelBtn) {
+    cancelBtn.style.display = options.showCancel ? 'block' : 'none';
+  }
+
+  if (okBtnText) {
+    okBtnText.textContent = options.btnText || (options.showCancel ? 'Confirm' : 'Acknowledge');
+  }
+
+  overlay.classList.add('active');
+}
+
+function closeHyperDialog() {
+  const overlay = document.getElementById('hyper-dialog-overlay');
+  if (overlay) overlay.classList.remove('active');
+}
+
+function handleHyperDialogOk() {
+  closeHyperDialog();
+  if (typeof _hyperDialogCallback === 'function') {
+    const cb = _hyperDialogCallback;
+    _hyperDialogCallback = null;
+    cb();
+  }
+}
+
+function handleHyperDialogCancel() {
+  closeHyperDialog();
+  if (typeof _hyperDialogCancelCallback === 'function') {
+    const cb = _hyperDialogCancelCallback;
+    _hyperDialogCancelCallback = null;
+    cb();
+  }
+}
+
+function copyHyperDialogCreds() {
+  if (!_hyperDialogCopyData) return;
+  navigator.clipboard.writeText(_hyperDialogCopyData).then(() => {
+    const copyText = document.getElementById('hyper-dialog-copy-text');
+    if (copyText) {
+      const orig = copyText.textContent;
+      copyText.textContent = '✓ Copied to Clipboard!';
+      setTimeout(() => { copyText.textContent = orig; }, 2000);
+    }
+  }).catch(() => {});
+}
+
+// Global window.alert override so that every alert in the portal uses this sleek dialog
+window.alert = function(msg) {
+  showHyperAlert(msg);
+};
+
+// Global click outside & key listeners
+document.addEventListener('keydown', (e) => {
+  const overlay = document.getElementById('hyper-dialog-overlay');
+  if (overlay && overlay.classList.contains('active')) {
+    if (e.key === 'Escape') {
+      handleHyperDialogCancel();
+    } else if (e.key === 'Enter') {
+      handleHyperDialogOk();
+    }
+  }
+});
+
+document.addEventListener('click', (e) => {
+  const overlay = document.getElementById('hyper-dialog-overlay');
+  if (overlay && overlay.classList.contains('active') && e.target === overlay) {
+    handleHyperDialogCancel();
+  }
+});
+
+// ==========================================================================
 // 1. ADMIN USER & PASSWORD CONFIGURATION
 // ==========================================================================
 const DEFAULT_ADMIN_USER = "HYPER X";
