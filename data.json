@@ -101,7 +101,7 @@
         "all"
       ],
       "totpSecret": "PUTXJXJBKM52LAOD",
-      "twofa_setup_done": false
+      "twofa_setup_done": true
     }
   ]
 }
