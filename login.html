@@ -1820,7 +1820,19 @@
         }
       }
 
-      // Load existing local credentials to preserve any password changes made by user
+      // 1. Fetch live cloud credentials from /api/data (single source of truth across all devices)
+      let serverData = null;
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 3000);
+        const resp = await fetch('/api/data', { cache: 'no-store', signal: controller.signal });
+        clearTimeout(timeoutId);
+        if (resp.ok) {
+          serverData = await resp.json();
+        }
+      } catch (_) { /* offline or timeout */ }
+
+      // 2. Load existing local credentials
       let localAdminUser = localStorage.getItem('hyperx_admin_user');
       let localAdminPass = localStorage.getItem('hyperx_admin_pass');
       let storedResellers = [];
@@ -1828,50 +1840,47 @@
         storedResellers = JSON.parse(localStorage.getItem('tx99_resellers')) || [];
       } catch (_) {}
 
-      // Fast single fetch from /api/data with timeout (works across all devices, mobile & PC)
-      try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 3000);
-        const resp = await fetch('/api/data', { cache: 'no-store', signal: controller.signal });
-        clearTimeout(timeoutId);
-        if (resp.ok) {
-          const serverData = await resp.json();
-          if (serverData) {
-            // Only set default admin if user hasn't set/changed it in localStorage
-            if (serverData.hyperx_admin_user && !localAdminUser) {
-              localStorage.setItem('hyperx_admin_user', serverData.hyperx_admin_user);
-            }
-            if (serverData.hyperx_admin_pass && !localAdminPass) {
-              localStorage.setItem('hyperx_admin_pass', serverData.hyperx_admin_pass);
-            }
-            // Merge server resellers with local resellers WITHOUT overwriting changed passwords
-            if (Array.isArray(serverData.tx99_resellers) && serverData.tx99_resellers.length > 0) {
-              serverData.tx99_resellers.forEach(sr => {
-                const existing = storedResellers.find(lr => 
-                  lr.id === sr.id || (lr.username && lr.username.toLowerCase() === sr.username.toLowerCase())
-                );
-                if (!existing) {
-                  storedResellers.push(sr);
-                } else {
-                  // Keep user's custom password! Only fill missing fields
-                  if (!existing.password) existing.password = sr.password;
-                  if (!existing.totpSecret) existing.totpSecret = sr.totpSecret;
-                }
-              });
-              localStorage.setItem('tx99_resellers', JSON.stringify(storedResellers));
-            }
-          }
+      // Update local storage with cloud truth from server if available
+      if (serverData) {
+        if (serverData.hyperx_admin_user) {
+          localStorage.setItem('hyperx_admin_user', serverData.hyperx_admin_user);
+          localAdminUser = serverData.hyperx_admin_user;
         }
-      } catch (_) { /* offline or timeout — use cached/seed creds */ }
+        if (serverData.hyperx_admin_pass) {
+          localStorage.setItem('hyperx_admin_pass', serverData.hyperx_admin_pass);
+          localAdminPass = serverData.hyperx_admin_pass;
+        }
+        if (Array.isArray(serverData.tx99_resellers) && serverData.tx99_resellers.length > 0) {
+          storedResellers = serverData.tx99_resellers;
+          localStorage.setItem('tx99_resellers', JSON.stringify(storedResellers));
+        }
+      }
 
-      // 1. Check Root Admin Credentials
+      // Offline seed fallback containing real accounts if still empty
+      if (!storedResellers || !Array.isArray(storedResellers) || storedResellers.length === 0) {
+        storedResellers = [
+          { id: '17909518904974', username: 'beta123', password: 'beta1230', email: 'beta123@gmail.com', balance: 999, createdKeys: 1, status: 'Active', panels: ['all'], totpSecret: 'YLOG2E3ANGTE4B23', twofa_setup_done: false },
+          { id: '1790951896372', username: 'MADHUKARBETA', password: 'reseller4@123', email: 'madhukarsarkar004@gmail.com', balance: 260, createdKeys: 0, status: 'Active', panels: ['all'], totpSecret: 'JBSWY3DPEHPK3PXP', twofa_setup_done: false },
+          { id: '1', username: 'HYPER X (Root Owner)', password: 'adminPassword123', email: 'admin@prtvshow.online', balance: 9922, createdKeys: 77, status: 'Active (Root)', panels: ['all'], totpSecret: 'JBSWY3DPEHPK3PXP', twofa_setup_done: false },
+          { id: '2', username: 'AlphaDistro', password: 'alphaPass@2026', email: 'alpha.dist@outlook.com', balance: 250, createdKeys: 88, status: 'Active', panels: ['BASIC PANEL', 'EXTERNAL PANEL', 'FPS BOOSTER'], totpSecret: 'KRUGKIDROVUWG2ZA', twofa_setup_done: false },
+          { id: '3', username: 'ViperKeys', password: 'viperKey#99', email: 'viper.resell@yahoo.com', balance: 50, createdKeys: 49, status: 'Active', panels: ['AIMSILENT EXE', 'UID BYPASS', 'VAULT PANEL'], totpSecret: 'MFRGGZDFMZTWQ2LK', twofa_setup_done: false }
+        ];
+        localStorage.setItem('tx99_resellers', JSON.stringify(storedResellers));
+      }
+
+      // Check Root Admin Credentials
       const creds = getAdminCredentials();
-      const adminMatch = (enteredUser.toLowerCase() === creds.user.toLowerCase()) ||
+      const adminUser = creds.user || (serverData && serverData.hyperx_admin_user) || 'HYPER X';
+      const adminMatch = (enteredUser.toLowerCase() === adminUser.toLowerCase()) ||
         (enteredUser.toLowerCase() === 'hyperm575@gmail.com') ||
-        (creds.user === 'HYPER X' && (enteredUser.toLowerCase() === 'admin' || enteredUser.toLowerCase() === 'admin@prtvshow.online'));
+        (adminUser === 'HYPER X' && (enteredUser.toLowerCase() === 'admin' || enteredUser.toLowerCase() === 'admin@prtvshow.online'));
 
       if (adminMatch) {
-        if (enteredPass !== creds.pass) {
+        const passMatch = (enteredPass === creds.pass) || 
+                          (serverData && enteredPass === serverData.hyperx_admin_pass) ||
+                          (localAdminPass && enteredPass === localAdminPass);
+
+        if (!passMatch) {
           resetBtn();
           if (errBox) {
             errBox.style.display = 'block';
@@ -1903,32 +1912,22 @@
         return;
       }
 
-      // 2. Check Reseller Accounts
-      if (!storedResellers) {
-        try {
-          storedResellers = JSON.parse(localStorage.getItem('tx99_resellers'));
-        } catch (_) {}
-      }
-
-      // Offline seed fallback containing real accounts
-      if (!storedResellers || !Array.isArray(storedResellers) || storedResellers.length === 0) {
-        storedResellers = [
-          { id: '17909518904974', username: 'beta123', password: 'beta1230', email: 'beta123@gmail.com', balance: 999, createdKeys: 1, status: 'Active', panels: ['all'], totpSecret: 'YLOG2E3ANGTE4B23', twofa_setup_done: false },
-          { id: '1790951896372', username: 'MADHUKARBETA', password: 'reseller4@123', email: 'madhukarsarkar004@gmail.com', balance: 260, createdKeys: 0, status: 'Active', panels: ['all'], totpSecret: 'JBSWY3DPEHPK3PXP', twofa_setup_done: false },
-          { id: '1', username: 'HYPER X (Root Owner)', password: 'adminPassword123', email: 'admin@prtvshow.online', balance: 9922, createdKeys: 77, status: 'Active (Root)', panels: ['all'], totpSecret: 'JBSWY3DPEHPK3PXP', twofa_setup_done: false },
-          { id: '2', username: 'AlphaDistro', password: 'alphaPass@2026', email: 'alpha.dist@outlook.com', balance: 250, createdKeys: 88, status: 'Active', panels: ['BASIC PANEL', 'EXTERNAL PANEL', 'FPS BOOSTER'], totpSecret: 'KRUGKIDROVUWG2ZA', twofa_setup_done: false },
-          { id: '3', username: 'ViperKeys', password: 'viperKey#99', email: 'viper.resell@yahoo.com', balance: 50, createdKeys: 49, status: 'Active', panels: ['AIMSILENT EXE', 'UID BYPASS', 'VAULT PANEL'], totpSecret: 'MFRGGZDFMZTWQ2LK', twofa_setup_done: false }
-        ];
-        localStorage.setItem('tx99_resellers', JSON.stringify(storedResellers));
-      }
-
+      // Check Reseller Accounts
       const matchedReseller = storedResellers.find(r => 
         (r.username && r.username.toLowerCase() === enteredUser.toLowerCase()) || 
         (r.email && r.email.toLowerCase() === enteredUser.toLowerCase())
       );
 
       if (matchedReseller) {
-        if (enteredPass !== matchedReseller.password) {
+        const serverR = (serverData && Array.isArray(serverData.tx99_resellers)) ? serverData.tx99_resellers.find(sr => 
+          (sr.username && sr.username.toLowerCase() === enteredUser.toLowerCase()) ||
+          (sr.id === matchedReseller.id)
+        ) : null;
+
+        const passMatch = (enteredPass === matchedReseller.password) ||
+                          (serverR && enteredPass === serverR.password);
+
+        if (!passMatch) {
           resetBtn();
           if (errBox) {
             errBox.style.display = 'block';

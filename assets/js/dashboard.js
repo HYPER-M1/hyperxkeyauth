@@ -158,6 +158,29 @@ function updateAdminUI() {
   if (userField) userField.value = currentAdmin;
 }
 
+async function syncCredentialsToServer(updates = {}) {
+  try {
+    const adminUser = localStorage.getItem('hyperx_admin_user') || 'HYPER X';
+    const adminPass = localStorage.getItem('hyperx_admin_pass') || 'admin123';
+    let resellers = [];
+    try {
+      resellers = JSON.parse(localStorage.getItem('tx99_resellers')) || [];
+    } catch (_) {}
+
+    const payload = {
+      hyperx_admin_user: updates.hyperx_admin_user || adminUser,
+      hyperx_admin_pass: updates.hyperx_admin_pass || adminPass,
+      tx99_resellers: updates.tx99_resellers || resellers
+    };
+
+    fetch('/api/data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).catch(() => {});
+  } catch (_) {}
+}
+
 function submitChangeAdminCredentials(e) {
   if (e) e.preventDefault();
   const newUsername = document.getElementById('cfg-admin-username').value.trim();
@@ -206,6 +229,12 @@ function submitChangeAdminCredentials(e) {
   localStorage.setItem('hyperx_saved_login_user', newUsername);
   localStorage.setItem('hyperx_saved_login_pass', newPass);
 
+  // Sync to cloud server so other devices immediately get updated password
+  syncCredentialsToServer({
+    hyperx_admin_user: newUsername,
+    hyperx_admin_pass: newPass
+  });
+
   document.getElementById('cfg-admin-oldpass').value = '';
   document.getElementById('cfg-admin-newpass').value = '';
   document.getElementById('cfg-admin-confirmpass').value = '';
@@ -222,6 +251,13 @@ function resetDefaultAdminCredentials() {
   localStorage.setItem('hyperx_admin_pass', DEFAULT_ADMIN_PASS);
   localStorage.setItem('hyperx_saved_login_user', DEFAULT_ADMIN_USER);
   localStorage.setItem('hyperx_saved_login_pass', DEFAULT_ADMIN_PASS);
+
+  // Sync reset to cloud server
+  syncCredentialsToServer({
+    hyperx_admin_user: DEFAULT_ADMIN_USER,
+    hyperx_admin_pass: DEFAULT_ADMIN_PASS
+  });
+
   updateAdminUI();
   closeModal('modal-change-admin');
   alert('✓ Credentials reset to default:\nUsername: HYPER X\nPassword: admin123');
@@ -1345,6 +1381,7 @@ function submitAddReseller(e) {
 
   state.resellers.push(newReseller);
   state.save();
+  syncCredentialsToServer({ tx99_resellers: state.resellers });
   renderResellersTable();
   closeModal('modal-add-reseller');
 
@@ -1414,6 +1451,7 @@ function submitEditReseller(e) {
   r.panels = panelsToSave;
 
   state.save();
+  syncCredentialsToServer({ tx99_resellers: state.resellers });
   renderResellersTable();
   closeModal('modal-edit-reseller');
   alert(`✓ Reseller "${username}" updated successfully!`);
@@ -1475,6 +1513,7 @@ function deleteReseller(id) {
 
   state.resellers = state.resellers.filter(item => item.id !== id);
   state.save();
+  syncCredentialsToServer({ tx99_resellers: state.resellers });
   renderResellersTable();
   alert(`Reseller "${r.username}" has been removed.`);
 }
@@ -2171,6 +2210,7 @@ function submitChangeResellerPassword(e, source = 'dash') {
     state.resellers[idx].password = newPass;
   }
   state.save();
+  syncCredentialsToServer({ tx99_resellers: state.resellers });
 
   // Update session storage & saved login
   sessionStorage.setItem('hyperx_current_reseller', JSON.stringify(targetReseller));
