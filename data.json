@@ -10,7 +10,7 @@
       "username": "beta123",
       "balance": 999,
       "password": "beta1230",
-      "twofa_setup_done": false,
+      "twofa_setup_done": true,
       "createdKeys": 1,
       "totpSecret": "YLOG2E3ANGTE4B23",
       "status": "Active",
