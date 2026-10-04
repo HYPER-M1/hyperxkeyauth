@@ -61,20 +61,6 @@
       ],
       "totpSecret": "JBSWY3DPEHPK3PXP",
       "twofa_setup_done": true
-    },
-    {
-      "panels": [
-        "all"
-      ],
-      "id": "17909518904974",
-      "username": "beta123",
-      "balance": 999,
-      "password": "beta123",
-      "twofa_setup_done": true,
-      "createdKeys": 1,
-      "totpSecret": "YLOG2E3ANGTE4B23",
-      "status": "Active",
-      "email": "beta123@gmail.com"
     }
   ]
 }
