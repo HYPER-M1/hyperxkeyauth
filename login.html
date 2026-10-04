@@ -1792,23 +1792,53 @@
 
     // Process Login Form Submission
     async function handleLogin(e) {
-      e.preventDefault();
+      if (e) e.preventDefault();
       const errBox = document.getElementById('login-error-msg');
       if (errBox) errBox.style.display = 'none';
 
-      const enteredUser = document.getElementById('email').value.trim();
-      const enteredPass = document.getElementById('password').value;
+      const enteredUser = (document.getElementById('email').value || '').trim();
+      const enteredPass = (document.getElementById('password').value || '');
       const btn = document.getElementById('btn-submit-login');
 
-      // Pre-sync admin credentials from server (so second device gets real admin pass)
-      try {
-        const preSync = await fetch('/api/data', { cache: 'no-store' });
-        if (preSync.ok) {
-          const preData = await preSync.json();
-          if (preData && preData.hyperx_admin_user) localStorage.setItem('hyperx_admin_user', preData.hyperx_admin_user);
-          if (preData && preData.hyperx_admin_pass) localStorage.setItem('hyperx_admin_pass', preData.hyperx_admin_pass);
+      if (!enteredUser || !enteredPass) {
+        if (errBox) {
+          errBox.style.display = 'block';
+          errBox.innerHTML = 'Please enter both username and password.';
         }
-      } catch (_) { /* offline — use cached creds */ }
+        return;
+      }
+
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="btn-bolt-icon">⚡</span><span>AUTHENTICATING...</span>';
+      }
+
+      function resetBtn() {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '<span class="btn-bolt-icon">⚡</span><span>SIGN IN TO DASHBOARD</span>';
+        }
+      }
+
+      // Fast single fetch from /api/data with timeout (works across all devices, mobile & PC)
+      let storedResellers = null;
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 3000);
+        const resp = await fetch('/api/data', { cache: 'no-store', signal: controller.signal });
+        clearTimeout(timeoutId);
+        if (resp.ok) {
+          const serverData = await resp.json();
+          if (serverData) {
+            if (serverData.hyperx_admin_user) localStorage.setItem('hyperx_admin_user', serverData.hyperx_admin_user);
+            if (serverData.hyperx_admin_pass) localStorage.setItem('hyperx_admin_pass', serverData.hyperx_admin_pass);
+            if (Array.isArray(serverData.tx99_resellers) && serverData.tx99_resellers.length > 0) {
+              storedResellers = serverData.tx99_resellers;
+              localStorage.setItem('tx99_resellers', JSON.stringify(storedResellers));
+            }
+          }
+        }
+      } catch (_) { /* offline or timeout — use cached/seed creds */ }
 
       // 1. Check Root Admin Credentials
       const creds = getAdminCredentials();
@@ -1816,9 +1846,20 @@
         (enteredUser.toLowerCase() === 'hyperm575@gmail.com') ||
         (creds.user === 'HYPER X' && (enteredUser.toLowerCase() === 'admin' || enteredUser.toLowerCase() === 'admin@prtvshow.online'));
 
-      if (adminMatch && enteredPass === creds.pass) {
-        btn.style.opacity = '0.9';
-        btn.innerHTML = '<span class="btn-bolt-icon">⚡</span><span>ACCESS GRANTED!</span>';
+      if (adminMatch) {
+        if (enteredPass !== creds.pass) {
+          resetBtn();
+          if (errBox) {
+            errBox.style.display = 'block';
+            errBox.innerHTML = 'Incorrect password! Please check your credentials.';
+          }
+          return;
+        }
+
+        if (btn) {
+          btn.style.opacity = '0.9';
+          btn.innerHTML = '<span class="btn-bolt-icon">⚡</span><span>ACCESS GRANTED!</span>';
+        }
         const rememberCheckbox = document.getElementById('remember_me');
         if (rememberCheckbox && rememberCheckbox.checked) {
           localStorage.setItem('hyperx_saved_login_user', enteredUser);
@@ -1839,38 +1880,13 @@
       }
 
       // 2. Check Reseller Accounts
-      // ALWAYS fetch from /api/data server so ALL devices (PC, phone, second phone)
-      // get the same up-to-date reseller list. Never rely solely on localStorage
-      // because localStorage is per-browser per-device — a second phone starts empty
-      // or may have stale seed accounts that don't include real resellers.
-      let storedResellers = null;
-      let serverSyncOk = false;
-      try {
-        const resp = await fetch('/api/data', { cache: 'no-store' });
-        if (resp.ok) {
-          const serverData = await resp.json();
-          if (serverData && Array.isArray(serverData.tx99_resellers) && serverData.tx99_resellers.length > 0) {
-            storedResellers = serverData.tx99_resellers;
-            serverSyncOk = true;
-            // Keep localStorage in sync for offline fallback
-            localStorage.setItem('tx99_resellers', JSON.stringify(storedResellers));
-            // Sync admin credentials from server too
-            if (serverData.hyperx_admin_user) localStorage.setItem('hyperx_admin_user', serverData.hyperx_admin_user);
-            if (serverData.hyperx_admin_pass) localStorage.setItem('hyperx_admin_pass', serverData.hyperx_admin_pass);
-          }
-        }
-      } catch (fetchErr) {
-        // Server not reachable (e.g. Vercel static deploy) — fall back to localStorage
-      }
-
-      // Offline fallback: use localStorage if server fetch failed
       if (!storedResellers) {
-        storedResellers = JSON.parse(localStorage.getItem('tx99_resellers'));
+        try {
+          storedResellers = JSON.parse(localStorage.getItem('tx99_resellers'));
+        } catch (_) {}
       }
 
-      // Last resort: hardcoded seed resellers so login page never breaks on any device.
-      // This list must contain ALL real accounts — it is the final offline fallback
-      // when /api/data serverless function is unreachable.
+      // Offline seed fallback containing real accounts
       if (!storedResellers || !Array.isArray(storedResellers) || storedResellers.length === 0) {
         storedResellers = [
           { id: '17909518904974', username: 'beta123', password: 'beta1230', email: 'beta123@gmail.com', balance: 999, createdKeys: 1, status: 'Active', panels: ['all'], totpSecret: 'YLOG2E3ANGTE4B23', twofa_setup_done: false },
@@ -1883,12 +1899,13 @@
       }
 
       const matchedReseller = storedResellers.find(r => 
-        r.username.toLowerCase() === enteredUser.toLowerCase() || 
+        (r.username && r.username.toLowerCase() === enteredUser.toLowerCase()) || 
         (r.email && r.email.toLowerCase() === enteredUser.toLowerCase())
       );
 
       if (matchedReseller) {
         if (enteredPass !== matchedReseller.password) {
+          resetBtn();
           if (errBox) {
             errBox.style.display = 'block';
             errBox.innerHTML = 'Incorrect password! Please check your credentials.';
@@ -1897,6 +1914,7 @@
         }
 
         if (matchedReseller.status === 'Suspended') {
+          resetBtn();
           if (errBox) {
             errBox.style.display = 'block';
             errBox.innerHTML = 'Account Suspended! Please contact your administrator.';
@@ -1904,7 +1922,8 @@
           return;
         }
 
-        // Reseller Password Verified → Prompt Google Authenticator 2FA!
+        // Reseller Password Verified → Prompt Google Authenticator 2FA
+        resetBtn();
         const rememberCheckbox = document.getElementById('remember_me');
         pendingResellerAuth = {
           reseller: matchedReseller,
@@ -1917,16 +1936,12 @@
         const twofaErr = document.getElementById('twofa-error-msg');
         if (twofaErr) twofaErr.style.display = 'none';
 
-        // Ensure secret exists
         if (!matchedReseller.totpSecret) {
           matchedReseller.totpSecret = generateTOTPSecret();
           storedResellers = storedResellers.map(r => r.id === matchedReseller.id ? matchedReseller : r);
           localStorage.setItem('tx99_resellers', JSON.stringify(storedResellers));
         }
 
-        // Check if reseller has done 2FA setup before
-        // Use reseller.twofa_setup_done (stored in data.json, cross-device) OR
-        // local flag as fallback for backward compatibility
         const setupDoneKey = 'hyperx_2fa_setup_done_' + matchedReseller.id;
         const isSetupDone = matchedReseller.twofa_setup_done === true || 
                             localStorage.getItem(setupDoneKey) === 'true';
@@ -1935,10 +1950,8 @@
         if (twofaForm) twofaForm.style.display = 'block';
 
         if (!isSetupDone) {
-          // First time: show QR setup step
           showTOTPSetupStep();
         } else {
-          // Already set up: go straight to verify
           showTOTPVerifyStep();
         }
 
@@ -1947,6 +1960,7 @@
       }
 
       // Invalid Credentials
+      resetBtn();
       if (errBox) {
         errBox.style.display = 'block';
         errBox.innerHTML = 'Invalid username or password. Please try again.';
@@ -2148,7 +2162,7 @@
       totpCountdownTimer = setInterval(tick, 1000);
     }
 
-    function handle2FASubmit(e) {
+    async function handle2FASubmit(e) {
       if (e) e.preventDefault();
       if (!pendingResellerAuth) { cancel2FA(); return; }
 
