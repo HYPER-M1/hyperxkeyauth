@@ -1517,59 +1517,62 @@
         <!-- Error Alert -->
         <div id="twofa-error-msg" class="error-alert-box" style="margin-bottom: 14px; border-radius:10px; font-size:12px;"></div>
 
-        <!-- ── STEP 1: First Time QR Setup ── -->
+        <!-- ── STEP 1: First Time QR Setup (Design matched to Image 2) ── -->
         <div id="twofa-setup-step" style="display:none;">
 
           <!-- Header -->
-          <div class="twofa-header">
-            <div class="twofa-icon-badge" style="background:radial-gradient(circle at 40% 35%, rgba(16,185,129,0.28), rgba(13,17,23,0.95));border-color:rgba(16,185,129,0.6);box-shadow:0 0 0 6px rgba(16,185,129,0.06),0 0 32px rgba(16,185,129,0.35),inset 0 1px 0 rgba(255,255,255,0.08);">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
-                <line x1="12" y1="18" x2="12.01" y2="18"/>
-              </svg>
-            </div>
-            <h2 class="twofa-title" style="background:linear-gradient(135deg,#10b981,#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">SETUP AUTHENTICATOR</h2>
-            <p class="twofa-subtitle">Scan the QR code below with your<br><strong style="color:#10b981;font-weight:700;">Google Authenticator</strong> app</p>
+          <div style="text-align: center; margin-bottom: 22px;">
+            <h2 style="font-size: 19px; font-weight: 800; letter-spacing: 0.04em; color: #ffffff; text-transform: uppercase; margin: 0 0 8px 0; font-family: 'Space Grotesk', system-ui, sans-serif;">
+              SETUP <span style="color: #ea2b35;">AUTHENTICATOR</span>
+            </h2>
+            <p style="font-size: 12.5px; color: #94a3b8; line-height: 1.5; margin: 0;">
+              Scan the QR code with your<br>
+              <strong style="color: #ffffff; font-weight: 700;">Google Authenticator</strong> app.
+            </p>
           </div>
 
-          <!-- Numbered steps -->
-          <div style="display:flex;gap:8px;margin-bottom:16px;">
-            <div style="flex:1;background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.15);border-radius:10px;padding:9px 10px;text-align:center;">
-              <div style="font-size:11px;font-weight:800;color:#10b981;margin-bottom:2px;">① OPEN APP</div>
-              <div style="font-size:10px;color:#475569;">Google Authenticator</div>
-            </div>
-            <div style="flex:1;background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.15);border-radius:10px;padding:9px 10px;text-align:center;">
-              <div style="font-size:11px;font-weight:800;color:#10b981;margin-bottom:2px;">② ADD ACCOUNT</div>
-              <div style="font-size:10px;color:#475569;">Tap + → Scan QR</div>
-            </div>
-            <div style="flex:1;background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.15);border-radius:10px;padding:9px 10px;text-align:center;">
-              <div style="font-size:11px;font-weight:800;color:#10b981;margin-bottom:2px;">③ ENTER CODE</div>
-              <div style="font-size:10px;color:#475569;">6-digit OTP</div>
+          <!-- Red Glowing QR Code Frame -->
+          <div style="display: flex; justify-content: center; margin-bottom: 22px;">
+            <div style="position: relative; width: 196px; height: 196px; padding: 10px; background: #0a0d13; border: 1.5px solid rgba(234, 43, 53, 0.75); border-radius: 18px; box-shadow: 0 0 28px rgba(234, 43, 53, 0.35), inset 0 0 14px rgba(234, 43, 53, 0.12); display: flex; align-items: center; justify-content: center; box-sizing: border-box;">
+              <img id="twofa-qr-img" src="" alt="QR Code" width="176" height="176" style="display: block; width: 100%; height: 100%; border-radius: 10px; background: #ffffff; object-fit: contain;">
             </div>
           </div>
 
-          <!-- QR Code -->
-          <div class="twofa-qr-wrapper">
-            <div class="twofa-qr-frame">
-              <img id="twofa-qr-img" src="" alt="QR Code" width="160" height="160" style="display:block;border-radius:4px;">
+          <!-- Manual Entry Key Section -->
+          <div style="margin-bottom: 18px;">
+            <div style="font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: #64748b; text-transform: uppercase; margin-bottom: 7px; padding-left: 2px;">
+              MANUAL ENTRY KEY
             </div>
-
-            <!-- Secret Key Card -->
-            <div class="twofa-secret-card" style="width:100%;box-sizing:border-box;margin-top:12px;">
-              <div class="twofa-secret-label">🔑 Manual Entry Key</div>
-              <div class="twofa-secret-value" id="twofa-secret-display">ABCD EFGH IJKL MNOP</div>
+            <div style="display: flex; align-items: center; background: #090c12; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 3px 4px 3px 14px; box-sizing: border-box;">
+              <div id="twofa-secret-display" style="flex: 1; font-family: 'JetBrains Mono', 'SF Mono', monospace; font-size: 13.5px; font-weight: 600; color: #ffffff; letter-spacing: 0.16em; user-select: all; overflow-x: auto; white-space: nowrap; padding: 8px 0;">
+                ABCD EFGH IJKL MNOP
+              </div>
+              <button type="button" id="btn-copy-totp-secret" onclick="copyTOTPSecret()" title="Copy Key" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.07); color: #94a3b8; border-radius: 7px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; flex-shrink: 0; margin-left: 6px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+              </button>
             </div>
           </div>
 
-          <!-- Action Buttons -->
-          <button type="button" class="btn-scan-done" onclick="showTOTPVerifyStep()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-            I'VE SCANNED — ENTER CODE NOW
+          <!-- Primary Red Action Button -->
+          <button type="button" class="btn-scan-done" onclick="showTOTPVerifyStep()" style="width: 100%; padding: 13px 16px; background: #ea2b35; border: none; border-radius: 9px; color: #ffffff; font-size: 12.5px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 18px rgba(234, 43, 53, 0.38); transition: all 0.2s; margin-bottom: 9px;">
+            <span>I'VE SCANNED — ENTER CODE NOW</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
           </button>
-          <button type="button" class="btn-scan-done" onclick="skip2FAAndEnter()" style="margin-top:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.18);color:#e2e8f0;">
-            ⚡ ENTER DASHBOARD DIRECTLY
+
+          <!-- Back to Login Button -->
+          <button type="button" class="btn-back-login" onclick="cancel2FA()" style="width: 100%; padding: 11px 16px; background: #0c0f16; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 9px; color: #94a3b8; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s;">
+            ← Back to Login
           </button>
-          <button type="button" class="btn-back-login" onclick="cancel2FA()">← Back to Login</button>
+
+          <!-- Subtle Direct Dashboard Option -->
+          <div style="text-align: center; margin-top: 10px;">
+            <button type="button" onclick="skip2FAAndEnter()" style="background: none; border: none; color: #475569; font-size: 11px; cursor: pointer; padding: 4px 8px; text-decoration: underline; text-underline-offset: 3px; transition: color 0.2s;" onmouseover="this.style.color='#94a3b8'" onmouseout="this.style.color='#475569'">
+              ⚡ Or Enter Dashboard Directly
+            </button>
+          </div>
         </div>
 
         <!-- ── STEP 2: TOTP Verify Screen ── -->
@@ -2156,7 +2159,7 @@
       const iss = encodeURIComponent(issuer);
       const sec = encodeURIComponent(secret.replace(/\s/g, ''));
       const otpauth = `otpauth://totp/${label}?secret=${sec}&issuer=${iss}&algorithm=SHA1&digits=6&period=30`;
-      return `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(otpauth)}`;
+      return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=6&data=${encodeURIComponent(otpauth)}`;
     }
 
     function showTOTPSetupStep() {
@@ -2375,6 +2378,40 @@
       sessionStorage.setItem('hyperx_user_role', 'reseller');
       sessionStorage.setItem('hyperx_current_reseller', JSON.stringify(pendingResellerAuth.reseller));
       window.location.href = 'dashboard.html';
+    }
+
+    function copyTOTPSecret() {
+      const displayEl = document.getElementById('twofa-secret-display');
+      const textToCopy = displayEl ? displayEl.textContent.trim().replace(/\s+/g, ' ') : '';
+      if (!textToCopy) return;
+
+      const onCopySuccess = () => {
+        const btn = document.getElementById('btn-copy-totp-secret');
+        if (btn) {
+          btn.innerHTML = '<span style="color:#10b981;font-weight:700;">✓</span>';
+          setTimeout(() => {
+            btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
+          }, 1800);
+        }
+        showToast('Secret Copied', '2FA manual key copied to clipboard!', '📋');
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(textToCopy).then(onCopySuccess).catch(() => fallbackCopy(textToCopy, onCopySuccess));
+      } else {
+        fallbackCopy(textToCopy, onCopySuccess);
+      }
+
+      function fallbackCopy(text, cb) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); if (cb) cb(); } catch (_) {}
+        document.body.removeChild(ta);
+      }
     }
 
     function setupOTPInputs() {
