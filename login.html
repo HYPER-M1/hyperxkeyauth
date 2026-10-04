@@ -1633,28 +1633,9 @@
             </div>
           </div>
 
-          <!-- Direct 6-Digit Code Input Right on Setup Step -->
-          <div style="margin-bottom: 18px;">
-            <div style="font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: #64748b; text-transform: uppercase; margin-bottom: 8px; text-align: center;">
-              ENTER 6-DIGIT CODE FROM AUTHENTICATOR
-            </div>
-            <input 
-              type="text" 
-              inputmode="numeric" 
-              pattern="[0-9]*" 
-              maxlength="6" 
-              id="twofa-single-code-setup" 
-              class="twofa-unified-input"
-              autocomplete="one-time-code" 
-              placeholder="000000"
-              spellcheck="false"
-              autocorrect="off"
-            >
-          </div>
-
-          <!-- Submit Button -->
-          <button type="submit" id="btn-submit-2fa-setup" class="btn-twofa-continue" style="margin-bottom: 14px;">
-            Verify &amp; Activate Account
+          <!-- Continue to Verification Button -->
+          <button type="button" class="btn-twofa-continue" onclick="showTOTPVerifyStep()" style="margin-bottom: 14px;">
+            Continue to Verification &rarr;
           </button>
 
           <!-- Cancel / Back to Login Button -->
@@ -2247,12 +2228,6 @@
         const formatted = secret.replace(/\s/g, '').match(/.{1,4}/g).join(' ');
         secretDisplay.textContent = formatted;
       }
-
-      const setupInput = document.getElementById('twofa-single-code-setup');
-      if (setupInput) {
-        setupInput.value = '';
-        setTimeout(() => setupInput.focus(), 80);
-      }
     }
 
     function showTOTPVerifyStep() {
@@ -2278,15 +2253,11 @@
       if (!pendingResellerAuth) { cancel2FA(); return; }
 
       const twofaErr = document.getElementById('twofa-error-msg');
-      const setupDiv = document.getElementById('twofa-setup-step');
-      const isSetupVisible = setupDiv && setupDiv.style.display !== 'none';
-      const setupInput = document.getElementById('twofa-single-code-setup');
-      const verifyInput = document.getElementById('twofa-single-code');
-      const activeInput = isSetupVisible ? (setupInput || verifyInput) : (verifyInput || setupInput);
+      const singleInput = document.getElementById('twofa-single-code');
 
       let enteredCode = '';
-      if (activeInput) {
-        enteredCode = activeInput.value.replace(/[^0-9]/g, '').trim();
+      if (singleInput) {
+        enteredCode = singleInput.value.replace(/[^0-9]/g, '').trim();
       }
 
       if (enteredCode.length !== 6) {
@@ -2294,7 +2265,7 @@
           twofaErr.style.display = 'block';
           twofaErr.innerHTML = 'Please enter all 6 digits from your Google Authenticator app.';
         }
-        if (activeInput) activeInput.focus();
+        if (singleInput) singleInput.focus();
         return;
       }
 
@@ -2321,12 +2292,12 @@
           twofaErr.style.display = 'block';
           twofaErr.innerHTML = '❌ Invalid code! Enter the 6-digit code currently shown in Google Authenticator.';
         }
-        if (activeInput) {
-          activeInput.classList.remove('shake-anim');
-          void activeInput.offsetWidth;
-          activeInput.classList.add('shake-anim');
-          activeInput.value = '';
-          activeInput.focus();
+        if (singleInput) {
+          singleInput.classList.remove('shake-anim');
+          void singleInput.offsetWidth;
+          singleInput.classList.add('shake-anim');
+          singleInput.value = '';
+          singleInput.focus();
         }
         return;
       }
@@ -2442,32 +2413,30 @@
     }
 
     function setupOTPInputs() {
-      ['twofa-single-code', 'twofa-single-code-setup'].forEach(inputId => {
-        const input = document.getElementById(inputId);
-        if (input) {
-          input.addEventListener('input', (e) => {
-            const val = e.target.value.replace(/[^0-9]/g, '').slice(0, 6);
-            e.target.value = val;
-            if (val.length === 6) {
-              handle2FASubmit();
-            }
-          });
-          input.addEventListener('paste', (e) => {
+      const input = document.getElementById('twofa-single-code');
+      if (input) {
+        input.addEventListener('input', (e) => {
+          const val = e.target.value.replace(/[^0-9]/g, '').slice(0, 6);
+          e.target.value = val;
+          if (val.length === 6) {
+            handle2FASubmit();
+          }
+        });
+        input.addEventListener('paste', (e) => {
+          e.preventDefault();
+          const pasteData = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, '').slice(0, 6);
+          input.value = pasteData;
+          if (pasteData.length === 6) {
+            handle2FASubmit();
+          }
+        });
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
             e.preventDefault();
-            const pasteData = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, '').slice(0, 6);
-            input.value = pasteData;
-            if (pasteData.length === 6) {
-              handle2FASubmit();
-            }
-          });
-          input.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-              e.preventDefault();
-              handle2FASubmit();
-            }
-          });
-        }
-      });
+            handle2FASubmit();
+          }
+        });
+      }
     }
 
     function focusLoginForm() {
