@@ -1,6 +1,13 @@
 {
   "version": 2,
+  "functions": {
+    "api/data.js": {
+      "runtime": "nodejs18.x"
+    }
+  },
   "routes": [
+    { "src": "^/api/data$", "dest": "/api/data.js" },
+    { "src": "^/api/data/$", "dest": "/api/data.js" },
     { "src": "^/$", "dest": "/login.html" },
     { "src": "^/login$", "dest": "/login.html" },
     { "src": "^/dashboard$", "dest": "/dashboard.html" },
