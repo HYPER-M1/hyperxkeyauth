@@ -88,6 +88,20 @@
         "all"
       ],
       "totpSecret": "EJUCM3O6VTPJUANJ"
+    },
+    {
+      "id": "1791101193436",
+      "username": "test2",
+      "password": "test123",
+      "email": "test2@reseller.local",
+      "balance": 100,
+      "createdKeys": 0,
+      "status": "Active",
+      "panels": [
+        "all"
+      ],
+      "totpSecret": "PUTXJXJBKM52LAOD",
+      "twofa_setup_done": false
     }
   ]
 }
