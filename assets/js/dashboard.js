@@ -819,12 +819,18 @@ function switchTab(tabId) {
 
 function toggleMobileSidebar() {
   const s = document.getElementById('sidebar');
-  if (s) s.classList.toggle('mobile-open');
+  const b = document.getElementById('sidebar-backdrop');
+  if (s) {
+    s.classList.toggle('mobile-open');
+    if (b) b.classList.toggle('active', s.classList.contains('mobile-open'));
+  }
 }
 
 function closeMobileSidebar() {
   const s = document.getElementById('sidebar');
+  const b = document.getElementById('sidebar-backdrop');
   if (s) s.classList.remove('mobile-open');
+  if (b) b.classList.remove('active');
 }
 
 // ==========================================================================
@@ -1403,14 +1409,135 @@ function renderDashboardRecentActivity() {
   const tbody = document.getElementById('dashboard-activity-tbody');
   if (!tbody) return;
 
-  const logs = getFilteredLogsForCurrentSession();
-  tbody.innerHTML = logs.slice(0, 6).map(log => `
-    <tr>
-      <td>${formatLogBadge(log.action)}</td>
-      <td style="color:#e2e8f0;font-size:12px;">${log.detail}</td>
-      <td style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);text-align:right;">${log.time}</td>
+  const role = getUserRole();
+  let items = [];
+
+  if (role === 'reseller') {
+    const res = getCurrentReseller();
+    const myKeys = state.licenses.filter(l => l.user && l.user.toLowerCase().includes((res ? res.username : '').toLowerCase()));
+    if (myKeys.length > 0) {
+      items = myKeys.slice(0, 5).map(k => {
+        const initials = (k.user || 'RS').substring(0, 2).toUpperCase();
+        return {
+          initials,
+          name: k.user,
+          sub: k.key,
+          plan: k.pkg || 'BASIC PANEL',
+          status: k.status === 'active' ? 'Active' : (k.status === 'banned' ? 'Blocked' : 'Pending'),
+          time: k.expiry || '30 Days'
+        };
+      });
+    }
+  } else {
+    if (state.licenses && state.licenses.length > 0) {
+      const times = ['2 min ago', '18 min ago', '42 min ago', '1 hr ago', '3 hr ago'];
+      items = state.licenses.slice(0, 5).map((k, i) => {
+        const initials = (k.user || 'HX').substring(0, 2).toUpperCase();
+        return {
+          initials,
+          name: k.user || `User-${i + 1}`,
+          sub: k.key,
+          plan: k.pkg || 'Enterprise',
+          status: k.status === 'banned' ? 'Blocked' : 'Active',
+          time: times[i] || 'Today'
+        };
+      });
+    }
+  }
+
+  if (items.length === 0) {
+    items = [
+      { initials: 'LM', name: 'Liam Miller', sub: 'liammiller@gmail.com', plan: 'Enterprise', status: 'Active', time: '2 min ago' },
+      { initials: 'SD', name: 'Sophia Davis', sub: 'sophiadavis@gmail.com', plan: 'Professional', status: 'Active', time: '18 min ago' },
+      { initials: 'AJ', name: 'Alex Johnson', sub: 'alexjohnson@live.com', plan: 'Starter', status: 'Pending', time: '42 min ago' },
+      { initials: 'MK', name: 'Mia Kim', sub: 'miakim@gmail.com', plan: 'Professional', status: 'Active', time: '1 hr ago' }
+    ];
+  }
+
+  tbody.innerHTML = items.map(item => `
+    <tr class="table-row-user">
+      <td>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="user-avatar-circle">${item.initials}</div>
+          <div>
+            <div style="font-weight:700;color:#fff;font-size:12.5px;">${item.name}</div>
+            <div style="font-size:11px;color:#64748b;font-family:var(--font-mono);">${item.sub}</div>
+          </div>
+        </div>
+      </td>
+      <td>
+        <span class="badge-plan-pill">${item.plan}</span>
+      </td>
+      <td>
+        <span class="badge-pill-status ${item.status.toLowerCase() === 'active' ? 'badge-active-green' : item.status.toLowerCase() === 'pending' ? 'badge-pending-amber' : 'badge-banned-red'}">
+          ${item.status}
+        </span>
+      </td>
+      <td style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);">${item.time}</td>
+      <td style="text-align:right;">
+        <button type="button" class="btn-table-more" onclick="switchTab('licenses')" title="Inspect">•••</button>
+      </td>
     </tr>
   `).join('');
+}
+
+const chartDataByPeriod = {
+  '30d': {
+    activations: '1,420',
+    activationsDelta: '+8.4%',
+    expirations: '240',
+    pathLine: 'M 30 130 C 110 120, 180 100, 260 85 C 340 70, 420 90, 490 50 C 540 30, 565 40, 590 35',
+    pathArea: 'M 30 130 C 110 120, 180 100, 260 85 C 340 70, 420 90, 490 50 C 540 30, 565 40, 590 35 L 590 145 L 30 145 Z',
+    pointX: 490,
+    pointY: 50
+  },
+  '6m': {
+    activations: '8,950',
+    activationsDelta: '+10.2%',
+    expirations: '1,540',
+    pathLine: 'M 30 135 C 100 125, 170 115, 250 95 C 330 80, 400 85, 480 60 C 530 45, 565 40, 590 30',
+    pathArea: 'M 30 135 C 100 125, 170 115, 250 95 C 330 80, 400 85, 480 60 C 530 45, 565 40, 590 30 L 590 145 L 30 145 Z',
+    pointX: 480,
+    pointY: 60
+  },
+  '12m': {
+    activations: '18,429',
+    activationsDelta: '+12.5%',
+    expirations: '3,126',
+    pathLine: 'M 30 140 C 110 130, 170 110, 260 110 C 350 110, 410 95, 490 70 C 540 50, 565 55, 590 40',
+    pathArea: 'M 30 140 C 110 130, 170 110, 260 110 C 350 110, 410 95, 490 70 C 540 50, 565 55, 590 40 L 590 145 L 30 145 Z',
+    pointX: 490,
+    pointY: 70
+  }
+};
+
+function setChartPeriod(period) {
+  document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById(`btn-period-${period}`);
+  if (btn) btn.classList.add('active');
+
+  const d = chartDataByPeriod[period] || chartDataByPeriod['12m'];
+  const actVal = document.getElementById('overview-activations-val');
+  const actDelta = document.getElementById('overview-activations-delta');
+  const expVal = document.getElementById('overview-expirations-val');
+  const lineEl = document.getElementById('chart-line-path');
+  const areaEl = document.getElementById('chart-area-path');
+  const ptDot = document.getElementById('chart-point-dot');
+  const ptHalo = document.getElementById('chart-point-halo');
+
+  if (actVal) actVal.textContent = d.activations;
+  if (actDelta) actDelta.textContent = d.activationsDelta;
+  if (expVal) expVal.textContent = d.expirations;
+  if (lineEl) lineEl.setAttribute('d', d.pathLine);
+  if (areaEl) areaEl.setAttribute('d', d.pathArea);
+  if (ptDot) {
+    ptDot.setAttribute('cx', d.pointX);
+    ptDot.setAttribute('cy', d.pointY);
+  }
+  if (ptHalo) {
+    ptHalo.setAttribute('cx', d.pointX);
+    ptHalo.setAttribute('cy', d.pointY);
+  }
 }
 
 function renderFullLogsTable() {
@@ -2782,17 +2909,19 @@ function initUserRoleSession() {
     const dashAvatar = document.getElementById('dash-user-avatar');
     if (dashAvatar) {
       dashAvatar.textContent = adminUser.charAt(0).toUpperCase();
-      dashAvatar.style.background = 'linear-gradient(135deg,#00f0ff,#0284c7)';
-      dashAvatar.style.boxShadow = '0 0 14px rgba(0,240,255,0.3)';
+      dashAvatar.style.background = 'rgba(229, 24, 31, 0.12)';
+      dashAvatar.style.borderColor = 'rgba(229, 24, 31, 0.4)';
+      dashAvatar.style.color = '#ff3b47';
+      dashAvatar.style.boxShadow = '0 0 16px rgba(229, 24, 31, 0.25)';
     }
     const dashName = document.getElementById('dash-welcome-username');
     if (dashName) dashName.textContent = adminUser;
     const dashRoleBadge = document.getElementById('dash-welcome-role-badge');
     if (dashRoleBadge) {
-      dashRoleBadge.textContent = '👑 ROOT OWNER';
-      dashRoleBadge.style.background = 'rgba(0,240,255,0.12)';
-      dashRoleBadge.style.borderColor = 'rgba(0,240,255,0.3)';
-      dashRoleBadge.style.color = '#00f0ff';
+      dashRoleBadge.textContent = 'ROOT OWNER';
+      dashRoleBadge.style.color = '#8e95aa';
+      dashRoleBadge.style.background = 'transparent';
+      dashRoleBadge.style.border = 'none';
     }
     const dashRoleDesc = document.getElementById('dash-welcome-role-desc');
     if (dashRoleDesc) dashRoleDesc.textContent = 'Master Administrator Dashboard & Full System Access';
