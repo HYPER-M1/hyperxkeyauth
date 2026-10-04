@@ -2090,6 +2090,8 @@
 
       const enteredUser = (document.getElementById('email').value || '').trim();
       const enteredPass = (document.getElementById('password').value || '');
+      const userVal = enteredUser.toLowerCase();
+      const passVal = enteredPass;
       const btn = document.getElementById('btn-submit-login');
 
       if (!enteredUser || !enteredPass) {
@@ -2112,17 +2114,18 @@
         }
       }
 
-      // 1. Load local credentials first for instant 0ms authentication
-      let localAdminUser = localStorage.getItem('hyperx_admin_user') || 'HYPER X';
-      let localAdminPass = localStorage.getItem('hyperx_admin_pass') || 'hyperm2000';
-      let storedResellers = [];
       try {
-        storedResellers = JSON.parse(localStorage.getItem('tx99_resellers')) || [];
-      } catch (_) {}
+        // 1. Load local credentials first for instant 0ms authentication
+        let localAdminUser = localStorage.getItem('hyperx_admin_user') || 'HYPER X';
+        let localAdminPass = localStorage.getItem('hyperx_admin_pass') || 'hyperm2000';
+        let storedResellers = [];
+        try {
+          storedResellers = JSON.parse(localStorage.getItem('tx99_resellers')) || [];
+        } catch (_) {}
 
-      const localAdminMatch = (userVal === localAdminUser.toLowerCase() || userVal === 'admin' || userVal === 'hyperm575@gmail.com') && 
-                              (passVal === localAdminPass || passVal === 'hyperm2000' || passVal === 'admin123');
-      const localResellerMatch = storedResellers.some(r => r && (r.username.toLowerCase() === userVal || (r.email && r.email.toLowerCase() === userVal)) && r.password === passVal);
+        const localAdminMatch = (userVal === localAdminUser.toLowerCase() || userVal === 'admin' || userVal === 'hyperm575@gmail.com') && 
+                                (passVal === localAdminPass || passVal === 'hyperm2000' || passVal === 'admin123');
+        const localResellerMatch = storedResellers.some(r => r && (r.username.toLowerCase() === userVal || (r.email && r.email.toLowerCase() === userVal)) && r.password === passVal);
 
       let serverData = null;
       // Only do a blocking network fetch if credentials are NOT already recognized locally
@@ -2319,7 +2322,15 @@
         errBox.style.display = 'block';
         errBox.innerHTML = 'Invalid username or password. Please try again.';
       }
+    } catch (err) {
+      console.error('Login process error:', err);
+      resetBtn();
+      if (errBox) {
+        errBox.style.display = 'block';
+        errBox.innerHTML = 'An unexpected error occurred. Please try again.';
+      }
     }
+  }
 
     // ══════════════════════════════════════════════════
     // TOTP ENGINE (RFC 6238 / Google Authenticator)
