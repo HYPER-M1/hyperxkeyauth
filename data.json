@@ -47,6 +47,20 @@
       ],
       "totpSecret": "MFRGGZDFMZTWQ2LK",
       "twofa_setup_done": true
+    },
+    {
+      "id": "1791108883957",
+      "username": "madhukar",
+      "password": "madhukarbeta",
+      "email": "madhukar@reseller.local",
+      "balance": 999,
+      "createdKeys": 0,
+      "status": "Active",
+      "panels": [
+        "all"
+      ],
+      "totpSecret": "Z5N73VUTBHFC7MJF",
+      "twofa_setup_done": false
     }
   ]
 }
