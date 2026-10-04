@@ -75,6 +75,19 @@
       "totpSecret": "MFRGGZDFMZTWQ2LK",
       "status": "Active",
       "email": "viper.resell@yahoo.com"
+    },
+    {
+      "id": "1791100195301",
+      "username": "text1",
+      "password": "test123",
+      "email": "text1@reseller.local",
+      "balance": 100,
+      "createdKeys": 0,
+      "status": "Active",
+      "panels": [
+        "all"
+      ],
+      "totpSecret": "EJUCM3O6VTPJUANJ"
     }
   ]
 }
