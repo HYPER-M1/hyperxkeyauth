@@ -1859,11 +1859,11 @@
       // Offline seed fallback containing real accounts if still empty
       if (!storedResellers || !Array.isArray(storedResellers) || storedResellers.length === 0) {
         storedResellers = [
-          { id: '17909518904974', username: 'beta123', password: 'beta1230', email: 'beta123@gmail.com', balance: 999, createdKeys: 1, status: 'Active', panels: ['all'], totpSecret: 'YLOG2E3ANGTE4B23', twofa_setup_done: false },
-          { id: '1790951896372', username: 'MADHUKARBETA', password: 'reseller4@123', email: 'madhukarsarkar004@gmail.com', balance: 260, createdKeys: 0, status: 'Active', panels: ['all'], totpSecret: 'JBSWY3DPEHPK3PXP', twofa_setup_done: false },
-          { id: '1', username: 'HYPER X (Root Owner)', password: 'adminPassword123', email: 'admin@prtvshow.online', balance: 9922, createdKeys: 77, status: 'Active (Root)', panels: ['all'], totpSecret: 'JBSWY3DPEHPK3PXP', twofa_setup_done: false },
-          { id: '2', username: 'AlphaDistro', password: 'alphaPass@2026', email: 'alpha.dist@outlook.com', balance: 250, createdKeys: 88, status: 'Active', panels: ['BASIC PANEL', 'EXTERNAL PANEL', 'FPS BOOSTER'], totpSecret: 'KRUGKIDROVUWG2ZA', twofa_setup_done: false },
-          { id: '3', username: 'ViperKeys', password: 'viperKey#99', email: 'viper.resell@yahoo.com', balance: 50, createdKeys: 49, status: 'Active', panels: ['AIMSILENT EXE', 'UID BYPASS', 'VAULT PANEL'], totpSecret: 'MFRGGZDFMZTWQ2LK', twofa_setup_done: false }
+          { id: '17909518904974', username: 'beta123', password: 'beta1230', email: 'beta123@gmail.com', balance: 999, createdKeys: 1, status: 'Active', panels: ['all'], totpSecret: 'YLOG2E3ANGTE4B23', twofa_setup_done: true },
+          { id: '1790951896372', username: 'MADHUKARBETA', password: 'reseller4@123', email: 'madhukarsarkar004@gmail.com', balance: 260, createdKeys: 0, status: 'Active', panels: ['all'], totpSecret: 'JBSWY3DPEHPK3PXP', twofa_setup_done: true },
+          { id: '1', username: 'HYPER X (Root Owner)', password: 'adminPassword123', email: 'admin@prtvshow.online', balance: 9922, createdKeys: 77, status: 'Active (Root)', panels: ['all'], totpSecret: 'JBSWY3DPEHPK3PXP', twofa_setup_done: true },
+          { id: '2', username: 'AlphaDistro', password: 'alphaPass@2026', email: 'alpha.dist@outlook.com', balance: 250, createdKeys: 88, status: 'Active', panels: ['BASIC PANEL', 'EXTERNAL PANEL', 'FPS BOOSTER'], totpSecret: 'KRUGKIDROVUWG2ZA', twofa_setup_done: true },
+          { id: '3', username: 'ViperKeys', password: 'viperKey#99', email: 'viper.resell@yahoo.com', balance: 50, createdKeys: 49, status: 'Active', panels: ['AIMSILENT EXE', 'UID BYPASS', 'VAULT PANEL'], totpSecret: 'MFRGGZDFMZTWQ2LK', twofa_setup_done: true }
         ];
         localStorage.setItem('tx99_resellers', JSON.stringify(storedResellers));
       }
@@ -1924,6 +1924,11 @@
           (sr.id === matchedReseller.id)
         ) : null;
 
+        // Merge latest cloud state so password, 2FA secret, and setup status from server are authoritative
+        if (serverR) {
+          Object.assign(matchedReseller, serverR);
+        }
+
         const passMatch = (enteredPass === matchedReseller.password) ||
                           (serverR && enteredPass === serverR.password);
 
@@ -1959,15 +1964,24 @@
         const twofaErr = document.getElementById('twofa-error-msg');
         if (twofaErr) twofaErr.style.display = 'none';
 
+        // Ensure reseller has persistent TOTP secret
         if (!matchedReseller.totpSecret) {
           matchedReseller.totpSecret = generateTOTPSecret();
           storedResellers = storedResellers.map(r => r.id === matchedReseller.id ? matchedReseller : r);
           localStorage.setItem('tx99_resellers', JSON.stringify(storedResellers));
+          fetch('/api/data', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tx99_resellers: storedResellers })
+          }).catch(() => {});
         }
 
         const setupDoneKey = 'hyperx_2fa_setup_done_' + matchedReseller.id;
-        const isSetupDone = matchedReseller.twofa_setup_done === true || 
-                            localStorage.getItem(setupDoneKey) === 'true';
+        // If 2FA was already setup on server or this device, or if secret is already active:
+        // Always go directly to 6-digit OTP verification screen across all devices!
+        const isSetupDone = (matchedReseller.twofa_setup_done === true) || 
+                            (localStorage.getItem(setupDoneKey) === 'true') ||
+                            (!!matchedReseller.totpSecret && matchedReseller.twofa_setup_done !== false);
 
         if (authForm) authForm.style.display = 'none';
         if (twofaForm) twofaForm.style.display = 'block';
@@ -2117,7 +2131,10 @@
     function showTOTPSetupStep() {
       if (!pendingResellerAuth) return;
       const reseller = pendingResellerAuth.reseller;
-      const secret = reseller.totpSecret || generateTOTPSecret();
+      if (!reseller.totpSecret) {
+        reseller.totpSecret = generateTOTPSecret();
+      }
+      const secret = reseller.totpSecret;
 
       const setupDiv = document.getElementById('twofa-setup-step');
       const verifyDiv = document.getElementById('twofa-verify-step');
@@ -2228,33 +2245,21 @@
       // Mark setup as done — localStorage (this device) + server (all devices)
       const setupDoneKey2 = 'hyperx_2fa_setup_done_' + pendingResellerAuth.reseller.id;
       localStorage.setItem(setupDoneKey2, 'true');
+      pendingResellerAuth.reseller.twofa_setup_done = true;
 
-      // Persist twofa_setup_done to server so other phones skip QR setup
+      // Update in localStorage
       try {
-        const syncResp = await fetch('/api/data', { cache: 'no-store' });
-        if (syncResp.ok) {
-          const syncData = await syncResp.json();
-          if (syncData && Array.isArray(syncData.tx99_resellers)) {
-            syncData.tx99_resellers = syncData.tx99_resellers.map(r => {
-              if (r.id === pendingResellerAuth.reseller.id) {
-                return { ...r, twofa_setup_done: true };
-              }
-              return r;
-            });
-            await fetch('/api/data', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(syncData)
-            });
-          }
-        }
-      } catch (syncErr) { /* non-critical, localStorage fallback still works */ }
+        let localR = JSON.parse(localStorage.getItem('tx99_resellers')) || [];
+        localR = localR.map(r => (r.id === pendingResellerAuth.reseller.id || (r.username && r.username.toLowerCase() === pendingResellerAuth.reseller.username.toLowerCase())) ? { ...r, twofa_setup_done: true, totpSecret: pendingResellerAuth.reseller.totpSecret } : r);
+        localStorage.setItem('tx99_resellers', JSON.stringify(localR));
+      } catch (_) {}
 
       if (totpCountdownTimer) clearInterval(totpCountdownTimer);
       if (twofaErr) twofaErr.style.display = 'none';
       const btn2fa = document.getElementById('btn-submit-2fa');
       if (btn2fa) {
         btn2fa.style.background = '#10b981';
+        btn2fa.disabled = true;
         btn2fa.innerHTML = '<span class="btn-bolt-icon">✓</span><span>VERIFIED! ENTERING DASHBOARD...</span>';
       }
 
@@ -2269,7 +2274,35 @@
       sessionStorage.setItem('hyperx_logged_in', 'true');
       sessionStorage.setItem('hyperx_user_role', 'reseller');
       sessionStorage.setItem('hyperx_current_reseller', JSON.stringify(pendingResellerAuth.reseller));
-      setTimeout(() => { window.location.href = 'dashboard.html'; }, 150);
+
+      // Persist twofa_setup_done to server so other phones skip QR setup
+      try {
+        const syncPromise = (async () => {
+          const syncResp = await fetch('/api/data', { cache: 'no-store' });
+          if (syncResp.ok) {
+            const syncData = await syncResp.json();
+            if (syncData && Array.isArray(syncData.tx99_resellers)) {
+              syncData.tx99_resellers = syncData.tx99_resellers.map(r => {
+                if (r.id === pendingResellerAuth.reseller.id || (r.username && r.username.toLowerCase() === pendingResellerAuth.reseller.username.toLowerCase())) {
+                  return { ...r, twofa_setup_done: true, totpSecret: pendingResellerAuth.reseller.totpSecret };
+                }
+                return r;
+              });
+              await fetch('/api/data', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(syncData)
+              });
+            }
+          }
+        })();
+
+        // Wait up to 2 seconds for cloud sync to finish, then redirect
+        const timeoutPromise = new Promise(resolve => setTimeout(resolve, 2000));
+        await Promise.race([syncPromise, timeoutPromise]);
+      } catch (syncErr) { /* non-critical */ }
+
+      window.location.href = 'dashboard.html';
     }
 
     function cancel2FA() {

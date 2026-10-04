@@ -43,11 +43,11 @@ const SEED_LOGS = [
 ];
 
 const SEED_RESELLERS = [
-  { id: '17909518904974', username: 'beta123', password: 'beta1230', email: 'beta123@gmail.com', balance: 999, createdKeys: 1, status: 'Active', panels: ['all'], totpSecret: 'YLOG2E3ANGTE4B23', twofa_setup_done: false },
-  { id: '1790951896372', username: 'MADHUKARBETA', password: 'reseller4@123', email: 'madhukarsarkar004@gmail.com', balance: 260, createdKeys: 0, status: 'Active', panels: ['all'], totpSecret: 'JBSWY3DPEHPK3PXP', twofa_setup_done: false },
-  { id: '1', username: 'HYPER X (Root Owner)', password: 'adminPassword123', email: 'admin@prtvshow.online', balance: 9922, createdKeys: 77, status: 'Active (Root)', panels: ['all'] },
-  { id: '2', username: 'AlphaDistro', password: 'alphaPass@2026', email: 'alpha.dist@outlook.com', balance: 250, createdKeys: 88, status: 'Active', panels: ['BASIC PANEL', 'EXTERNAL PANEL', 'FPS BOOSTER'] },
-  { id: '3', username: 'ViperKeys', password: 'viperKey#99', email: 'viper.resell@yahoo.com', balance: 50, createdKeys: 49, status: 'Active', panels: ['AIMSILENT EXE', 'UID BYPASS', 'VAULT PANEL'] }
+  { id: '17909518904974', username: 'beta123', password: 'beta1230', email: 'beta123@gmail.com', balance: 999, createdKeys: 1, status: 'Active', panels: ['all'], totpSecret: 'YLOG2E3ANGTE4B23', twofa_setup_done: true },
+  { id: '1790951896372', username: 'MADHUKARBETA', password: 'reseller4@123', email: 'madhukarsarkar004@gmail.com', balance: 260, createdKeys: 0, status: 'Active', panels: ['all'], totpSecret: 'JBSWY3DPEHPK3PXP', twofa_setup_done: true },
+  { id: '1', username: 'HYPER X (Root Owner)', password: 'adminPassword123', email: 'admin@prtvshow.online', balance: 9922, createdKeys: 77, status: 'Active (Root)', panels: ['all'], totpSecret: 'JBSWY3DPEHPK3PXP', twofa_setup_done: true },
+  { id: '2', username: 'AlphaDistro', password: 'alphaPass@2026', email: 'alpha.dist@outlook.com', balance: 250, createdKeys: 88, status: 'Active', panels: ['BASIC PANEL', 'EXTERNAL PANEL', 'FPS BOOSTER'], totpSecret: 'KRUGKIDROVUWG2ZA', twofa_setup_done: true },
+  { id: '3', username: 'ViperKeys', password: 'viperKey#99', email: 'viper.resell@yahoo.com', balance: 50, createdKeys: 49, status: 'Active', panels: ['AIMSILENT EXE', 'UID BYPASS', 'VAULT PANEL'], totpSecret: 'MFRGGZDFMZTWQ2LK', twofa_setup_done: true }
 ];
 
 const SEED_TRANSFERS = [
