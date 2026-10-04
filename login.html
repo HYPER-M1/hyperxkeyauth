@@ -1794,7 +1794,7 @@
     async function handleLogin(e) {
       if (e) e.preventDefault();
       const errBox = document.getElementById('login-error-msg');
-      if (errBox) errBox.style.display = 'none';
+      if (errBox) { errBox.style.display = 'none'; errBox.innerHTML = ''; }
 
       const enteredUser = (document.getElementById('email').value || '').trim();
       const enteredPass = (document.getElementById('password').value || '');
@@ -1820,8 +1820,15 @@
         }
       }
 
+      // Load existing local credentials to preserve any password changes made by user
+      let localAdminUser = localStorage.getItem('hyperx_admin_user');
+      let localAdminPass = localStorage.getItem('hyperx_admin_pass');
+      let storedResellers = [];
+      try {
+        storedResellers = JSON.parse(localStorage.getItem('tx99_resellers')) || [];
+      } catch (_) {}
+
       // Fast single fetch from /api/data with timeout (works across all devices, mobile & PC)
-      let storedResellers = null;
       try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 3000);
@@ -1830,10 +1837,27 @@
         if (resp.ok) {
           const serverData = await resp.json();
           if (serverData) {
-            if (serverData.hyperx_admin_user) localStorage.setItem('hyperx_admin_user', serverData.hyperx_admin_user);
-            if (serverData.hyperx_admin_pass) localStorage.setItem('hyperx_admin_pass', serverData.hyperx_admin_pass);
+            // Only set default admin if user hasn't set/changed it in localStorage
+            if (serverData.hyperx_admin_user && !localAdminUser) {
+              localStorage.setItem('hyperx_admin_user', serverData.hyperx_admin_user);
+            }
+            if (serverData.hyperx_admin_pass && !localAdminPass) {
+              localStorage.setItem('hyperx_admin_pass', serverData.hyperx_admin_pass);
+            }
+            // Merge server resellers with local resellers WITHOUT overwriting changed passwords
             if (Array.isArray(serverData.tx99_resellers) && serverData.tx99_resellers.length > 0) {
-              storedResellers = serverData.tx99_resellers;
+              serverData.tx99_resellers.forEach(sr => {
+                const existing = storedResellers.find(lr => 
+                  lr.id === sr.id || (lr.username && lr.username.toLowerCase() === sr.username.toLowerCase())
+                );
+                if (!existing) {
+                  storedResellers.push(sr);
+                } else {
+                  // Keep user's custom password! Only fill missing fields
+                  if (!existing.password) existing.password = sr.password;
+                  if (!existing.totpSecret) existing.totpSecret = sr.totpSecret;
+                }
+              });
               localStorage.setItem('tx99_resellers', JSON.stringify(storedResellers));
             }
           }
