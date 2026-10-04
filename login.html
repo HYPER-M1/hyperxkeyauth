@@ -1406,27 +1406,84 @@
        ══════════════════════════════════════════════════════ */
     @media (max-width: 768px) {
       body {
-        background-image: radial-gradient(circle at 50% 30%, #151a28 0%, #06070a 100%) !important;
+        background-color: #06070a !important;
+        background-image: 
+          radial-gradient(ellipse at 50% 30%, rgba(4, 5, 7, 0.45) 0%, rgba(4, 5, 7, 0.85) 100%),
+          url('assets/images/hero_bg_cyber.png') !important;
+        background-repeat: no-repeat !important;
+        background-position: center top !important;
         background-attachment: scroll !important;
+        background-size: cover !important;
       }
+
       #hero-particles-canvas {
-        display: none !important;
+        display: block !important;
+        position: fixed !important;
+        inset: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        pointer-events: none !important;
+        z-index: 1 !important;
       }
 
       .top-header {
-        padding: 10px 16px;
+        padding: 8px 16px;
       }
       .nav-logo-img {
-        height: 26px;
+        height: 24px;
       }
       .nav-btn-login {
-        height: 32px;
-        padding: 0 14px;
-        font-size: 12px;
+        height: 30px;
+        padding: 0 12px;
+        font-size: 11.5px;
       }
 
-      /* Hide left branding section on phones so login card is immediately visible & centered */
+      /* Compact, glowing HYPERX KEYAUTH branding above card on mobile */
       .hero-left {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+        margin-bottom: 12px !important;
+        padding: 0 10px !important;
+        max-width: 100% !important;
+        width: 100% !important;
+      }
+
+      .hero-welcome-label {
+        font-size: 10px !important;
+        letter-spacing: 0.22em !important;
+        margin-bottom: 2px !important;
+        color: #e6182e !important;
+        font-weight: 700 !important;
+      }
+
+      .hero-main-title {
+        font-size: 28px !important;
+        line-height: 1.1 !important;
+        letter-spacing: 0.04em !important;
+        margin-bottom: 0 !important;
+        text-shadow: 0 0 20px rgba(230, 24, 46, 0.6) !important;
+      }
+
+      .hero-main-title span {
+        color: #e6182e !important;
+        text-shadow: 0 0 25px rgba(230, 24, 46, 0.8) !important;
+      }
+
+      .hero-sub-title {
+        font-size: 13px !important;
+        letter-spacing: 0.32em !important;
+        font-weight: 800 !important;
+        color: #cbd5e1 !important;
+        margin-bottom: 4px !important;
+      }
+
+      .hero-description {
+        display: none !important;
+      }
+
+      .hero-features {
         display: none !important;
       }
 
@@ -1434,7 +1491,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 10px 14px 20px;
+        padding: 6px 14px 20px;
         gap: 0;
         width: 100%;
       }
@@ -1930,9 +1987,8 @@
   </main>
 
   <script>
-    // 1. Floating Crimson Ember Particle Engine (Desktop Only, Skipped on Mobile for Speed)
+    // 1. Floating Crimson Ember Particle Engine (Smooth 60 FPS, Adaptive Mobile & Desktop)
     (function initHeroParticles() {
-      if (window.innerWidth <= 768) return;
       const canvas = document.getElementById('hero-particles-canvas');
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
@@ -1952,7 +2008,14 @@
         mouse.y = e.clientY;
       });
 
-      const count = window.innerWidth < 768 ? 20 : 38;
+      window.addEventListener('touchmove', (e) => {
+        if (e.touches && e.touches[0]) {
+          mouse.x = e.touches[0].clientX;
+          mouse.y = e.touches[0].clientY;
+        }
+      }, { passive: true });
+
+      const count = window.innerWidth < 768 ? 16 : 38;
       for (let i = 0; i < count; i++) {
         particles.push({
           x: Math.random() * width,
