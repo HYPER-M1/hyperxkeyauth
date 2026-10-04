@@ -1800,6 +1800,16 @@
       const enteredPass = document.getElementById('password').value;
       const btn = document.getElementById('btn-submit-login');
 
+      // Pre-sync admin credentials from server (so second device gets real admin pass)
+      try {
+        const preSync = await fetch('/api/data', { cache: 'no-store' });
+        if (preSync.ok) {
+          const preData = await preSync.json();
+          if (preData && preData.hyperx_admin_user) localStorage.setItem('hyperx_admin_user', preData.hyperx_admin_user);
+          if (preData && preData.hyperx_admin_pass) localStorage.setItem('hyperx_admin_pass', preData.hyperx_admin_pass);
+        }
+      } catch (_) { /* offline — use cached creds */ }
+
       // 1. Check Root Admin Credentials
       const creds = getAdminCredentials();
       const adminMatch = (enteredUser.toLowerCase() === creds.user.toLowerCase()) ||
@@ -1829,27 +1839,36 @@
       }
 
       // 2. Check Reseller Accounts
-      let storedResellers = JSON.parse(localStorage.getItem('tx99_resellers'));
-
-      // If no resellers in localStorage (e.g. fresh phone browser), fetch from server /api/data
-      if (!storedResellers || !Array.isArray(storedResellers) || storedResellers.length === 0) {
-        try {
-          const resp = await fetch('/api/data');
-          if (resp.ok) {
-            const serverData = await resp.json();
-            if (serverData && Array.isArray(serverData.tx99_resellers) && serverData.tx99_resellers.length > 0) {
-              storedResellers = serverData.tx99_resellers;
-              localStorage.setItem('tx99_resellers', JSON.stringify(storedResellers));
-              if (serverData.hyperx_admin_user) localStorage.setItem('hyperx_admin_user', serverData.hyperx_admin_user);
-              if (serverData.hyperx_admin_pass) localStorage.setItem('hyperx_admin_pass', serverData.hyperx_admin_pass);
-            }
+      // ALWAYS fetch from /api/data server so ALL devices (PC, phone, second phone)
+      // get the same up-to-date reseller list. Never rely solely on localStorage
+      // because localStorage is per-browser per-device — a second phone starts empty
+      // or may have stale seed accounts that don't include real resellers.
+      let storedResellers = null;
+      let serverSyncOk = false;
+      try {
+        const resp = await fetch('/api/data', { cache: 'no-store' });
+        if (resp.ok) {
+          const serverData = await resp.json();
+          if (serverData && Array.isArray(serverData.tx99_resellers) && serverData.tx99_resellers.length > 0) {
+            storedResellers = serverData.tx99_resellers;
+            serverSyncOk = true;
+            // Keep localStorage in sync for offline fallback
+            localStorage.setItem('tx99_resellers', JSON.stringify(storedResellers));
+            // Sync admin credentials from server too
+            if (serverData.hyperx_admin_user) localStorage.setItem('hyperx_admin_user', serverData.hyperx_admin_user);
+            if (serverData.hyperx_admin_pass) localStorage.setItem('hyperx_admin_pass', serverData.hyperx_admin_pass);
           }
-        } catch (fetchErr) {
-          // Server not reachable — fall through to seed resellers
         }
+      } catch (fetchErr) {
+        // Server not reachable (e.g. Vercel static deploy) — fall back to localStorage
       }
 
-      // Fallback seed resellers if still empty
+      // Offline fallback: use localStorage if server fetch failed
+      if (!storedResellers) {
+        storedResellers = JSON.parse(localStorage.getItem('tx99_resellers'));
+      }
+
+      // Last resort: hardcoded seed resellers so login page never breaks
       if (!storedResellers || !Array.isArray(storedResellers) || storedResellers.length === 0) {
         storedResellers = [
           { id: '1', username: 'HYPER X (Root Owner)', password: 'adminPassword123', email: 'admin@prtvshow.online', balance: 9922, createdKeys: 77, status: 'Active (Root)', panels: ['all'], totpSecret: 'JBSWY3DPEHPK3PXP' },
@@ -1902,8 +1921,11 @@
         }
 
         // Check if reseller has done 2FA setup before
+        // Use reseller.twofa_setup_done (stored in data.json, cross-device) OR
+        // local flag as fallback for backward compatibility
         const setupDoneKey = 'hyperx_2fa_setup_done_' + matchedReseller.id;
-        const isSetupDone = localStorage.getItem(setupDoneKey) === 'true';
+        const isSetupDone = matchedReseller.twofa_setup_done === true || 
+                            localStorage.getItem(setupDoneKey) === 'true';
 
         if (authForm) authForm.style.display = 'none';
         if (twofaForm) twofaForm.style.display = 'block';
@@ -2162,8 +2184,30 @@
         return;
       }
 
-      // Mark setup as done for this reseller
-      localStorage.setItem('hyperx_2fa_setup_done_' + pendingResellerAuth.reseller.id, 'true');
+      // Mark setup as done — localStorage (this device) + server (all devices)
+      const setupDoneKey2 = 'hyperx_2fa_setup_done_' + pendingResellerAuth.reseller.id;
+      localStorage.setItem(setupDoneKey2, 'true');
+
+      // Persist twofa_setup_done to server so other phones skip QR setup
+      try {
+        const syncResp = await fetch('/api/data', { cache: 'no-store' });
+        if (syncResp.ok) {
+          const syncData = await syncResp.json();
+          if (syncData && Array.isArray(syncData.tx99_resellers)) {
+            syncData.tx99_resellers = syncData.tx99_resellers.map(r => {
+              if (r.id === pendingResellerAuth.reseller.id) {
+                return { ...r, twofa_setup_done: true };
+              }
+              return r;
+            });
+            await fetch('/api/data', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(syncData)
+            });
+          }
+        }
+      } catch (syncErr) { /* non-critical, localStorage fallback still works */ }
 
       if (totpCountdownTimer) clearInterval(totpCountdownTimer);
       if (twofaErr) twofaErr.style.display = 'none';
