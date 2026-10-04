@@ -1465,68 +1465,84 @@
         height: 12px !important;
       }
 
-      /* Hero Main Area — Reduced middle space below header */
+      /* Hero Main Area — Perfectly centered in the viewport */
       .hero-main-area {
         flex: 1 1 auto !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
-        justify-content: flex-start !important;
+        justify-content: center !important;
         width: 100% !important;
         min-height: 0 !important;
-        padding: 14px 0 20px 0 !important;
+        padding: 6px 0 16px 0 !important;
       }
 
       .hero-wrapper {
+        flex: 0 0 auto !important;
+        display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
-        justify-content: flex-start !important;
+        justify-content: center !important;
         padding: 0 14px !important;
         gap: 0 !important;
         width: 100% !important;
-        max-width: 350px !important;
-        margin: 0 auto !important;
+        max-width: 360px !important;
+        margin: auto auto !important;
       }
 
-      /* Compact, glowing HYPERX KEYAUTH branding above card on mobile */
+      /* Bigger, prominent HYPERX KEYAUTH branding */
       .hero-left {
+        flex: 0 0 auto !important;
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
         text-align: center !important;
-        margin-bottom: 12px !important;
-        padding: 0 10px !important;
+        margin-bottom: 14px !important;
+        padding: 0 !important;
         max-width: 100% !important;
         width: 100% !important;
       }
 
       .hero-welcome-label {
-        font-size: 10px !important;
-        letter-spacing: 0.22em !important;
-        margin-bottom: 2px !important;
+        font-size: 11.5px !important;
+        letter-spacing: 0.26em !important;
+        margin-bottom: 3px !important;
         color: #e6182e !important;
-        font-weight: 700 !important;
+        font-weight: 800 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 8px !important;
+      }
+
+      .hero-welcome-label::before {
+        content: '' !important;
+        width: 18px !important;
+        height: 2px !important;
+        background: #e6182e !important;
+        box-shadow: 0 0 8px rgba(230, 24, 46, 0.8) !important;
+        display: inline-block !important;
       }
 
       .hero-main-title {
-        font-size: 28px !important;
-        line-height: 1.1 !important;
-        letter-spacing: 0.04em !important;
-        margin-bottom: 0 !important;
-        text-shadow: 0 0 20px rgba(230, 24, 46, 0.6) !important;
+        font-size: 36px !important;
+        line-height: 1.05 !important;
+        letter-spacing: 0.02em !important;
+        margin-bottom: 1px !important;
+        text-shadow: 0 0 24px rgba(230, 24, 46, 0.7) !important;
       }
 
       .hero-main-title span {
         color: #e6182e !important;
-        text-shadow: 0 0 25px rgba(230, 24, 46, 0.8) !important;
+        text-shadow: 0 0 30px rgba(230, 24, 46, 0.9) !important;
       }
 
       .hero-sub-title {
-        font-size: 13px !important;
-        letter-spacing: 0.32em !important;
-        font-weight: 800 !important;
+        font-size: 15px !important;
+        letter-spacing: 0.35em !important;
+        font-weight: 900 !important;
         color: #cbd5e1 !important;
-        margin-bottom: 4px !important;
+        margin-bottom: 2px !important;
       }
 
       .hero-description {
