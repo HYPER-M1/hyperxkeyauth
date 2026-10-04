@@ -1,25 +1,16 @@
 {
   "version": 2,
-  "functions": {
-    "api/data.js": {
-      "runtime": "nodejs18.x"
-    }
-  },
+  "builds": [
+    { "src": "api/data.js", "use": "@vercel/node" },
+    { "src": "*.html", "use": "@vercel/static" },
+    { "src": "assets/**", "use": "@vercel/static" },
+    { "src": "admin/**", "use": "@vercel/static" }
+  ],
   "routes": [
-    { "src": "^/api/data$", "dest": "/api/data.js" },
-    { "src": "^/api/data/$", "dest": "/api/data.js" },
+    { "src": "^/api/data/?$", "dest": "/api/data.js" },
     { "src": "^/$", "dest": "/login.html" },
     { "src": "^/login$", "dest": "/login.html" },
     { "src": "^/dashboard$", "dest": "/dashboard.html" },
     { "src": "^/(.*)$", "dest": "/$1" }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "SAMEORIGIN" }
-      ]
-    }
   ]
 }
