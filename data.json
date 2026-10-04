@@ -1,80 +1,80 @@
 {
-    "hyperx_admin_user":  "HYPER X",
-    "tx99_resellers":  [
-                           {
-                               "panels":  [
-                                              "all"
-                                          ],
-                               "id":  "17909518904974",
-                               "username":  "beta123",
-                               "balance":  999,
-                               "password":  "beta1230",
-                               "twofa_setup_done":  false,
-                               "createdKeys":  1,
-                               "totpSecret":  "YLOG2E3ANGTE4B23",
-                               "status":  "Active",
-                               "email":  "beta123@gmail.com"
-                           },
-                           {
-                               "panels":  [
-                                              "all"
-                                          ],
-                               "id":  "1790951896372",
-                               "username":  "MADHUKARBETA",
-                               "balance":  260,
-                               "password":  "reseller4@123",
-                               "twofa_setup_done":  false,
-                               "createdKeys":  0,
-                               "totpSecret":  "JBSWY3DPEHPK3PXP",
-                               "status":  "Active",
-                               "email":  "madhukarsarkar004@gmail.com"
-                           },
-                           {
-                               "panels":  [
-                                              "all"
-                                          ],
-                               "id":  "1",
-                               "username":  "HYPER X (Root Owner)",
-                               "balance":  9922,
-                               "password":  "adminPassword123",
-                               "twofa_setup_done":  false,
-                               "createdKeys":  77,
-                               "totpSecret":  "JBSWY3DPEHPK3PXP",
-                               "status":  "Active (Root)",
-                               "email":  "admin@prtvshow.online"
-                           },
-                           {
-                               "panels":  [
-                                              "BASIC PANEL",
-                                              "EXTERNAL PANEL",
-                                              "FPS BOOSTER"
-                                          ],
-                               "id":  "2",
-                               "username":  "AlphaDistro",
-                               "balance":  250,
-                               "password":  "alphaPass@2026",
-                               "twofa_setup_done":  false,
-                               "createdKeys":  88,
-                               "totpSecret":  "KRUGKIDROVUWG2ZA",
-                               "status":  "Active",
-                               "email":  "alpha.dist@outlook.com"
-                           },
-                           {
-                               "panels":  [
-                                              "AIMSILENT EXE",
-                                              "UID BYPASS",
-                                              "VAULT PANEL"
-                                          ],
-                               "id":  "3",
-                               "username":  "ViperKeys",
-                               "balance":  50,
-                               "password":  "viperKey#99",
-                               "twofa_setup_done":  false,
-                               "createdKeys":  49,
-                               "totpSecret":  "MFRGGZDFMZTWQ2LK",
-                               "status":  "Active",
-                               "email":  "viper.resell@yahoo.com"
-                           }
-                       ],
-    "hyperx_admin_pass":  "admin123"
+  "hyperx_admin_user": "HYPER X",
+  "hyperx_admin_pass": "admin123",
+  "tx99_resellers": [
+    {
+      "panels": [
+        "all"
+      ],
+      "id": "17909518904974",
+      "username": "beta123",
+      "balance": 999,
+      "password": "beta1230",
+      "twofa_setup_done": false,
+      "createdKeys": 1,
+      "totpSecret": "YLOG2E3ANGTE4B23",
+      "status": "Active",
+      "email": "beta123@gmail.com"
+    },
+    {
+      "panels": [
+        "all"
+      ],
+      "id": "1790951896372",
+      "username": "MADHUKARBETA",
+      "balance": 260,
+      "password": "reseller4@123",
+      "twofa_setup_done": false,
+      "createdKeys": 0,
+      "totpSecret": "JBSWY3DPEHPK3PXP",
+      "status": "Active",
+      "email": "madhukarsarkar004@gmail.com"
+    },
+    {
+      "panels": [
+        "all"
+      ],
+      "id": "1",
+      "username": "HYPER X (Root Owner)",
+      "balance": 9922,
+      "password": "adminPassword123",
+      "twofa_setup_done": false,
+      "createdKeys": 77,
+      "totpSecret": "JBSWY3DPEHPK3PXP",
+      "status": "Active (Root)",
+      "email": "admin@prtvshow.online"
+    },
+    {
+      "panels": [
+        "BASIC PANEL",
+        "EXTERNAL PANEL",
+        "FPS BOOSTER"
+      ],
+      "id": "2",
+      "username": "AlphaDistro",
+      "balance": 250,
+      "password": "alphaPass@2026",
+      "twofa_setup_done": false,
+      "createdKeys": 88,
+      "totpSecret": "KRUGKIDROVUWG2ZA",
+      "status": "Active",
+      "email": "alpha.dist@outlook.com"
+    },
+    {
+      "panels": [
+        "AIMSILENT EXE",
+        "UID BYPASS",
+        "VAULT PANEL"
+      ],
+      "id": "3",
+      "username": "ViperKeys",
+      "balance": 50,
+      "password": "viperKey#99",
+      "twofa_setup_done": false,
+      "createdKeys": 49,
+      "totpSecret": "MFRGGZDFMZTWQ2LK",
+      "status": "Active",
+      "email": "viper.resell@yahoo.com"
+    }
+  ]
 }
