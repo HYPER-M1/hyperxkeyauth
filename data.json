@@ -60,7 +60,7 @@
         "all"
       ],
       "totpSecret": "Z5N73VUTBHFC7MJF",
-      "twofa_setup_done": false
+      "twofa_setup_done": true
     }
   ]
 }
