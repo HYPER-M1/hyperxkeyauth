@@ -160,18 +160,18 @@ function updateAdminUI() {
 
 async function syncCredentialsToServer(updates = {}) {
   try {
-    const adminUser = localStorage.getItem('hyperx_admin_user') || 'HYPER X';
-    const adminPass = localStorage.getItem('hyperx_admin_pass') || 'admin123';
+    const adminUser = updates.hyperx_admin_user || localStorage.getItem('hyperx_admin_user') || 'HYPER X';
+    const adminPass = updates.hyperx_admin_pass || localStorage.getItem('hyperx_admin_pass');
     let resellers = [];
     try {
       resellers = JSON.parse(localStorage.getItem('tx99_resellers')) || [];
     } catch (_) {}
 
     const payload = {
-      hyperx_admin_user: updates.hyperx_admin_user || adminUser,
-      hyperx_admin_pass: updates.hyperx_admin_pass || adminPass,
+      hyperx_admin_user: adminUser,
       tx99_resellers: updates.tx99_resellers || resellers
     };
+    if (adminPass) payload.hyperx_admin_pass = adminPass;
 
     fetch('/api/data', {
       method: 'POST',
@@ -1376,7 +1376,8 @@ function submitAddReseller(e) {
       const customField = document.getElementById('reseller-totp-secret');
       if (customField && customField.value.trim()) return customField.value.trim().toUpperCase().replace(/\s/g,'');
       let s = ''; for (let i = 0; i < 16; i++) s += chars[Math.floor(Math.random() * 32)]; return s;
-    })()
+    })(),
+    twofa_setup_done: false
   };
 
   state.resellers.push(newReseller);

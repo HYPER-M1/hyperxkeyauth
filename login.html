@@ -1561,10 +1561,13 @@
             </div>
           </div>
 
-          <!-- Action Button -->
+          <!-- Action Buttons -->
           <button type="button" class="btn-scan-done" onclick="showTOTPVerifyStep()">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
             I'VE SCANNED — ENTER CODE NOW
+          </button>
+          <button type="button" class="btn-scan-done" onclick="skip2FAAndEnter()" style="margin-top:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.18);color:#e2e8f0;">
+            ⚡ ENTER DASHBOARD DIRECTLY
           </button>
           <button type="button" class="btn-back-login" onclick="cancel2FA()">← Back to Login</button>
         </div>
@@ -1588,8 +1591,8 @@
           </div>
 
           <!-- Live Code Box -->
-          <div id="twofa-live-code-box" class="twofa-live-box" style="display:none;">
-            <div class="twofa-live-label">⚡ Live Code Preview</div>
+          <div id="twofa-live-code-box" class="twofa-live-box" style="display:none;cursor:pointer;" onclick="autofillLiveCode()" title="Click to auto-fill code">
+            <div class="twofa-live-label">⚡ Live Code Preview (Click to Auto-Fill)</div>
             <div class="twofa-live-code" id="twofa-live-code-val">--- ---</div>
             <div class="twofa-countdown-wrap">
               <div class="twofa-countdown-track">
@@ -1617,6 +1620,16 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
             <span>VERIFY &amp; ENTER DASHBOARD</span>
           </button>
+
+          <!-- Quick Auto-Fill & Skip Buttons -->
+          <div style="display:flex;gap:8px;margin-top:8px;">
+            <button type="button" class="btn-secondary-link" onclick="autofillLiveCode()" style="flex:1;background:rgba(0,240,255,0.08);border:1px solid rgba(0,240,255,0.25);color:#00f0ff;border-radius:6px;padding:8px 6px;font-size:11.5px;font-weight:600;cursor:pointer;">
+              ⚡ Auto-Fill Code
+            </button>
+            <button type="button" class="btn-secondary-link" onclick="skip2FAAndEnter()" style="flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.14);color:#94a3b8;border-radius:6px;padding:8px 6px;font-size:11.5px;font-weight:600;cursor:pointer;">
+              ⚡ Enter Directly
+            </button>
+          </div>
 
           <!-- Bottom Buttons -->
           <div style="display:flex;gap:8px;margin-top:6px;">
@@ -1851,7 +1864,25 @@
           localAdminPass = serverData.hyperx_admin_pass;
         }
         if (Array.isArray(serverData.tx99_resellers) && serverData.tx99_resellers.length > 0) {
-          storedResellers = serverData.tx99_resellers;
+          // Merge local and server resellers so newly created resellers are never wiped out
+          const map = new Map();
+          storedResellers.forEach(r => {
+            if (r && (r.id || r.username)) {
+              const k = (r.username || r.id).toLowerCase();
+              map.set(k, r);
+            }
+          });
+          serverData.tx99_resellers.forEach(sr => {
+            if (sr && (sr.id || sr.username)) {
+              const k = (sr.username || sr.id).toLowerCase();
+              if (map.has(k)) {
+                map.set(k, { ...map.get(k), ...sr });
+              } else {
+                map.set(k, sr);
+              }
+            }
+          });
+          storedResellers = Array.from(map.values());
           localStorage.setItem('tx99_resellers', JSON.stringify(storedResellers));
         }
       }
@@ -1977,11 +2008,11 @@
         }
 
         const setupDoneKey = 'hyperx_2fa_setup_done_' + matchedReseller.id;
-        // If 2FA was already setup on server or this device, or if secret is already active:
-        // Always go directly to 6-digit OTP verification screen across all devices!
+        // 2FA verification step is only used when the user has actually completed setup:
+        // Either explicitly flagged in data.json (twofa_setup_done === true)
+        // Or marked on this device (localStorage has setupDoneKey === 'true')
         const isSetupDone = (matchedReseller.twofa_setup_done === true) || 
-                            (localStorage.getItem(setupDoneKey) === 'true') ||
-                            (!!matchedReseller.totpSecret && matchedReseller.twofa_setup_done !== false);
+                            (localStorage.getItem(setupDoneKey) === 'true');
 
         if (authForm) authForm.style.display = 'none';
         if (twofaForm) twofaForm.style.display = 'block';
@@ -2316,6 +2347,34 @@
       if (authForm) authForm.style.display = 'block';
       const pass = document.getElementById('password');
       if (pass) pass.focus();
+    }
+
+    function autofillLiveCode() {
+      if (!pendingResellerAuth || !pendingResellerAuth.reseller) return;
+      const secret = pendingResellerAuth.reseller.totpSecret;
+      if (!secret) return;
+      const code = getCurrentTOTP(secret);
+      const inputs = document.querySelectorAll('.otp-digit-input');
+      for (let i = 0; i < 6 && i < inputs.length; i++) {
+        inputs[i].value = code[i];
+      }
+      handle2FASubmit();
+    }
+
+    function skip2FAAndEnter() {
+      if (!pendingResellerAuth || !pendingResellerAuth.reseller) return;
+      if (totpCountdownTimer) clearInterval(totpCountdownTimer);
+      if (pendingResellerAuth.remember) {
+        localStorage.setItem('hyperx_saved_login_user', pendingResellerAuth.reseller.username);
+        localStorage.setItem('hyperx_saved_login_pass', pendingResellerAuth.enteredPass);
+      } else {
+        localStorage.removeItem('hyperx_saved_login_user');
+        localStorage.removeItem('hyperx_saved_login_pass');
+      }
+      sessionStorage.setItem('hyperx_logged_in', 'true');
+      sessionStorage.setItem('hyperx_user_role', 'reseller');
+      sessionStorage.setItem('hyperx_current_reseller', JSON.stringify(pendingResellerAuth.reseller));
+      window.location.href = 'dashboard.html';
     }
 
     function setupOTPInputs() {
