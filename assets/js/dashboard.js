@@ -2133,6 +2133,7 @@ function renderResellersTable() {
   if (role === 'reseller') return;
 
   const tbody = document.getElementById('resellers-tbody');
+  const mobileList = document.getElementById('resellers-mobile-list');
 
   // Update Reseller Summary Strip Stats
   const statTotal = document.getElementById('reseller-stat-total');
@@ -2154,78 +2155,123 @@ function renderResellersTable() {
     statKeys.textContent = totalKeys.toLocaleString();
   }
 
-  if (!tbody) return;
+  if (!tbody && !mobileList) return;
 
   const allPkgs = getAllAvailablePackages();
 
   if (state.resellers.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text-dim);">No resellers found. Click "+ Add Reseller" to create one.</td></tr>`;
+    if (tbody) tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text-dim);">No resellers found. Click "+ Add Reseller" to create one.</td></tr>`;
+    if (mobileList) mobileList.innerHTML = `<div style="text-align:center;padding:20px;color:var(--text-dim);font-size:13px;">No resellers found.</div>`;
     return;
   }
 
-  tbody.innerHTML = state.resellers.map(r => {
-    // Determine Panel Badges
-    let panelsHtml = '';
-    const hasAll = !r.panels || r.panels.includes('all') || (Array.isArray(r.panels) && r.panels.length >= allPkgs.length);
-    if (hasAll) {
-      panelsHtml = `<span class="badge-panel-all">All Panels (${allPkgs.length})</span>`;
-    } else if (Array.isArray(r.panels) && r.panels.length > 0) {
-      panelsHtml = r.panels.map(p => `<span class="badge-panel-pill">${p}</span>`).join('');
-    } else {
-      panelsHtml = `<span style="color:#ef4444;font-size:11px;">No Access</span>`;
-    }
+  // ── Desktop Table ──
+  if (tbody) {
+    tbody.innerHTML = state.resellers.map(r => {
+      let panelsHtml = '';
+      const hasAll = !r.panels || r.panels.includes('all') || (Array.isArray(r.panels) && r.panels.length >= allPkgs.length);
+      if (hasAll) {
+        panelsHtml = `<span class="badge-panel-all">All Panels (${allPkgs.length})</span>`;
+      } else if (Array.isArray(r.panels) && r.panels.length > 0) {
+        panelsHtml = r.panels.map(p => `<span class="badge-panel-pill">${p}</span>`).join('');
+      } else {
+        panelsHtml = `<span style="color:#ef4444;font-size:11px;">No Access</span>`;
+      }
 
-    const isSuspended = r.status === 'Suspended';
-    const statusBadge = isSuspended
-      ? `<span class="badge-pill-status badge-auth-fail">Suspended</span>`
-      : `<span class="badge-pill-status badge-active-green">${r.status || 'Active'}</span>`;
+      const isSuspended = r.status === 'Suspended';
+      const statusBadge = isSuspended
+        ? `<span class="badge-pill-status badge-auth-fail">Suspended</span>`
+        : `<span class="badge-pill-status badge-active-green">${r.status || 'Active'}</span>`;
 
-    const passStr = r.password || 'reseller123';
-    const avatarLetter = (r.username && r.username.length > 0) ? r.username.charAt(0).toUpperCase() : 'R';
+      const passStr = r.password || 'reseller123';
+      const avatarLetter = (r.username && r.username.length > 0) ? r.username.charAt(0).toUpperCase() : 'R';
 
-    return `
-      <tr>
-        <td>
-          <div style="display:flex;align-items:center;gap:10px;white-space:nowrap;">
-            <div class="profile-avatar" style="width:30px;height:30px;font-size:12px;font-weight:800;border-color:rgba(0,240,255,0.3);">${avatarLetter}</div>
-            <div>
-              <div style="font-weight:800;color:#fff;">${r.username}</div>
-              <div style="font-family:var(--font-mono);color:var(--text-dim);font-size:11px;">${r.email || 'No email'}</div>
+      return `
+        <tr>
+          <td>
+            <div style="display:flex;align-items:center;gap:10px;white-space:nowrap;">
+              <div class="profile-avatar" style="width:30px;height:30px;font-size:12px;font-weight:800;border-color:rgba(239,68,68,0.3);">${avatarLetter}</div>
+              <div>
+                <div style="font-weight:800;color:#fff;">${r.username}</div>
+                <div style="font-family:var(--font-mono);color:var(--text-dim);font-size:11px;">${r.email || 'No email'}</div>
+              </div>
+            </div>
+          </td>
+          <td class="col-reseller-pwd col-mobile-hide">
+            <span class="reseller-pass-cell" id="reseller-pass-${r.id}">
+              <span class="pass-val">••••••••</span>
+              <button onclick="toggleResellerPassVisibility('${r.id}', '${passStr}')" class="btn-copy-inline" title="Reveal/Hide Password">👁️</button>
+              <button onclick="copyText('${passStr}')" class="btn-copy-inline" title="Copy Password">📋</button>
+            </span>
+          </td>
+          <td style="white-space:nowrap;">
+            <div style="display:flex;align-items:center;gap:4px;">
+              <span style="font-family:var(--font-mono);font-weight:700;color:#f59e0b;font-size:13px;white-space:nowrap;">${r.balance} Keys</span>
+              <button onclick="openTransferModalForReseller('${r.id}')" class="btn-sm-action" style="color:#f59e0b;border-color:rgba(245,158,11,0.4);" title="Transfer Credits to ${r.username}">💸 Send</button>
+              <button onclick="quickAddResellerCredits('${r.id}')" class="btn-sm-action" title="Quick Add Quota">+ Quota</button>
+            </div>
+          </td>
+          <td>
+            <div style="display:flex;flex-wrap:wrap;max-width:240px;gap:2px;">
+              ${panelsHtml}
+            </div>
+          </td>
+          <td class="col-reseller-keys col-mobile-hide" style="font-family:var(--font-mono);color:#cbd5e1;text-align:center;">${r.createdKeys || 0}</td>
+          <td style="white-space:nowrap;">${statusBadge}</td>
+          <td style="white-space:nowrap;">
+            <div style="display:flex;gap:6px;">
+              <button onclick="openTransferModalForReseller('${r.id}')" class="btn-row-action" style="color:#f59e0b;" title="Transfer Credits to ${r.username}">💸</button>
+              <button onclick="openEditResellerModal('${r.id}')" class="btn-row-action" title="Edit Permissions &amp; Credits">✏️</button>
+              <button onclick="toggleResellerStatus('${r.id}')" class="btn-row-action" title="${isSuspended ? 'Activate Account' : 'Suspend Account'}">${isSuspended ? '▶️' : '⏸️'}</button>
+              <button onclick="deleteReseller('${r.id}')" class="btn-row-action" style="color:#ef4444;" title="Delete Reseller">🗑️</button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  // ── Mobile Cards ──
+  if (mobileList) {
+    const AVATAR_COLORS = [
+      { bg: 'rgba(239,68,68,0.15)', border: 'rgba(239,68,68,0.4)', color: '#ef4444' },
+      { bg: 'rgba(168,85,247,0.15)', border: 'rgba(168,85,247,0.35)', color: '#a855f7' },
+      { bg: 'rgba(16,185,129,0.15)', border: 'rgba(16,185,129,0.35)', color: '#10b981' },
+      { bg: 'rgba(59,130,246,0.15)', border: 'rgba(59,130,246,0.35)', color: '#3b82f6' },
+      { bg: 'rgba(245,158,11,0.15)', border: 'rgba(245,158,11,0.35)', color: '#f59e0b' },
+    ];
+
+    mobileList.innerHTML = state.resellers.map((r, idx) => {
+      const col = AVATAR_COLORS[idx % AVATAR_COLORS.length];
+      const avatarLetter = (r.username && r.username.length > 0) ? r.username.charAt(0).toUpperCase() : 'R';
+      const passStr = r.password || 'reseller123';
+      const passId = `mob-res-pass-${r.id}`;
+      const isSuspended = r.status === 'Suspended';
+      const creditsColor = isSuspended ? '#ef4444' : '#f59e0b';
+
+      return `
+        <div class="mobile-reseller-card" onclick="openEditResellerModal('${r.id}')">
+          <div class="mobile-reseller-avatar" style="background:${col.bg};border-color:${col.border};color:${col.color};">${avatarLetter}</div>
+          <div class="mobile-reseller-main">
+            <div class="mobile-reseller-name">${r.username}${isSuspended ? ' <span style="color:#ef4444;font-size:10px;">[Suspended]</span>' : ''}</div>
+            <div class="mobile-reseller-email">${r.email || r.username.toLowerCase() + '@reseller.local'}</div>
+            <div class="mobile-reseller-meta-row">
+              <div class="mobile-reseller-pass-wrap">
+                <span class="mobile-reseller-pass-dots" id="${passId}">••••••••</span>
+                <button class="mobile-reseller-icon-btn" onclick="event.stopPropagation();var el=document.getElementById('${passId}');el.textContent=el.textContent==='••••••••'?'${passStr}':'••••••••';" title="Reveal">👁️</button>
+                <button class="mobile-reseller-icon-btn" onclick="event.stopPropagation();copyText('${passStr}');" title="Copy">📋</button>
+              </div>
+              <div class="mobile-reseller-credits">
+                <span class="mobile-reseller-credits-val" style="color:${creditsColor};">${(r.balance||0).toLocaleString()}</span>
+                <span class="mobile-reseller-credits-lbl" style="color:${creditsColor};">Keys</span>
+              </div>
             </div>
           </div>
-        </td>
-        <td class="col-reseller-pwd col-mobile-hide">
-          <span class="reseller-pass-cell" id="reseller-pass-${r.id}">
-            <span class="pass-val">••••••••</span>
-            <button onclick="toggleResellerPassVisibility('${r.id}', '${passStr}')" class="btn-copy-inline" title="Reveal/Hide Password">👁️</button>
-            <button onclick="copyText('${passStr}')" class="btn-copy-inline" title="Copy Password">📋</button>
-          </span>
-        </td>
-        <td style="white-space:nowrap;">
-          <div style="display:flex;align-items:center;gap:4px;">
-            <span style="font-family:var(--font-mono);font-weight:700;color:#f59e0b;font-size:13px;white-space:nowrap;">${r.balance} Keys</span>
-            <button onclick="openTransferModalForReseller('${r.id}')" class="btn-sm-action" style="color:#00f0ff;border-color:rgba(0,240,255,0.4);" title="Transfer Credits to ${r.username}">💸 Send</button>
-            <button onclick="quickAddResellerCredits('${r.id}')" class="btn-sm-action" title="Quick Add Quota">+ Quota</button>
-          </div>
-        </td>
-        <td>
-          <div style="display:flex;flex-wrap:wrap;max-width:240px;gap:2px;">
-            ${panelsHtml}
-          </div>
-        </td>
-        <td class="col-reseller-keys col-mobile-hide" style="font-family:var(--font-mono);color:#cbd5e1;text-align:center;">${r.createdKeys || 0}</td>
-        <td style="white-space:nowrap;">${statusBadge}</td>
-        <td style="white-space:nowrap;">
-          <div style="display:flex;gap:6px;">
-            <button onclick="openTransferModalForReseller('${r.id}')" class="btn-row-action" style="color:#00f0ff;" title="Transfer Credits to ${r.username}">💸</button>
-            <button onclick="openEditResellerModal('${r.id}')" class="btn-row-action" title="Edit Permissions &amp; Credits">✏️</button>
-            <button onclick="toggleResellerStatus('${r.id}')" class="btn-row-action" title="${isSuspended ? 'Activate Account' : 'Suspend Account'}">${isSuspended ? '▶️' : '⏸️'}</button>
-            <button onclick="deleteReseller('${r.id}')" class="btn-row-action" style="color:#ef4444;" title="Delete Reseller">🗑️</button>
-          </div>
-        </td>
-      </tr>
-    `;
-  }).join('');
+          <div class="mobile-reseller-chevron">›</div>
+        </div>
+      `;
+    }).join('');
+  }
 }
 
 function submitAddReseller(e) {

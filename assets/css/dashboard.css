@@ -2595,7 +2595,8 @@ html, body {
 /* Default Desktop: Hide mobile cards */
 .mobile-license-cards-wrap,
 .mobile-apps-cards-wrap,
-.mobile-logs-cards-wrap {
+.mobile-logs-cards-wrap,
+.mobile-resellers-cards-wrap {
   display: none;
 }
 
@@ -3826,6 +3827,172 @@ html, body {
     color: #ef4444 !important;
     border-color: rgba(239, 68, 68, 0.4) !important;
   }
+
+  /* ==========================================================================
+     MOBILE RESELLERS CARDS (Pixel-for-Pixel Reference from User Phone)
+     ========================================================================== */
+  #view-resellers .cyber-panel-table,
+  #view-resellers .cyber-data-table-wrap,
+  #view-resellers .reseller-desktop-table-wrap {
+    display: none !important;
+  }
+
+  /* Mobile header layout for resellers */
+  .reseller-view-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+
+  .mobile-resellers-cards-wrap {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0px !important;
+    width: 100% !important;
+  }
+
+  .mobile-reseller-card {
+    display: flex !important;
+    align-items: center !important;
+    background: #090c14 !important;
+    border-bottom: 1px solid #161e2e !important;
+    padding: 14px 4px !important;
+    gap: 12px !important;
+    position: relative !important;
+    cursor: pointer !important;
+    box-sizing: border-box !important;
+    transition: background 0.15s ease !important;
+  }
+
+  .mobile-reseller-card:first-child {
+    border-top: 1px solid #161e2e !important;
+    border-radius: 10px 10px 0 0 !important;
+  }
+
+  .mobile-reseller-card:last-child {
+    border-radius: 0 0 10px 10px !important;
+  }
+
+  .mobile-reseller-card:active {
+    background: #0f1522 !important;
+  }
+
+  .mobile-reseller-avatar {
+    flex: 0 0 40px !important;
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50% !important;
+    border: 2px solid rgba(239, 68, 68, 0.3) !important;
+    font-size: 15px !important;
+    font-weight: 800 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    letter-spacing: -0.5px !important;
+  }
+
+  .mobile-reseller-main {
+    flex: 1 !important;
+    min-width: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+  }
+
+  .mobile-reseller-name {
+    color: #ffffff !important;
+    font-size: 13.5px !important;
+    font-weight: 800 !important;
+    line-height: 1.2 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .mobile-reseller-email {
+    font-family: var(--font-mono) !important;
+    font-size: 10.5px !important;
+    color: #ef4444 !important;
+    line-height: 1.2 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .mobile-reseller-meta-row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    margin-top: 2px !important;
+  }
+
+  .mobile-reseller-pass-wrap {
+    display: flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+  }
+
+  .mobile-reseller-pass-dots {
+    font-family: var(--font-mono) !important;
+    font-size: 12px !important;
+    color: #8e95aa !important;
+    letter-spacing: 2px !important;
+  }
+
+  .mobile-reseller-icon-btn {
+    background: transparent !important;
+    border: none !important;
+    padding: 2px !important;
+    cursor: pointer !important;
+    font-size: 13px !important;
+    line-height: 1 !important;
+    color: #8e95aa !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    opacity: 0.8 !important;
+  }
+
+  .mobile-reseller-icon-btn:active {
+    opacity: 1 !important;
+  }
+
+  .mobile-reseller-credits {
+    display: flex !important;
+    align-items: baseline !important;
+    gap: 3px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .mobile-reseller-credits-val {
+    font-family: var(--font-mono) !important;
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    color: #f59e0b !important;
+    line-height: 1 !important;
+  }
+
+  .mobile-reseller-credits-lbl {
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    color: #f59e0b !important;
+    line-height: 1 !important;
+  }
+
+  .mobile-reseller-chevron {
+    flex: 0 0 14px !important;
+    color: #475569 !important;
+    font-size: 22px !important;
+    font-weight: 300 !important;
+    line-height: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+  }
+
 }
 
 /* 3. EXTRA SMALL MOBILE (max-width: 420px) */

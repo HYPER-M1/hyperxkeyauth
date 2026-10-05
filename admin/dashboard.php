@@ -365,21 +365,33 @@ $admin_user = $_SESSION['prtv_admin_user'] ?? 'HYPER X';
 
         <!-- VIEW 5: RESELLERS -->
         <section class="tab-view" id="view-resellers">
-          <div class="view-header-strip">
-            <button class="btn-action-primary" onclick="openModal('modal-add-reseller')">
-              <span>👥</span><span>+ Add Reseller</span>
-            </button>
+          <!-- Reseller View Header -->
+          <div class="view-header-strip reseller-view-header" style="margin-bottom:14px;">
+            <div class="reseller-header-intro">
+              <h2 class="view-heading-title" style="font-size:16px;font-weight:800;color:#fff;margin-bottom:4px;">Reseller System &amp; Quota Distribution</h2>
+              <p class="view-sub-text" style="font-size:11.5px;color:#64748b;margin:0;">Authorize reseller accounts, grant key generation quotas, and assign panel access permissions.</p>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;flex-shrink:0;">
+              <button class="btn-action-secondary" onclick="openModal('modal-transfer-credit')" style="color:#f59e0b;border-color:rgba(245,158,11,0.4);"><span>💸</span><span>Transfer Credits</span></button>
+              <button class="btn-action-primary" onclick="openModal('modal-add-reseller')"><span>👥</span><span>+ Add Reseller</span></button>
+            </div>
           </div>
-          <div class="cyber-data-table-wrap">
+          <!-- Stats -->
+          <div class="stats-cards-strip-7" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom: 20px;">
+            <div class="stat-card-item accent-red"><div class="stat-icon-box" style="color:#ef4444;">👥</div><div class="stat-info-col"><span class="stat-number-val" id="reseller-stat-total">0</span><span class="stat-title-label">TOTAL RESELLERS</span></div></div>
+            <div class="stat-card-item accent-green"><div class="stat-icon-box" style="color:#10b981;">✅</div><div class="stat-info-col"><span class="stat-number-val" id="reseller-stat-active">0</span><span class="stat-title-label">ACTIVE ACCOUNTS</span></div></div>
+            <div class="stat-card-item accent-yellow"><div class="stat-icon-box" style="color:#f59e0b;">💳</div><div class="stat-info-col"><span class="stat-number-val" id="reseller-stat-credits">0</span><span class="stat-title-label">TOTAL CREDITS IN CIRCULA</span></div></div>
+            <div class="stat-card-item accent-red"><div class="stat-icon-box" style="color:#ef4444;">🔑</div><div class="stat-info-col"><span class="stat-number-val" id="reseller-stat-keys">0</span><span class="stat-title-label">TOTAL KEYS CREATED</span></div></div>
+          </div>
+          <!-- Desktop Table -->
+          <div class="cyber-data-table-wrap reseller-desktop-table-wrap">
             <table class="cyber-panel-table" style="font-size:12.5px;">
-              <thead>
-                <tr>
-                  <th>RESELLER USERNAME</th><th>EMAIL ADDRESS</th><th>KEY QUOTA BALANCE</th><th>TOTAL GENERATED</th><th>STATUS</th><th>ACTIONS</th>
-                </tr>
-              </thead>
+              <thead><tr><th>RESELLER</th><th>LOGIN PASSWORD</th><th>KEY QUOTA BALANCE</th><th>TOTAL GENERATED</th><th>STATUS</th><th>ACTIONS</th></tr></thead>
               <tbody id="resellers-tbody"></tbody>
             </table>
           </div>
+          <!-- Mobile Card List -->
+          <div class="mobile-resellers-cards-wrap" id="resellers-mobile-list"></div>
         </section>
 
         <!-- VIEW 6: APPLICATIONS -->

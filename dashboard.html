@@ -1218,9 +1218,14 @@
              VIEW 5: RESELLERS (ADMIN ONLY)
              ============================================================ -->
         <section class="tab-view admin-only-feature" id="view-resellers">
-          <div class="view-header-strip">
-            <div style="display:flex;gap:10px;flex-wrap:wrap;">
-              <button class="btn-action-secondary" onclick="openModal('modal-transfer-credit')" style="color:#00f0ff;border-color:rgba(0,240,255,0.4);">
+          <!-- Reseller View Header -->
+          <div class="view-header-strip reseller-view-header" style="margin-bottom:14px;">
+            <div class="reseller-header-intro">
+              <h2 class="view-heading-title" style="font-size:16px;font-weight:800;color:#fff;margin-bottom:4px;">Reseller System &amp; Quota Distribution</h2>
+              <p class="view-sub-text" style="font-size:11.5px;color:#64748b;margin:0;">Authorize reseller accounts, grant key generation quotas, and assign panel access permissions.</p>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;flex-shrink:0;">
+              <button class="btn-action-secondary" onclick="openModal('modal-transfer-credit')" style="color:#f59e0b;border-color:rgba(245,158,11,0.4);">
                 <span>💸</span>
                 <span>Transfer Credits</span>
               </button>
@@ -1233,8 +1238,8 @@
 
           <!-- Reseller Stats Summary Strip -->
           <div class="stats-cards-strip-7" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 20px;">
-            <div class="stat-card-item accent-blue">
-              <div class="stat-icon-box" style="color:#00f0ff;">👥</div>
+            <div class="stat-card-item accent-red">
+              <div class="stat-icon-box" style="color:#ef4444;">👥</div>
               <div class="stat-info-col">
                 <span class="stat-number-val" id="reseller-stat-total">0</span>
                 <span class="stat-title-label">TOTAL RESELLERS</span>
@@ -1251,11 +1256,11 @@
               <div class="stat-icon-box" style="color:#f59e0b;">💳</div>
               <div class="stat-info-col">
                 <span class="stat-number-val" id="reseller-stat-credits">0</span>
-                <span class="stat-title-label">TOTAL CREDITS IN CIRCULATION</span>
+                <span class="stat-title-label">TOTAL CREDITS IN CIRCULA</span>
               </div>
             </div>
-            <div class="stat-card-item accent-purple">
-              <div class="stat-icon-box" style="color:#a855f7;">🔑</div>
+            <div class="stat-card-item accent-red">
+              <div class="stat-icon-box" style="color:#ef4444;">🔑</div>
               <div class="stat-info-col">
                 <span class="stat-number-val" id="reseller-stat-keys">0</span>
                 <span class="stat-title-label">TOTAL KEYS CREATED</span>
@@ -1263,7 +1268,8 @@
             </div>
           </div>
 
-          <div class="cyber-data-table-wrap">
+          <!-- Desktop Table -->
+          <div class="cyber-data-table-wrap reseller-desktop-table-wrap">
             <table class="cyber-panel-table" style="font-size:12.5px;">
               <thead>
                 <tr>
@@ -1280,6 +1286,124 @@
                 <!-- Dynamically populated by JS -->
               </tbody>
             </table>
+          </div>
+
+          <!-- Mobile Card List -->
+          <div class="mobile-resellers-cards-wrap" id="resellers-mobile-list">
+            <div class="mobile-reseller-card">
+              <div class="mobile-reseller-avatar" style="background:rgba(239,68,68,0.15);border-color:rgba(239,68,68,0.4);color:#ef4444;">H</div>
+              <div class="mobile-reseller-main">
+                <div class="mobile-reseller-name">HYPER X <span style="color:#f59e0b;font-size:10px;font-weight:600;">(Root Owner)</span></div>
+                <div class="mobile-reseller-email">admin@prtvshow.online</div>
+                <div class="mobile-reseller-meta-row">
+                  <div class="mobile-reseller-pass-wrap">
+                    <span class="mobile-reseller-pass-dots">••••••••</span>
+                    <button class="mobile-reseller-icon-btn" title="Reveal">👁️</button>
+                    <button class="mobile-reseller-icon-btn" title="Copy">📋</button>
+                  </div>
+                  <div class="mobile-reseller-credits">
+                    <span class="mobile-reseller-credits-val">999</span>
+                    <span class="mobile-reseller-credits-lbl">Keys</span>
+                  </div>
+                </div>
+              </div>
+              <div class="mobile-reseller-chevron">›</div>
+            </div>
+            <div class="mobile-reseller-card">
+              <div class="mobile-reseller-avatar" style="background:rgba(168,85,247,0.15);border-color:rgba(168,85,247,0.35);color:#a855f7;">A</div>
+              <div class="mobile-reseller-main">
+                <div class="mobile-reseller-name">AlphaDistro</div>
+                <div class="mobile-reseller-email">alpha.dist@outlook.com</div>
+                <div class="mobile-reseller-meta-row">
+                  <div class="mobile-reseller-pass-wrap">
+                    <span class="mobile-reseller-pass-dots">••••••••</span>
+                    <button class="mobile-reseller-icon-btn" title="Reveal">👁️</button>
+                    <button class="mobile-reseller-icon-btn" title="Copy">📋</button>
+                  </div>
+                  <div class="mobile-reseller-credits">
+                    <span class="mobile-reseller-credits-val">250</span>
+                    <span class="mobile-reseller-credits-lbl">Keys</span>
+                  </div>
+                </div>
+              </div>
+              <div class="mobile-reseller-chevron">›</div>
+            </div>
+            <div class="mobile-reseller-card">
+              <div class="mobile-reseller-avatar" style="background:rgba(16,185,129,0.15);border-color:rgba(16,185,129,0.35);color:#10b981;">V</div>
+              <div class="mobile-reseller-main">
+                <div class="mobile-reseller-name">ViperKeys</div>
+                <div class="mobile-reseller-email">viper.resell@yahoo.com</div>
+                <div class="mobile-reseller-meta-row">
+                  <div class="mobile-reseller-pass-wrap">
+                    <span class="mobile-reseller-pass-dots">••••••••</span>
+                    <button class="mobile-reseller-icon-btn" title="Reveal">👁️</button>
+                    <button class="mobile-reseller-icon-btn" title="Copy">📋</button>
+                  </div>
+                  <div class="mobile-reseller-credits">
+                    <span class="mobile-reseller-credits-val">500</span>
+                    <span class="mobile-reseller-credits-lbl">Keys</span>
+                  </div>
+                </div>
+              </div>
+              <div class="mobile-reseller-chevron">›</div>
+            </div>
+            <div class="mobile-reseller-card">
+              <div class="mobile-reseller-avatar" style="background:rgba(239,68,68,0.12);border-color:rgba(239,68,68,0.3);color:#ef4444;">M</div>
+              <div class="mobile-reseller-main">
+                <div class="mobile-reseller-name">madhukar</div>
+                <div class="mobile-reseller-email">madhukar@reseller.local</div>
+                <div class="mobile-reseller-meta-row">
+                  <div class="mobile-reseller-pass-wrap">
+                    <span class="mobile-reseller-pass-dots">••••••••</span>
+                    <button class="mobile-reseller-icon-btn" title="Reveal">👁️</button>
+                    <button class="mobile-reseller-icon-btn" title="Copy">📋</button>
+                  </div>
+                  <div class="mobile-reseller-credits">
+                    <span class="mobile-reseller-credits-val">999</span>
+                    <span class="mobile-reseller-credits-lbl">Keys</span>
+                  </div>
+                </div>
+              </div>
+              <div class="mobile-reseller-chevron">›</div>
+            </div>
+            <div class="mobile-reseller-card">
+              <div class="mobile-reseller-avatar" style="background:rgba(239,68,68,0.12);border-color:rgba(239,68,68,0.3);color:#ef4444;">M</div>
+              <div class="mobile-reseller-main">
+                <div class="mobile-reseller-name">MADHUKARBETA</div>
+                <div class="mobile-reseller-email">madhukarsarkar004@gmail.com</div>
+                <div class="mobile-reseller-meta-row">
+                  <div class="mobile-reseller-pass-wrap">
+                    <span class="mobile-reseller-pass-dots">••••••••</span>
+                    <button class="mobile-reseller-icon-btn" title="Reveal">👁️</button>
+                    <button class="mobile-reseller-icon-btn" title="Copy">📋</button>
+                  </div>
+                  <div class="mobile-reseller-credits">
+                    <span class="mobile-reseller-credits-val">200</span>
+                    <span class="mobile-reseller-credits-lbl">Keys</span>
+                  </div>
+                </div>
+              </div>
+              <div class="mobile-reseller-chevron">›</div>
+            </div>
+            <div class="mobile-reseller-card">
+              <div class="mobile-reseller-avatar" style="background:rgba(59,130,246,0.15);border-color:rgba(59,130,246,0.35);color:#3b82f6;">T</div>
+              <div class="mobile-reseller-main">
+                <div class="mobile-reseller-name">test2_Client</div>
+                <div class="mobile-reseller-email">test2@client.com</div>
+                <div class="mobile-reseller-meta-row">
+                  <div class="mobile-reseller-pass-wrap">
+                    <span class="mobile-reseller-pass-dots">••••••••</span>
+                    <button class="mobile-reseller-icon-btn" title="Reveal">👁️</button>
+                    <button class="mobile-reseller-icon-btn" title="Copy">📋</button>
+                  </div>
+                  <div class="mobile-reseller-credits">
+                    <span class="mobile-reseller-credits-val">150</span>
+                    <span class="mobile-reseller-credits-lbl">Keys</span>
+                  </div>
+                </div>
+              </div>
+              <div class="mobile-reseller-chevron">›</div>
+            </div>
           </div>
         </section>
 
