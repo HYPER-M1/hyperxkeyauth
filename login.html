@@ -301,45 +301,6 @@
       margin-bottom: 22px;
     }
 
-    /* High-Tech Authorization Chip above Logo */
-    .card-auth-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      padding: 3.5px 11px;
-      background: rgba(234, 43, 53, 0.08);
-      border: 1px solid rgba(234, 43, 53, 0.28);
-      border-radius: 20px;
-      margin-bottom: 12px;
-      font-family: var(--font-mono);
-      font-size: 9.5px;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #cbd5e1;
-      box-shadow: 0 0 14px rgba(234, 43, 53, 0.12);
-    }
-
-    .chip-pulse-dot {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: #ea2b35;
-      box-shadow: 0 0 8px #ea2b35;
-      animation: chipPulse 2.2s infinite ease-in-out;
-    }
-
-    @keyframes chipPulse {
-      0%, 100% { opacity: 0.6; transform: scale(0.9); }
-      50% { opacity: 1; transform: scale(1.3); box-shadow: 0 0 12px #ea2b35; }
-    }
-
-    .chip-status {
-      color: #ea2b35;
-      font-weight: 700;
-      padding-left: 2px;
-    }
-
     .card-center-logo {
       width: 78px;
       height: auto;
@@ -2229,11 +2190,6 @@
 
           <!-- Logo, Title & Subtitle -->
           <div class="card-logo-wrap">
-            <div class="card-auth-chip">
-              <span class="chip-pulse-dot"></span>
-              <span>SECURE ACCESS PORTAL</span>
-              <span class="chip-status">AES-256</span>
-            </div>
             <img src="assets/images/hx_card_logo.png" alt="HYPERX" class="card-center-logo">
             <h1 class="card-main-title">HYPERX</h1>
             <p class="card-subtitle">AUTHENTICATION ACCESS</p>
