@@ -15,6 +15,20 @@
       ],
       "totpSecret": "Z5N73VUTBHFC7MJF",
       "twofa_setup_done": true
+    },
+    {
+      "id": "1791196941383",
+      "username": "test1",
+      "password": "test123",
+      "email": "test1@reseller.local",
+      "balance": 100,
+      "createdKeys": 0,
+      "status": "Active",
+      "panels": [
+        "all"
+      ],
+      "totpSecret": "5XMSIKNTE4AXVENX",
+      "twofa_setup_done": false
     }
   ]
 }
