@@ -27,7 +27,16 @@ const DEFAULT_DATA = {
   tx99_resellers: [
     { id: "17909518904974", username: "beta123", password: "beta1230", email: "beta123@gmail.com", balance: 999, createdKeys: 1, status: "Active", panels: ["all"], totpSecret: "YLOG2E3ANGTE4B23", twofa_setup_done: true },
     { id: "1791108883957", username: "madhukar", password: "madhukarbeta", email: "madhukar@reseller.local", balance: 998, createdKeys: 1, status: "Active", panels: ["all"], totpSecret: "Z5N73VUTBHFC7MJF", twofa_setup_done: true },
+    { id: "1791196941383", username: "test1", password: "test123", email: "test1@reseller.local", balance: 99, createdKeys: 1, status: "Active", panels: ["all"], totpSecret: "5XMSIKNTE4AXVENX", twofa_setup_done: true },
     { id: "1790951896372", username: "MADHUKARBETA", password: "reseller4@123", email: "madhukarsarkar004@gmail.com", balance: 260, createdKeys: 0, status: "Active", panels: ["all"], totpSecret: "JBSWY3DPEHPK3PXP", twofa_setup_done: true }
+  ],
+  tx99_licenses: [
+    { id: "1", key: "HPERX-32KA-991L-M08P-4491", app: "Custom work", pkg: "EXTERNAL PANEL", user: "madhukar_User", hwid: "88CF-1102-BA54-77E0", expiry: "2026-10-15", status: "active", note: "Created by madhukar", resellerId: "1791108883957" },
+    { id: "2", key: "HPERX-44T1-8822-BB11-0099", app: "Custom work", pkg: "BASIC PANEL", user: "test1_Client", hwid: "Not Bound", expiry: "30 Days", status: "active", note: "Created by test1", resellerId: "1791196941383" },
+    { id: "3", key: "HPERX-77XC-B943-LL90-0012", app: "Custom work", pkg: "UID BYPASS", user: "ShadowFF", hwid: "Unbound", expiry: "2026-10-07", status: "active", note: "Awaiting Device", resellerId: "owner" },
+    { id: "4", key: "HPERX-110A-BBA8-8832-5501", app: "Custom work", pkg: "AIMSILENT EXE", user: "Client_Ghost", hwid: "9920-A001-B789-CC21", expiry: "2026-11-20", status: "active", note: "Created by Owner", resellerId: "owner" },
+    { id: "5", key: "HPERX-9923-00PA-8841-8899", app: "Custom work", pkg: "PVT AIMKILL", user: "CrackerBot", hwid: "TAMPER_DETECTED", expiry: "2026-11-01", status: "banned", note: "Memory Hook Violation", resellerId: "owner" },
+    { id: "6", key: "HPERX-55VK-7719-ABCD-2234", app: "Custom work", pkg: "VAULT PANEL", user: "SecureClient", hwid: "99BC-2281-A011-9988", expiry: "2026-11-15", status: "active", note: "Created by Owner", resellerId: "owner" }
   ]
 };
 
@@ -161,6 +170,34 @@ module.exports = async (req, res) => {
   if (req.method === 'GET') {
     try {
       const data = await getLatestCredentials();
+      const authHeader = req.headers['authorization'] || req.headers['x-session-token'] || req.query.session_token || '';
+      const token = authHeader.replace(/^Bearer\s+/i, '').trim();
+      let verifiedUser = null;
+      if (token) {
+        try {
+          const parts = token.split('.');
+          if (parts.length === 2) {
+            const crypto = require('crypto');
+            const HMAC_SECRET = process.env.HMAC_SECRET || '7f99a801e82b7c02b92138a011cd48f9';
+            const expectedSig = crypto.createHmac('sha256', HMAC_SECRET).update(parts[0]).digest('hex');
+            if (crypto.timingSafeEqual(Buffer.from(parts[1], 'hex'), Buffer.from(expectedSig, 'hex'))) {
+              verifiedUser = JSON.parse(Buffer.from(parts[0], 'base64url').toString('utf8'));
+            }
+          }
+        } catch (_) {}
+      }
+
+      // If authenticated as reseller, filter licenses to ONLY this reseller's keys
+      if (verifiedUser && verifiedUser.role === 'reseller') {
+        const rid = (verifiedUser.resellerId || '').toString();
+        const safeData = {
+          hyperx_admin_user: data.hyperx_admin_user,
+          tx99_resellers: (data.tx99_resellers || []).filter(r => r.id === rid),
+          tx99_licenses: (data.tx99_licenses || DEFAULT_DATA.tx99_licenses || []).filter(l => l.resellerId === rid)
+        };
+        return res.status(200).json(safeData);
+      }
+
       return res.status(200).json(data);
     } catch (e) {
       return res.status(200).json(DEFAULT_DATA);
@@ -182,7 +219,8 @@ module.exports = async (req, res) => {
       const updated = {
         hyperx_admin_user: body.hyperx_admin_user || current.hyperx_admin_user,
         hyperx_admin_pass: body.hyperx_admin_pass || current.hyperx_admin_pass,
-        tx99_resellers: Array.isArray(body.tx99_resellers) ? body.tx99_resellers : current.tx99_resellers
+        tx99_resellers: Array.isArray(body.tx99_resellers) ? body.tx99_resellers : current.tx99_resellers,
+        tx99_licenses: Array.isArray(body.tx99_licenses) ? body.tx99_licenses : (current.tx99_licenses || DEFAULT_DATA.tx99_licenses)
       };
 
       // Persist to GitHub in background (fire and wait up to 4s)

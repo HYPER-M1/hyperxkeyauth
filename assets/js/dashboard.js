@@ -23,12 +23,13 @@ const DEFAULT_PACKAGES = [
 
 // Seed Licenses History (Saved in localStorage so generated keys persist)
 const SEED_LICENSES = [
-  { id: '1', key: 'HPERX-8F92-41AC-90B2-110A', app: 'Custom work', pkg: 'BASIC PANEL', user: 'beta123_User', hwid: '4A8F-912C-00B4-E9D1', expiry: '2026-12-31', status: 'active', note: 'Created by beta123' },
-  { id: '2', key: 'HPERX-32KA-991L-M08P-4491', app: 'Custom work', pkg: 'EXTERNAL PANEL', user: 'madhukar_User', hwid: '88CF-1102-BA54-77E0', expiry: '2026-10-15', status: 'active', note: 'Created by madhukar' },
-  { id: '3', key: 'HPERX-77XC-B943-LL90-0012', app: 'Custom work', pkg: 'UID BYPASS', user: 'ShadowFF', hwid: 'Unbound', expiry: '2026-10-07', status: 'active', note: 'Awaiting Device' },
-  { id: '4', key: 'HPERX-110A-BBA8-8832-5501', app: 'Custom work', pkg: 'AIMSILENT EXE', user: 'Client_Ghost', hwid: '9920-A001-B789-CC21', expiry: '2026-11-20', status: 'active', note: 'Created by Owner' },
-  { id: '5', key: 'HPERX-9923-00PA-8841-8899', app: 'Custom work', pkg: 'PVT AIMKILL', user: 'CrackerBot', hwid: 'TAMPER_DETECTED', expiry: '2026-11-01', status: 'banned', note: 'Memory Hook Violation' },
-  { id: '6', key: 'HPERX-55VK-7719-ABCD-2234', app: 'Custom work', pkg: 'VAULT PANEL', user: 'SecureClient', hwid: '99BC-2281-A011-9988', expiry: '2026-11-15', status: 'active', note: 'Created by Owner' }
+  { id: '1', key: 'HPERX-8F92-41AC-90B2-110A', app: 'Custom work', pkg: 'BASIC PANEL', user: 'beta123_User', hwid: '4A8F-912C-00B4-E9D1', expiry: '2026-12-31', status: 'active', note: 'Created by beta123', resellerId: '17909518904974' },
+  { id: '2', key: 'HPERX-32KA-991L-M08P-4491', app: 'Custom work', pkg: 'EXTERNAL PANEL', user: 'madhukar_User', hwid: '88CF-1102-BA54-77E0', expiry: '2026-10-15', status: 'active', note: 'Created by madhukar', resellerId: '1791108883957' },
+  { id: '7', key: 'HPERX-44T1-8822-BB11-0099', app: 'Custom work', pkg: 'BASIC PANEL', user: 'test1_Client', hwid: 'Not Bound', expiry: '30 Days', status: 'active', note: 'Created by test1', resellerId: '1791196941383' },
+  { id: '3', key: 'HPERX-77XC-B943-LL90-0012', app: 'Custom work', pkg: 'UID BYPASS', user: 'ShadowFF', hwid: 'Unbound', expiry: '2026-10-07', status: 'active', note: 'Awaiting Device', resellerId: 'owner' },
+  { id: '4', key: 'HPERX-110A-BBA8-8832-5501', app: 'Custom work', pkg: 'AIMSILENT EXE', user: 'Client_Ghost', hwid: '9920-A001-B789-CC21', expiry: '2026-11-20', status: 'active', note: 'Created by Owner', resellerId: 'owner' },
+  { id: '5', key: 'HPERX-9923-00PA-8841-8899', app: 'Custom work', pkg: 'PVT AIMKILL', user: 'CrackerBot', hwid: 'TAMPER_DETECTED', expiry: '2026-11-01', status: 'banned', note: 'Memory Hook Violation', resellerId: 'owner' },
+  { id: '6', key: 'HPERX-55VK-7719-ABCD-2234', app: 'Custom work', pkg: 'VAULT PANEL', user: 'SecureClient', hwid: '99BC-2281-A011-9988', expiry: '2026-11-15', status: 'active', note: 'Created by Owner', resellerId: 'owner' }
 ];
 
 const SEED_LOGS = [
@@ -45,6 +46,7 @@ const SEED_LOGS = [
 const SEED_RESELLERS = [
   { id: '17909518904974', username: 'beta123', password: 'beta1230', email: 'beta123@gmail.com', balance: 999, createdKeys: 1, status: 'Active', panels: ['all'], totpSecret: 'YLOG2E3ANGTE4B23', twofa_setup_done: true },
   { id: '1791108883957', username: 'madhukar', password: 'madhukarbeta', email: 'madhukar@reseller.local', balance: 998, createdKeys: 1, status: 'Active', panels: ['all'], totpSecret: 'Z5N73VUTBHFC7MJF', twofa_setup_done: true },
+  { id: '1791196941383', username: 'test1', password: 'test123', email: 'test1@reseller.local', balance: 99, createdKeys: 1, status: 'Active', panels: ['all'], totpSecret: '5XMSIKNTE4AXVENX', twofa_setup_done: true },
   { id: '1790951896372', username: 'MADHUKARBETA', password: 'reseller4@123', email: 'madhukarsarkar004@gmail.com', balance: 260, createdKeys: 0, status: 'Active', panels: ['all'], totpSecret: 'JBSWY3DPEHPK3PXP', twofa_setup_done: true }
 ];
 
@@ -56,11 +58,30 @@ const SEED_TRANSFERS = [
 
 class AppState {
   constructor() {
+    const role = getUserRole();
+    const res = getCurrentReseller();
     let storedLicenses = [];
     try {
       storedLicenses = JSON.parse(localStorage.getItem('tx99_licenses'));
     } catch (e) {}
-    this.licenses = (Array.isArray(storedLicenses) && storedLicenses.length > 0) ? storedLicenses : SEED_LICENSES;
+
+    let initial = (Array.isArray(storedLicenses) && storedLicenses.length > 0) ? storedLicenses : SEED_LICENSES;
+
+    // Stamp resellerId on any keys missing it
+    initial = initial.map(l => {
+      if (l.resellerId) return l;
+      if (l.user && l.user.toLowerCase().startsWith('madhukar_')) return { ...l, resellerId: '1791108883957' };
+      if (l.user && l.user.toLowerCase().startsWith('beta123_')) return { ...l, resellerId: '17909518904974' };
+      if (l.user && l.user.toLowerCase().startsWith('test1_')) return { ...l, resellerId: '1791196941383' };
+      return { ...l, resellerId: 'owner' };
+    });
+
+    // If logged in as reseller, strictly isolate licenses right in constructor
+    if (role === 'reseller' && res && res.id) {
+      const rid = res.id.toString();
+      initial = initial.filter(l => l.resellerId === rid);
+    }
+    this.licenses = initial;
 
     let storedLogs = [];
     try {
@@ -610,42 +631,55 @@ function fetchWithTimeout(url, options = {}, timeoutMs = 2500) {
 }
 
 async function callApi(action, payload = {}) {
+  const token = sessionStorage.getItem('hyperx_auth_token') || localStorage.getItem('hyperx_auth_token') || '';
   const finalPayload = {
     action,
     app_id: getActiveAppId(),
+    session_token: token,
     ...payload
   };
 
+  const headers = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  };
+  if (token) {
+    headers['Authorization'] = 'Bearer ' + token;
+    headers['X-Session-Token'] = token;
+  }
+
   // Tier 1: Try Primary Serverless Proxy (/api on Vercel or api.php) if reachable
-  if (!isPrimaryProxyUnavailable && window.location.protocol !== 'file:') {
+  if (window.location.protocol !== 'file:') {
     try {
       const res = await fetchWithTimeout(API_URL, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
+        headers: headers,
         body: JSON.stringify(finalPayload)
-      }, 2000);
+      }, 3500);
 
       if (res.ok) {
         const data = await res.json();
-        if (data && (data.success || data.packages || data.keys)) {
+        if (data && (data.success !== undefined || data.packages || data.keys || data.licenses)) {
           return data;
         }
-        if (data && data.message && !data.success) {
-          console.warn(`Proxy returned error for "${action}":`, data.message);
-        }
       } else {
-        isPrimaryProxyUnavailable = true;
+        const errData = await res.json().catch(() => null);
+        if (errData && errData.message) {
+          return errData;
+        }
       }
     } catch (err) {
-      isPrimaryProxyUnavailable = true;
       console.warn(`Primary proxy call failed for action "${action}":`, err.message);
     }
   }
 
-  // Tier 2: Direct Fallback to prtvshow.online KeyAuth Engine (CORS enabled)
+  // Protected actions must NEVER bypass to direct KeyAuth API without authorization
+  const protectedActions = ['get_licenses', 'query_keys', 'key_info', 'reset_hwid', 'ban_key', 'unban_key', 'delete_key'];
+  if (protectedActions.includes(action)) {
+    return { success: false, message: 'Server authorization required' };
+  }
+
+  // Tier 2: Direct Fallback to prtvshow.online KeyAuth Engine for public/unprotected actions
   try {
     const directPayload = {
       api_key: 'TX999_API_bc186f5d73bd492e6d52095e5a7bfd78',
@@ -754,8 +788,8 @@ function updateDashboardStatsUI() {
         const dashQuotaNum = document.getElementById('dash-welcome-quota-num');
         if (dashQuotaNum) dashQuotaNum.textContent = (res.balance || 0).toLocaleString();
         
-        // Calculate reseller's own keys
-        const myKeys = state.licenses.filter(l => l.user && l.user.toLowerCase().includes(res.username.toLowerCase()));
+        // SECURITY: Calculate reseller's own keys using canonical ownership check
+        const myKeys = getResellerOwnedKeys();
         if (elCreated) elCreated.textContent = myKeys.length || (res.createdKeys || 0);
         if (elActive) {
           const activeCount = myKeys.filter(l => l.status === 'active').length;
@@ -869,6 +903,105 @@ function getResellerAllowedPackages() {
     return allPkgs.filter(p => res.panels.includes(p.package_name) || res.panels.includes(p.package_id));
   } catch (e) {
     return allPkgs;
+  }
+}
+
+/**
+ * SECURITY: Returns canonical list of keys owned by current reseller.
+ * Uses resellerId field (stamped at generation) as primary lookup.
+ * Falls back to username-pattern match for legacy keys (migration compat).
+ * Admin always gets all keys.
+ */
+function getResellerOwnedKeys() {
+  const role = getUserRole();
+  if (role !== 'reseller') return state.licenses;
+  const res = getCurrentReseller();
+  if (!res || !res.id) return [];
+  const rid = res.id.toString();
+  const uLower = (res.username || '').toLowerCase();
+  return state.licenses.filter(l => {
+    // Primary: resellerId stamp (tamper-proof canonical ID)
+    if (l.resellerId !== undefined) {
+      return l.resellerId === rid;
+    }
+    // Fallback: legacy username-pattern match (for keys before this patch)
+    return (l.user && l.user.toLowerCase().startsWith(uLower + '_')) ||
+           (l.note && l.note.toLowerCase().includes('by ' + uLower));
+  });
+}
+
+/**
+ * SECURITY: Checks if current user can perform actions on a given key.
+ * Admin: always yes. Reseller: only keys they own.
+ */
+function canAccessKey(keyStr) {
+  const role = getUserRole();
+  if (role !== 'reseller') return true; // Admin can access all
+  const lic = state.licenses.find(l => l.key.toLowerCase() === keyStr.toLowerCase());
+  if (!lic) return false; // Key not in local state — deny
+  const res = getCurrentReseller();
+  if (!res || !res.id) return false;
+  const rid = res.id.toString();
+  const uLower = (res.username || '').toLowerCase();
+  // Primary check: resellerId stamp
+  if (lic.resellerId !== undefined) {
+    return lic.resellerId === rid;
+  }
+  // Fallback: legacy username-pattern
+  return (lic.user && lic.user.toLowerCase().startsWith(uLower + '_')) ||
+         (lic.note && lic.note.toLowerCase().includes('by ' + uLower));
+}
+
+/**
+ * SECURITY: Migration — stamps resellerId on all existing keys in localStorage
+ * that were generated before this patch, using the username pattern.
+ * Safe to call multiple times (idempotent).
+ */
+function migrateResellerId() {
+  let changed = false;
+  state.licenses.forEach(l => {
+    if (l.resellerId !== undefined) return; // Already stamped
+    // Check each reseller
+    for (const res of state.resellers) {
+      const uLower = (res.username || '').toLowerCase();
+      const matchUser = l.user && l.user.toLowerCase().startsWith(uLower + '_');
+      const matchNote = l.note && l.note.toLowerCase().includes('by ' + uLower);
+      if (matchUser || matchNote) {
+        l.resellerId = res.id.toString();
+        changed = true;
+        break;
+      }
+    }
+    // If no reseller matched, it belongs to owner
+    if (l.resellerId === undefined) {
+      l.resellerId = 'owner';
+      changed = true;
+    }
+  });
+  if (changed) state.save();
+}
+
+/**
+ * SECURITY: Fetches strictly authorized license keys from server.
+ * Server filters by authenticated reseller identity.
+ * Replaces local state with only the keys this user is authorized to see.
+ */
+async function loadLicensesFromServer() {
+  const role = getUserRole();
+  const res = getCurrentReseller();
+  try {
+    const data = await callApi('get_licenses');
+    if (data && data.success && Array.isArray(data.licenses)) {
+      state.licenses = data.licenses;
+      state.save();
+      renderLicensesTable();
+      renderDashboardRecentLicenses();
+      if (role === 'reseller' && res) {
+        renderResellerClientUsers(res);
+      }
+    }
+  } catch (err) {
+    console.warn('Failed to sync licenses from server:', err);
   }
 }
 
@@ -1007,19 +1140,8 @@ function renderLicensesTable() {
   if (!tbody && !mobileList) return;
 
   const role = getUserRole();
-  let list = state.licenses;
-
-  // Reseller isolation: only show keys belonging to this reseller
-  if (role === 'reseller') {
-    const res = getCurrentReseller();
-    if (res && res.username) {
-      const u = res.username.toLowerCase();
-      list = list.filter(l => {
-        return (l.user && l.user.toLowerCase().includes(u)) ||
-               (l.note && l.note.toLowerCase().includes(u));
-      });
-    }
-  }
+  // SECURITY: Use canonical ownership check (resellerId stamp, not string match)
+  let list = getResellerOwnedKeys();
 
   if (state.activeFilter !== 'all') {
     list = list.filter(l => l.status === state.activeFilter);
@@ -1300,7 +1422,8 @@ async function submitGenerateKeys(e) {
       updateDashboardStatsUI();
     }
 
-    // Add generated keys to local list
+    // Add generated keys to local list with canonical resellerId
+    const canonicalResellerId = currentReseller ? currentReseller.id.toString() : 'owner';
     res.keys.forEach((keyStr, idx) => {
       state.licenses.unshift({
         id: Date.now().toString() + idx,
@@ -1311,12 +1434,14 @@ async function submitGenerateKeys(e) {
         hwid: 'Not Bound',
         expiry: expiryText,
         status: 'active',
-        note: `Generated on ${new Date().toLocaleDateString()}`
+        note: `Generated on ${new Date().toLocaleDateString()}`,
+        resellerId: canonicalResellerId
       });
     });
 
     state.save();
     renderLicensesTable();
+    loadLicensesFromServer();
     closeModal('modal-add-key');
 
     const actor = currentReseller ? currentReseller.username : 'HYPER X';
@@ -1375,6 +1500,11 @@ function downloadGeneratedKeysTxt() {
 
 // Inspect Key Info via REAL API
 async function inspectKeyLive(key) {
+  // SECURITY: Ownership check — reseller can only inspect their own keys
+  if (!canAccessKey(key)) {
+    showHyperAlert('⛔ Access Denied: You can only inspect your own license keys.', { type: 'error', title: 'Permission Denied', btnText: 'OK' });
+    return;
+  }
   const res = await callApi('key_info', { key: key.trim() });
   if (res && res.success) {
     const details = `
@@ -1419,6 +1549,12 @@ async function runQuickKeyAction(action) {
   resultBox.style.display = 'block';
   resultBox.className = 'quick-result-card';
   resultBox.innerHTML = `<span>⏳ Processing ${action}...</span>`;
+
+  // SECURITY: Ownership check for quick-action bar
+  if (!canAccessKey(key)) {
+    resultBox.innerHTML = `<span style="color:#ef4444;font-weight:700;">⛔ Access Denied: You can only perform actions on your own license keys.</span>`;
+    return;
+  }
 
   if (action === 'inspect') {
     let res = await callApi('key_info', { key });
@@ -1483,6 +1619,11 @@ async function runQuickKeyAction(action) {
 
 // Reset HWID via REAL API
 async function resetHwidLive(key) {
+  // SECURITY: Ownership check — reseller can only reset their own keys
+  if (!canAccessKey(key)) {
+    showHyperAlert('⛔ Access Denied: You can only reset HWID for your own license keys.', { type: 'error', title: 'Permission Denied', btnText: 'OK' });
+    return;
+  }
   if (!confirm(`Reset Hardware HWID binding for key:\n${key}?`)) return;
 
   await callApi('reset_hwid', { key });
@@ -1504,6 +1645,11 @@ async function resetHwidLive(key) {
 
 // Toggle Ban/Unban via REAL API
 async function toggleBanLive(key, currentStatus) {
+  // SECURITY: Ownership check — reseller can only ban/unban their own keys
+  if (!canAccessKey(key)) {
+    showHyperAlert('⛔ Access Denied: You can only ban/unban your own license keys.', { type: 'error', title: 'Permission Denied', btnText: 'OK' });
+    return;
+  }
   const lic = state.licenses.find(l => l.key.toLowerCase() === key.toLowerCase());
   const isBanned = (lic ? lic.status === 'banned' : currentStatus === 'banned');
   const action = isBanned ? 'unban_key' : 'ban_key';
@@ -1530,6 +1676,11 @@ async function toggleBanLive(key, currentStatus) {
 
 // Delete Key via REAL API
 async function deleteKeyLive(key) {
+  // SECURITY: Ownership check — reseller can only delete their own keys
+  if (!canAccessKey(key)) {
+    showHyperAlert('⛔ Access Denied: You can only delete your own license keys.', { type: 'error', title: 'Permission Denied', btnText: 'OK' });
+    return;
+  }
   if (!confirm(`⚠️ PERMANENT ACTION:\nAre you sure you want to permanently delete license key:\n${key}?`)) return;
 
   await callApi('delete_key', { key });
@@ -3293,10 +3444,8 @@ function renderResellerClientUsers(res) {
   }
 
   container.style.display = 'block';
-  const myKeys = state.licenses.filter(l => {
-    return (l.user && l.user.toLowerCase().includes(res.username.toLowerCase())) ||
-           (l.note && l.note.toLowerCase().includes(res.username.toLowerCase()));
-  });
+  // SECURITY: Canonical reseller ownership check
+  const myKeys = getResellerOwnedKeys();
 
   if (title) {
     title.innerHTML = `Your Generated Client Users &amp; Licenses (<strong style="color:#00f0ff;">${myKeys.length} Registered</strong>)`;
@@ -3360,6 +3509,10 @@ function initUserRoleSession() {
     const res = getCurrentReseller();
     if (!res) return;
     try {
+      // SECURITY: Strictly isolate local state to only keys owned by this reseller
+      state.licenses = getResellerOwnedKeys();
+      state.save();
+
       const allowedPkgs = getResellerAllowedPackages();
 
       // Update UI for reseller
@@ -3544,9 +3697,11 @@ function logoutSession() {
   sessionStorage.removeItem('hyperx_user_role');
   sessionStorage.removeItem('hyperx_current_reseller');
   sessionStorage.removeItem('hyperx_logged_in');
+  sessionStorage.removeItem('hyperx_auth_token');
   localStorage.removeItem('hyperx_user_role');
   localStorage.removeItem('hyperx_current_reseller');
   localStorage.removeItem('hyperx_logged_in');
+  localStorage.removeItem('hyperx_auth_token');
   window.location.href = 'login.html';
 }
 
@@ -3558,6 +3713,9 @@ document.addEventListener('DOMContentLoaded', () => {
     window.location.replace('login.html');
     return;
   }
+
+  // 0. Ensure migration for existing keys
+  migrateResellerId();
 
   // 1. Initialize role session (Admin or Reseller) FIRST before anything else
   initUserRoleSession();
@@ -3578,9 +3736,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   startRealtimeSimulation();
 
-  // Load real API data in background concurrently
+  // Load real API data in background concurrently (including server-authorized licenses)
   Promise.allSettled([
     loadAdminPackages(),
+    loadLicensesFromServer(),
     role !== 'reseller' ? loadResellerStats() : Promise.resolve()
   ]);
 });
