@@ -1308,13 +1308,7 @@ body.is-reseller #modal-change-admin,
 html.is-reseller #modal-add-reseller,
 body.is-reseller #modal-add-reseller,
 html.is-reseller #modal-edit-reseller,
-body.is-reseller #modal-edit-reseller,
-html.is-reseller #quick-tool-ban,
-body.is-reseller #quick-tool-ban,
-html.is-reseller #quick-tool-unban,
-body.is-reseller #quick-tool-unban,
-html.is-reseller #quick-tool-delete,
-body.is-reseller #quick-tool-delete {
+body.is-reseller #modal-edit-reseller {
   display: none !important;
   visibility: hidden !important;
   pointer-events: none !important;

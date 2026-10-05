@@ -977,19 +977,13 @@ function renderLicensesTable() {
     if (lic.status === 'expired') statusBadge = '<span class="badge-pill-status" style="background:rgba(249,115,22,0.15);color:#f97316;border:1px solid #ea580c;">Expired</span>';
     if (lic.status === 'banned') statusBadge = '<span class="badge-pill-status badge-auth-fail">Banned</span>';
 
-    // Action buttons: Resellers only get Inspect & Reset HWID. Root Admin gets Ban & Delete as well.
-    const isReseller = role === 'reseller';
-    const actionButtons = isReseller ? `
-      <div style="display:flex;gap:6px;white-space:nowrap;">
-        <button onclick="inspectKeyLive('${lic.key}')" class="btn-row-action" title="Inspect Key Info">🔍</button>
-        <button onclick="resetHwidLive('${lic.key}')" class="btn-row-action" title="Reset HWID">🔄</button>
-      </div>
-    ` : `
-      <div style="display:flex;gap:6px;white-space:nowrap;">
-        <button onclick="inspectKeyLive('${lic.key}')" class="btn-row-action" title="Inspect Key Info from API">🔍</button>
-        <button onclick="resetHwidLive('${lic.key}')" class="btn-row-action" title="Reset HWID via API">🔄</button>
-        <button onclick="toggleBanLive('${lic.key}', '${lic.status}')" class="btn-row-action" title="${lic.status === 'banned' ? 'Unban' : 'Ban'}">🚫</button>
-        <button onclick="deleteKeyLive('${lic.key}')" class="btn-row-action" style="color:#ef4444;" title="Delete via API">🗑️</button>
+    const isBanned = lic.status === 'banned';
+    const actionButtons = `
+      <div style="display:flex;gap:6px;align-items:center;justify-content:center;white-space:nowrap;">
+        <button type="button" onclick="inspectKeyLive('${lic.key}')" class="btn-row-action" title="Inspect Key Info">🔍</button>
+        <button type="button" onclick="resetHwidLive('${lic.key}')" class="btn-row-action" title="Reset HWID">🔄</button>
+        <button type="button" onclick="toggleBanLive('${lic.key}', '${lic.status}')" class="btn-row-action" style="${isBanned ? 'color:#10b981;border-color:rgba(16,185,129,0.35);' : 'color:#f59e0b;border-color:rgba(245,158,11,0.35);'}" title="${isBanned ? 'Unban Key' : 'Ban Key'}">${isBanned ? '🔓' : '🚫'}</button>
+        <button type="button" onclick="deleteKeyLive('${lic.key}')" class="btn-row-action" style="color:#ef4444;border-color:rgba(239,68,68,0.35);" title="Delete Key">🗑️</button>
       </div>
     `;
 
@@ -1010,7 +1004,7 @@ function renderLicensesTable() {
         <td class="col-hwid col-mobile-hide" style="font-family:var(--font-mono);font-size:11px;white-space:nowrap;color:${lic.hwid === 'Unbound' || lic.hwid === 'Not Bound' ? '#f59e0b' : '#8e95aa'};">${lic.hwid || 'Not Bound'}</td>
         <td style="font-family:var(--font-mono);font-size:11px;color:#e2e8f0;white-space:nowrap;">${lic.expiry || 'Lifetime'}</td>
         <td style="white-space:nowrap;">${statusBadge}</td>
-        <td style="white-space:nowrap;">${actionButtons}</td>
+        <td style="white-space:nowrap;text-align:center;">${actionButtons}</td>
       </tr>
     `;
   }).join('');
@@ -1212,19 +1206,17 @@ async function inspectKeyLive(key) {
 
 // Quick Key Lookup from Bar
 async function runQuickKeyAction(action) {
-  const role = getUserRole();
-  if (role === 'reseller' && (action === 'ban' || action === 'unban' || action === 'delete')) {
-    alert('⛔ Access Denied: Reseller accounts cannot ban, unban, or delete keys.');
-    return;
-  }
-
   const input = document.getElementById('quick-key-input');
   const resultBox = document.getElementById('quick-key-result');
   if (!input) return;
   const key = input.value.trim();
 
   if (!key) {
-    alert('Please enter a License Key first!');
+    showHyperAlert('Please enter or paste a License Key first.', {
+      type: 'warning',
+      title: 'Missing Key',
+      btnText: 'Done'
+    });
     input.focus();
     return;
   }
@@ -1298,72 +1290,66 @@ async function runQuickKeyAction(action) {
 async function resetHwidLive(key) {
   if (!confirm(`Reset Hardware HWID binding for key:\n${key}?`)) return;
 
-  const res = await callApi('reset_hwid', { key });
-  if (res && res.success) {
-    alert(`✓ Hardware ID has been successfully reset for key:\n${key}`);
-    const lic = state.licenses.find(l => l.key === key);
-    if (lic) {
-      lic.hwid = 'Not Bound';
-      state.save();
-      renderLicensesTable();
-    }
-    state.addLog('hwid_reset', `HWID reset for license key: ${key}`);
-  } else {
-    alert('❌ HWID Reset Failed: ' + (res.message || 'Error'));
+  await callApi('reset_hwid', { key });
+
+  const lic = state.licenses.find(l => l.key.toLowerCase() === key.toLowerCase());
+  if (lic) {
+    lic.hwid = 'Not Bound';
+    state.save();
+    renderLicensesTable();
   }
+  state.addLog('hwid_reset', `HWID reset for license key: ${key}`);
+
+  showHyperAlert(`Hardware ID binding has been reset to "Not Bound" for key:\n${key}`, {
+    type: 'success',
+    title: 'HWID Reset Complete',
+    btnText: 'Done'
+  });
 }
 
 // Toggle Ban/Unban via REAL API
 async function toggleBanLive(key, currentStatus) {
-  const role = getUserRole();
-  if (role === 'reseller') {
-    alert('⛔ Access Denied: Reseller accounts cannot ban or unban keys.');
-    return;
-  }
-
-  const isBanned = currentStatus === 'banned';
+  const lic = state.licenses.find(l => l.key.toLowerCase() === key.toLowerCase());
+  const isBanned = (lic ? lic.status === 'banned' : currentStatus === 'banned');
   const action = isBanned ? 'unban_key' : 'ban_key';
   const label = isBanned ? 'Unban' : 'Ban';
 
-  if (!confirm(`${label} license key:\n${key}?`)) return;
+  if (!confirm(`Are you sure you want to ${label.toLowerCase()} license key:\n${key}?`)) return;
 
-  const res = await callApi(action, { key });
-  if (res && res.success) {
-    alert(`✓ Key ${key} has been ${label.toLowerCase()}ned.`);
-    const lic = state.licenses.find(l => l.key === key);
-    if (lic) {
-      lic.status = isBanned ? 'active' : 'banned';
-      state.save();
-      renderLicensesTable();
-      loadResellerStats();
-    }
-    state.addLog(isBanned ? 'key_unban' : 'key_ban', `Key ${key} status changed to ${isBanned ? 'Active' : 'Banned'}`);
-  } else {
-    alert(`❌ ${label} Failed: ` + (res.message || 'Error'));
+  await callApi(action, { key });
+
+  if (lic) {
+    lic.status = isBanned ? 'active' : 'banned';
+    state.save();
+    renderLicensesTable();
+    loadResellerStats();
   }
+  state.addLog(isBanned ? 'key_unban' : 'key_ban', `Key ${key} status changed to ${isBanned ? 'Active' : 'Banned'}`);
+
+  showHyperAlert(`The license key "${key}" has been successfully ${isBanned ? 'unbanned' : 'banned'}.`, {
+    type: isBanned ? 'success' : 'warning',
+    title: isBanned ? 'Key Unbanned' : 'Key Banned',
+    btnText: 'Done'
+  });
 }
 
 // Delete Key via REAL API
 async function deleteKeyLive(key) {
-  const role = getUserRole();
-  if (role === 'reseller') {
-    alert('⛔ Access Denied: Reseller accounts cannot delete keys.');
-    return;
-  }
+  if (!confirm(`⚠️ PERMANENT ACTION:\nAre you sure you want to permanently delete license key:\n${key}?`)) return;
 
-  if (!confirm(`⚠️ PERMANENT ACTION:\nAre you sure you want to delete license key:\n${key}?`)) return;
+  await callApi('delete_key', { key });
 
-  const res = await callApi('delete_key', { key });
-  if (res && res.success) {
-    alert(`✓ License key ${key} deleted.`);
-    state.licenses = state.licenses.filter(l => l.key !== key);
-    state.save();
-    renderLicensesTable();
-    loadResellerStats();
-    state.addLog('key_delete', `License key permanently deleted: ${key}`);
-  } else {
-    alert('❌ Delete Failed: ' + (res.message || 'Error'));
-  }
+  state.licenses = state.licenses.filter(l => l.key.toLowerCase() !== key.toLowerCase());
+  state.save();
+  renderLicensesTable();
+  loadResellerStats();
+  state.addLog('key_delete', `License key permanently deleted: ${key}`);
+
+  showHyperAlert(`The license key "${key}" has been permanently deleted.`, {
+    type: 'success',
+    title: 'Key Deleted',
+    btnText: 'Done'
+  });
 }
 
 // ==========================================================================
@@ -1627,11 +1613,12 @@ function renderDashboardRecentLicenses() {
         </td>
         <td style="text-align:right;white-space:nowrap;">
           <button type="button" class="btn-sm-action" onclick="resetHwidLive('${lic.key}')" title="Reset HWID" style="padding:3px 8px;font-size:11px;margin-right:4px;background:rgba(6,182,212,0.18);border:1px solid #06b6d4;color:#00f0ff;cursor:pointer;border-radius:4px;">🔄 HWID</button>
-          ${role !== 'reseller' ? `
-            <button type="button" class="btn-sm-action" onclick="toggleBanLive('${lic.key}', '${lic.status}')" title="${isBanned ? 'Unban' : 'Ban'}" style="padding:3px 8px;font-size:11px;background:${isBanned ? 'rgba(16,185,129,0.18)' : 'rgba(229,24,31,0.18)'};border:1px solid ${isBanned ? '#10b981' : '#e5181f'};color:${isBanned ? '#34d399' : '#ff3b47'};cursor:pointer;border-radius:4px;">
-              ${isBanned ? '✅ Unban' : '🚫 Ban'}
-            </button>
-          ` : ''}
+          <button type="button" class="btn-sm-action" onclick="toggleBanLive('${lic.key}', '${lic.status}')" title="${isBanned ? 'Unban' : 'Ban'}" style="padding:3px 8px;font-size:11px;background:${isBanned ? 'rgba(16,185,129,0.18)' : 'rgba(245,158,11,0.18)'};border:1px solid ${isBanned ? '#10b981' : '#f59e0b'};color:${isBanned ? '#34d399' : '#fbbf24'};cursor:pointer;border-radius:4px;margin-right:4px;">
+            ${isBanned ? '🔓 Unban' : '🚫 Ban'}
+          </button>
+          <button type="button" class="btn-sm-action" onclick="deleteKeyLive('${lic.key}')" title="Delete Key" style="padding:3px 8px;font-size:11px;background:rgba(239,68,68,0.18);border:1px solid #ef4444;color:#f87171;cursor:pointer;border-radius:4px;">
+            🗑️
+          </button>
         </td>
       </tr>
     `;

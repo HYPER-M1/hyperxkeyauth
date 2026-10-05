@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/dashboard.css?v=2.3">
+  <link rel="stylesheet" href="assets/css/dashboard.css?v=2.4">
   <style>
     /* Reseller Isolation - Absolute Guaranteed Hiding on all devices */
     html.is-reseller .admin-only-feature,
@@ -21,13 +21,7 @@
     html.is-reseller #modal-edit-reseller,
     body.is-reseller #modal-edit-reseller,
     html.is-reseller #modal-change-admin,
-    body.is-reseller #modal-change-admin,
-    html.is-reseller #quick-tool-ban,
-    body.is-reseller #quick-tool-ban,
-    html.is-reseller #quick-tool-unban,
-    body.is-reseller #quick-tool-unban,
-    html.is-reseller #quick-tool-delete,
-    body.is-reseller #quick-tool-delete {
+    body.is-reseller #modal-change-admin {
       display: none !important;
       visibility: hidden !important;
       pointer-events: none !important;
@@ -551,9 +545,9 @@
               <input type="text" id="quick-key-input" class="form-input-box" placeholder="Paste or type any License Key here (e.g. HPERX-XXXX-XXXX...)">
               <button class="btn-action-secondary" onclick="runQuickKeyAction('inspect')">🔍 Inspect</button>
               <button class="btn-action-secondary" style="color:#38bdf8;" onclick="runQuickKeyAction('reset_hwid')">🔄 Reset HWID</button>
-              <button id="quick-tool-ban" class="btn-action-secondary admin-only-feature" style="color:#f59e0b;" onclick="runQuickKeyAction('ban')">🚫 Ban</button>
-              <button id="quick-tool-unban" class="btn-action-secondary admin-only-feature" style="color:#10b981;" onclick="runQuickKeyAction('unban')">✅ Unban</button>
-              <button id="quick-tool-delete" class="btn-action-secondary admin-only-feature" style="color:#ef4444;" onclick="runQuickKeyAction('delete')">🗑️ Delete</button>
+              <button id="quick-tool-ban" class="btn-action-secondary" style="color:#f59e0b;" onclick="runQuickKeyAction('ban')">🚫 Ban</button>
+              <button id="quick-tool-unban" class="btn-action-secondary" style="color:#10b981;" onclick="runQuickKeyAction('unban')">✅ Unban</button>
+              <button id="quick-tool-delete" class="btn-action-secondary" style="color:#ef4444;" onclick="runQuickKeyAction('delete')">🗑️ Delete</button>
             </div>
             <div id="quick-key-result" style="display:none;"></div>
           </div>
@@ -578,7 +572,7 @@
                   <th class="col-hwid col-mobile-hide">HWID BINDING</th>
                   <th>DURATION / EXPIRY</th>
                   <th>STATUS</th>
-                  <th style="min-width:110px;">ACTIONS</th>
+                  <th style="min-width:160px;text-align:center;">ACTIONS</th>
                 </tr>
               </thead>
               <tbody id="licenses-tbody">
@@ -1077,8 +1071,10 @@
         <!-- Populated dynamically by inspectKeyLive -->
       </div>
 
-      <div class="modal-footer-strip">
+      <div class="modal-footer-strip" style="display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;">
         <button type="button" class="btn-action-secondary" onclick="resetHwidLive(window.currentInspectedKey)">🔄 Reset HWID</button>
+        <button type="button" class="btn-action-secondary" style="color:#f59e0b;" onclick="toggleBanLive(window.currentInspectedKey);closeModal('modal-key-inspector');">🚫 Ban / Unban</button>
+        <button type="button" class="btn-action-secondary" style="color:#ef4444;" onclick="deleteKeyLive(window.currentInspectedKey);closeModal('modal-key-inspector');">🗑️ Delete</button>
         <button type="button" class="btn-action-primary" onclick="closeModal('modal-key-inspector')">Close</button>
       </div>
     </div>
@@ -1455,6 +1451,6 @@
     </div>
   </div>
 
-  <script src="assets/js/dashboard.js?v=2.3"></script>
+  <script src="assets/js/dashboard.js?v=2.4"></script>
 </body>
 </html>
