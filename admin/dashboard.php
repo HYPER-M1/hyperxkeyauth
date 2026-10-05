@@ -115,7 +115,7 @@ $admin_user = $_SESSION['prtv_admin_user'] ?? 'HYPER X';
           <div class="header-pill-stat">
             <span>🔑</span>
             <span>Keys:</span>
-            <span class="stat-keys-tag">82 / 9999</span>
+            <span class="stat-keys-tag" id="header-keys-stat">82 / 9999</span>
           </div>
 
           <button class="header-icon-btn" title="Notifications">🔔</button>

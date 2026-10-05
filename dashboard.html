@@ -228,9 +228,10 @@
                     var hName = document.getElementById('header-admin-name');
                     if (hName) hName.textContent = 'Reseller';
                     var hIcon = document.getElementById('header-admin-icon');
-                    if (hIcon) hIcon.textContent = '👤';
+                    var uUsed = (res.createdKeys !== undefined && res.createdKeys !== null) ? res.createdKeys : 0;
+                    var uTotal = res.totalQuota || ((res.balance || 0) + uUsed);
                     var hKeys = document.getElementById('header-keys-stat');
-                    if (hKeys) { hKeys.textContent = (res.balance || 0) + ' / 9999'; }
+                    if (hKeys) { hKeys.textContent = uUsed + ' / ' + uTotal; }
                     var dAv = document.getElementById('dash-user-avatar');
                     if (dAv) { dAv.textContent = uInitial; dAv.style.background = 'rgba(245,158,11,0.15)'; dAv.style.borderColor = 'rgba(245,158,11,0.4)'; dAv.style.color = '#fbbf24'; }
                     var dBadge = document.getElementById('dash-welcome-role-badge');

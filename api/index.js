@@ -552,6 +552,9 @@ module.exports = async (req, res) => {
       const activeCount = myKeys.filter(l => l.status === 'active').length;
       const bannedCount = myKeys.filter(l => l.status === 'banned').length;
       const rObj = resellers.find(r => r.id === rid) || {};
+      const balance = rObj.balance || 0;
+      const createdKeys = rObj.createdKeys || myKeys.length;
+      const totalQuota = rObj.totalQuota || (balance + createdKeys);
 
       return res.status(200).json({
         success: true,
@@ -559,9 +562,10 @@ module.exports = async (req, res) => {
         total_keys: myKeys.length,
         active_keys: activeCount,
         banned_keys: bannedCount,
-        key_limit: 9999,
-        keys_created: rObj.createdKeys || myKeys.length,
-        remaining: rObj.balance || 0
+        key_limit: totalQuota,
+        keys_created: createdKeys,
+        remaining: balance,
+        total_quota: totalQuota
       });
     }
 

@@ -327,11 +327,14 @@ if (in_array($action, $protectedActions, true)) {
             $bannedCount = count(array_filter($myKeys, function($l) { return ($l['status'] ?? '') === 'banned'; }));
             
             $bal = 0;
+            $bal = 0;
             $created = count($myKeys);
+            $totalQuota = $created;
             foreach ($store['tx99_resellers'] as $r) {
                 if ((string)$r['id'] === $rid) {
                     $bal = $r['balance'] ?? 0;
                     $created = $r['createdKeys'] ?? $created;
+                    $totalQuota = $r['totalQuota'] ?? ($bal + $created);
                     break;
                 }
             }
@@ -342,9 +345,10 @@ if (in_array($action, $protectedActions, true)) {
                 'total_keys'   => count($myKeys),
                 'active_keys'  => $activeCount,
                 'banned_keys'  => $bannedCount,
-                'key_limit'    => 9999,
+                'key_limit'    => $totalQuota,
                 'keys_created' => $created,
-                'remaining'    => $bal
+                'remaining'    => $bal,
+                'total_quota'  => $totalQuota
             ]);
         }
     }

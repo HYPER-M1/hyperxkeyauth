@@ -8,6 +8,7 @@
       "password": "madhukarbeta",
       "email": "madhukar@reseller.local",
       "balance": 996,
+      "totalQuota": 999,
       "createdKeys": 3,
       "status": "Active",
       "panels": [
@@ -22,6 +23,7 @@
       "password": "test123",
       "email": "test1@reseller.local",
       "balance": 99,
+      "totalQuota": 100,
       "createdKeys": 1,
       "status": "Active",
       "panels": [
@@ -36,6 +38,7 @@
       "password": "1234",
       "email": "1@reseller.local",
       "balance": 100,
+      "totalQuota": 100,
       "createdKeys": 0,
       "status": "Active",
       "panels": [

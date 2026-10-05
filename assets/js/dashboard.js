@@ -44,10 +44,11 @@ const SEED_LOGS = [
 ];
 
 const SEED_RESELLERS = [
-  { id: '17909518904974', username: 'beta123', password: 'beta1230', email: 'beta123@gmail.com', balance: 999, createdKeys: 1, status: 'Active', panels: ['all'], totpSecret: 'YLOG2E3ANGTE4B23', twofa_setup_done: true },
-  { id: '1791108883957', username: 'madhukar', password: 'madhukarbeta', email: 'madhukar@reseller.local', balance: 998, createdKeys: 1, status: 'Active', panels: ['all'], totpSecret: 'Z5N73VUTBHFC7MJF', twofa_setup_done: true },
-  { id: '1791196941383', username: 'test1', password: 'test123', email: 'test1@reseller.local', balance: 99, createdKeys: 1, status: 'Active', panels: ['all'], totpSecret: '5XMSIKNTE4AXVENX', twofa_setup_done: true },
-  { id: '1790951896372', username: 'MADHUKARBETA', password: 'reseller4@123', email: 'madhukarsarkar004@gmail.com', balance: 260, createdKeys: 0, status: 'Active', panels: ['all'], totpSecret: 'JBSWY3DPEHPK3PXP', twofa_setup_done: true }
+  { id: '17909518904974', username: 'beta123', password: 'beta1230', email: 'beta123@gmail.com', balance: 999, totalQuota: 1000, createdKeys: 1, status: 'Active', panels: ['all'], totpSecret: 'YLOG2E3ANGTE4B23', twofa_setup_done: true },
+  { id: '1791108883957', username: 'madhukar', password: 'madhukarbeta', email: 'madhukar@reseller.local', balance: 998, totalQuota: 999, createdKeys: 1, status: 'Active', panels: ['all'], totpSecret: 'Z5N73VUTBHFC7MJF', twofa_setup_done: true },
+  { id: '1791196941383', username: 'test1', password: 'test123', email: 'test1@reseller.local', balance: 99, totalQuota: 100, createdKeys: 1, status: 'Active', panels: ['all'], totpSecret: '5XMSIKNTE4AXVENX', twofa_setup_done: true },
+  { id: '1791201547205', username: '1', password: '1234', email: '1@reseller.local', balance: 100, totalQuota: 100, createdKeys: 0, status: 'Active', panels: ['all'], totpSecret: 'Q5UHSPLEHD7Z27QM', twofa_setup_done: true },
+  { id: '1790951896372', username: 'MADHUKARBETA', password: 'reseller4@123', email: 'madhukarsarkar004@gmail.com', balance: 260, totalQuota: 260, createdKeys: 0, status: 'Active', panels: ['all'], totpSecret: 'JBSWY3DPEHPK3PXP', twofa_setup_done: true }
 ];
 
 const SEED_TRANSFERS = [
@@ -775,36 +776,39 @@ function updateDashboardStatsUI() {
     if (res) {
       try {
         const allowedPkgs = getResellerAllowedPackages();
+        const myKeys = getResellerOwnedKeys();
+        const usedCount = (res.createdKeys !== undefined && res.createdKeys !== null) ? res.createdKeys : myKeys.length;
+        const balance = (res.balance !== undefined && res.balance !== null) ? res.balance : 0;
+        const totalQuota = res.totalQuota || (balance + usedCount);
 
         if (headerKeys) {
-          headerKeys.textContent = `${(res.balance || 0)} / 9999`;
+          headerKeys.textContent = `${usedCount} / ${totalQuota}`;
+          headerKeys.title = `Used: ${usedCount} Keys | Total Quota: ${totalQuota} Keys | Available: ${balance} Keys`;
           headerKeys.style.color = '';
         }
         const headerAdminName = document.getElementById('header-admin-name');
         if (headerAdminName) headerAdminName.textContent = 'Reseller';
         const headerAdminIcon = document.getElementById('header-admin-icon');
         if (headerAdminIcon) headerAdminIcon.textContent = '👤';
-        if (elRemaining) elRemaining.textContent = (res.balance || 0).toLocaleString();
+        if (elRemaining) elRemaining.textContent = balance.toLocaleString();
         const dashQuotaNum = document.getElementById('dash-welcome-quota-num');
-        if (dashQuotaNum) dashQuotaNum.textContent = (res.balance || 0).toLocaleString();
+        if (dashQuotaNum) dashQuotaNum.textContent = balance.toLocaleString();
         
-        // SECURITY: Calculate reseller's own keys using canonical ownership check
-        const myKeys = getResellerOwnedKeys();
-        if (elCreated) elCreated.textContent = myKeys.length || (res.createdKeys || 0);
+        if (elCreated) elCreated.textContent = usedCount;
         if (elActive) {
           const activeCount = myKeys.filter(l => l.status === 'active').length;
-          elActive.textContent = activeCount || myKeys.length || 0;
+          elActive.textContent = activeCount || usedCount || 0;
         }
         if (elAdminUser) elAdminUser.textContent = `${res.username} (Reseller)`;
 
         const statKeyLimit = document.getElementById('stat-key-limit');
         const statKeyLimitTitle = document.getElementById('stat-key-limit-title');
         if (statKeyLimit) {
-          statKeyLimit.textContent = res.username;
-          statKeyLimit.style.fontSize = '14.5px';
+          statKeyLimit.textContent = totalQuota.toLocaleString();
+          statKeyLimit.style.fontSize = '';
           statKeyLimit.style.color = '#00f0ff';
         }
-        if (statKeyLimitTitle) statKeyLimitTitle.textContent = 'RESELLER USER';
+        if (statKeyLimitTitle) statKeyLimitTitle.textContent = 'TOTAL QUOTA';
 
         const statBannedKeys = document.getElementById('stat-banned-keys');
         const statBannedTitle = document.getElementById('stat-banned-title');
@@ -2544,6 +2548,7 @@ function submitEditReseller(e) {
   r.username = username;
   r.password = password;
   r.balance = isNaN(quota) ? 0 : quota;
+  r.totalQuota = (r.balance || 0) + (r.createdKeys || 0);
   r.status = status;
   r.panels = panelsToSave;
 
@@ -2585,10 +2590,11 @@ function quickAddResellerCredits(id) {
   }
 
   r.balance += addAmount;
+  r.totalQuota = (r.totalQuota || (r.balance - addAmount)) + addAmount;
   state.save();
   syncCredentialsToServer({ tx99_resellers: state.resellers });
   renderResellersTable();
-  alert(`✓ Added ${addAmount} keys to ${r.username}. New Balance: ${r.balance} Keys`);
+  alert(`✓ Added ${addAmount} keys to ${r.username}. New Balance: ${r.balance} Keys (Total Quota: ${r.totalQuota} Keys)`);
 }
 
 function toggleResellerStatus(id) {
@@ -3048,6 +3054,7 @@ function executeCreditTransfer(targetIdOrUsername, amount, note) {
 
   // Credit target
   target.balance = (parseInt(target.balance, 10) || 0) + numAmount;
+  target.totalQuota = (target.totalQuota || (target.balance - numAmount)) + numAmount;
 
   // Create Transaction Record
   const tx = {
@@ -3540,9 +3547,14 @@ function initUserRoleSession() {
         dashRoleBadge.style.display = 'none';
       }
 
+      const myKeys = getResellerOwnedKeys();
+      const usedCount = (res.createdKeys !== undefined && res.createdKeys !== null) ? res.createdKeys : myKeys.length;
+      const balance = (res.balance !== undefined && res.balance !== null) ? res.balance : 0;
+      const totalQuota = res.totalQuota || (balance + usedCount);
+
       const dashRoleDesc = document.getElementById('dash-welcome-role-desc');
       if (dashRoleDesc) {
-        dashRoleDesc.innerHTML = `Reseller Session • Logged in as: <strong>${res.username}</strong> • Available Balance: <strong style="color:#10b981;">${(res.balance || 0).toLocaleString()} Keys</strong>`;
+        dashRoleDesc.innerHTML = `Reseller Session • Logged in as: <strong>${res.username}</strong> • Available Balance: <strong style="color:#10b981;">${balance.toLocaleString()} Keys</strong> • Used: <strong style="color:#38bdf8;">${usedCount.toLocaleString()} Keys</strong> • Total Quota: <strong style="color:#f59e0b;">${totalQuota.toLocaleString()} Keys</strong>`;
       }
 
       const dashQuotaBox = document.getElementById('dash-welcome-quota-box');
@@ -3551,7 +3563,7 @@ function initUserRoleSession() {
       }
       const dashQuotaNum = document.getElementById('dash-welcome-quota-num');
       if (dashQuotaNum) {
-        dashQuotaNum.textContent = (res.balance || 0).toLocaleString();
+        dashQuotaNum.textContent = balance.toLocaleString();
       }
 
       // Hide admin-only sections
@@ -3571,7 +3583,7 @@ function initUserRoleSession() {
       if (adminHeaderName) adminHeaderName.textContent = 'Reseller';
       if (adminHeaderAction) adminHeaderAction.textContent = '(Reseller)';
       if (adminHeaderBtn) {
-        adminHeaderBtn.title = `Reseller: ${res.username} (${res.balance} Keys)`;
+        adminHeaderBtn.title = `Reseller: ${res.username} (${usedCount}/${totalQuota} Used • ${balance} Available)`;
       }
 
       // Hide Ban/Unban/Delete buttons from Quick Tools bar
@@ -3583,10 +3595,11 @@ function initUserRoleSession() {
         }
       });
 
-      // Update top navbar keys stat to show remaining reseller credit
+      // Update top navbar keys stat to show: [Used Keys] / [Total Quota]
       const headerKeys = document.getElementById('header-keys-stat');
       if (headerKeys) {
-        headerKeys.textContent = `${(res.balance || 0)} / 9999`;
+        headerKeys.textContent = `${usedCount} / ${totalQuota}`;
+        headerKeys.title = `Used: ${usedCount} Keys | Total Quota: ${totalQuota} Keys | Available: ${balance} Keys`;
         headerKeys.style.color = '';
       }
 

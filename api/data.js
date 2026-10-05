@@ -25,10 +25,11 @@ const DEFAULT_DATA = {
   hyperx_admin_user: "HYPER X",
   hyperx_admin_pass: "hyperm2000",
   tx99_resellers: [
-    { id: "17909518904974", username: "beta123", password: "beta1230", email: "beta123@gmail.com", balance: 999, createdKeys: 1, status: "Active", panels: ["all"], totpSecret: "YLOG2E3ANGTE4B23", twofa_setup_done: true },
-    { id: "1791108883957", username: "madhukar", password: "madhukarbeta", email: "madhukar@reseller.local", balance: 998, createdKeys: 1, status: "Active", panels: ["all"], totpSecret: "Z5N73VUTBHFC7MJF", twofa_setup_done: true },
-    { id: "1791196941383", username: "test1", password: "test123", email: "test1@reseller.local", balance: 99, createdKeys: 1, status: "Active", panels: ["all"], totpSecret: "5XMSIKNTE4AXVENX", twofa_setup_done: true },
-    { id: "1790951896372", username: "MADHUKARBETA", password: "reseller4@123", email: "madhukarsarkar004@gmail.com", balance: 260, createdKeys: 0, status: "Active", panels: ["all"], totpSecret: "JBSWY3DPEHPK3PXP", twofa_setup_done: true }
+    { id: "17909518904974", username: "beta123", password: "beta1230", email: "beta123@gmail.com", balance: 999, totalQuota: 1000, createdKeys: 1, status: "Active", panels: ["all"], totpSecret: "YLOG2E3ANGTE4B23", twofa_setup_done: true },
+    { id: "1791108883957", username: "madhukar", password: "madhukarbeta", email: "madhukar@reseller.local", balance: 998, totalQuota: 999, createdKeys: 1, status: "Active", panels: ["all"], totpSecret: "Z5N73VUTBHFC7MJF", twofa_setup_done: true },
+    { id: "1791196941383", username: "test1", password: "test123", email: "test1@reseller.local", balance: 99, totalQuota: 100, createdKeys: 1, status: "Active", panels: ["all"], totpSecret: "5XMSIKNTE4AXVENX", twofa_setup_done: true },
+    { id: "1791201547205", username: "1", password: "1234", email: "1@reseller.local", balance: 100, totalQuota: 100, createdKeys: 0, status: "Active", panels: ["all"], totpSecret: "Q5UHSPLEHD7Z27QM", twofa_setup_done: true },
+    { id: "1790951896372", username: "MADHUKARBETA", password: "reseller4@123", email: "madhukarsarkar004@gmail.com", balance: 260, totalQuota: 260, createdKeys: 0, status: "Active", panels: ["all"], totpSecret: "JBSWY3DPEHPK3PXP", twofa_setup_done: true }
   ],
   tx99_licenses: [
     { id: "1", key: "HPERX-32KA-991L-M08P-4491", app: "Custom work", pkg: "EXTERNAL PANEL", user: "madhukar_User", hwid: "88CF-1102-BA54-77E0", expiry: "2026-10-15", status: "active", note: "Created by madhukar", resellerId: "1791108883957" },
