@@ -17,18 +17,32 @@
       "twofa_setup_done": true
     },
     {
-      "id": "1790951896372",
-      "username": "MADHUKARBETA",
-      "password": "reseller4@123",
-      "email": "madhukarsarkar004@gmail.com",
-      "balance": 260,
+      "id": "1791196941383",
+      "username": "test1",
+      "password": "test123",
+      "email": "test1@reseller.local",
+      "balance": 99,
+      "createdKeys": 1,
+      "status": "Active",
+      "panels": [
+        "all"
+      ],
+      "totpSecret": "5XMSIKNTE4AXVENX",
+      "twofa_setup_done": true
+    },
+    {
+      "id": "1791201547205",
+      "username": "1",
+      "password": "1234",
+      "email": "1@reseller.local",
+      "balance": 100,
       "createdKeys": 0,
       "status": "Active",
       "panels": [
         "all"
       ],
-      "totpSecret": "JBSWY3DPEHPK3PXP",
-      "twofa_setup_done": true
+      "totpSecret": "Q5UHSPLEHD7Z27QM",
+      "twofa_setup_done": false
     }
   ]
 }
