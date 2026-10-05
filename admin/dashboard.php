@@ -118,12 +118,6 @@ $admin_user = $_SESSION['prtv_admin_user'] ?? 'HYPER X';
             <span class="stat-keys-tag">82 / 9999</span>
           </div>
 
-          <div class="header-pill-stat">
-            <span>⚡</span>
-            <span>Lib:</span>
-            <span class="stat-lib-tag">● (35/24h)</span>
-          </div>
-
           <button class="header-icon-btn" title="Notifications">🔔</button>
 
           <button class="header-pill-admin" onclick="switchTab('resellers')">

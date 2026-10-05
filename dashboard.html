@@ -154,16 +154,22 @@
         </div>
 
         <div class="navbar-right">
-          <!-- Available Credits Stat Pill -->
-          <div class="header-pill-stat" title="Available Credits">
-            <span style="font-size:12px;">💳</span>
-            <span class="stat-keys-tag" id="header-keys-stat">9,922 Credits</span>
+          <!-- Keys Stat -->
+          <div class="header-pill-stat" title="Total Keys Quota">
+            <span style="font-size:13px;">🔑</span>
+            <span style="color:#94a3b8;font-size:12px;font-weight:600;">Keys:</span>
+            <span class="stat-keys-tag" id="header-keys-stat">77 / 9999</span>
           </div>
 
-          <!-- User Role Badge -->
+          <!-- Notification Bell -->
+          <button class="header-icon-btn" onclick="alert('KeyAuth API Status: Operational & Signed with HMAC-SHA256')" title="Notifications">
+            🔔
+          </button>
+
+          <!-- Admin User Badge -->
           <div class="header-pill-admin" id="header-admin-btn">
-            <span id="header-admin-icon">👑</span>
-            <span id="header-admin-name">Owner: HYPER X</span>
+            <span id="header-admin-icon">🛡️</span>
+            <span id="header-admin-name">Admin</span>
           </div>
         </div>
       </header>
@@ -224,11 +230,11 @@
                     var sRole = document.getElementById('profile-role-sub');
                     if (sRole) sRole.textContent = 'Reseller (' + (res.balance || 0) + ' Keys)';
                     var hName = document.getElementById('header-admin-name');
-                    if (hName) hName.textContent = 'Reseller: ' + uName;
+                    if (hName) hName.textContent = 'Reseller';
                     var hIcon = document.getElementById('header-admin-icon');
                     if (hIcon) hIcon.textContent = '👤';
                     var hKeys = document.getElementById('header-keys-stat');
-                    if (hKeys) { hKeys.textContent = (res.balance || 0).toLocaleString() + ' Credits'; hKeys.style.color = '#00f0ff'; }
+                    if (hKeys) { hKeys.textContent = (res.balance || 0) + ' / 9999'; }
                     var dAv = document.getElementById('dash-user-avatar');
                     if (dAv) { dAv.textContent = uInitial; dAv.style.background = 'rgba(245,158,11,0.15)'; dAv.style.borderColor = 'rgba(245,158,11,0.4)'; dAv.style.color = '#fbbf24'; }
                     var dBadge = document.getElementById('dash-welcome-role-badge');

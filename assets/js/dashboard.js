@@ -401,9 +401,9 @@ function updateAdminUI() {
   document.querySelectorAll('.profile-name').forEach(el => el.textContent = currentAdmin);
 
   const headerAdminName = document.getElementById('header-admin-name');
-  if (headerAdminName) headerAdminName.textContent = `Owner: ${currentAdmin}`;
+  if (headerAdminName) headerAdminName.textContent = 'Admin';
   const headerAdminIcon = document.getElementById('header-admin-icon');
-  if (headerAdminIcon) headerAdminIcon.textContent = '👑';
+  if (headerAdminIcon) headerAdminIcon.textContent = '🛡️';
 
   const avatarLetter = document.getElementById('sidebar-avatar-letter');
   if (avatarLetter && currentAdmin.length > 0) {
@@ -654,11 +654,11 @@ function updateDashboardStatsUI() {
         const allowedPkgs = getResellerAllowedPackages();
 
         if (headerKeys) {
-          headerKeys.textContent = `${(res.balance || 0).toLocaleString()} Credits`;
-          headerKeys.style.color = '#00f0ff';
+          headerKeys.textContent = `${(res.balance || 0)} / 9999`;
+          headerKeys.style.color = '';
         }
         const headerAdminName = document.getElementById('header-admin-name');
-        if (headerAdminName) headerAdminName.textContent = `Reseller: ${res.username}`;
+        if (headerAdminName) headerAdminName.textContent = 'Reseller';
         const headerAdminIcon = document.getElementById('header-admin-icon');
         if (headerAdminIcon) headerAdminIcon.textContent = '👤';
         if (elRemaining) elRemaining.textContent = (res.balance || 0).toLocaleString();
@@ -715,14 +715,13 @@ function updateDashboardStatsUI() {
 
   // Update Top Navbar for Root Admin
   if (headerKeys) {
-    const credCount = (state.stats && state.stats.remaining != null) ? state.stats.remaining : 9922;
-    headerKeys.textContent = `${credCount.toLocaleString()} Credits`;
+    headerKeys.textContent = `${state.stats.keys_created} / ${state.stats.key_limit}`;
     headerKeys.style.color = '';
   }
   const headerAdminName = document.getElementById('header-admin-name');
-  if (headerAdminName) headerAdminName.textContent = `Owner: ${adminName}`;
+  if (headerAdminName) headerAdminName.textContent = 'Admin';
   const headerAdminIcon = document.getElementById('header-admin-icon');
-  if (headerAdminIcon) headerAdminIcon.textContent = '👑';
+  if (headerAdminIcon) headerAdminIcon.textContent = '🛡️';
 
   // Update Summary Cards for Root Admin
   if (elCreated) elCreated.textContent = state.stats.keys_created;
@@ -2910,10 +2909,10 @@ function initUserRoleSession() {
       const adminHeaderName = document.getElementById('header-admin-name');
       const adminHeaderAction = document.getElementById('header-admin-action');
       if (adminHeaderIcon) adminHeaderIcon.textContent = '👤';
-      if (adminHeaderName) adminHeaderName.textContent = `Reseller: ${res.username}`;
+      if (adminHeaderName) adminHeaderName.textContent = 'Reseller';
       if (adminHeaderAction) adminHeaderAction.textContent = '(Reseller)';
       if (adminHeaderBtn) {
-        adminHeaderBtn.title = `Reseller: ${res.username} (${(res.balance || 0).toLocaleString()} Credits)`;
+        adminHeaderBtn.title = `Reseller: ${res.username} (${res.balance} Keys)`;
       }
 
       // Hide Ban/Unban/Delete buttons from Quick Tools bar
@@ -2928,8 +2927,8 @@ function initUserRoleSession() {
       // Update top navbar keys stat to show remaining reseller credit
       const headerKeys = document.getElementById('header-keys-stat');
       if (headerKeys) {
-        headerKeys.textContent = `${(res.balance || 0).toLocaleString()} Credits`;
-        headerKeys.style.color = '#00f0ff';
+        headerKeys.textContent = `${(res.balance || 0)} / 9999`;
+        headerKeys.style.color = '';
       }
 
       // Update View headings
@@ -2985,16 +2984,15 @@ function initUserRoleSession() {
     const adminHeaderBtn = document.getElementById('header-admin-btn');
     const adminHeaderIcon = document.getElementById('header-admin-icon');
     const adminHeaderName = document.getElementById('header-admin-name');
-    if (adminHeaderIcon) adminHeaderIcon.textContent = '👑';
-    if (adminHeaderName) adminHeaderName.textContent = `Owner: ${adminUser}`;
+    if (adminHeaderIcon) adminHeaderIcon.textContent = '🛡️';
+    if (adminHeaderName) adminHeaderName.textContent = 'Admin';
     if (adminHeaderBtn) {
-      adminHeaderBtn.title = `Owner: ${adminUser}`;
+      adminHeaderBtn.title = `Admin: ${adminUser}`;
     }
 
     const headerKeys = document.getElementById('header-keys-stat');
     if (headerKeys) {
-      const credCount = (state.stats && state.stats.remaining != null) ? state.stats.remaining : 9922;
-      headerKeys.textContent = `${credCount.toLocaleString()} Credits`;
+      headerKeys.textContent = `${state.stats.keys_created} / ${state.stats.key_limit}`;
       headerKeys.style.color = '';
     }
 
