@@ -3,20 +3,6 @@
   "hyperx_admin_pass": "hyperm2000",
   "tx99_resellers": [
     {
-      "id": "17909518904974",
-      "username": "beta123",
-      "password": "beta1230",
-      "email": "beta123@gmail.com",
-      "balance": 999,
-      "createdKeys": 1,
-      "status": "Active",
-      "panels": [
-        "all"
-      ],
-      "totpSecret": "YLOG2E3ANGTE4B23",
-      "twofa_setup_done": true
-    },
-    {
       "id": "1791108883957",
       "username": "madhukar",
       "password": "madhukarbeta",
