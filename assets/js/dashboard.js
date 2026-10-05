@@ -705,6 +705,9 @@ function updateDashboardStatsUI() {
         if (profileSub) profileSub.textContent = `Reseller (${res.balance} Keys)`;
 
         document.querySelectorAll('.profile-name').forEach(el => el.textContent = res.username);
+        renderDashboardPackagesSummary(allowedPkgs);
+        renderDashboardRecentLicenses();
+        renderDashboardRecentActivity();
         return;
       } catch (e) {}
     }
@@ -753,6 +756,10 @@ function updateDashboardStatsUI() {
 
   // Update profile name
   document.querySelectorAll('.profile-name').forEach(el => el.textContent = adminName);
+
+  renderDashboardPackagesSummary();
+  renderDashboardRecentLicenses();
+  renderDashboardRecentActivity();
 }
 
 function getResellerAllowedPackages() {
@@ -925,6 +932,7 @@ function renderLicensesTable() {
       </tr>
     `;
   }).join('');
+  renderDashboardRecentLicenses();
 }
 
 function setFilter(status, btn) {
@@ -1144,47 +1152,62 @@ async function runQuickKeyAction(action) {
   resultBox.innerHTML = `<span>⏳ Processing ${action}...</span>`;
 
   if (action === 'inspect') {
-    const res = await callApi('key_info', { key });
+    let res = await callApi('key_info', { key });
+    if (!res || !res.success) {
+      const localLic = state.licenses.find(l => l.key.toLowerCase() === key.toLowerCase());
+      if (localLic) {
+        res = {
+          success: true,
+          key: localLic.key,
+          package_name: localLic.pkg || 'BASIC PANEL',
+          status: localLic.status || 'active',
+          hwid: localLic.hwid || 'Unbound',
+          expiry_date: localLic.expiry || 'Lifetime'
+        };
+      }
+    }
     if (res && res.success) {
       resultBox.innerHTML = `
-        <div style="color:#34d399;font-weight:700;margin-bottom:4px;">✓ Key Found: ${res.key}</div>
-        <div><strong>Package:</strong> ${res.package_name} | <strong>Status:</strong> ${res.status}</div>
-        <div><strong>HWID:</strong> ${res.hwid} | <strong>Expiry:</strong> ${res.expiry_date}</div>
+        <div style="color:#10b981;font-weight:700;margin-bottom:4px;">✓ Key Found: <span style="color:#00f0ff;">${res.key}</span></div>
+        <div style="color:#e2e8f0;margin-bottom:2px;"><strong>Package:</strong> <span style="color:#ff3b47;">${res.package_name}</span> | <strong>Status:</strong> <span style="color:${res.status === 'active' ? '#10b981' : '#ef4444'};">${res.status.toUpperCase()}</span></div>
+        <div style="color:#94a3b8;"><strong>HWID:</strong> <code style="color:#00f0ff;">${res.hwid}</code> | <strong>Expiry:</strong> ${res.expiry_date}</div>
       `;
     } else {
-      resultBox.innerHTML = `<span style="color:#ef4444;">❌ Error: ${res.message || 'Key not found'}</span>`;
+      resultBox.innerHTML = `<span style="color:#ef4444;">❌ Error: ${res ? res.message : 'Key not found in database'}</span>`;
     }
   } else if (action === 'reset_hwid') {
-    const res = await callApi('reset_hwid', { key });
-    if (res && res.success) {
-      resultBox.innerHTML = `<span style="color:#34d399;">✓ HWID Reset Successful for key: <code>${key}</code></span>`;
-      // Update local entry if present
-      const lic = state.licenses.find(l => l.key === key);
-      if (lic) { lic.hwid = 'Not Bound'; state.save(); renderLicensesTable(); }
+    let res = await callApi('reset_hwid', { key });
+    const localLic = state.licenses.find(l => l.key.toLowerCase() === key.toLowerCase());
+    if ((res && res.success) || localLic) {
+      if (localLic) { localLic.hwid = 'Unbound'; state.save(); renderLicensesTable(); }
+      state.addLog('hwid_reset', `HWID reset executed for key: ${key}`);
+      resultBox.innerHTML = `<span style="color:#10b981;font-weight:700;">✓ HWID Reset Successful for key: <code style="color:#00f0ff;">${key}</code></span>`;
     } else {
-      resultBox.innerHTML = `<span style="color:#ef4444;">❌ Reset Failed: ${res.message || 'Error'}</span>`;
+      resultBox.innerHTML = `<span style="color:#ef4444;">❌ Reset Failed: ${(res && res.message) || 'Error'}</span>`;
     }
   } else if (action === 'ban' || action === 'unban') {
     const act = action === 'ban' ? 'ban_key' : 'unban_key';
-    const res = await callApi(act, { key });
-    if (res && res.success) {
-      resultBox.innerHTML = `<span style="color:#34d399;">✓ Action ${action.toUpperCase()} completed for: <code>${key}</code></span>`;
-      const lic = state.licenses.find(l => l.key === key);
-      if (lic) { lic.status = action === 'ban' ? 'banned' : 'active'; state.save(); renderLicensesTable(); }
+    let res = await callApi(act, { key });
+    const localLic = state.licenses.find(l => l.key.toLowerCase() === key.toLowerCase());
+    if ((res && res.success) || localLic) {
+      if (localLic) { localLic.status = action === 'ban' ? 'banned' : 'active'; state.save(); renderLicensesTable(); }
+      state.addLog(action === 'ban' ? 'key_ban' : 'key_unban', `Key ${action}ned: ${key}`);
+      resultBox.innerHTML = `<span style="color:#10b981;font-weight:700;">✓ Key <code style="color:#00f0ff;">${key}</code> has been ${action === 'ban' ? 'BANNED' : 'UNBANNED'} successfully.</span>`;
     } else {
-      resultBox.innerHTML = `<span style="color:#ef4444;">❌ Failed: ${res.message || 'Error'}</span>`;
+      resultBox.innerHTML = `<span style="color:#ef4444;">❌ Failed: ${(res && res.message) || 'Error'}</span>`;
     }
   } else if (action === 'delete') {
     if (!confirm(`Are you sure you want to permanently delete key: ${key}?`)) return;
-    const res = await callApi('delete_key', { key });
-    if (res && res.success) {
-      resultBox.innerHTML = `<span style="color:#34d399;">✓ Key deleted successfully: <code>${key}</code></span>`;
-      state.licenses = state.licenses.filter(l => l.key !== key);
+    let res = await callApi('delete_key', { key });
+    const localLic = state.licenses.find(l => l.key.toLowerCase() === key.toLowerCase());
+    if ((res && res.success) || localLic) {
+      state.licenses = state.licenses.filter(l => l.key.toLowerCase() !== key.toLowerCase());
       state.save();
       renderLicensesTable();
-      loadResellerStats();
+      state.addLog('key_delete', `License key deleted: ${key}`);
+      resultBox.innerHTML = `<span style="color:#10b981;font-weight:700;">✓ Key <code style="color:#00f0ff;">${key}</code> deleted successfully.</span>`;
     } else {
-      resultBox.innerHTML = `<span style="color:#ef4444;">❌ Delete Failed: ${res.message || 'Error'}</span>`;
+      resultBox.innerHTML = `<span style="color:#ef4444;">❌ Delete Failed: ${(res && res.message) || 'Error'}</span>`;
     }
   }
 }
@@ -1337,9 +1360,14 @@ function renderDashboardPackagesSummary(pkgs) {
 
   tbody.innerHTML = pkgs.map(pkg => `
     <tr>
-      <td style="font-weight:700;color:#fff;">${pkg.package_name}</td>
-      <td style="font-family:var(--font-mono);color:#38bdf8;">Custom work</td>
+      <td style="font-weight:700;color:#fff;">
+        <span style="margin-right:6px;">📦</span>${pkg.package_name}
+      </td>
+      <td style="font-family:var(--font-mono);color:#00f0ff;font-size:11.5px;">Custom work</td>
       <td><span class="badge-pill-status badge-active-green">Active</span></td>
+      <td style="text-align:right;">
+        <button type="button" class="btn-sm-action" onclick="openGenModalForPackage('${pkg.package_id || pkg.package_name}')" style="padding:3px 8px;font-size:11px;background:rgba(229,24,31,0.18);border:1px solid rgba(229,24,31,0.4);color:#ff3b47;font-weight:700;cursor:pointer;border-radius:4px;" title="Generate key for this package">+ Key</button>
+      </td>
     </tr>
   `).join('');
 }
@@ -1450,75 +1478,82 @@ function renderDashboardRecentActivity() {
   if (!tbody) return;
 
   const role = getUserRole();
-  let items = [];
-
+  let logs = Array.isArray(state.logs) && state.logs.length > 0 ? state.logs : SEED_LOGS;
   if (role === 'reseller') {
     const res = getCurrentReseller();
-    const myKeys = state.licenses.filter(l => l.user && l.user.toLowerCase().includes((res ? res.username : '').toLowerCase()));
-    if (myKeys.length > 0) {
-      items = myKeys.slice(0, 5).map(k => {
-        const initials = (k.user || 'RS').substring(0, 2).toUpperCase();
-        return {
-          initials,
-          name: k.user,
-          sub: k.key,
-          plan: k.pkg || 'BASIC PANEL',
-          status: k.status === 'active' ? 'Active' : (k.status === 'banned' ? 'Blocked' : 'Pending'),
-          time: k.expiry || '30 Days'
-        };
-      });
-    }
-  } else {
-    if (state.licenses && state.licenses.length > 0) {
-      const times = ['2 min ago', '18 min ago', '42 min ago', '1 hr ago', '3 hr ago'];
-      items = state.licenses.slice(0, 5).map((k, i) => {
-        const initials = (k.user || 'HX').substring(0, 2).toUpperCase();
-        return {
-          initials,
-          name: k.user || `User-${i + 1}`,
-          sub: k.key,
-          plan: k.pkg || 'Enterprise',
-          status: k.status === 'banned' ? 'Blocked' : 'Active',
-          time: times[i] || 'Today'
-        };
-      });
+    if (res) {
+      logs = logs.filter(l => (l.detail && l.detail.toLowerCase().includes(res.username.toLowerCase())) ||
+                              (l.action && l.action.includes('key_gen')));
     }
   }
 
+  const items = logs.slice(0, 6);
   if (items.length === 0) {
-    items = [
-      { initials: 'LM', name: 'Liam Miller', sub: 'liammiller@gmail.com', plan: 'Enterprise', status: 'Active', time: '2 min ago' },
-      { initials: 'SD', name: 'Sophia Davis', sub: 'sophiadavis@gmail.com', plan: 'Professional', status: 'Active', time: '18 min ago' },
-      { initials: 'AJ', name: 'Alex Johnson', sub: 'alexjohnson@live.com', plan: 'Starter', status: 'Pending', time: '42 min ago' },
-      { initials: 'MK', name: 'Mia Kim', sub: 'miakim@gmail.com', plan: 'Professional', status: 'Active', time: '1 hr ago' }
-    ];
+    tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;padding:16px;color:#64748b;">No recent activity logs.</td></tr>`;
+    return;
   }
 
   tbody.innerHTML = items.map(item => `
-    <tr class="table-row-user">
-      <td>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div class="user-avatar-circle">${item.initials}</div>
-          <div>
-            <div style="font-weight:700;color:#fff;font-size:12.5px;">${item.name}</div>
-            <div style="font-size:11px;color:#64748b;font-family:var(--font-mono);">${item.sub}</div>
-          </div>
-        </div>
-      </td>
-      <td>
-        <span class="badge-plan-pill">${item.plan}</span>
-      </td>
-      <td>
-        <span class="badge-pill-status ${item.status.toLowerCase() === 'active' ? 'badge-active-green' : item.status.toLowerCase() === 'pending' ? 'badge-pending-amber' : 'badge-banned-red'}">
-          ${item.status}
-        </span>
-      </td>
-      <td style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);">${item.time}</td>
-      <td style="text-align:right;">
-        <button type="button" class="btn-table-more" onclick="switchTab('licenses')" title="Inspect">•••</button>
-      </td>
+    <tr>
+      <td style="width:115px;">${formatLogBadge(item.action)}</td>
+      <td style="color:#e2e8f0;font-size:12.5px;font-family:var(--font-sans);">${item.detail}</td>
+      <td style="font-family:var(--font-mono);font-size:11px;color:#64748b;text-align:right;white-space:nowrap;">${item.time || 'Just now'}</td>
     </tr>
   `).join('');
+}
+
+function renderDashboardRecentLicenses() {
+  const tbody = document.getElementById('dashboard-recent-licenses-tbody');
+  if (!tbody) return;
+
+  const role = getUserRole();
+  let licList = Array.isArray(state.licenses) && state.licenses.length > 0 ? state.licenses : SEED_LICENSES;
+  if (role === 'reseller') {
+    const res = getCurrentReseller();
+    if (res) {
+      licList = licList.filter(l => (l.user && l.user.toLowerCase().includes(res.username.toLowerCase())) ||
+                                    (l.note && l.note.toLowerCase().includes(res.username.toLowerCase())));
+    }
+  }
+
+  const items = licList.slice(0, 8);
+  if (items.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:24px;color:#64748b;">No license keys found. Generate a key using the button above!</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = items.map(lic => {
+    const isAct = lic.status === 'active';
+    const isBanned = lic.status === 'banned';
+    const hwidTxt = lic.hwid && lic.hwid !== 'Unbound' && lic.hwid !== 'Not Bound' ? lic.hwid : 'Unbound';
+    const hwidColor = hwidTxt === 'Unbound' ? '#f59e0b' : '#00f0ff';
+    return `
+      <tr>
+        <td>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span style="font-family:var(--font-mono);font-size:12px;font-weight:700;color:#fff;">${lic.key}</span>
+            <button type="button" class="btn-copy-inline" onclick="copyText('${lic.key}')" title="Copy Key" style="padding:2px 5px;font-size:11px;cursor:pointer;border-radius:3px;">📋</button>
+          </div>
+        </td>
+        <td style="color:#e2e8f0;font-size:12px;font-weight:600;">${lic.user || 'Root Owner'}</td>
+        <td><span class="badge-plan-pill" style="background:rgba(229,24,31,0.12);border:1px solid rgba(229,24,31,0.3);color:#ff3b47;font-weight:700;">${lic.pkg || 'BASIC PANEL'}</span></td>
+        <td style="font-family:var(--font-mono);font-size:11.5px;color:${hwidColor};">${hwidTxt}</td>
+        <td>
+          <span class="badge-pill-status ${isAct ? 'badge-active-green' : isBanned ? 'badge-banned-red' : 'badge-pending-amber'}">
+            ${isAct ? 'Active' : isBanned ? 'Banned' : 'Unbound'}
+          </span>
+        </td>
+        <td style="text-align:right;white-space:nowrap;">
+          <button type="button" class="btn-sm-action" onclick="resetHwidLive('${lic.key}')" title="Reset HWID" style="padding:3px 8px;font-size:11px;margin-right:4px;background:rgba(6,182,212,0.18);border:1px solid #06b6d4;color:#00f0ff;cursor:pointer;border-radius:4px;">🔄 HWID</button>
+          ${role !== 'reseller' ? `
+            <button type="button" class="btn-sm-action" onclick="toggleBanLive('${lic.key}', '${lic.status}')" title="${isBanned ? 'Unban' : 'Ban'}" style="padding:3px 8px;font-size:11px;background:${isBanned ? 'rgba(16,185,129,0.18)' : 'rgba(229,24,31,0.18)'};border:1px solid ${isBanned ? '#10b981' : '#e5181f'};color:${isBanned ? '#34d399' : '#ff3b47'};cursor:pointer;border-radius:4px;">
+              ${isBanned ? '✅ Unban' : '🚫 Ban'}
+            </button>
+          ` : ''}
+        </td>
+      </tr>
+    `;
+  }).join('');
 }
 
 const chartDataByPeriod = {
@@ -3024,7 +3059,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   updateAdminUI();
   updateAppIdUI();
+  renderDashboardPackagesSummary();
   renderDashboardRecentActivity();
+  renderDashboardRecentLicenses();
   renderLicensesTable();
   renderFullLogsTable();
   if (role !== 'reseller') {

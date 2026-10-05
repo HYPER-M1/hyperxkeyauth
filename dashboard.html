@@ -161,7 +161,7 @@
           </div>
 
           <!-- User Role Badge -->
-          <div class="header-pill-admin" id="header-admin-btn" style="background:#1e293b;border:1px solid #334155;cursor:default;">
+          <div class="header-pill-admin" id="header-admin-btn">
             <span id="header-admin-icon">👑</span>
             <span id="header-admin-name">Owner: HYPER X</span>
           </div>
@@ -263,7 +263,7 @@
             })();
           </script>
 
-          <!-- 4 MODERN STAT CARDS (EXACT REFERENCE MATCH) -->
+          <!-- 4 MODERN STAT CARDS (REAL LIVE METRICS) -->
           <div class="stats-cards-strip-4">
             <!-- 1. Applications -->
             <div class="stat-card-neo" onclick="switchTab('apps')" style="cursor:pointer;" title="View Applications">
@@ -274,7 +274,7 @@
                   <span class="stat-neo-value" id="stat-apps-count">8</span>
                 </div>
               </div>
-              <span class="stat-neo-badge badge-green">+2 this month</span>
+              <span class="stat-neo-badge badge-cyan">8 PANELS</span>
             </div>
 
             <!-- 2. Active keys -->
@@ -283,34 +283,34 @@
                 <div class="stat-neo-icon">🔑</div>
                 <div class="stat-neo-col">
                   <span class="stat-neo-label">Active keys</span>
-                  <span class="stat-neo-value" id="stat-active-keys">7,842</span>
+                  <span class="stat-neo-value" id="stat-active-keys">43</span>
                 </div>
               </div>
-              <span class="stat-neo-badge badge-green">+6.2%</span>
+              <span class="stat-neo-badge badge-green">LIVE</span>
             </div>
 
-            <!-- 3. Remaining quota -->
-            <div class="stat-card-neo" title="Key Quota">
+            <!-- 3. Remaining quota / Credits -->
+            <div class="stat-card-neo" title="Available Credits">
               <div class="stat-neo-left">
-                <div class="stat-neo-icon">⚡</div>
+                <div class="stat-neo-icon">💳</div>
                 <div class="stat-neo-col">
-                  <span class="stat-neo-label">Remaining quota</span>
+                  <span class="stat-neo-label">Available credit</span>
                   <span class="stat-neo-value" id="stat-remaining-quota">9,922</span>
                 </div>
               </div>
-              <span class="stat-neo-badge badge-cyan">99.2%</span>
+              <span class="stat-neo-badge badge-cyan">CREDITS</span>
             </div>
 
-            <!-- 4. Blocked devices / Account Status -->
-            <div class="stat-card-neo" onclick="switchTab('licenses')" style="cursor:pointer;" title="Security & Device Blocks">
+            <!-- 4. Blocked devices / Banned Keys -->
+            <div class="stat-card-neo" onclick="switchTab('licenses')" style="cursor:pointer;" title="Security & Status">
               <div class="stat-neo-left">
                 <div class="stat-neo-icon">🛡️</div>
                 <div class="stat-neo-col">
-                  <span class="stat-neo-label" id="stat-banned-title">Blocked devices</span>
-                  <span class="stat-neo-value" id="stat-banned-keys">184</span>
+                  <span class="stat-neo-label" id="stat-banned-title">Banned keys</span>
+                  <span class="stat-neo-value" id="stat-banned-keys">0</span>
                 </div>
               </div>
-              <span class="stat-neo-badge badge-red">-2.8%</span>
+              <span class="stat-neo-badge badge-red">PROTECTED</span>
             </div>
           </div>
 
@@ -322,272 +322,113 @@
             <span id="stat-packages-label">ACTIVE PACKAGES</span>
             <span id="stat-packages-count">8</span>
             <span id="dashboard-bar-pkg-count">8 Packages</span>
-            <tbody id="dashboard-packages-summary-tbody"></tbody>
           </div>
 
-          <!-- MIDDLE ROW: Activation Overview & Infrastructure -->
-          <div class="overview-middle-grid">
-            <!-- Left Card: License Performance (Activation Overview) -->
+          <!-- REAL WORKING TOOL: QUICK LICENSE KEY MANAGER & DIAGNOSTICS -->
+          <div class="quick-key-card" style="margin-bottom:20px;">
+            <div class="card-top-header" style="margin-bottom:8px;">
+              <div>
+                <div class="card-micro-tag" style="color:#ff3b47;">FAST OPERATIONS</div>
+                <h3 class="card-main-title"><span class="red-bar-accent"></span>Quick License Key Manager</h3>
+              </div>
+              <span class="badge-pill-status badge-active-green" style="font-size:11px;">⚡ Instant Live Actions</span>
+            </div>
+            <p style="font-size:12px;color:#94a3b8;margin-bottom:12px;">Instant key diagnostics, HWID unbind, ban/unban, or deletion directly via live API.</p>
+            <div class="quick-tools-row">
+              <input type="text" id="quick-key-input" class="cyber-input" placeholder="Enter or paste license key (e.g. HPERX-8F92-41AC-90B2-110A)..." style="flex:1;min-width:240px;height:38px;padding:8px 14px;background:#06070a;border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#fff;font-family:var(--font-mono);font-size:12px;" />
+              <div class="quick-tools-actions" style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button type="button" class="btn-action-primary" onclick="runQuickKeyAction('inspect')" style="background:rgba(2,132,199,0.22);border:1px solid #0284c7;color:#38bdf8;padding:8px 14px;border-radius:6px;font-weight:700;font-size:12px;cursor:pointer;">🔍 Inspect</button>
+                <button type="button" class="btn-action-primary" onclick="runQuickKeyAction('reset_hwid')" style="background:rgba(6,182,212,0.22);border:1px solid #06b6d4;color:#00f0ff;padding:8px 14px;border-radius:6px;font-weight:700;font-size:12px;cursor:pointer;">🔄 Reset HWID</button>
+                <button type="button" class="btn-action-primary" onclick="runQuickKeyAction('ban')" style="background:rgba(229,24,31,0.22);border:1px solid #e5181f;color:#ff3b47;padding:8px 14px;border-radius:6px;font-weight:700;font-size:12px;cursor:pointer;">🚫 Ban</button>
+                <button type="button" class="btn-action-primary" onclick="runQuickKeyAction('unban')" style="background:rgba(16,185,129,0.22);border:1px solid #10b981;color:#34d399;padding:8px 14px;border-radius:6px;font-weight:700;font-size:12px;cursor:pointer;">✅ Unban</button>
+                <button type="button" class="btn-action-primary" onclick="runQuickKeyAction('delete')" style="background:rgba(107,15,20,0.3);border:1px solid #6b0f14;color:#f87171;padding:8px 14px;border-radius:6px;font-weight:700;font-size:12px;cursor:pointer;">🗑️ Delete</button>
+              </div>
+            </div>
+            <div id="quick-key-result" class="quick-result-card" style="display:none;"></div>
+          </div>
+
+          <!-- MIDDLE ROW: Application Packages & Live Activity Stream -->
+          <div class="overview-middle-grid" style="grid-template-columns: 1fr 1fr; margin-bottom:20px;">
+            <!-- Left Card: Real Application Packages -->
             <div class="overview-chart-box">
               <div class="card-top-header">
                 <div>
-                  <div class="card-micro-tag">LICENSE PERFORMANCE</div>
-                  <h3 class="card-main-title"><span class="red-bar-accent"></span>Activation overview</h3>
+                  <div class="card-micro-tag">REGISTERED APPS</div>
+                  <h3 class="card-main-title"><span class="red-bar-accent"></span><span id="dashboard-packages-title">Application Packages (8 Total)</span></h3>
                 </div>
-                <div class="period-tab-group">
-                  <button type="button" class="period-btn" id="btn-period-30d" onclick="setChartPeriod('30d')">30 days</button>
-                  <button type="button" class="period-btn" id="btn-period-6m" onclick="setChartPeriod('6m')">6 months</button>
-                  <button type="button" class="period-btn active" id="btn-period-12m" onclick="setChartPeriod('12m')">12 months</button>
-                </div>
+                <a href="javascript:void(0)" onclick="switchTab('apps')" class="card-action-link" style="color:#ff3b47;font-weight:700;font-size:12px;text-decoration:none;">View All Packages &gt;</a>
               </div>
 
-              <div class="overview-metrics-strip">
-                <div class="metric-block">
-                  <div class="metric-label">Activations</div>
-                  <div class="metric-val-row">
-                    <span class="metric-large-val" id="overview-activations-val">18,429</span>
-                    <span class="stat-neo-badge badge-green" id="overview-activations-delta">+12.5%</span>
-                  </div>
-                </div>
-                <div class="metric-block">
-                  <div class="metric-label">Expirations</div>
-                  <div class="metric-val-row">
-                    <span class="metric-large-val" id="overview-expirations-val">3,126</span>
-                    <span class="metric-sub-tag">This period</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Responsive SVG Line Chart -->
-              <div class="chart-container-svg">
-                <svg viewBox="0 0 600 170" class="chart-svg-responsive" preserveAspectRatio="none">
-                  <defs>
-                    <linearGradient id="redAreaGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stop-color="#e5181f" stop-opacity="0.22" />
-                      <stop offset="70%" stop-color="#e5181f" stop-opacity="0.04" />
-                      <stop offset="100%" stop-color="#e5181f" stop-opacity="0.0" />
-                    </linearGradient>
-                    <linearGradient id="redLineGrad" x1="0" y1="0" x2="1" y2="0">
-                      <stop offset="0%" stop-color="#ff4d5a" />
-                      <stop offset="50%" stop-color="#e5181f" />
-                      <stop offset="100%" stop-color="#dc2626" />
-                    </linearGradient>
-                  </defs>
-
-                  <line x1="30" y1="25" x2="590" y2="25" stroke="rgba(255,255,255,0.05)" stroke-dasharray="3 3" />
-                  <line x1="30" y1="65" x2="590" y2="65" stroke="rgba(255,255,255,0.05)" stroke-dasharray="3 3" />
-                  <line x1="30" y1="105" x2="590" y2="105" stroke="rgba(255,255,255,0.05)" stroke-dasharray="3 3" />
-                  <line x1="30" y1="145" x2="590" y2="145" stroke="rgba(255,255,255,0.07)" />
-
-                  <text x="5" y="28" fill="#64748b" font-size="10" font-family="JetBrains Mono, monospace">12k</text>
-                  <text x="5" y="68" fill="#64748b" font-size="10" font-family="JetBrains Mono, monospace">8k</text>
-                  <text x="5" y="108" fill="#64748b" font-size="10" font-family="JetBrains Mono, monospace">4k</text>
-                  <text x="12" y="148" fill="#64748b" font-size="10" font-family="JetBrains Mono, monospace">0</text>
-
-                  <path id="chart-area-path" d="M 30 140 C 110 130, 170 110, 260 110 C 350 110, 410 95, 490 70 C 540 50, 565 55, 590 40 L 590 145 L 30 145 Z" fill="url(#redAreaGrad)" />
-                  <path id="chart-line-path" d="M 30 140 C 110 130, 170 110, 260 110 C 350 110, 410 95, 490 70 C 540 50, 565 55, 590 40" fill="none" stroke="url(#redLineGrad)" stroke-width="2.5" />
-
-                  <circle id="chart-point-halo" cx="490" cy="70" r="7" fill="rgba(229,24,31,0.2)" />
-                  <circle id="chart-point-dot" cx="490" cy="70" r="4.5" fill="#ffffff" stroke="#e5181f" stroke-width="2.5" />
-                </svg>
-                <div class="chart-x-labels">
-                  <span>Jan</span><span>Mar</span><span>May</span><span>Jul</span><span>Sep</span><span>Nov</span><span>Dec</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Right Card: System Status (Infrastructure) -->
-            <div class="overview-health-box">
-              <div class="card-top-header">
-                <div>
-                  <div class="card-micro-tag">SYSTEM STATUS</div>
-                  <h3 class="card-main-title"><span class="red-bar-accent"></span>Infrastructure</h3>
-                </div>
-                <button type="button" class="btn-card-dots" title="System Settings">•••</button>
-              </div>
-
-              <!-- Top Banner Box: All systems operational + 99.99% UPTIME -->
-              <div class="infra-status-banner">
-                <div class="infra-banner-left">
-                  <span class="infra-live-dot"></span>
-                  <div>
-                    <div class="infra-banner-title">All systems operational</div>
-                    <div class="infra-banner-sub">Updated just now</div>
-                  </div>
-                </div>
-                <div class="infra-banner-right">
-                  <div class="infra-uptime-pct">99.99%</div>
-                  <div class="infra-uptime-label">UPTIME</div>
-                </div>
-              </div>
-
-              <!-- 4 Latency / Service Status Rows -->
-              <div class="infra-metrics-list">
-                <div class="infra-metric-row">
-                  <span class="infra-metric-name">Authentication API</span>
-                  <div class="infra-metric-val">
-                    <span class="infra-ms">84 ms</span>
-                    <span class="infra-badge-ok">Operational</span>
-                  </div>
-                </div>
-                <div class="infra-metric-row">
-                  <span class="infra-metric-name">License service</span>
-                  <div class="infra-metric-val">
-                    <span class="infra-ms">112 ms</span>
-                    <span class="infra-badge-ok">Operational</span>
-                  </div>
-                </div>
-                <div class="infra-metric-row">
-                  <span class="infra-metric-name">Last database backup</span>
-                  <div class="infra-metric-val">
-                    <span class="infra-ms">12 min ago</span>
-                    <span class="infra-badge-ok">Completed</span>
-                  </div>
-                </div>
-                <div class="infra-metric-row">
-                  <span class="infra-metric-name">Security scan</span>
-                  <div class="infra-metric-val">
-                    <span class="infra-ms">No threats</span>
-                    <span class="infra-badge-ok">Protected</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- BOTTOM ROW: Recent Activity & Recent Devices -->
-          <div class="overview-bottom-grid">
-            <!-- Left Card: Recent Activity -->
-            <div class="overview-activity-box">
-              <div class="card-top-header">
-                <div>
-                  <div class="card-micro-tag">LATEST UPDATES</div>
-                  <h3 class="card-main-title"><span class="red-bar-accent"></span>Recent activity</h3>
-                </div>
-                <a href="javascript:void(0)" onclick="switchTab('logs')" class="card-action-link" style="color:#e5181f;font-weight:700;font-size:12px;text-decoration:none;">View all &gt;</a>
-              </div>
-
-              <div class="table-scroll-wrap">
-                <table class="neo-activity-table">
+              <div class="table-scroll-wrap" style="max-height:280px;overflow-y:auto;">
+                <table class="neo-activity-table cyber-panel-table">
                   <thead>
                     <tr>
-                      <th>USER</th>
-                      <th>PLAN</th>
+                      <th>PACKAGE NAME</th>
+                      <th>APP</th>
                       <th>STATUS</th>
-                      <th>ACTIVATED</th>
-                      <th style="width:40px;text-align:right;"></th>
+                      <th style="text-align:right;">ACTION</th>
                     </tr>
                   </thead>
-                  <tbody id="dashboard-activity-tbody">
-                    <tr class="table-row-user">
-                      <td>
-                        <div style="display:flex;align-items:center;gap:10px;">
-                          <div class="user-avatar-circle">LM</div>
-                          <div>
-                            <div style="font-weight:700;color:#fff;font-size:12.5px;">Liam Miller</div>
-                            <div style="font-size:11px;color:#64748b;font-family:var(--font-mono);">liammiller@gmail.com</div>
-                          </div>
-                        </div>
-                      </td>
-                      <td><span class="badge-plan-pill">Enterprise</span></td>
-                      <td><span class="badge-pill-status badge-active-green">Active</span></td>
-                      <td style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);">2 min ago</td>
-                      <td style="text-align:right;"><button class="btn-table-more">•••</button></td>
-                    </tr>
-                    <tr class="table-row-user">
-                      <td>
-                        <div style="display:flex;align-items:center;gap:10px;">
-                          <div class="user-avatar-circle">SD</div>
-                          <div>
-                            <div style="font-weight:700;color:#fff;font-size:12.5px;">Sophia Davis</div>
-                            <div style="font-size:11px;color:#64748b;font-family:var(--font-mono);">sophiadavis@gmail.com</div>
-                          </div>
-                        </div>
-                      </td>
-                      <td><span class="badge-plan-pill">Professional</span></td>
-                      <td><span class="badge-pill-status badge-active-green">Active</span></td>
-                      <td style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);">18 min ago</td>
-                      <td style="text-align:right;"><button class="btn-table-more">•••</button></td>
-                    </tr>
-                    <tr class="table-row-user">
-                      <td>
-                        <div style="display:flex;align-items:center;gap:10px;">
-                          <div class="user-avatar-circle">AJ</div>
-                          <div>
-                            <div style="font-weight:700;color:#fff;font-size:12.5px;">Alex Johnson</div>
-                            <div style="font-size:11px;color:#64748b;font-family:var(--font-mono);">alexjohnson@live.com</div>
-                          </div>
-                        </div>
-                      </td>
-                      <td><span class="badge-plan-pill">Starter</span></td>
-                      <td><span class="badge-pill-status" style="background:rgba(234,179,8,0.15);color:#eab308;border:1px solid rgba(234,179,8,0.3);font-weight:700;padding:2px 8px;border-radius:4px;">Pending</span></td>
-                      <td style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);">42 min ago</td>
-                      <td style="text-align:right;"><button class="btn-table-more">•••</button></td>
-                    </tr>
-                    <tr class="table-row-user">
-                      <td>
-                        <div style="display:flex;align-items:center;gap:10px;">
-                          <div class="user-avatar-circle">MK</div>
-                          <div>
-                            <div style="font-weight:700;color:#fff;font-size:12.5px;">Mia Kim</div>
-                            <div style="font-size:11px;color:#64748b;font-family:var(--font-mono);">miakim@gmail.com</div>
-                          </div>
-                        </div>
-                      </td>
-                      <td><span class="badge-plan-pill">Professional</span></td>
-                      <td><span class="badge-pill-status badge-active-green">Active</span></td>
-                      <td style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);">1 hr ago</td>
-                      <td style="text-align:right;"><button class="btn-table-more">•••</button></td>
-                    </tr>
+                  <tbody id="dashboard-packages-summary-tbody">
+                    <!-- Populated dynamically by renderDashboardPackagesSummary() -->
                   </tbody>
                 </table>
               </div>
             </div>
 
-            <!-- Right Card: Recent Devices -->
-            <div class="overview-devices-box">
+            <!-- Right Card: Real Live Activity Stream -->
+            <div class="overview-health-box">
               <div class="card-top-header">
                 <div>
-                  <div class="card-micro-tag">SECURITY</div>
-                  <h3 class="card-main-title">Recent devices</h3>
+                  <div class="card-micro-tag">SECURITY &amp; AUDIT</div>
+                  <h3 class="card-main-title"><span class="red-bar-accent"></span>Live Activity Stream</h3>
                 </div>
-                <a href="javascript:void(0)" onclick="switchTab('licenses')" class="card-action-link">Manage</a>
+                <a href="javascript:void(0)" onclick="switchTab('logs')" class="card-action-link" style="color:#ff3b47;font-weight:700;font-size:12px;text-decoration:none;">Full Audit Logs &gt;</a>
               </div>
 
-              <div class="devices-list">
-                <div class="device-item-card">
-                  <div style="display:flex;align-items:center;gap:12px;">
-                    <div class="device-item-icon">💻</div>
-                    <div>
-                      <div class="device-item-name">Windows Desktop</div>
-                      <div class="device-item-sub">HW-3721-A52C • New York, US</div>
-                    </div>
-                  </div>
-                  <div class="device-status-dot online"></div>
-                </div>
-
-                <div class="device-item-card">
-                  <div style="display:flex;align-items:center;gap:12px;">
-                    <div class="device-item-icon">💻</div>
-                    <div>
-                      <div class="device-item-name">MacBook Pro</div>
-                      <div class="device-item-sub">HW-3402-B7FD • London, UK</div>
-                    </div>
-                  </div>
-                  <div class="device-status-dot online"></div>
-                </div>
-
-                <div class="device-item-card">
-                  <div style="display:flex;align-items:center;gap:12px;">
-                    <div class="device-item-icon">🖥️</div>
-                    <div>
-                      <div class="device-item-name">Linux Workstation</div>
-                      <div class="device-item-sub">HW-9041-4E11 • Berlin, DE</div>
-                    </div>
-                  </div>
-                  <div class="device-status-dot idle"></div>
-                </div>
+              <div class="table-scroll-wrap" style="max-height:280px;overflow-y:auto;">
+                <table class="neo-activity-table cyber-panel-table">
+                  <thead>
+                    <tr>
+                      <th style="width:115px;">EVENT</th>
+                      <th>DETAIL</th>
+                      <th style="width:75px;text-align:right;">TIME</th>
+                    </tr>
+                  </thead>
+                  <tbody id="dashboard-activity-tbody">
+                    <!-- Populated dynamically by renderDashboardRecentActivity() -->
+                  </tbody>
+                </table>
               </div>
+            </div>
+          </div>
+
+          <!-- BOTTOM ROW: Real Recent Generated License Keys Table -->
+          <div class="overview-activity-box" style="margin-bottom:20px;">
+            <div class="card-top-header">
+              <div>
+                <div class="card-micro-tag">KEY MANAGEMENT</div>
+                <h3 class="card-main-title"><span class="red-bar-accent"></span>Recent Generated License Keys</h3>
+              </div>
+              <a href="javascript:void(0)" onclick="switchTab('licenses')" class="card-action-link" style="color:#ff3b47;font-weight:700;font-size:12px;text-decoration:none;">Manage All Keys &gt;</a>
+            </div>
+
+            <div class="table-scroll-wrap">
+              <table class="neo-activity-table cyber-panel-table">
+                <thead>
+                  <tr>
+                    <th>LICENSE KEY</th>
+                    <th>CLIENT USER</th>
+                    <th>PANEL / PACKAGE</th>
+                    <th>HWID STATUS</th>
+                    <th>STATUS</th>
+                    <th style="text-align:right;">ACTIONS</th>
+                  </tr>
+                </thead>
+                <tbody id="dashboard-recent-licenses-tbody">
+                  <!-- Populated dynamically by renderDashboardRecentLicenses() -->
+                </tbody>
+              </table>
             </div>
           </div>
 
