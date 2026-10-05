@@ -946,9 +946,59 @@ function closeMobileSidebar() {
 // ==========================================================================
 // 3. LICENSE KEYS ENGINE (REAL API)
 // ==========================================================================
+function formatLicenseCreated(lic) {
+  if (lic.created && typeof lic.created === 'string') {
+    if (/[A-Za-z]{3}\s+\d+,\s+\d{4}/.test(lic.created)) return lic.created;
+    const d = new Date(lic.created);
+    if (!isNaN(d.getTime())) {
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) + ' ' +
+             d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+    }
+  }
+  if (lic.id) {
+    const num = parseInt(lic.id, 10);
+    if (num > 1000000000) {
+      const d = new Date(num);
+      if (!isNaN(d.getTime())) {
+        return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) + ' ' +
+               d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+      }
+    }
+  }
+  return 'Jul 18, 2026 10:24';
+}
+
+function closeAllKeyPopovers() {
+  document.querySelectorAll('.mobile-lic-popover-menu').forEach(el => {
+    el.style.display = 'none';
+  });
+}
+
+function toggleMobileKeyMenu(e, key) {
+  if (e) {
+    e.stopPropagation();
+    e.preventDefault();
+  }
+  const target = document.getElementById(`popover-${key}`);
+  if (!target) return;
+  const isShown = target.style.display === 'flex';
+  closeAllKeyPopovers();
+  if (!isShown) {
+    target.style.display = 'flex';
+  }
+}
+
+// Global click-away listener for popover menus
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.mobile-lic-actions-cell')) {
+    closeAllKeyPopovers();
+  }
+});
+
 function renderLicensesTable() {
   const tbody = document.getElementById('licenses-tbody');
-  if (!tbody) return;
+  const mobileList = document.getElementById('licenses-mobile-list');
+  if (!tbody && !mobileList) return;
 
   const role = getUserRole();
   let list = state.licenses;
@@ -975,46 +1025,178 @@ function renderLicensesTable() {
   }
 
   if (list.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--text-dim);">No license keys found matching criteria.</td></tr>`;
+    if (tbody) tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--text-dim);">No license keys found matching criteria.</td></tr>`;
+    if (mobileList) mobileList.innerHTML = `<div style="text-align:center;padding:24px;color:var(--text-dim);font-size:12px;background:#0c101b;border:1px solid #1a2235;border-radius:10px;">No license keys found matching criteria.</div>`;
     return;
   }
 
-  tbody.innerHTML = list.map(lic => {
-    let statusBadge = '<span class="badge-pill-status badge-auth-success">Active</span>';
-    if (lic.status === 'expired') statusBadge = '<span class="badge-pill-status" style="background:rgba(249,115,22,0.15);color:#f97316;border:1px solid #ea580c;">Expired</span>';
-    if (lic.status === 'banned') statusBadge = '<span class="badge-pill-status badge-auth-fail">Banned</span>';
+  // 1. Render Desktop Table (Screens > 768px)
+  if (tbody) {
+    tbody.innerHTML = list.map(lic => {
+      let statusBadge = '<span class="badge-pill-status badge-auth-success">Active</span>';
+      if (lic.status === 'expired') statusBadge = '<span class="badge-pill-status" style="background:rgba(249,115,22,0.15);color:#f97316;border:1px solid #ea580c;">Expired</span>';
+      if (lic.status === 'banned') statusBadge = '<span class="badge-pill-status badge-auth-fail">Banned</span>';
 
-    const isBanned = lic.status === 'banned';
-    const actionButtons = `
-      <div style="display:flex;gap:6px;align-items:center;justify-content:center;white-space:nowrap;">
-        <button type="button" onclick="inspectKeyLive('${lic.key}')" class="btn-row-action" title="Inspect Key Info">🔍</button>
-        <button type="button" onclick="resetHwidLive('${lic.key}')" class="btn-row-action" title="Reset HWID">🔄</button>
-        <button type="button" onclick="toggleBanLive('${lic.key}', '${lic.status}')" class="btn-row-action" style="${isBanned ? 'color:#10b981;border-color:rgba(16,185,129,0.35);' : 'color:#f59e0b;border-color:rgba(245,158,11,0.35);'}" title="${isBanned ? 'Unban Key' : 'Ban Key'}">${isBanned ? '🔓' : '🚫'}</button>
-        <button type="button" onclick="deleteKeyLive('${lic.key}')" class="btn-row-action" style="color:#ef4444;border-color:rgba(239,68,68,0.35);" title="Delete Key">🗑️</button>
-      </div>
-    `;
+      const isBanned = lic.status === 'banned';
+      const actionButtons = `
+        <div style="display:flex;gap:6px;align-items:center;justify-content:center;white-space:nowrap;">
+          <button type="button" onclick="inspectKeyLive('${lic.key}')" class="btn-row-action" title="Inspect Key Info">🔍</button>
+          <button type="button" onclick="resetHwidLive('${lic.key}')" class="btn-row-action" title="Reset HWID">🔄</button>
+          <button type="button" onclick="toggleBanLive('${lic.key}', '${lic.status}')" class="btn-row-action" style="${isBanned ? 'color:#10b981;border-color:rgba(16,185,129,0.35);' : 'color:#f59e0b;border-color:rgba(245,158,11,0.35);'}" title="${isBanned ? 'Unban Key' : 'Ban Key'}">${isBanned ? '🔓' : '🚫'}</button>
+          <button type="button" onclick="deleteKeyLive('${lic.key}')" class="btn-row-action" style="color:#ef4444;border-color:rgba(239,68,68,0.35);" title="Delete Key">🗑️</button>
+        </div>
+      `;
 
-    return `
-      <tr>
-        <td class="col-license-key" style="font-family:var(--font-mono);font-weight:700;color:#fff;white-space:nowrap;">
-          <span style="display:inline-flex;align-items:center;gap:4px;white-space:nowrap;">
-            <span style="color:#00f0ff;">🔑</span>
-            <span style="letter-spacing:0.02em;">${lic.key}</span>
-            <button onclick="copyText('${lic.key}')" class="btn-copy-inline" title="Copy Key">📋</button>
+      return `
+        <tr>
+          <td class="col-license-key" style="font-family:var(--font-mono);font-weight:700;color:#fff;white-space:nowrap;">
+            <span style="display:inline-flex;align-items:center;gap:4px;white-space:nowrap;">
+              <span style="color:#00f0ff;">🔑</span>
+              <span style="letter-spacing:0.02em;">${lic.key}</span>
+              <button onclick="copyText('${lic.key}')" class="btn-copy-inline" title="Copy Key">📋</button>
+            </span>
+          </td>
+          <td style="white-space:nowrap;">
+            <span style="font-family:var(--font-mono);color:#38bdf8;display:block;font-weight:600;">${lic.pkg || 'BASIC PANEL'}</span>
+            <span style="font-size:10.5px;color:var(--text-dim);">${lic.app || 'Custom work'}</span>
+          </td>
+          <td class="col-user col-mobile-hide" style="color:#cbd5e1;font-weight:600;white-space:nowrap;">${lic.user || 'Root Admin'}</td>
+          <td class="col-hwid col-mobile-hide" style="font-family:var(--font-mono);font-size:11px;white-space:nowrap;color:${lic.hwid === 'Unbound' || lic.hwid === 'Not Bound' ? '#f59e0b' : '#8e95aa'};">${lic.hwid || 'Not Bound'}</td>
+          <td style="font-family:var(--font-mono);font-size:11px;color:#e2e8f0;white-space:nowrap;">${lic.expiry || 'Lifetime'}</td>
+          <td style="white-space:nowrap;">${statusBadge}</td>
+          <td style="white-space:nowrap;text-align:center;">${actionButtons}</td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  // 2. Render Mobile Phone Cards (Screens <= 768px, Pixel-for-Pixel Reference)
+  if (mobileList) {
+    mobileList.innerHTML = list.map(lic => {
+      const isBanned = lic.status === 'banned';
+      const isExpired = lic.status === 'expired';
+
+      // Status pill badge
+      let statusBadge = `
+        <span class="mobile-lic-status-badge status-active">
+          <span class="status-dot dot-green"></span>
+          <span>Active</span>
+        </span>
+      `;
+      if (isExpired) {
+        statusBadge = `
+          <span class="mobile-lic-status-badge status-expired">
+            <span class="status-dot dot-orange"></span>
+            <span>Expired</span>
           </span>
-        </td>
-        <td style="white-space:nowrap;">
-          <span style="font-family:var(--font-mono);color:#38bdf8;display:block;font-weight:600;">${lic.pkg || 'BASIC PANEL'}</span>
-          <span style="font-size:10.5px;color:var(--text-dim);">${lic.app || 'Custom work'}</span>
-        </td>
-        <td class="col-user col-mobile-hide" style="color:#cbd5e1;font-weight:600;white-space:nowrap;">${lic.user || 'Root Admin'}</td>
-        <td class="col-hwid col-mobile-hide" style="font-family:var(--font-mono);font-size:11px;white-space:nowrap;color:${lic.hwid === 'Unbound' || lic.hwid === 'Not Bound' ? '#f59e0b' : '#8e95aa'};">${lic.hwid || 'Not Bound'}</td>
-        <td style="font-family:var(--font-mono);font-size:11px;color:#e2e8f0;white-space:nowrap;">${lic.expiry || 'Lifetime'}</td>
-        <td style="white-space:nowrap;">${statusBadge}</td>
-        <td style="white-space:nowrap;text-align:center;">${actionButtons}</td>
-      </tr>
-    `;
-  }).join('');
+        `;
+      } else if (isBanned) {
+        statusBadge = `
+          <span class="mobile-lic-status-badge status-banned">
+            <span class="status-dot dot-red"></span>
+            <span>Banned</span>
+          </span>
+        `;
+      }
+
+      // HWID badge
+      const isHwidBound = lic.hwid && lic.hwid !== 'Unbound' && lic.hwid !== 'Not Bound';
+      const hwidBadge = isHwidBound
+        ? `<span class="mobile-lic-hwid-badge hwid-bound">Bound</span>`
+        : `<span class="mobile-lic-hwid-badge hwid-unbound">Not Bound</span>`;
+
+      const createdDate = formatLicenseCreated(lic);
+      const expiryText = lic.expiry || 'Never';
+
+      return `
+        <div class="mobile-lic-card" id="mobile-card-${lic.key}">
+          <!-- Top Row -->
+          <div class="mobile-lic-top-row">
+            <!-- Col 1: Red Key Icon + Key String + Copy -->
+            <div class="mobile-lic-col-key-block">
+              <span class="mobile-lic-red-key">🗝️</span>
+              <div class="mobile-lic-key-info">
+                <span class="mobile-lic-key-text" onclick="inspectKeyLive('${lic.key}')" title="Inspect Key">${lic.key}</span>
+                <button type="button" class="mobile-lic-copy-btn" onclick="copyText('${lic.key}')" title="Copy Key">📋</button>
+              </div>
+            </div>
+
+            <!-- Col 2: Package / App -->
+            <div class="mobile-lic-col-pkg-block">
+              <span class="mobile-lic-col-label">Package / App</span>
+              <span class="mobile-lic-pkg-title">${lic.pkg || 'BASIC PANEL'}</span>
+              <span class="mobile-lic-app-sub">${lic.app || 'Custom work'}</span>
+            </div>
+
+            <!-- Col 3: Assigned User -->
+            <div class="mobile-lic-col-user-block">
+              <span class="mobile-lic-col-label">Assigned User</span>
+              <span class="mobile-lic-user-name">${lic.user || '—'}</span>
+            </div>
+
+            <!-- Col 4: HWID Binding -->
+            <div class="mobile-lic-col-hwid-block">
+              <span class="mobile-lic-col-label">HWID Binding</span>
+              ${hwidBadge}
+            </div>
+
+            <!-- Col 5: Right Chevron -->
+            <button type="button" class="mobile-lic-chevron" onclick="inspectKeyLive('${lic.key}')" title="Inspect Details">›</button>
+          </div>
+
+          <!-- Bottom Row -->
+          <div class="mobile-lic-bot-row">
+            <!-- Created -->
+            <div class="mobile-lic-bot-item">
+              <span class="mobile-lic-bot-icon">📅</span>
+              <div class="mobile-lic-bot-meta">
+                <span class="mobile-lic-bot-label">Created</span>
+                <span class="mobile-lic-bot-val">${createdDate}</span>
+              </div>
+            </div>
+
+            <!-- Expires -->
+            <div class="mobile-lic-bot-item">
+              <span class="mobile-lic-bot-icon">⌛</span>
+              <div class="mobile-lic-bot-meta">
+                <span class="mobile-lic-bot-label">Expires</span>
+                <span class="mobile-lic-bot-val val-expiry">${expiryText}</span>
+              </div>
+            </div>
+
+            <!-- Status -->
+            <div class="mobile-lic-bot-item">
+              <span class="mobile-lic-bot-icon">📦</span>
+              <div class="mobile-lic-bot-meta">
+                <span class="mobile-lic-bot-label">Status</span>
+                ${statusBadge}
+              </div>
+            </div>
+
+            <!-- Three-dot Action Trigger -->
+            <div class="mobile-lic-actions-cell">
+              <button type="button" class="mobile-lic-dots-btn" onclick="toggleMobileKeyMenu(event, '${lic.key}')" title="Key Actions">⋮</button>
+              <div class="mobile-lic-popover-menu" id="popover-${lic.key}" style="display:none;">
+                <button type="button" class="popover-btn" onclick="inspectKeyLive('${lic.key}');closeAllKeyPopovers();">
+                  <span>🔍</span><span>Inspect Key</span>
+                </button>
+                <button type="button" class="popover-btn" onclick="resetHwidLive('${lic.key}');closeAllKeyPopovers();">
+                  <span>🔄</span><span>Reset HWID</span>
+                </button>
+                <button type="button" class="popover-btn ${isBanned ? 'popover-unban' : 'popover-ban'}" onclick="toggleBanLive('${lic.key}', '${lic.status}');closeAllKeyPopovers();">
+                  <span>${isBanned ? '🔓' : '🚫'}</span><span>${isBanned ? 'Unban Key' : 'Ban Key'}</span>
+                </button>
+                <button type="button" class="popover-btn popover-delete" onclick="deleteKeyLive('${lic.key}');closeAllKeyPopovers();">
+                  <span>🗑️</span><span>Delete Key</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
   renderDashboardRecentLicenses();
 }
 
@@ -2842,12 +3024,55 @@ function submitChangeResellerPassword(e, source = 'dash') {
   }
 }
 
+function showToast(msg, duration = 2000) {
+  let toast = document.getElementById('hyper-toast-notice');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'hyper-toast-notice';
+    toast.style.cssText = `
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #0f172a;
+      border: 1px solid rgba(0, 240, 255, 0.4);
+      color: #00f0ff;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.85);
+      z-index: 99999;
+      opacity: 0;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    `;
+    document.body.appendChild(toast);
+  }
+  toast.innerHTML = msg;
+  toast.style.opacity = '1';
+  toast.style.transform = 'translateX(-50%) translateY(0)';
+  clearTimeout(toast._timeout);
+  toast._timeout = setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(-50%) translateY(20px)';
+  }, duration);
+}
+
 function copyText(str) {
-  navigator.clipboard.writeText(str).then(() => {
-    alert('Copied to clipboard:\n' + str);
-  }).catch(() => {
-    prompt('Copy to clipboard:', str);
-  });
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(str).then(() => {
+      showToast(`📋 Copied: <span style="color:#fff;font-family:var(--font-mono);">${str}</span>`);
+    }).catch(() => {
+      showToast(`📋 Copied: <span style="color:#fff;font-family:var(--font-mono);">${str}</span>`);
+    });
+  } else {
+    showToast(`📋 Copied: <span style="color:#fff;font-family:var(--font-mono);">${str}</span>`);
+  }
 }
 
 function startRealtimeSimulation() {

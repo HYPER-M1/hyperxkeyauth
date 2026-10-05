@@ -301,6 +301,7 @@ $admin_user = $_SESSION['prtv_admin_user'] ?? 'HYPER X';
               </thead>
               <tbody id="licenses-tbody"></tbody>
             </table>
+            <div class="mobile-license-cards-wrap" id="licenses-mobile-list"></div>
           </div>
         </section>
 

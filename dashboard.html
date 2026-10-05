@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/dashboard.css?v=2.7">
+  <link rel="stylesheet" href="assets/css/dashboard.css?v=2.8">
   <style>
     /* Reseller Isolation - Absolute Guaranteed Hiding on all devices */
     html.is-reseller .admin-only-feature,
@@ -548,21 +548,25 @@
              VIEW 2: LICENSE KEYS (REAL API ENGINE)
              ============================================================ -->
         <section class="tab-view" id="view-licenses">
-          <span id="view-licenses-title" style="display:none;"></span>
-          <span id="view-licenses-sub" style="display:none;"></span>
-          <div class="view-header-strip">
-            <button class="btn-action-primary" onclick="openModal('modal-add-key')">
-              <span>⚡</span>
-              <span>+ Generate Real Key(s)</span>
+          <div class="view-header-strip lic-view-header">
+            <div class="lic-header-intro">
+              <h2 class="view-heading-title" id="view-licenses-title">KeyAuth License Keys Management</h2>
+              <p class="view-sub-text" id="view-licenses-sub">Generate cryptographically verified keys, lock to device HWID, and control access remotely via API.</p>
+            </div>
+            <button class="btn-action-primary btn-gen-key-red" onclick="openModal('modal-add-key')">
+              <span class="btn-bolt-glyph">⚡</span>
+              <span class="btn-gen-label">+ Generate Real Key(s)</span>
             </button>
           </div>
 
           <!-- Quick Key Remote Tools Bar -->
           <div class="quick-key-card">
-            <span style="font-weight:700;font-size:13px;color:#fff;">🛠️ Quick Remote Key Tool:</span>
+            <span class="quick-key-title" style="font-weight:700;font-size:13px;color:#fff;display:block;margin-bottom:8px;">🛠️ Quick Remote Key Tool:</span>
             <div class="quick-tools-row">
               <input type="text" id="quick-key-input" class="form-input-box" placeholder="Paste or type any License Key here (e.g. HPERX-XXXX-XXXX...)">
-              <button class="btn-action-secondary" onclick="runQuickKeyAction('inspect')">🔍 Inspect</button>
+              <button class="btn-action-secondary btn-quick-inspect" onclick="runQuickKeyAction('inspect')">🔍 Inspect</button>
+            </div>
+            <div class="quick-tools-actions">
               <button class="btn-action-secondary" style="color:#38bdf8;" onclick="runQuickKeyAction('reset_hwid')">🔄 Reset HWID</button>
               <button id="quick-tool-ban" class="btn-action-secondary" style="color:#f59e0b;" onclick="runQuickKeyAction('ban')">🚫 Ban</button>
               <button id="quick-tool-unban" class="btn-action-secondary" style="color:#10b981;" onclick="runQuickKeyAction('unban')">✅ Unban</button>
@@ -572,7 +576,7 @@
           </div>
 
           <div class="search-filter-bar">
-            <input type="text" class="input-search-cyber" placeholder="Search by key, package, or user..." oninput="handleSearch(this.value)">
+            <input type="text" id="search-input" class="input-search-cyber" placeholder="Search by key, package, or user..." oninput="handleSearch(this.value)">
             <div class="filter-buttons-row">
               <button class="btn-filter-pill active" onclick="setFilter('all', this)">All Keys</button>
               <button class="btn-filter-pill" onclick="setFilter('active', this)">Active</button>
@@ -595,9 +599,14 @@
                 </tr>
               </thead>
               <tbody id="licenses-tbody">
-                <!-- Dynamically populated by JS -->
+                <!-- Dynamically populated by JS (Desktop) -->
               </tbody>
             </table>
+
+            <!-- Mobile Cards View for Phone -->
+            <div class="mobile-license-cards-wrap" id="licenses-mobile-list">
+              <!-- Dynamically populated by JS (Mobile) -->
+            </div>
           </div>
         </section>
 
@@ -1470,6 +1479,6 @@
     </div>
   </div>
 
-  <script src="assets/js/dashboard.js?v=2.7"></script>
+  <script src="assets/js/dashboard.js?v=2.8"></script>
 </body>
 </html>
