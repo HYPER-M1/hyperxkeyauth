@@ -21,8 +21,8 @@
       "username": "test1",
       "password": "test123",
       "email": "test1@reseller.local",
-      "balance": 100,
-      "createdKeys": 0,
+      "balance": 99,
+      "createdKeys": 1,
       "status": "Active",
       "panels": [
         "all"
