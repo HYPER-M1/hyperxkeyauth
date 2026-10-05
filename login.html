@@ -199,36 +199,7 @@
       z-index: 3;
     }
 
-    /* Subtle Card Top Corner HUD Brackets */
-    .card-corner-bracket {
-      position: absolute;
-      width: 11px;
-      height: 11px;
-      pointer-events: none;
-      z-index: 3;
-      border-color: rgba(234, 43, 53, 0.45);
-      transition: border-color 0.3s ease;
-    }
 
-    .card-corner-tl {
-      top: 11px;
-      left: 11px;
-      border-top: 1.5px solid;
-      border-left: 1.5px solid;
-      border-top-left-radius: 4px;
-    }
-
-    .card-corner-tr {
-      top: 11px;
-      right: 11px;
-      border-top: 1.5px solid;
-      border-right: 1.5px solid;
-      border-top-right-radius: 4px;
-    }
-
-    .login-card:hover .card-corner-bracket {
-      border-color: rgba(234, 43, 53, 0.85);
-    }
 
     /* Card Header Logo & Title */
     .card-logo-wrap {
@@ -1858,10 +1829,6 @@
         <div class="card-ambient-backdrop"></div>
 
         <div class="login-card">
-          <!-- Cyber HUD Corner Brackets -->
-          <div class="card-corner-bracket card-corner-tl"></div>
-          <div class="card-corner-bracket card-corner-tr"></div>
-
           <!-- Logo, Title & Subtitle -->
           <div class="card-logo-wrap">
             <img src="assets/images/hx_card_logo.png" alt="HYPERX" class="card-center-logo">
