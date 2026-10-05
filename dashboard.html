@@ -6,7 +6,7 @@
   <title>HYPER X // KeyAuth Enterprise Portal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/dashboard.css?v=2.2">
   <style>
     /* Reseller Isolation - Absolute Guaranteed Hiding on all devices */
@@ -535,17 +535,13 @@
              VIEW 2: LICENSE KEYS (REAL API ENGINE)
              ============================================================ -->
         <section class="tab-view" id="view-licenses">
+          <span id="view-licenses-title" style="display:none;"></span>
+          <span id="view-licenses-sub" style="display:none;"></span>
           <div class="view-header-strip">
-            <div>
-              <h2 class="view-heading-title" id="view-licenses-title">KeyAuth License Keys Management</h2>
-              <p class="view-sub-text" id="view-licenses-sub">Generate cryptographically verified keys, lock to device HWID, and control access remotely via API.</p>
-            </div>
-            <div style="display:flex;gap:8px;">
-              <button class="btn-action-primary" onclick="openModal('modal-add-key')">
-                <span>⚡</span>
-                <span>+ Generate Real Key(s)</span>
-              </button>
-            </div>
+            <button class="btn-action-primary" onclick="openModal('modal-add-key')">
+              <span>⚡</span>
+              <span>+ Generate Real Key(s)</span>
+            </button>
           </div>
 
           <!-- Quick Key Remote Tools Bar -->
@@ -597,10 +593,6 @@
              ============================================================ -->
         <section class="tab-view" id="view-logs">
           <div class="view-header-strip">
-            <div>
-              <h2 class="view-heading-title">Authentication &amp; Security Logs</h2>
-              <p class="view-sub-text">Captured authentication attempts and API proxy transactions.</p>
-            </div>
             <button class="btn-action-secondary" onclick="exportLogsToCsv()">
               📥 Export Logs
             </button>
@@ -674,12 +666,8 @@
              VIEW 4: APPLICATIONS & PACKAGES
              ============================================================ -->
         <section class="tab-view" id="view-apps">
-          <div class="view-header-strip">
-            <div>
-              <h2 class="view-heading-title" id="view-apps-title">Application &amp; Packages Registry</h2>
-              <p class="view-sub-text" id="view-apps-sub">Directly linked to App ID: <code style="color:#00f0ff;">9f087d585fbd666572fc24b7</code> (Custom work)</p>
-            </div>
-          </div>
+          <span id="view-apps-title" style="display:none;"></span>
+          <span id="view-apps-sub" style="display:none;"></span>
 
           <div class="dashboard-card-box">
             <table class="cyber-panel-table">
@@ -759,11 +747,7 @@
              ============================================================ -->
         <section class="tab-view admin-only-feature" id="view-resellers">
           <div class="view-header-strip">
-            <div>
-              <h2 class="view-heading-title">Reseller Management &amp; Distribution</h2>
-              <p class="view-sub-text">Authorize reseller accounts, grant key generation quotas, and assign panel access permissions.</p>
-            </div>
-            <div style="display:flex;gap:10px;">
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
               <button class="btn-action-secondary" onclick="openModal('modal-transfer-credit')" style="color:#00f0ff;border-color:rgba(0,240,255,0.4);">
                 <span>💸</span>
                 <span>Transfer Credits</span>
@@ -832,10 +816,6 @@
              ============================================================ -->
         <section class="tab-view" id="view-transfers">
           <div class="view-header-strip">
-            <div>
-              <h2 class="view-heading-title">Peer-to-Peer Credit Transfer &amp; Distribution Hub</h2>
-              <p class="view-sub-text">Transfer account credits to peer resellers or view transaction history.</p>
-            </div>
             <button class="btn-action-primary" onclick="openModal('modal-transfer-credit')">
               <span>💸</span>
               <span>+ Quick Transfer</span>

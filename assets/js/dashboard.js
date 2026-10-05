@@ -525,6 +525,22 @@ function getActiveAppId() {
   return localStorage.getItem('hyperx_app_id') || DEFAULT_APP_ID;
 }
 
+let isPrimaryProxyUnavailable = false;
+
+function fetchWithTimeout(url, options = {}, timeoutMs = 2500) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+  return fetch(url, { ...options, signal: controller.signal })
+    .then(res => {
+      clearTimeout(timeoutId);
+      return res;
+    })
+    .catch(err => {
+      clearTimeout(timeoutId);
+      throw err;
+    });
+}
+
 async function callApi(action, payload = {}) {
   const finalPayload = {
     action,
@@ -532,28 +548,33 @@ async function callApi(action, payload = {}) {
     ...payload
   };
 
-  // Tier 1: Try Primary Serverless Proxy (/api on Vercel or api.php)
-  try {
-    const res = await fetch(API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify(finalPayload)
-    });
+  // Tier 1: Try Primary Serverless Proxy (/api on Vercel or api.php) if reachable
+  if (!isPrimaryProxyUnavailable && window.location.protocol !== 'file:') {
+    try {
+      const res = await fetchWithTimeout(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(finalPayload)
+      }, 2000);
 
-    if (res.ok) {
-      const data = await res.json();
-      if (data && (data.success || data.packages || data.keys)) {
-        return data;
+      if (res.ok) {
+        const data = await res.json();
+        if (data && (data.success || data.packages || data.keys)) {
+          return data;
+        }
+        if (data && data.message && !data.success) {
+          console.warn(`Proxy returned error for "${action}":`, data.message);
+        }
+      } else {
+        isPrimaryProxyUnavailable = true;
       }
-      if (data && data.message && !data.success) {
-        console.warn(`Proxy returned error for "${action}":`, data.message);
-      }
+    } catch (err) {
+      isPrimaryProxyUnavailable = true;
+      console.warn(`Primary proxy call failed for action "${action}":`, err.message);
     }
-  } catch (err) {
-    console.warn(`Primary proxy call failed for action "${action}":`, err.message);
   }
 
   // Tier 2: Direct Fallback to prtvshow.online KeyAuth Engine (CORS enabled)
@@ -565,14 +586,14 @@ async function callApi(action, payload = {}) {
       ...payload
     };
 
-    const directRes = await fetch('https://prtvshow.online/api_admin.php', {
+    const directRes = await fetchWithTimeout('https://prtvshow.online/api_admin.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       },
       body: JSON.stringify(directPayload)
-    });
+    }, 4000);
 
     if (directRes.ok) {
       const directData = await directRes.json();
@@ -3071,9 +3092,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   startRealtimeSimulation();
 
-  // Load real API data
-  loadAdminPackages();
-  if (role !== 'reseller') {
-    loadResellerStats();
-  }
+  // Load real API data in background concurrently
+  Promise.allSettled([
+    loadAdminPackages(),
+    role !== 'reseller' ? loadResellerStats() : Promise.resolve()
+  ]);
 });

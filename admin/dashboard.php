@@ -279,10 +279,6 @@ $admin_user = $_SESSION['prtv_admin_user'] ?? 'HYPER X';
         <!-- VIEW 2: LICENSES -->
         <section class="tab-view" id="view-licenses">
           <div class="view-header-strip">
-            <div>
-              <h2 class="view-heading-title">KeyAuth License Keys</h2>
-              <p class="view-sub-text">Generate cryptographically verified keys, lock to device HWID, and monitor usage.</p>
-            </div>
             <button class="btn-action-primary" onclick="openModal('modal-add-key')">
               <span>⚡</span><span>+ Generate New Key</span>
             </button>
@@ -310,12 +306,6 @@ $admin_user = $_SESSION['prtv_admin_user'] ?? 'HYPER X';
 
         <!-- VIEW 3: LOGS -->
         <section class="tab-view" id="view-logs">
-          <div class="view-header-strip">
-            <div>
-              <h2 class="view-heading-title">Authentication &amp; Security Logs</h2>
-              <p class="view-sub-text">Total 3,547 log entries captured across client sessions and API requests.</p>
-            </div>
-          </div>
           <div class="cyber-data-table-wrap">
             <table class="cyber-panel-table" style="font-size:12.5px;">
               <thead>
@@ -328,12 +318,6 @@ $admin_user = $_SESSION['prtv_admin_user'] ?? 'HYPER X';
 
         <!-- VIEW 4: EXE GENERATOR -->
         <section class="tab-view" id="view-exegen">
-          <div class="view-header-strip">
-            <div>
-              <h2 class="view-heading-title">Protected Client EXE Generator</h2>
-              <p class="view-sub-text">Build and compile encrypted client executables bound to your KeyAuth application.</p>
-            </div>
-          </div>
           <div class="builder-grid">
             <div class="dashboard-card-box">
               <div class="card-title-bar"><span class="card-title-text">🛠️ Executable Build Configuration</span></div>
@@ -365,10 +349,6 @@ $admin_user = $_SESSION['prtv_admin_user'] ?? 'HYPER X';
         <!-- VIEW 5: RESELLERS -->
         <section class="tab-view" id="view-resellers">
           <div class="view-header-strip">
-            <div>
-              <h2 class="view-heading-title">Reseller Management &amp; Distribution</h2>
-              <p class="view-sub-text">Authorize reseller accounts, grant key generation quotas, and track sales.</p>
-            </div>
             <button class="btn-action-primary" onclick="openModal('modal-add-reseller')">
               <span>👥</span><span>+ Add Reseller</span>
             </button>
@@ -387,12 +367,6 @@ $admin_user = $_SESSION['prtv_admin_user'] ?? 'HYPER X';
 
         <!-- VIEW 6: APPLICATIONS -->
         <section class="tab-view" id="view-apps">
-          <div class="view-header-strip">
-            <div>
-              <h2 class="view-heading-title">Application Management</h2>
-              <p class="view-sub-text">Manage registered applications and cryptographic secret salts.</p>
-            </div>
-          </div>
           <div class="dashboard-card-box">
             <table class="cyber-panel-table">
               <thead><tr><th>APP NAME</th><th>APP SECRET</th><th>PACKAGES</th><th>TOTAL KEYS</th><th>STATUS</th></tr></thead>
