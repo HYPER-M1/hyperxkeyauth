@@ -789,11 +789,11 @@ function switchTab(tabId) {
   if (titleEl) {
     const titles = {
       dashboard: 'Dashboard',
-      licenses: 'KeyAuth License Keys Management',
-      logs: 'Authentication & Security Logs',
-      resellers: 'Reseller System & Quota Distribution',
-      apps: 'Application & Packages Control',
-      transfers: 'Peer-to-Peer Credit Distribution'
+      licenses: 'License Keys',
+      logs: 'Audit Logs',
+      resellers: 'Resellers',
+      apps: 'Applications',
+      transfers: 'Transfers'
     };
     titleEl.textContent = titles[tabId] || 'Dashboard';
   }
@@ -877,34 +877,37 @@ function renderLicensesTable() {
     // Action buttons: Resellers only get Inspect & Reset HWID. Root Admin gets Ban & Delete as well.
     const isReseller = role === 'reseller';
     const actionButtons = isReseller ? `
-      <div style="display:flex;gap:6px;">
-        <button onclick="inspectKeyLive('${lic.key}')" class="header-icon-btn" title="Inspect Key Info">🔍</button>
-        <button onclick="resetHwidLive('${lic.key}')" class="header-icon-btn" title="Reset HWID">🔄</button>
+      <div style="display:flex;gap:6px;white-space:nowrap;">
+        <button onclick="inspectKeyLive('${lic.key}')" class="btn-row-action" title="Inspect Key Info">🔍</button>
+        <button onclick="resetHwidLive('${lic.key}')" class="btn-row-action" title="Reset HWID">🔄</button>
       </div>
     ` : `
-      <div style="display:flex;gap:6px;">
-        <button onclick="inspectKeyLive('${lic.key}')" class="header-icon-btn" title="Inspect Key Info from API">🔍</button>
-        <button onclick="resetHwidLive('${lic.key}')" class="header-icon-btn" title="Reset HWID via API">🔄</button>
-        <button onclick="toggleBanLive('${lic.key}', '${lic.status}')" class="header-icon-btn" title="${lic.status === 'banned' ? 'Unban' : 'Ban'}">🚫</button>
-        <button onclick="deleteKeyLive('${lic.key}')" class="header-icon-btn" style="color:#ef4444;" title="Delete via API">🗑️</button>
+      <div style="display:flex;gap:6px;white-space:nowrap;">
+        <button onclick="inspectKeyLive('${lic.key}')" class="btn-row-action" title="Inspect Key Info from API">🔍</button>
+        <button onclick="resetHwidLive('${lic.key}')" class="btn-row-action" title="Reset HWID via API">🔄</button>
+        <button onclick="toggleBanLive('${lic.key}', '${lic.status}')" class="btn-row-action" title="${lic.status === 'banned' ? 'Unban' : 'Ban'}">🚫</button>
+        <button onclick="deleteKeyLive('${lic.key}')" class="btn-row-action" style="color:#ef4444;" title="Delete via API">🗑️</button>
       </div>
     `;
 
     return `
       <tr>
-        <td style="font-family:var(--font-mono);font-weight:700;color:#fff;">
-          <span style="color:#00f0ff;margin-right:4px;">🔑</span>${lic.key}
-          <button onclick="copyText('${lic.key}')" class="btn-copy-inline" title="Copy Key">📋</button>
+        <td class="col-license-key" style="font-family:var(--font-mono);font-weight:700;color:#fff;white-space:nowrap;">
+          <span style="display:inline-flex;align-items:center;gap:4px;white-space:nowrap;">
+            <span style="color:#00f0ff;">🔑</span>
+            <span style="letter-spacing:0.02em;">${lic.key}</span>
+            <button onclick="copyText('${lic.key}')" class="btn-copy-inline" title="Copy Key">📋</button>
+          </span>
         </td>
-        <td>
+        <td style="white-space:nowrap;">
           <span style="font-family:var(--font-mono);color:#38bdf8;display:block;font-weight:600;">${lic.pkg || 'BASIC PANEL'}</span>
           <span style="font-size:10.5px;color:var(--text-dim);">${lic.app || 'Custom work'}</span>
         </td>
-        <td style="color:#cbd5e1;font-weight:600;">${lic.user || 'Root Admin'}</td>
-        <td style="font-family:var(--font-mono);font-size:11px;color:${lic.hwid === 'Unbound' || lic.hwid === 'Not Bound' ? '#f59e0b' : '#8e95aa'};">${lic.hwid || 'Not Bound'}</td>
-        <td style="font-family:var(--font-mono);font-size:11px;color:#e2e8f0;">${lic.expiry || 'Lifetime'}</td>
-        <td>${statusBadge}</td>
-        <td>${actionButtons}</td>
+        <td class="col-user col-mobile-hide" style="color:#cbd5e1;font-weight:600;white-space:nowrap;">${lic.user || 'Root Admin'}</td>
+        <td class="col-hwid col-mobile-hide" style="font-family:var(--font-mono);font-size:11px;white-space:nowrap;color:${lic.hwid === 'Unbound' || lic.hwid === 'Not Bound' ? '#f59e0b' : '#8e95aa'};">${lic.hwid || 'Not Bound'}</td>
+        <td style="font-family:var(--font-mono);font-size:11px;color:#e2e8f0;white-space:nowrap;">${lic.expiry || 'Lifetime'}</td>
+        <td style="white-space:nowrap;">${statusBadge}</td>
+        <td style="white-space:nowrap;">${actionButtons}</td>
       </tr>
     `;
   }).join('');
@@ -1292,11 +1295,11 @@ function renderApplicationsTable() {
 
   tbody.innerHTML = allowedPkgs.map((pkg, idx) => `
     <tr>
-      <td style="font-family:var(--font-mono);font-weight:700;color:#00f0ff;">#${idx + 1}</td>
-      <td style="font-weight:700;color:#fff;font-size:13px;">${pkg.package_name}</td>
-      <td style="font-family:var(--font-mono);color:#cbd5e1;font-size:11.5px;">${pkg.package_id}</td>
-      <td style="color:#38bdf8;font-weight:600;">Custom work</td>
-      <td><span class="badge-pill-status badge-active-green">Active</span></td>
+      <td style="font-family:var(--font-mono);font-weight:700;color:#00f0ff;white-space:nowrap;">#${idx + 1}</td>
+      <td style="font-weight:700;color:#fff;font-size:13px;white-space:nowrap;">${pkg.package_name}</td>
+      <td class="col-pkg-id col-mobile-hide" style="font-family:var(--font-mono);color:#cbd5e1;font-size:11.5px;">${pkg.package_id}</td>
+      <td style="color:#38bdf8;font-weight:600;white-space:nowrap;">Custom work</td>
+      <td style="white-space:nowrap;"><span class="badge-pill-status badge-active-green">Active</span></td>
     </tr>
   `).join('');
 }
@@ -1570,10 +1573,10 @@ function renderFullLogsTable() {
   const logs = getFilteredLogsForCurrentSession();
   tbody.innerHTML = logs.map(log => `
     <tr>
-      <td>${formatLogBadge(log.action)}</td>
+      <td style="white-space:nowrap;">${formatLogBadge(log.action)}</td>
       <td style="color:#fff;font-weight:500;">${log.detail}</td>
-      <td style="font-family:var(--font-mono);color:#06b6d4;font-size:11.5px;">${log.ip || '127.0.0.1'}</td>
-      <td style="font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);">${log.time}</td>
+      <td class="col-log-ip col-mobile-hide" style="font-family:var(--font-mono);color:#06b6d4;font-size:11.5px;white-space:nowrap;">${log.ip || '127.0.0.1'}</td>
+      <td style="font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);white-space:nowrap;">${log.time}</td>
     </tr>
   `).join('');
 }
@@ -1744,7 +1747,7 @@ function renderResellersTable() {
     return `
       <tr>
         <td>
-          <div style="display:flex;align-items:center;gap:10px;">
+          <div style="display:flex;align-items:center;gap:10px;white-space:nowrap;">
             <div class="profile-avatar" style="width:30px;height:30px;font-size:12px;font-weight:800;border-color:rgba(0,240,255,0.3);">${avatarLetter}</div>
             <div>
               <div style="font-weight:800;color:#fff;">${r.username}</div>
@@ -1752,33 +1755,33 @@ function renderResellersTable() {
             </div>
           </div>
         </td>
-        <td>
+        <td class="col-reseller-pwd col-mobile-hide">
           <span class="reseller-pass-cell" id="reseller-pass-${r.id}">
             <span class="pass-val">••••••••</span>
             <button onclick="toggleResellerPassVisibility('${r.id}', '${passStr}')" class="btn-copy-inline" title="Reveal/Hide Password">👁️</button>
             <button onclick="copyText('${passStr}')" class="btn-copy-inline" title="Copy Password">📋</button>
           </span>
         </td>
-        <td>
+        <td style="white-space:nowrap;">
           <div style="display:flex;align-items:center;gap:4px;">
-            <span style="font-family:var(--font-mono);font-weight:700;color:#f59e0b;font-size:13px;">${r.balance} Keys</span>
+            <span style="font-family:var(--font-mono);font-weight:700;color:#f59e0b;font-size:13px;white-space:nowrap;">${r.balance} Keys</span>
             <button onclick="openTransferModalForReseller('${r.id}')" class="btn-sm-action" style="color:#00f0ff;border-color:rgba(0,240,255,0.4);" title="Transfer Credits to ${r.username}">💸 Send</button>
             <button onclick="quickAddResellerCredits('${r.id}')" class="btn-sm-action" title="Quick Add Quota">+ Quota</button>
           </div>
         </td>
         <td>
-          <div style="display:flex;flex-wrap:wrap;max-width:280px;gap:2px;">
+          <div style="display:flex;flex-wrap:wrap;max-width:240px;gap:2px;">
             ${panelsHtml}
           </div>
         </td>
-        <td style="font-family:var(--font-mono);color:#cbd5e1;text-align:center;">${r.createdKeys || 0}</td>
-        <td>${statusBadge}</td>
-        <td>
+        <td class="col-reseller-keys col-mobile-hide" style="font-family:var(--font-mono);color:#cbd5e1;text-align:center;">${r.createdKeys || 0}</td>
+        <td style="white-space:nowrap;">${statusBadge}</td>
+        <td style="white-space:nowrap;">
           <div style="display:flex;gap:6px;">
-            <button onclick="openTransferModalForReseller('${r.id}')" class="header-icon-btn" style="color:#00f0ff;" title="Transfer Credits to ${r.username}">💸</button>
-            <button onclick="openEditResellerModal('${r.id}')" class="header-icon-btn" title="Edit Permissions &amp; Credits">✏️</button>
-            <button onclick="toggleResellerStatus('${r.id}')" class="header-icon-btn" title="${isSuspended ? 'Activate Account' : 'Suspend Account'}">${isSuspended ? '▶️' : '⏸️'}</button>
-            <button onclick="deleteReseller('${r.id}')" class="header-icon-btn" style="color:#ef4444;" title="Delete Reseller">🗑️</button>
+            <button onclick="openTransferModalForReseller('${r.id}')" class="btn-row-action" style="color:#00f0ff;" title="Transfer Credits to ${r.username}">💸</button>
+            <button onclick="openEditResellerModal('${r.id}')" class="btn-row-action" title="Edit Permissions &amp; Credits">✏️</button>
+            <button onclick="toggleResellerStatus('${r.id}')" class="btn-row-action" title="${isSuspended ? 'Activate Account' : 'Suspend Account'}">${isSuspended ? '▶️' : '⏸️'}</button>
+            <button onclick="deleteReseller('${r.id}')" class="btn-row-action" style="color:#ef4444;" title="Delete Reseller">🗑️</button>
           </div>
         </td>
       </tr>
@@ -2172,17 +2175,17 @@ function renderTransfersHistoryTable(current) {
 
     return `
       <tr>
-        <td style="font-family:var(--font-mono);font-size:11px;color:#00f0ff;font-weight:700;">${tx.id}</td>
-        <td style="font-weight:700;color:${isSent ? '#ef4444' : '#fff'};">
+        <td class="col-tx-id col-mobile-hide" style="font-family:var(--font-mono);font-size:11px;color:#00f0ff;font-weight:700;white-space:nowrap;">${tx.id}</td>
+        <td style="font-weight:700;color:${isSent ? '#ef4444' : '#fff'};white-space:nowrap;">
           ${isSent ? '<strong>(You) ' + tx.from + '</strong>' : fromLabel}
         </td>
-        <td style="font-weight:700;color:${isRecv ? '#22c55e' : '#fff'};">
+        <td style="font-weight:700;color:${isRecv ? '#22c55e' : '#fff'};white-space:nowrap;">
           ${isRecv ? '<strong>(You) ' + tx.to + '</strong>' : tx.to}
         </td>
-        <td>${amtBadge}</td>
-        <td style="color:#cbd5e1;font-size:11.5px;">${noteLabel}</td>
-        <td style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);">${tx.time}</td>
-        <td><span class="badge-pill-status badge-active-green">✓ ${tx.status || 'Completed'}</span></td>
+        <td style="white-space:nowrap;">${amtBadge}</td>
+        <td class="col-tx-memo col-mobile-hide" style="color:#cbd5e1;font-size:11.5px;">${noteLabel}</td>
+        <td style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);white-space:nowrap;">${tx.time}</td>
+        <td style="white-space:nowrap;"><span class="badge-pill-status badge-active-green">✓ ${tx.status || 'Completed'}</span></td>
       </tr>
     `;
   }).join('');
@@ -2766,12 +2769,12 @@ function renderResellerClientUsers(res) {
 
     return `
       <tr>
-        <td style="font-weight:700;color:#00f0ff;font-family:var(--font-mono);font-size:12.5px;">${lic.user || res.username}</td>
-        <td><code style="background:rgba(0,0,0,0.4);padding:3px 6px;border-radius:4px;border:1px solid rgba(255,255,255,0.08);color:#fff;font-family:var(--font-mono);font-size:11px;">${lic.key}</code></td>
-        <td style="color:#38bdf8;font-weight:600;">${lic.pkg}</td>
-        <td>${hwidBadge}</td>
-        <td style="color:#cbd5e1;font-size:11.5px;">${lic.expiry}</td>
-        <td>${statusBadge}</td>
+        <td style="font-weight:700;color:#00f0ff;font-family:var(--font-mono);font-size:12.5px;white-space:nowrap;">${lic.user || res.username}</td>
+        <td style="white-space:nowrap;"><code style="background:rgba(0,0,0,0.4);padding:3px 6px;border-radius:4px;border:1px solid rgba(255,255,255,0.08);color:#fff;font-family:var(--font-mono);font-size:11px;white-space:nowrap;">${lic.key}</code></td>
+        <td style="color:#38bdf8;font-weight:600;white-space:nowrap;">${lic.pkg}</td>
+        <td class="col-hwid col-mobile-hide" style="white-space:nowrap;">${hwidBadge}</td>
+        <td style="color:#cbd5e1;font-size:11.5px;white-space:nowrap;">${lic.expiry}</td>
+        <td style="white-space:nowrap;">${statusBadge}</td>
       </tr>
     `;
   }).join('');

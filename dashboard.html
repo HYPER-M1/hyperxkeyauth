@@ -658,7 +658,7 @@
                   <th>CLIENT USER</th>
                   <th>LICENSE KEY</th>
                   <th>PANEL / PACKAGE</th>
-                  <th>HWID STATUS</th>
+                  <th class="col-hwid col-mobile-hide">HWID STATUS</th>
                   <th>EXPIRY</th>
                   <th>STATUS</th>
                 </tr>
@@ -784,13 +784,13 @@
             <table class="cyber-panel-table" style="font-size:12.5px;">
               <thead>
                 <tr>
-                  <th>LICENSE KEY</th>
+                  <th style="min-width:180px;">LICENSE KEY</th>
                   <th>PACKAGE / APP</th>
-                  <th>ASSIGNED USER</th>
-                  <th>HWID BINDING</th>
+                  <th class="col-user col-mobile-hide">ASSIGNED USER</th>
+                  <th class="col-hwid col-mobile-hide">HWID BINDING</th>
                   <th>DURATION / EXPIRY</th>
                   <th>STATUS</th>
-                  <th>ACTIONS</th>
+                  <th style="min-width:110px;">ACTIONS</th>
                 </tr>
               </thead>
               <tbody id="licenses-tbody">
@@ -820,7 +820,7 @@
                 <tr>
                   <th style="width:120px;">ACTION</th>
                   <th>DETAIL</th>
-                  <th style="width:140px;">IP ADDRESS</th>
+                  <th class="col-log-ip col-mobile-hide" style="width:140px;">IP ADDRESS</th>
                   <th style="width:100px;">TIME</th>
                 </tr>
               </thead>
@@ -828,49 +828,49 @@
                 <tr>
                   <td><span class="badge-pill-status badge-auth-success" style="font-weight:700;">auth_success</span></td>
                   <td style="color:#fff;font-weight:500;">Key authenticated for app: Custom work (BASIC PANEL)</td>
-                  <td style="font-family:var(--font-mono);color:#06b6d4;font-size:11.5px;">45.118.67.22</td>
+                  <td class="col-log-ip col-mobile-hide" style="font-family:var(--font-mono);color:#06b6d4;font-size:11.5px;">45.118.67.22</td>
                   <td style="font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);">2s ago</td>
                 </tr>
                 <tr>
                   <td><span class="badge-pill-status badge-auth-success" style="font-weight:700;">key_gen</span></td>
                   <td style="color:#fff;font-weight:500;">License key created: HPERX-8F92-41AC-90B2-110A (30 Days)</td>
-                  <td style="font-family:var(--font-mono);color:#06b6d4;font-size:11.5px;">127.0.0.1</td>
+                  <td class="col-log-ip col-mobile-hide" style="font-family:var(--font-mono);color:#06b6d4;font-size:11.5px;">127.0.0.1</td>
                   <td style="font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);">14s ago</td>
                 </tr>
                 <tr>
                   <td><span class="badge-pill-status badge-auth-fail" style="font-weight:700;">auth_fail</span></td>
                   <td style="color:#fff;font-weight:500;">HWID mismatch detected: Device unverified</td>
-                  <td style="font-family:var(--font-mono);color:#06b6d4;font-size:11.5px;">89.144.12.5</td>
+                  <td class="col-log-ip col-mobile-hide" style="font-family:var(--font-mono);color:#06b6d4;font-size:11.5px;">89.144.12.5</td>
                   <td style="font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);">45s ago</td>
                 </tr>
                 <tr>
                   <td><span class="badge-pill-status" style="background:rgba(234,179,8,0.15);border:1px solid rgba(234,179,8,0.4);color:#eab308;font-weight:700;">hwid_reset</span></td>
                   <td style="color:#fff;font-weight:500;">HWID reset executed for HPERX-32KA-991L-M08P-4491</td>
-                  <td style="font-family:var(--font-mono);color:#06b6d4;font-size:11.5px;">127.0.0.1</td>
+                  <td class="col-log-ip col-mobile-hide" style="font-family:var(--font-mono);color:#06b6d4;font-size:11.5px;">127.0.0.1</td>
                   <td style="font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);">1m ago</td>
                 </tr>
                 <tr>
                   <td><span class="badge-pill-status badge-auth-success" style="font-weight:700;">auth_success</span></td>
                   <td style="color:#fff;font-weight:500;">Secure TLS handshake verified for client terminal</td>
-                  <td style="font-family:var(--font-mono);color:#06b6d4;font-size:11.5px;">127.0.0.1</td>
+                  <td class="col-log-ip col-mobile-hide" style="font-family:var(--font-mono);color:#06b6d4;font-size:11.5px;">127.0.0.1</td>
                   <td style="font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);">3m ago</td>
                 </tr>
                 <tr>
                   <td><span class="badge-pill-status badge-auth-success" style="font-weight:700;">auth_success</span></td>
                   <td style="color:#fff;font-weight:500;">Client handshake v1.0.0 verified successfully</td>
-                  <td style="font-family:var(--font-mono);color:#06b6d4;font-size:11.5px;">194.26.29.13</td>
+                  <td class="col-log-ip col-mobile-hide" style="font-family:var(--font-mono);color:#06b6d4;font-size:11.5px;">194.26.29.13</td>
                   <td style="font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);">5m ago</td>
                 </tr>
                 <tr>
                   <td><span class="badge-pill-status badge-auth-fail" style="font-weight:700;">auth_fail</span></td>
                   <td style="color:#fff;font-weight:500;">Invalid license key attempt: HPERX-UNKNOWN-XXXX</td>
-                  <td style="font-family:var(--font-mono);color:#06b6d4;font-size:11.5px;">182.73.19.144</td>
+                  <td class="col-log-ip col-mobile-hide" style="font-family:var(--font-mono);color:#06b6d4;font-size:11.5px;">182.73.19.144</td>
                   <td style="font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);">8m ago</td>
                 </tr>
                 <tr>
                   <td><span class="badge-pill-status badge-auth-success" style="font-weight:700;">auth_success</span></td>
                   <td style="color:#fff;font-weight:500;">Device signature validated successfully</td>
-                  <td style="font-family:var(--font-mono);color:#06b6d4;font-size:11.5px;">127.0.0.1</td>
+                  <td class="col-log-ip col-mobile-hide" style="font-family:var(--font-mono);color:#06b6d4;font-size:11.5px;">127.0.0.1</td>
                   <td style="font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);">12m ago</td>
                 </tr>
               </tbody>
@@ -895,7 +895,7 @@
                 <tr>
                   <th style="width:60px;">#</th>
                   <th>PANEL / PACKAGE NAME</th>
-                  <th>PACKAGE ID</th>
+                  <th class="col-pkg-id col-mobile-hide">PACKAGE ID</th>
                   <th>TARGET APP</th>
                   <th style="width:120px;">STATUS</th>
                 </tr>
@@ -904,56 +904,56 @@
                 <tr>
                   <td style="font-family:var(--font-mono);font-weight:700;color:#00f0ff;">#1</td>
                   <td style="font-weight:700;color:#fff;font-size:13px;">BASIC PANEL</td>
-                  <td style="font-family:var(--font-mono);color:#cbd5e1;font-size:11.5px;">e52c1515c53453b85d0d4e87</td>
+                  <td class="col-pkg-id col-mobile-hide" style="font-family:var(--font-mono);color:#cbd5e1;font-size:11.5px;">e52c1515c53453b85d0d4e87</td>
                   <td style="color:#38bdf8;font-weight:600;">Custom work</td>
                   <td><span class="badge-pill-status badge-active-green">Active</span></td>
                 </tr>
                 <tr>
                   <td style="font-family:var(--font-mono);font-weight:700;color:#00f0ff;">#2</td>
                   <td style="font-weight:700;color:#fff;font-size:13px;">AIMSILENT EXE</td>
-                  <td style="font-family:var(--font-mono);color:#cbd5e1;font-size:11.5px;">affc8da8fd5ace99981ab877</td>
+                  <td class="col-pkg-id col-mobile-hide" style="font-family:var(--font-mono);color:#cbd5e1;font-size:11.5px;">affc8da8fd5ace99981ab877</td>
                   <td style="color:#38bdf8;font-weight:600;">Custom work</td>
                   <td><span class="badge-pill-status badge-active-green">Active</span></td>
                 </tr>
                 <tr>
                   <td style="font-family:var(--font-mono);font-weight:700;color:#00f0ff;">#3</td>
                   <td style="font-weight:700;color:#fff;font-size:13px;">UID BYPASS</td>
-                  <td style="font-family:var(--font-mono);color:#cbd5e1;font-size:11.5px;">cb921031dc43197e8ccb6828</td>
+                  <td class="col-pkg-id col-mobile-hide" style="font-family:var(--font-mono);color:#cbd5e1;font-size:11.5px;">cb921031dc43197e8ccb6828</td>
                   <td style="color:#38bdf8;font-weight:600;">Custom work</td>
                   <td><span class="badge-pill-status badge-active-green">Active</span></td>
                 </tr>
                 <tr>
                   <td style="font-family:var(--font-mono);font-weight:700;color:#00f0ff;">#4</td>
                   <td style="font-weight:700;color:#fff;font-size:13px;">EXTERNAL PANEL</td>
-                  <td style="font-family:var(--font-mono);color:#cbd5e1;font-size:11.5px;">3d1c6c948b4715fbd2fada2d</td>
+                  <td class="col-pkg-id col-mobile-hide" style="font-family:var(--font-mono);color:#cbd5e1;font-size:11.5px;">3d1c6c948b4715fbd2fada2d</td>
                   <td style="color:#38bdf8;font-weight:600;">Custom work</td>
                   <td><span class="badge-pill-status badge-active-green">Active</span></td>
                 </tr>
                 <tr>
                   <td style="font-family:var(--font-mono);font-weight:700;color:#00f0ff;">#5</td>
                   <td style="font-weight:700;color:#fff;font-size:13px;">PVT AIMKILL</td>
-                  <td style="font-family:var(--font-mono);color:#cbd5e1;font-size:11.5px;">d4f0ce93349f236711344cb5</td>
+                  <td class="col-pkg-id col-mobile-hide" style="font-family:var(--font-mono);color:#cbd5e1;font-size:11.5px;">d4f0ce93349f236711344cb5</td>
                   <td style="color:#38bdf8;font-weight:600;">Custom work</td>
                   <td><span class="badge-pill-status badge-active-green">Active</span></td>
                 </tr>
                 <tr>
                   <td style="font-family:var(--font-mono);font-weight:700;color:#00f0ff;">#6</td>
                   <td style="font-weight:700;color:#fff;font-size:13px;">VAULT PANEL</td>
-                  <td style="font-family:var(--font-mono);color:#cbd5e1;font-size:11.5px;">154d1edaddd7203fbfd847f4</td>
+                  <td class="col-pkg-id col-mobile-hide" style="font-family:var(--font-mono);color:#cbd5e1;font-size:11.5px;">154d1edaddd7203fbfd847f4</td>
                   <td style="color:#38bdf8;font-weight:600;">Custom work</td>
                   <td><span class="badge-pill-status badge-active-green">Active</span></td>
                 </tr>
                 <tr>
                   <td style="font-family:var(--font-mono);font-weight:700;color:#00f0ff;">#7</td>
                   <td style="font-weight:700;color:#fff;font-size:13px;">LIB BYPASS</td>
-                  <td style="font-family:var(--font-mono);color:#cbd5e1;font-size:11.5px;">db3b90e8134ec738b94a9b05</td>
+                  <td class="col-pkg-id col-mobile-hide" style="font-family:var(--font-mono);color:#cbd5e1;font-size:11.5px;">db3b90e8134ec738b94a9b05</td>
                   <td style="color:#38bdf8;font-weight:600;">Custom work</td>
                   <td><span class="badge-pill-status badge-active-green">Active</span></td>
                 </tr>
                 <tr>
                   <td style="font-family:var(--font-mono);font-weight:700;color:#00f0ff;">#8</td>
                   <td style="font-weight:700;color:#fff;font-size:13px;">FPS BOOSTER</td>
-                  <td style="font-family:var(--font-mono);color:#cbd5e1;font-size:11.5px;">2411bc9db9f9a66c6e876ad2</td>
+                  <td class="col-pkg-id col-mobile-hide" style="font-family:var(--font-mono);color:#cbd5e1;font-size:11.5px;">2411bc9db9f9a66c6e876ad2</td>
                   <td style="color:#38bdf8;font-weight:600;">Custom work</td>
                   <td><span class="badge-pill-status badge-active-green">Active</span></td>
                 </tr>
@@ -1020,12 +1020,12 @@
               <thead>
                 <tr>
                   <th style="min-width:140px;">RESELLER</th>
-                  <th style="min-width:130px;">LOGIN PASSWORD</th>
-                  <th style="min-width:140px;">CREDIT BALANCE</th>
-                  <th style="min-width:200px;">ALLOWED PANELS / PACKAGES</th>
-                  <th style="width:100px;">KEYS GEN</th>
+                  <th class="col-reseller-pwd col-mobile-hide" style="min-width:130px;">LOGIN PASSWORD</th>
+                  <th style="min-width:120px;">CREDIT BALANCE</th>
+                  <th style="min-width:160px;">ALLOWED PANELS / PACKAGES</th>
+                  <th class="col-reseller-keys col-mobile-hide" style="width:100px;">KEYS GEN</th>
                   <th style="width:90px;">STATUS</th>
-                  <th style="min-width:160px;">ACTIONS</th>
+                  <th style="min-width:130px;">ACTIONS</th>
                 </tr>
               </thead>
               <tbody id="resellers-tbody">
@@ -1183,13 +1183,13 @@
               <table class="cyber-panel-table" style="font-size:12.5px;">
                 <thead>
                   <tr>
-                    <th style="width:120px;">TX ID</th>
-                    <th style="min-width:140px;">SENDER (FROM)</th>
-                    <th style="min-width:140px;">RECIPIENT (TO)</th>
-                    <th style="width:130px;">CREDITS</th>
-                    <th>MEMO / NOTE</th>
-                    <th style="width:150px;">TIMESTAMP</th>
-                    <th style="width:100px;">STATUS</th>
+                    <th class="col-tx-id col-mobile-hide" style="width:110px;">TX ID</th>
+                    <th style="min-width:130px;">SENDER (FROM)</th>
+                    <th style="min-width:130px;">RECIPIENT (TO)</th>
+                    <th style="width:120px;">CREDITS</th>
+                    <th class="col-tx-memo col-mobile-hide">MEMO / NOTE</th>
+                    <th style="width:130px;">TIMESTAMP</th>
+                    <th style="width:90px;">STATUS</th>
                   </tr>
                 </thead>
                 <tbody id="transfers-history-tbody">
