@@ -228,8 +228,8 @@ body {
 }
 
 .sidebar-nav-link.active {
-  background: rgba(229, 24, 31, 0.12);
-  border: 1.5px solid rgba(229, 24, 31, 0.45);
+  background: rgba(107, 15, 20, 0.22);
+  border: 1px solid #6b0f14;
   color: #fff;
   border-radius: 8px;
 }
@@ -329,8 +329,8 @@ body {
 }
 
 .btn-profile-logout:hover {
-  background: rgba(239, 68, 68, 0.15);
-  border-color: rgba(239, 68, 68, 0.3);
+  background: rgba(90, 12, 16, 0.25);
+  border-color: #5a0c10;
 }
 
 /* ==========================================================================
@@ -389,8 +389,8 @@ body {
 }
 
 .navbar-search-wrap:focus-within {
-  border-color: rgba(229, 24, 31, 0.4);
-  box-shadow: 0 0 0 2px rgba(229, 24, 31, 0.12);
+  border-color: #5a0c10;
+  box-shadow: 0 0 0 2px rgba(90, 12, 16, 0.25);
 }
 
 .navbar-search-wrap .search-svg {
@@ -861,7 +861,7 @@ body {
 }
 
 .input-search-cyber:focus {
-  border-color: #ef4444;
+  border-color: #5a0c10;
 }
 
 .filter-buttons-row {
@@ -882,7 +882,7 @@ body {
 
 .btn-filter-pill.active, .btn-filter-pill:hover {
   background: #2a151b;
-  border-color: #ef4444;
+  border-color: #6b0f14;
   color: #fff;
 }
 
@@ -928,7 +928,7 @@ body {
 }
 
 .form-input-box:focus {
-  border-color: #ef4444;
+  border-color: #5a0c10;
 }
 
 .console-terminal-box {
@@ -967,9 +967,9 @@ body {
   width: 100%;
   max-width: 480px;
   background: #121622;
-  border: 1px solid #ef4444;
+  border: 1px solid #1a1e2d;
   border-radius: var(--radius-lg);
-  box-shadow: 0 0 30px rgba(239, 68, 68, 0.3);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
   overflow: hidden;
 }
 
@@ -1285,9 +1285,9 @@ body.is-reseller #quick-tool-delete {
    PEER-TO-PEER RESELLER CREDIT TRANSFER SYSTEM
    ========================================================================== */
 .badge-tx-sent {
-  background: rgba(239, 68, 68, 0.15);
+  background: rgba(90, 12, 16, 0.25);
   color: #f87171;
-  border: 1px solid rgba(239, 68, 68, 0.35);
+  border: 1px solid #5a0c10;
   font-family: var(--font-mono);
   font-weight: 700;
   padding: 3px 8px;
@@ -1403,9 +1403,9 @@ body.is-reseller #quick-tool-delete {
   width: 100%;
   max-width: 440px;
   background: linear-gradient(180deg, #131929 0%, #0b0f19 100%);
-  border: 1px solid rgba(230, 24, 46, 0.4);
+  border: 1px solid #1a1e2d;
   border-radius: 18px;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(230, 24, 46, 0.2);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95);
   position: relative;
   overflow: hidden;
   transform: scale(0.92) translateY(12px);
@@ -1434,8 +1434,8 @@ body.is-reseller #quick-tool-delete {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(230, 24, 46, 0.12);
-  border: 1px solid rgba(230, 24, 46, 0.3);
+  background: rgba(90, 12, 16, 0.25);
+  border: 1px solid #5a0c10;
   color: #ff4d6d;
   font-family: var(--font-mono);
   font-size: 10px;
@@ -1461,8 +1461,8 @@ body.is-reseller #quick-tool-delete {
 }
 
 .hyper-dialog-close-btn:hover {
-  background: rgba(230, 24, 46, 0.2);
-  border-color: rgba(230, 24, 46, 0.5);
+  background: rgba(90, 12, 16, 0.25);
+  border-color: #5a0c10;
   color: #ffffff;
 }
 
@@ -1491,10 +1491,10 @@ body.is-reseller #quick-tool-delete {
 }
 
 .hyper-dialog-icon-wrap.error {
-  background: radial-gradient(circle, rgba(239, 68, 68, 0.2) 0%, rgba(239, 68, 68, 0.05) 70%);
-  border: 1px solid rgba(239, 68, 68, 0.4);
+  background: radial-gradient(circle, rgba(90, 12, 16, 0.3) 0%, rgba(90, 12, 16, 0.08) 70%);
+  border: 1px solid #5a0c10;
   color: #ef4444;
-  box-shadow: 0 0 24px rgba(239, 68, 68, 0.3);
+  box-shadow: 0 0 24px rgba(90, 12, 16, 0.4);
 }
 
 .hyper-dialog-icon-wrap.info {
@@ -1676,9 +1676,9 @@ body.is-reseller #quick-tool-delete {
 /* 1. Welcome Strip */
 .dash-welcome-strip {
   background: #11141f;
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-top: 1.5px solid rgba(229, 24, 31, 0.85);
-  border-left: 1.5px solid rgba(229, 24, 31, 0.85);
+  border: 1px solid #161924;
+  border-top: 1.5px solid #6b0f14;
+  border-left: 1.5px solid #6b0f14;
   border-radius: 12px;
   padding: 18px 24px;
   margin-bottom: 20px;
@@ -1687,7 +1687,7 @@ body.is-reseller #quick-tool-delete {
   align-items: center;
   flex-wrap: wrap;
   gap: 16px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
 }
 
 .dash-welcome-left {
@@ -1700,8 +1700,8 @@ body.is-reseller #quick-tool-delete {
   width: 44px;
   height: 44px;
   border-radius: 9px;
-  background: rgba(229, 24, 31, 0.15);
-  border: 1px solid rgba(229, 24, 31, 0.35);
+  background: rgba(107, 15, 20, 0.3);
+  border: 1px solid #5a0c10;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1792,7 +1792,7 @@ body.is-reseller #quick-tool-delete {
 
 .stat-card-neo {
   background: #121622;
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border: 1px solid #161924;
   border-radius: 12px;
   padding: 16px 18px;
   display: flex;
@@ -1805,7 +1805,7 @@ body.is-reseller #quick-tool-delete {
 }
 
 .stat-card-neo:hover {
-  border-color: rgba(229, 24, 31, 0.35);
+  border-color: #5a0c10;
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
 }
@@ -1820,8 +1820,8 @@ body.is-reseller #quick-tool-delete {
   width: 38px;
   height: 38px;
   border-radius: 8px;
-  background: rgba(229, 24, 31, 0.08);
-  border: 1px solid rgba(229, 24, 31, 0.18);
+  background: rgba(107, 15, 20, 0.22);
+  border: 1px solid #4a0a0e;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1872,9 +1872,9 @@ body.is-reseller #quick-tool-delete {
 }
 
 .stat-neo-badge.badge-red {
-  background: rgba(229, 24, 31, 0.12);
-  color: #f87171;
-  border: 1px solid rgba(229, 24, 31, 0.3);
+  background: rgba(107, 15, 20, 0.25);
+  color: #ef4444;
+  border: 1px solid #5a0c10;
 }
 
 /* 3. Middle & Bottom Grids (68% / 32% Desktop) */
@@ -1891,7 +1891,7 @@ body.is-reseller #quick-tool-delete {
 .overview-activity-box,
 .overview-devices-box {
   background: #121622;
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border: 1px solid #161924;
   border-radius: 12px;
   padding: 20px 22px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
@@ -1936,7 +1936,7 @@ body.is-reseller #quick-tool-delete {
 .period-tab-group {
   display: inline-flex;
   background: rgba(255, 255, 255, 0.035);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border: 1px solid #161924;
   border-radius: 7px;
   padding: 3px;
   gap: 3px;
@@ -1955,9 +1955,9 @@ body.is-reseller #quick-tool-delete {
 }
 
 .period-btn.active {
-  background: rgba(229, 24, 31, 0.16);
+  background: rgba(107, 15, 20, 0.3);
   color: #fff;
-  border: 1px solid rgba(229, 24, 31, 0.45);
+  border: 1px solid #6b0f14;
 }
 
 .overview-metrics-strip {
@@ -2022,8 +2022,8 @@ body.is-reseller #quick-tool-delete {
 
 /* Infrastructure System Status Card */
 .infra-status-banner {
-  background: rgba(255, 255, 255, 0.025);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid #161924;
   border-radius: 8px;
   padding: 12px 14px;
   display: flex;
@@ -2090,7 +2090,7 @@ body.is-reseller #quick-tool-delete {
   align-items: center;
   justify-content: space-between;
   padding-bottom: 10px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid #161924;
 }
 
 .infra-metric-row:last-child {
@@ -2232,12 +2232,12 @@ body.is-reseller #quick-tool-delete {
   letter-spacing: 0.08em;
   color: #64748b;
   padding: 10px 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid #161924;
 }
 
 .neo-activity-table td {
   padding: 11px 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid #141722;
   vertical-align: middle;
 }
 
@@ -2250,7 +2250,7 @@ body.is-reseller #quick-tool-delete {
   height: 32px;
   border-radius: 50%;
   background: #181d2a;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid #1c202e;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2296,15 +2296,15 @@ body.is-reseller #quick-tool-delete {
   align-items: center;
   justify-content: space-between;
   padding: 11px 14px;
-  background: rgba(255, 255, 255, 0.025);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid #161924;
   border-radius: 8px;
   transition: all 0.15s ease;
 }
 
 .device-item-card:hover {
-  background: rgba(255, 255, 255, 0.045);
-  border-color: rgba(255, 255, 255, 0.09);
+  background: rgba(255, 255, 255, 0.04);
+  border-color: #202638;
 }
 
 .device-item-icon {
