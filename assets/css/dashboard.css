@@ -1061,7 +1061,7 @@ body {
     display: block;
   }
   .header-pill-stat {
-    display: none;
+    display: inline-flex;
   }
 }
 
@@ -2511,20 +2511,24 @@ html, body {
   }
 
   .header-pill-stat {
-    display: none !important;
+    display: inline-flex !important;
+    font-size: 11px !important;
+    padding: 4px 8px !important;
+    gap: 4px !important;
   }
 
   .top-navbar .header-icon-btn {
     display: none !important;
   }
 
-  .badge-live-pulse {
-    font-size: 10px !important;
-    padding: 4px 8px !important;
-  }
-
   .header-pill-admin {
+    display: inline-flex !important;
+    font-size: 11px !important;
     padding: 4px 8px !important;
+    max-width: 140px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
   }
 
   /* Table row action buttons visible on mobile */
@@ -2820,14 +2824,15 @@ html, body {
     padding: 10px 10px 28px !important;
   }
 
-  .badge-live-pulse {
-    font-size: 9px !important;
+  .header-pill-stat {
+    font-size: 10px !important;
     padding: 3px 6px !important;
   }
 
   .header-pill-admin {
-    font-size: 10.5px !important;
+    font-size: 10px !important;
     padding: 3px 6px !important;
+    max-width: 110px !important;
   }
 
   .page-breadcrumb-title {

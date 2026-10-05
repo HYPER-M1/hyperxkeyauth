@@ -154,26 +154,16 @@
         </div>
 
         <div class="navbar-right">
-          <!-- API Live Pulse Badge -->
-          <span class="badge-live-pulse" title="Connected to KeyAuth API">
-            <span class="pulse-live-dot"></span> API CONNECTED
-          </span>
-
-          <!-- Keys Stat Pill -->
-          <div class="header-pill-stat" title="Total Keys Quota">
-            <span style="font-size:12px;">🔑</span>
-            <span class="stat-keys-tag" id="header-keys-stat">77 / 9,999 keys</span>
+          <!-- Available Credits Stat Pill -->
+          <div class="header-pill-stat" title="Available Credits">
+            <span style="font-size:12px;">💳</span>
+            <span class="stat-keys-tag" id="header-keys-stat">9,922 Credits</span>
           </div>
 
-          <!-- Notification Bell -->
-          <button class="header-icon-btn" onclick="alert('KeyAuth API Status: Operational & Signed with HMAC-SHA256')" title="API Status">
-            🔔
-          </button>
-
-          <!-- Admin User Badge -->
+          <!-- User Role Badge -->
           <div class="header-pill-admin" id="header-admin-btn" style="background:#1e293b;border:1px solid #334155;cursor:default;">
-            <span id="header-admin-icon">🛡️</span>
-            <span class="profile-name" id="header-admin-name">HYPER X</span>
+            <span id="header-admin-icon">👑</span>
+            <span id="header-admin-name">Owner: HYPER X</span>
           </div>
         </div>
       </header>
@@ -238,13 +228,11 @@
                     var sRole = document.getElementById('profile-role-sub');
                     if (sRole) sRole.textContent = 'Reseller (' + (res.balance || 0) + ' Keys)';
                     var hName = document.getElementById('header-admin-name');
-                    if (hName) hName.textContent = uName;
+                    if (hName) hName.textContent = 'Reseller: ' + uName;
                     var hIcon = document.getElementById('header-admin-icon');
                     if (hIcon) hIcon.textContent = '👤';
-                    var hAction = document.getElementById('header-admin-action');
-                    if (hAction) hAction.textContent = '(Reseller)';
                     var hKeys = document.getElementById('header-keys-stat');
-                    if (hKeys) { hKeys.textContent = (res.balance || 0) + ' Keys Left'; hKeys.style.color = '#ff3b47'; }
+                    if (hKeys) { hKeys.textContent = (res.balance || 0).toLocaleString() + ' Credits'; hKeys.style.color = '#00f0ff'; }
                     var dAv = document.getElementById('dash-user-avatar');
                     if (dAv) { dAv.textContent = uInitial; dAv.style.background = 'rgba(245,158,11,0.15)'; dAv.style.borderColor = 'rgba(245,158,11,0.4)'; dAv.style.color = '#fbbf24'; }
                     var dBadge = document.getElementById('dash-welcome-role-badge');

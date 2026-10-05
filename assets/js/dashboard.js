@@ -400,6 +400,11 @@ function updateAdminUI() {
   const currentAdmin = getStoredAdminUser();
   document.querySelectorAll('.profile-name').forEach(el => el.textContent = currentAdmin);
 
+  const headerAdminName = document.getElementById('header-admin-name');
+  if (headerAdminName) headerAdminName.textContent = `Owner: ${currentAdmin}`;
+  const headerAdminIcon = document.getElementById('header-admin-icon');
+  if (headerAdminIcon) headerAdminIcon.textContent = '👑';
+
   const avatarLetter = document.getElementById('sidebar-avatar-letter');
   if (avatarLetter && currentAdmin.length > 0) {
     avatarLetter.textContent = currentAdmin.charAt(0).toUpperCase();
@@ -649,9 +654,13 @@ function updateDashboardStatsUI() {
         const allowedPkgs = getResellerAllowedPackages();
 
         if (headerKeys) {
-          headerKeys.textContent = `${res.balance} Keys Left`;
+          headerKeys.textContent = `${(res.balance || 0).toLocaleString()} Credits`;
           headerKeys.style.color = '#00f0ff';
         }
+        const headerAdminName = document.getElementById('header-admin-name');
+        if (headerAdminName) headerAdminName.textContent = `Reseller: ${res.username}`;
+        const headerAdminIcon = document.getElementById('header-admin-icon');
+        if (headerAdminIcon) headerAdminIcon.textContent = '👤';
         if (elRemaining) elRemaining.textContent = (res.balance || 0).toLocaleString();
         
         // Calculate reseller's own keys
@@ -703,9 +712,14 @@ function updateDashboardStatsUI() {
 
   // Update Top Navbar for Root Admin
   if (headerKeys) {
-    headerKeys.textContent = `${state.stats.keys_created} / ${state.stats.key_limit}`;
+    const credCount = (state.stats && state.stats.remaining != null) ? state.stats.remaining : 9922;
+    headerKeys.textContent = `${credCount.toLocaleString()} Credits`;
     headerKeys.style.color = '';
   }
+  const headerAdminName = document.getElementById('header-admin-name');
+  if (headerAdminName) headerAdminName.textContent = `Owner: ${adminName}`;
+  const headerAdminIcon = document.getElementById('header-admin-icon');
+  if (headerAdminIcon) headerAdminIcon.textContent = '👑';
 
   // Update Summary Cards for Root Admin
   if (elCreated) elCreated.textContent = state.stats.keys_created;
@@ -2844,7 +2858,7 @@ function initUserRoleSession() {
 
       const dashQuotaBox = document.getElementById('dash-welcome-quota-box');
       if (dashQuotaBox) {
-        dashQuotaBox.innerHTML = `⚡ Reseller Balance: <strong id="dash-welcome-quota-num" style="color:#00f0ff;font-weight:700;">${res.balance}</strong> Keys`;
+        dashQuotaBox.innerHTML = `⚡ Reseller Balance: <strong id="dash-welcome-quota-num" style="color:#00f0ff;font-weight:700;">${(res.balance || 0).toLocaleString()}</strong> Credits`;
       }
 
       // Hide admin-only sections
@@ -2861,10 +2875,10 @@ function initUserRoleSession() {
       const adminHeaderName = document.getElementById('header-admin-name');
       const adminHeaderAction = document.getElementById('header-admin-action');
       if (adminHeaderIcon) adminHeaderIcon.textContent = '👤';
-      if (adminHeaderName) adminHeaderName.textContent = res.username;
+      if (adminHeaderName) adminHeaderName.textContent = `Reseller: ${res.username}`;
       if (adminHeaderAction) adminHeaderAction.textContent = '(Reseller)';
       if (adminHeaderBtn) {
-        adminHeaderBtn.title = `Reseller: ${res.username} (${res.balance} Keys)`;
+        adminHeaderBtn.title = `Reseller: ${res.username} (${(res.balance || 0).toLocaleString()} Credits)`;
       }
 
       // Hide Ban/Unban/Delete buttons from Quick Tools bar
@@ -2879,7 +2893,7 @@ function initUserRoleSession() {
       // Update top navbar keys stat to show remaining reseller credit
       const headerKeys = document.getElementById('header-keys-stat');
       if (headerKeys) {
-        headerKeys.textContent = `${res.balance} Keys Left`;
+        headerKeys.textContent = `${(res.balance || 0).toLocaleString()} Credits`;
         headerKeys.style.color = '#00f0ff';
       }
 
@@ -2932,6 +2946,23 @@ function initUserRoleSession() {
 
     const adminUser = getStoredAdminUser();
     document.querySelectorAll('.profile-name').forEach(el => el.textContent = adminUser);
+
+    const adminHeaderBtn = document.getElementById('header-admin-btn');
+    const adminHeaderIcon = document.getElementById('header-admin-icon');
+    const adminHeaderName = document.getElementById('header-admin-name');
+    if (adminHeaderIcon) adminHeaderIcon.textContent = '👑';
+    if (adminHeaderName) adminHeaderName.textContent = `Owner: ${adminUser}`;
+    if (adminHeaderBtn) {
+      adminHeaderBtn.title = `Owner: ${adminUser}`;
+    }
+
+    const headerKeys = document.getElementById('header-keys-stat');
+    if (headerKeys) {
+      const credCount = (state.stats && state.stats.remaining != null) ? state.stats.remaining : 9922;
+      headerKeys.textContent = `${credCount.toLocaleString()} Credits`;
+      headerKeys.style.color = '';
+    }
+
     const dashAvatar = document.getElementById('dash-user-avatar');
     if (dashAvatar) {
       dashAvatar.textContent = adminUser.charAt(0).toUpperCase();
@@ -2953,7 +2984,8 @@ function initUserRoleSession() {
     if (dashRoleDesc) dashRoleDesc.textContent = 'Master Administrator Dashboard & Full System Access';
     const dashQuotaBox = document.getElementById('dash-welcome-quota-box');
     if (dashQuotaBox) {
-      dashQuotaBox.innerHTML = `⚡ Available Credit: <strong id="dash-welcome-quota-num" style="color:#34d399;font-weight:700;">${state.stats.remaining.toLocaleString()}</strong> Keys`;
+      const credCount = (state.stats && state.stats.remaining != null) ? state.stats.remaining : 9922;
+      dashQuotaBox.innerHTML = `⚡ Available Credit: <strong id="dash-welcome-quota-num" style="color:#34d399;font-weight:700;">${credCount.toLocaleString()}</strong> Credits`;
     }
     const rBox = document.getElementById('dashboard-reseller-users-box');
     if (rBox) rBox.style.display = 'none';
