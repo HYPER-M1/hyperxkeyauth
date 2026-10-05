@@ -824,108 +824,36 @@
       position: relative;
     }
 
-    /* Ambient interactive glow behind hero */
-    .hero-ambient-glow {
-      position: absolute;
-      width: 440px;
-      height: 440px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(234, 43, 53, 0.14) 0%, rgba(234, 43, 53, 0.035) 45%, transparent 70%);
-      pointer-events: none;
-      z-index: -1;
-      top: 10%;
-      left: -8%;
-      filter: blur(45px);
-      transition: transform 0.25s cubic-bezier(0.1, 0.8, 0.2, 1);
-      will-change: transform;
-    }
-
-    /* High-tech security scanline */
-    .hero-scanline {
-      position: absolute;
-      top: 0;
-      left: -20px;
-      right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, rgba(234, 43, 53, 0.35), rgba(255, 255, 255, 0.8), rgba(234, 43, 53, 0.35), transparent);
-      box-shadow: 0 0 12px rgba(234, 43, 53, 0.6);
-      pointer-events: none;
-      opacity: 0;
-      animation: heroCyberScan 7s infinite cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    @keyframes heroCyberScan {
-      0% { top: 0; opacity: 0; }
-      12% { opacity: 0.85; }
-      42% { top: 100%; opacity: 0.85; }
-      50%, 100% { top: 100%; opacity: 0; }
-    }
-
-    /* ── Ultra-Premium Cyber Hero Branding (Image 2 Match) ── */
+    /* ── Ultra-Premium Cyber Hero Branding (Clean Static Match for Image 2) ── */
     .hero-status-row {
       display: flex;
       align-items: flex-start;
       gap: 16px;
       margin-bottom: 8px;
-      animation: heroItemReveal 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
     }
 
     .status-accent-bar {
       width: 2px;
       height: 48px;
-      background: linear-gradient(180deg, #ea2b35 0%, #ff4d5a 50%, #ea2b35 100%);
-      box-shadow: 0 0 12px rgba(234, 43, 53, 0.75);
+      background: #ea2b35;
+      box-shadow: 0 0 10px rgba(234, 43, 53, 0.5);
       flex-shrink: 0;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .status-accent-bar::after {
-      content: '';
-      position: absolute;
-      top: -100%;
-      left: 0;
-      width: 100%;
-      height: 50%;
-      background: linear-gradient(180deg, transparent, #ffffff, transparent);
-      animation: accentEnergyPulse 2.8s infinite ease-in-out;
-    }
-
-    @keyframes accentEnergyPulse {
-      0% { top: -100%; opacity: 0; }
-      30% { opacity: 1; }
-      100% { top: 220%; opacity: 0; }
     }
 
     .status-text-wrap {
       display: flex;
       align-items: center;
-      gap: 9px;
+      gap: 8px;
       padding-top: 3px;
     }
 
     .status-pulse-dot {
-      position: relative;
-      width: 6.5px;
-      height: 6.5px;
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
       background: #ea2b35;
-      box-shadow: 0 0 10px #ea2b35, 0 0 18px rgba(234, 43, 53, 0.7);
+      box-shadow: 0 0 8px #ea2b35;
       flex-shrink: 0;
-    }
-
-    .status-pulse-dot::after {
-      content: '';
-      position: absolute;
-      inset: -4px;
-      border-radius: 50%;
-      border: 1px solid rgba(234, 43, 53, 0.85);
-      animation: radarRingRipple 2.2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
-    }
-
-    @keyframes radarRingRipple {
-      0% { transform: scale(0.6); opacity: 1; }
-      100% { transform: scale(2.6); opacity: 0; }
     }
 
     .status-text {
@@ -935,7 +863,6 @@
       letter-spacing: 0.18em;
       color: #94a3b8;
       text-transform: uppercase;
-      text-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
     }
 
     .hero-main-title {
@@ -946,25 +873,13 @@
       margin: 8px 0 16px 0;
       color: #ffffff;
       text-transform: uppercase;
-      filter: drop-shadow(0 4px 18px rgba(0, 0, 0, 0.85));
-      animation: heroItemReveal 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
+      filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.8));
     }
 
     .hero-main-title .brand-x {
       color: #ea2b35;
       display: inline-block;
-      animation: brandXNeonPulse 3.5s infinite ease-in-out;
-    }
-
-    @keyframes brandXNeonPulse {
-      0%, 100% {
-        filter: drop-shadow(0 0 20px rgba(234, 43, 53, 0.7)) drop-shadow(0 0 45px rgba(234, 43, 53, 0.35));
-        transform: scale(1);
-      }
-      50% {
-        filter: drop-shadow(0 0 32px rgba(234, 43, 53, 0.95)) drop-shadow(0 0 70px rgba(234, 43, 53, 0.6));
-        transform: scale(1.025);
-      }
+      text-shadow: 0 0 24px rgba(234, 43, 53, 0.65), 0 0 50px rgba(234, 43, 53, 0.35);
     }
 
     .hero-sub-title-wrap {
@@ -972,21 +887,14 @@
       align-items: center;
       gap: 12px;
       margin-bottom: 24px;
-      animation: heroItemReveal 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
     }
 
     .hero-sub-bar {
       width: 2px;
       height: 18px;
       background: #ea2b35;
-      box-shadow: 0 0 10px rgba(234, 43, 53, 0.75);
+      box-shadow: 0 0 8px rgba(234, 43, 53, 0.6);
       display: inline-block;
-      animation: cursorBlinkPulse 1.5s infinite ease-in-out;
-    }
-
-    @keyframes cursorBlinkPulse {
-      0%, 100% { opacity: 1; box-shadow: 0 0 10px rgba(234, 43, 53, 0.85); }
-      50% { opacity: 0.3; box-shadow: 0 0 3px rgba(234, 43, 53, 0.2); }
     }
 
     .hero-sub-title {
@@ -996,7 +904,6 @@
       letter-spacing: 0.32em;
       color: #cbd5e1;
       text-transform: uppercase;
-      text-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
     }
 
     .hero-description {
@@ -1006,40 +913,14 @@
       max-width: 440px;
       margin-bottom: 36px;
       font-weight: 500;
-      animation: heroItemReveal 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.55s both;
     }
 
     .hero-meta-divider {
       width: 100%;
       max-width: 460px;
       height: 1px;
-      background: linear-gradient(90deg, rgba(234, 43, 53, 0.7) 0%, rgba(255, 255, 255, 0.12) 35%, rgba(255, 255, 255, 0.04) 100%);
+      background: rgba(255, 255, 255, 0.08);
       margin-bottom: 14px;
-      position: relative;
-      overflow: hidden;
-      transform-origin: left;
-      animation: dividerExpand 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.65s both;
-    }
-
-    .hero-meta-divider::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -60%;
-      width: 60%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(234, 43, 53, 0.9), #ffffff, rgba(234, 43, 53, 0.9), transparent);
-      animation: dividerPhotonScan 4.5s infinite linear;
-    }
-
-    @keyframes dividerExpand {
-      from { transform: scaleX(0); opacity: 0; }
-      to   { transform: scaleX(1); opacity: 1; }
-    }
-
-    @keyframes dividerPhotonScan {
-      0% { left: -60%; }
-      100% { left: 160%; }
     }
 
     .hero-meta-strip {
@@ -1048,7 +929,6 @@
       align-items: center;
       width: 100%;
       max-width: 460px;
-      animation: heroItemReveal 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.75s both;
     }
 
     .meta-item {
@@ -1056,57 +936,8 @@
       font-size: 10.5px;
       font-weight: 700;
       letter-spacing: 0.16em;
-      color: #64748b;
+      color: #5a627a;
       text-transform: uppercase;
-      display: inline-flex;
-      align-items: center;
-      transition: color 0.25s ease;
-    }
-
-    .meta-item:hover {
-      color: #cbd5e1;
-    }
-
-    .meta-dot {
-      display: inline-block;
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      margin-right: 7px;
-      flex-shrink: 0;
-    }
-
-    .meta-dot-green {
-      background: #10b981;
-      box-shadow: 0 0 8px #10b981, 0 0 14px rgba(16, 185, 129, 0.6);
-      animation: nodeLivePulse 2.2s infinite ease-in-out;
-    }
-
-    @keyframes nodeLivePulse {
-      0%, 100% { opacity: 0.85; transform: scale(1); box-shadow: 0 0 6px #10b981; }
-      50% { opacity: 1; transform: scale(1.35); box-shadow: 0 0 12px #10b981, 0 0 20px rgba(16, 185, 129, 0.8); }
-    }
-
-    .meta-dot-cyan {
-      background: #00f0ff;
-      box-shadow: 0 0 8px #00f0ff, 0 0 14px rgba(0, 240, 255, 0.6);
-      animation: lockShieldGlow 3s infinite ease-in-out;
-    }
-
-    @keyframes lockShieldGlow {
-      0%, 100% { opacity: 0.8; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.25); box-shadow: 0 0 12px #00f0ff; }
-    }
-
-    @keyframes heroItemReveal {
-      from {
-        opacity: 0;
-        transform: translateX(-24px);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
     }
 
     /* Right login panel wrapper */
@@ -2146,10 +1977,6 @@
 
       <!-- ── LEFT: Hero Showcase & Branding (Image 2 Match) ── -->
       <div class="hero-left">
-        <!-- Interactive Cyber Ambient Glow & Scanline -->
-        <div class="hero-ambient-glow" id="hero-ambient-glow"></div>
-        <div class="hero-scanline"></div>
-
         <div class="hero-status-row">
           <div class="status-accent-bar"></div>
           <div class="status-text-wrap">
@@ -2173,8 +2000,8 @@
         <div class="hero-meta-divider"></div>
 
         <div class="hero-meta-strip">
-          <span class="meta-item"><span class="meta-dot meta-dot-cyan"></span>256-BIT ENCRYPTION</span>
-          <span class="meta-item"><span class="meta-dot meta-dot-green"></span>GLOBAL NODE 01</span>
+          <span class="meta-item">256-BIT ENCRYPTION</span>
+          <span class="meta-item">GLOBAL NODE 01</span>
         </div>
       </div>
 
@@ -2498,18 +2325,7 @@
       render();
     })();
 
-    // 2. Ambient Interactive Mouse Parallax Glow for Hero Showcase
-    (function initHeroGlow() {
-      const glow = document.getElementById('hero-ambient-glow');
-      if (!glow || window.innerWidth < 768) return;
-      window.addEventListener('mousemove', (e) => {
-        const x = (e.clientX - window.innerWidth / 3) * 0.08;
-        const y = (e.clientY - window.innerHeight / 2) * 0.08;
-        glow.style.transform = `translate(${x}px, ${y}px)`;
-      }, { passive: true });
-    })();
-
-    // 3. Interactive 3D Card Parallax Tilt on Mouse Move
+    // 2. Interactive 3D Card Parallax Tilt on Mouse Move
     (function initCardTilt() {
       const card = document.querySelector('.login-card');
       const targetArea = document.querySelector('.hero-right') || document.querySelector('.hero-wrapper');
