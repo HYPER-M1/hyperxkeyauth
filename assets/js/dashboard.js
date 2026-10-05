@@ -3206,23 +3206,22 @@ function initUserRoleSession() {
 
       const dashRoleBadge = document.getElementById('dash-welcome-role-badge');
       if (dashRoleBadge) {
-        dashRoleBadge.className = 'dash-role-pill reseller';
-      }
-      const dashRoleText = document.getElementById('dash-welcome-role-text');
-      if (dashRoleText) {
-        dashRoleText.textContent = 'Authorized Reseller';
+        dashRoleBadge.style.display = 'none';
       }
 
       const dashRoleDesc = document.getElementById('dash-welcome-role-desc');
       if (dashRoleDesc) {
-        dashRoleDesc.innerHTML = `<span>Reseller Portal</span><span class="meta-sep">•</span><span>User: <strong>${res.username}</strong></span><span class="meta-sep">•</span><span>Quota: <strong style="color:#34d399;">${(res.balance || 0).toLocaleString()} Keys</strong></span>`;
+        dashRoleDesc.innerHTML = `Reseller Session • Logged in as: <strong>${res.username}</strong> • Available Balance: <strong style="color:#10b981;">${(res.balance || 0).toLocaleString()} Keys</strong>`;
       }
 
-      const dashQuotaLbl = document.getElementById('dash-welcome-quota-label');
-      if (dashQuotaLbl) dashQuotaLbl.textContent = 'RESELLER BALANCE';
-
+      const dashQuotaBox = document.getElementById('dash-welcome-quota-box');
+      if (dashQuotaBox) {
+        dashQuotaBox.style.display = 'inline-flex';
+      }
       const dashQuotaNum = document.getElementById('dash-welcome-quota-num');
-      if (dashQuotaNum) dashQuotaNum.textContent = (res.balance || 0).toLocaleString();
+      if (dashQuotaNum) {
+        dashQuotaNum.textContent = (res.balance || 0).toLocaleString();
+      }
 
       // Hide admin-only sections
       const navResellers = document.getElementById('nav-resellers');
@@ -3338,25 +3337,17 @@ function initUserRoleSession() {
     
     const dashRoleBadge = document.getElementById('dash-welcome-role-badge');
     if (dashRoleBadge) {
-      dashRoleBadge.className = 'dash-role-pill admin';
-    }
-    const dashRoleText = document.getElementById('dash-welcome-role-text');
-    if (dashRoleText) {
-      dashRoleText.textContent = 'Master Administrator';
+      dashRoleBadge.style.display = 'none';
     }
 
     const dashRoleDesc = document.getElementById('dash-welcome-role-desc');
     if (dashRoleDesc) {
-      dashRoleDesc.innerHTML = `<span>Enterprise KeyAuth Engine</span><span class="meta-sep">•</span><span>Full Privileges</span><span class="meta-sep">•</span><span>AES-256 HMAC Enforced</span>`;
+      dashRoleDesc.textContent = 'HMAC-SHA256 enforced • All systems operational';
     }
 
-    const dashQuotaLbl = document.getElementById('dash-welcome-quota-label');
-    if (dashQuotaLbl) dashQuotaLbl.textContent = 'KEY CREDITS';
-
-    const dashQuotaNum = document.getElementById('dash-welcome-quota-num');
-    if (dashQuotaNum) {
-      const credCount = (state.stats && state.stats.remaining != null) ? state.stats.remaining : 9922;
-      dashQuotaNum.textContent = credCount.toLocaleString();
+    const dashQuotaBox = document.getElementById('dash-welcome-quota-box');
+    if (dashQuotaBox) {
+      dashQuotaBox.style.display = 'none';
     }
     const rBox = document.getElementById('dashboard-reseller-users-box');
     if (rBox) rBox.style.display = 'none';

@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/dashboard.css?v=2.8">
+  <link rel="stylesheet" href="assets/css/dashboard.css?v=2.9">
   <style>
     /* Reseller Isolation - Absolute Guaranteed Hiding on all devices */
     html.is-reseller .admin-only-feature,
@@ -184,39 +184,20 @@
                 <span class="dash-avatar-status" title="Active Session"></span>
               </div>
               <div class="dash-welcome-meta">
-                <div class="dash-welcome-top-row">
-                  <span id="dash-welcome-role-badge" class="dash-role-pill admin">
-                    <span class="status-dot-mini"></span>
-                    <span id="dash-welcome-role-text">Master Administrator</span>
-                  </span>
-                  <span class="dash-system-health-pill">
-                    <span class="pulse-green-dot"></span>
-                    <span>All Systems Operational</span>
-                  </span>
-                </div>
+                <span id="dash-welcome-role-badge" style="display:none;"></span>
+                <span id="dash-welcome-role-text" style="display:none;"></span>
                 <h2 class="dash-welcome-title">
                   Welcome back, <span id="dash-welcome-username" class="profile-name">HYPER X</span>
                 </h2>
                 <p class="dash-welcome-subtitle" id="dash-welcome-role-desc">
-                  <span>Enterprise KeyAuth Engine</span>
-                  <span class="meta-sep">•</span>
-                  <span>Full Privileges</span>
-                  <span class="meta-sep">•</span>
-                  <span>AES-256 HMAC Enforced</span>
+                  HMAC-SHA256 enforced • All systems operational
                 </p>
               </div>
             </div>
 
             <div class="dash-welcome-right">
-              <div id="dash-welcome-quota-box" class="dash-welcome-stat-card">
-                <div class="stat-mini-icon">💳</div>
-                <div class="stat-mini-content">
-                  <div class="stat-mini-lbl" id="dash-welcome-quota-label">KEY CREDITS</div>
-                  <div class="stat-mini-val">
-                    <span id="dash-welcome-quota-num">9,922</span>
-                    <span class="stat-mini-unit">Balance</span>
-                  </div>
-                </div>
+              <div id="dash-welcome-quota-box" class="dash-welcome-quota-badge" style="display:none;">
+                <span id="dash-welcome-quota-label">⚡ Available Credit:</span> <strong id="dash-welcome-quota-num">9,922</strong> Keys
               </div>
             </div>
           </div>
@@ -1479,6 +1460,6 @@
     </div>
   </div>
 
-  <script src="assets/js/dashboard.js?v=2.8"></script>
+  <script src="assets/js/dashboard.js?v=2.9"></script>
 </body>
 </html>
