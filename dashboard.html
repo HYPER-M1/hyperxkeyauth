@@ -77,51 +77,71 @@
     <aside class="sidebar" id="sidebar">
       <!-- Brand Header -->
       <div class="sidebar-brand">
-        <div class="brand-icon-gift">📊</div>
+        <div class="brand-equalizer" aria-hidden="true">
+          <span class="eq-bar eq-1"></span>
+          <span class="eq-bar eq-2"></span>
+          <span class="eq-bar eq-3"></span>
+        </div>
         <div class="brand-title-wrap">
           <div class="brand-title-row">
             <span class="brand-name">HYPER X</span>
             <span class="brand-live-dot"></span>
-          </div>
-          <div class="brand-version-badge">
-            <span>v1.0.0</span>
-            <span class="badge-pro">KEYAUTH</span>
           </div>
         </div>
       </div>
 
       <!-- Menu Navigation -->
       <nav class="sidebar-menu">
-        <span class="menu-category-label">MAIN</span>
+        <span class="menu-category-label">MANAGEMENT</span>
 
         <button class="sidebar-nav-link active" id="nav-dashboard" onclick="switchTab('dashboard')">
-          <span class="nav-icon">📊</span>
+          <span class="nav-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          </span>
           <span>Dashboard</span>
         </button>
 
         <button class="sidebar-nav-link" id="nav-apps" onclick="switchTab('apps')">
-          <span class="nav-icon">📦</span>
-          <span id="nav-apps-text">Applications (8)</span>
+          <span class="nav-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+          </span>
+          <span id="nav-apps-text">Applications</span>
+          <span class="nav-count-badge" id="nav-apps-count-badge">8</span>
         </button>
 
         <button class="sidebar-nav-link" id="nav-licenses" onclick="switchTab('licenses')">
-          <span class="nav-icon">🔑</span>
-          <span>License Keys</span>
-          <span class="nav-count-badge" id="nav-key-count">LIVE</span>
+          <span class="nav-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg>
+          </span>
+          <span>License keys</span>
+          <span class="nav-count-badge" id="nav-key-count" style="display:none;">LIVE</span>
+        </button>
+
+        <button class="sidebar-nav-link" id="nav-devices" onclick="switchTab('licenses')">
+          <span class="nav-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+          </span>
+          <span>HWID &amp; devices</span>
         </button>
 
         <button class="sidebar-nav-link" id="nav-logs" onclick="switchTab('logs')">
-          <span class="nav-icon">📋</span>
-          <span>Logs &amp; Audit</span>
+          <span class="nav-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+          </span>
+          <span>Logs &amp; audit</span>
         </button>
 
         <button class="sidebar-nav-link admin-only-feature" id="nav-resellers" onclick="switchTab('resellers')">
-          <span class="nav-icon">👥</span>
+          <span class="nav-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          </span>
           <span>Resellers</span>
         </button>
 
         <button class="sidebar-nav-link" id="nav-settings" onclick="handleSettingsNavClick()">
-          <span class="nav-icon">⚙️</span>
+          <span class="nav-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          </span>
           <span>Settings</span>
         </button>
       </nav>
@@ -129,14 +149,14 @@
       <!-- Bottom Profile (HYPER X / Reseller) -->
       <div class="sidebar-profile" id="sidebar-profile-box">
         <div class="profile-left">
-          <div class="profile-avatar" id="sidebar-avatar-letter">H</div>
+          <div class="profile-avatar" id="sidebar-avatar-letter">RM</div>
           <div class="profile-text">
-            <span class="profile-name">HYPER X</span>
-            <span class="profile-sub" id="profile-role-sub">Root Owner</span>
+            <span class="profile-name">Hyper X</span>
+            <span class="profile-sub" id="profile-role-sub">Root owner</span>
           </div>
         </div>
         <button class="btn-profile-logout" onclick="event.stopPropagation();logoutSession()" title="Sign Out">
-          ⏻
+          •••
         </button>
       </div>
     </aside>
@@ -148,19 +168,28 @@
       <!-- Top Navbar -->
       <header class="top-navbar">
         <div class="navbar-left">
-          <button class="mobile-nav-toggle" onclick="toggleMobileSidebar()">☰</button>
+          <button class="mobile-nav-toggle" onclick="toggleMobileSidebar()" aria-label="Toggle navigation">☰</button>
+          <div class="navbar-search-wrap">
+            <svg class="search-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" class="navbar-search-input" id="global-search-input" placeholder="Search users, licenses, keys..." oninput="handleGlobalSearch(this.value)">
+            <kbd class="navbar-search-kbd">⌘ K</kbd>
+          </div>
           <span class="page-breadcrumb-title" id="page-title-display">Dashboard</span>
         </div>
 
         <div class="navbar-right">
           <!-- API Live Pulse Badge -->
-          <span class="badge-live-pulse" title="Connected to prtvshow.online">API CONNECTED</span>
+          <span class="badge-live-pulse" title="Connected to KeyAuth API">
+            <span class="pulse-live-dot"></span> API CONNECTED
+          </span>
 
           <!-- Keys Stat Pill -->
-          <div class="header-pill-stat">
-            <span>🔑</span>
-            <span>Keys:</span>
-            <span class="stat-keys-tag" id="header-keys-stat">77 / 9999</span>
+          <div class="header-pill-stat" title="Total Keys Quota">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#e5181f" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg>
+            <span class="stat-keys-tag" id="header-keys-stat">77 / 9,999 keys</span>
           </div>
 
           <!-- Notification Bell -->
@@ -192,7 +221,7 @@
               </div>
               <div>
                 <div class="dash-breadcrumb-tag">
-                  <span>DASHBOARD</span>
+                  <span>LOGS &amp; AUDIT</span>
                   <span>•</span>
                   <span id="dash-welcome-role-badge">ROOT OWNER</span>
                 </div>
@@ -200,13 +229,13 @@
                   Welcome back, <span id="dash-welcome-username" class="profile-name">Hyper X</span>
                 </h2>
                 <p class="dash-welcome-subtitle" id="dash-welcome-role-desc">
-                  Full system access • All services are operational
+                  HMAC-SHA256 enforced • All services operational
                 </p>
               </div>
             </div>
 
             <div class="dash-welcome-right">
-              <div id="dash-welcome-quota-box" class="dash-welcome-quota-badge">
+              <div id="dash-welcome-quota-box" class="dash-welcome-quota-badge" style="display:none;">
                 ⚡ Available Credit: <strong id="dash-welcome-quota-num">9,922</strong> Keys
               </div>
               <button class="dash-btn-generate-key" onclick="openModal('modal-add-key')">
@@ -256,6 +285,7 @@
                     var dQuotaBox = document.getElementById('dash-welcome-quota-box');
                     var dQuotaNum = document.getElementById('dash-welcome-quota-num');
                     if (dQuotaBox && dQuotaNum) {
+                      dQuotaBox.style.display = 'inline-flex';
                       if (dQuotaBox.childNodes && dQuotaBox.childNodes[0]) dQuotaBox.childNodes[0].textContent = '⚡ Reseller Balance: ';
                       dQuotaNum.style.color = '#ff3b47';
                       dQuotaNum.textContent = (res.balance || 0);
@@ -281,7 +311,9 @@
             <!-- 1. Applications -->
             <div class="stat-card-neo" onclick="switchTab('apps')" style="cursor:pointer;" title="View Applications">
               <div class="stat-neo-left">
-                <div class="stat-neo-icon">📦</div>
+                <div class="stat-neo-icon">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#e5181f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                </div>
                 <div class="stat-neo-col">
                   <span class="stat-neo-label">Applications</span>
                   <span class="stat-neo-value" id="stat-apps-count">8</span>
@@ -293,7 +325,9 @@
             <!-- 2. Active keys -->
             <div class="stat-card-neo" onclick="switchTab('licenses')" style="cursor:pointer;" title="View License Keys">
               <div class="stat-neo-left">
-                <div class="stat-neo-icon">🔑</div>
+                <div class="stat-neo-icon">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#e5181f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg>
+                </div>
                 <div class="stat-neo-col">
                   <span class="stat-neo-label">Active keys</span>
                   <span class="stat-neo-value" id="stat-active-keys">7,842</span>
@@ -305,7 +339,9 @@
             <!-- 3. Remaining quota -->
             <div class="stat-card-neo" title="Key Quota">
               <div class="stat-neo-left">
-                <div class="stat-neo-icon">⚡</div>
+                <div class="stat-neo-icon">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#e5181f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                </div>
                 <div class="stat-neo-col">
                   <span class="stat-neo-label">Remaining quota</span>
                   <span class="stat-neo-value" id="stat-remaining-quota">9,922</span>
@@ -317,13 +353,15 @@
             <!-- 4. Blocked devices / Account Status -->
             <div class="stat-card-neo" onclick="switchTab('licenses')" style="cursor:pointer;" title="Security & Device Blocks">
               <div class="stat-neo-left">
-                <div class="stat-neo-icon">📱</div>
+                <div class="stat-neo-icon">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#e5181f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                </div>
                 <div class="stat-neo-col">
                   <span class="stat-neo-label" id="stat-banned-title">Blocked devices</span>
                   <span class="stat-neo-value" id="stat-banned-keys">184</span>
                 </div>
               </div>
-              <span class="stat-neo-badge badge-red">2.8%</span>
+              <span class="stat-neo-badge badge-red">-2.8%</span>
             </div>
           </div>
 
@@ -338,14 +376,14 @@
             <tbody id="dashboard-packages-summary-tbody"></tbody>
           </div>
 
-          <!-- MIDDLE ROW: Activation Overview & License Health -->
+          <!-- MIDDLE ROW: Activation Overview & Infrastructure -->
           <div class="overview-middle-grid">
             <!-- Left Card: License Performance (Activation Overview) -->
             <div class="overview-chart-box">
               <div class="card-top-header">
                 <div>
                   <div class="card-micro-tag">LICENSE PERFORMANCE</div>
-                  <h3 class="card-main-title">Activation overview</h3>
+                  <h3 class="card-main-title"><span class="red-bar-accent"></span>Activation overview</h3>
                 </div>
                 <div class="period-tab-group">
                   <button type="button" class="period-btn" id="btn-period-30d" onclick="setChartPeriod('30d')">30 days</button>
@@ -376,8 +414,8 @@
                 <svg viewBox="0 0 600 170" class="chart-svg-responsive" preserveAspectRatio="none">
                   <defs>
                     <linearGradient id="redAreaGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stop-color="#e5181f" stop-opacity="0.32" />
-                      <stop offset="60%" stop-color="#e5181f" stop-opacity="0.08" />
+                      <stop offset="0%" stop-color="#e5181f" stop-opacity="0.22" />
+                      <stop offset="70%" stop-color="#e5181f" stop-opacity="0.04" />
                       <stop offset="100%" stop-color="#e5181f" stop-opacity="0.0" />
                     </linearGradient>
                     <linearGradient id="redLineGrad" x1="0" y1="0" x2="1" y2="0">
@@ -385,16 +423,12 @@
                       <stop offset="50%" stop-color="#e5181f" />
                       <stop offset="100%" stop-color="#dc2626" />
                     </linearGradient>
-                    <filter id="glowRed" x="-20%" y="-20%" width="140%" height="140%">
-                      <feGaussianBlur stdDeviation="3" result="blur" />
-                      <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                    </filter>
                   </defs>
 
-                  <line x1="30" y1="25" x2="590" y2="25" stroke="rgba(255,255,255,0.04)" stroke-dasharray="3 3" />
-                  <line x1="30" y1="65" x2="590" y2="65" stroke="rgba(255,255,255,0.04)" stroke-dasharray="3 3" />
-                  <line x1="30" y1="105" x2="590" y2="105" stroke="rgba(255,255,255,0.04)" stroke-dasharray="3 3" />
-                  <line x1="30" y1="145" x2="590" y2="145" stroke="rgba(255,255,255,0.06)" />
+                  <line x1="30" y1="25" x2="590" y2="25" stroke="rgba(255,255,255,0.05)" stroke-dasharray="3 3" />
+                  <line x1="30" y1="65" x2="590" y2="65" stroke="rgba(255,255,255,0.05)" stroke-dasharray="3 3" />
+                  <line x1="30" y1="105" x2="590" y2="105" stroke="rgba(255,255,255,0.05)" stroke-dasharray="3 3" />
+                  <line x1="30" y1="145" x2="590" y2="145" stroke="rgba(255,255,255,0.07)" />
 
                   <text x="5" y="28" fill="#64748b" font-size="10" font-family="JetBrains Mono, monospace">12k</text>
                   <text x="5" y="68" fill="#64748b" font-size="10" font-family="JetBrains Mono, monospace">8k</text>
@@ -402,9 +436,9 @@
                   <text x="12" y="148" fill="#64748b" font-size="10" font-family="JetBrains Mono, monospace">0</text>
 
                   <path id="chart-area-path" d="M 30 140 C 110 130, 170 110, 260 110 C 350 110, 410 95, 490 70 C 540 50, 565 55, 590 40 L 590 145 L 30 145 Z" fill="url(#redAreaGrad)" />
-                  <path id="chart-line-path" d="M 30 140 C 110 130, 170 110, 260 110 C 350 110, 410 95, 490 70 C 540 50, 565 55, 590 40" fill="none" stroke="url(#redLineGrad)" stroke-width="2.8" filter="url(#glowRed)" />
+                  <path id="chart-line-path" d="M 30 140 C 110 130, 170 110, 260 110 C 350 110, 410 95, 490 70 C 540 50, 565 55, 590 40" fill="none" stroke="url(#redLineGrad)" stroke-width="2.5" />
 
-                  <circle id="chart-point-halo" cx="490" cy="70" r="8" fill="rgba(229,24,31,0.25)" class="chart-point-halo-anim" />
+                  <circle id="chart-point-halo" cx="490" cy="70" r="7" fill="rgba(229,24,31,0.2)" />
                   <circle id="chart-point-dot" cx="490" cy="70" r="4.5" fill="#ffffff" stroke="#e5181f" stroke-width="2.5" />
                 </svg>
                 <div class="chart-x-labels">
@@ -413,70 +447,59 @@
               </div>
             </div>
 
-            <!-- Right Card: System Status (License Health Donut) -->
+            <!-- Right Card: System Status (Infrastructure) -->
             <div class="overview-health-box">
               <div class="card-top-header">
                 <div>
                   <div class="card-micro-tag">SYSTEM STATUS</div>
-                  <h3 class="card-main-title">License health</h3>
+                  <h3 class="card-main-title"><span class="red-bar-accent"></span>Infrastructure</h3>
                 </div>
-                <button type="button" class="btn-card-dots" title="Options">•••</button>
+                <button type="button" class="btn-card-dots" title="System Settings">•••</button>
               </div>
 
-              <div class="donut-chart-wrapper">
-                <svg viewBox="0 0 160 160" class="donut-svg">
-                  <circle cx="80" cy="80" r="62" fill="none" stroke="#161b28" stroke-width="14" />
-                  <circle cx="80" cy="80" r="62" fill="none" stroke="#e5181f" stroke-width="14"
-                          stroke-dasharray="327 390" stroke-dashoffset="0" stroke-linecap="round"
-                          transform="rotate(-90 80 80)" filter="drop-shadow(0 0 8px rgba(229,24,31,0.5))" />
-                  <circle cx="80" cy="80" r="62" fill="none" stroke="#f59e0b" stroke-width="14"
-                          stroke-dasharray="43 390" stroke-dashoffset="-330" stroke-linecap="round"
-                          transform="rotate(-90 80 80)" />
-                  <circle cx="80" cy="80" r="62" fill="none" stroke="#dc2626" stroke-width="14"
-                          stroke-dasharray="12 390" stroke-dashoffset="-375" stroke-linecap="round"
-                          transform="rotate(-90 80 80)" />
-                </svg>
-                <div class="donut-center-info">
-                  <div class="donut-center-num">92.8%</div>
-                  <div class="donut-center-tag">Healthy</div>
+              <!-- Top Banner Box: All systems operational + 99.99% UPTIME -->
+              <div class="infra-status-banner">
+                <div class="infra-banner-left">
+                  <span class="infra-live-dot"></span>
+                  <div>
+                    <div class="infra-banner-title">All systems operational</div>
+                    <div class="infra-banner-sub">Updated just now</div>
+                  </div>
+                </div>
+                <div class="infra-banner-right">
+                  <div class="infra-uptime-pct">99.99%</div>
+                  <div class="infra-uptime-label">UPTIME</div>
                 </div>
               </div>
 
-              <div class="health-legend-list">
-                <div class="health-legend-row">
-                  <div class="legend-label-col">
-                    <span class="legend-dot" style="background:#e5181f;box-shadow:0 0 6px #e5181f;"></span>
-                    <span>Active</span>
-                  </div>
-                  <div class="legend-val-col">
-                    <strong>18,429</strong> <span class="legend-pct">(84%)</span>
-                  </div>
-                </div>
-                <div class="health-legend-row">
-                  <div class="legend-label-col">
-                    <span class="legend-dot" style="background:#f59e0b;"></span>
-                    <span>Expiring soon</span>
-                  </div>
-                  <div class="legend-val-col">
-                    <strong>3,126</strong> <span class="legend-pct">(11%)</span>
+              <!-- 4 Latency / Service Status Rows -->
+              <div class="infra-metrics-list">
+                <div class="infra-metric-row">
+                  <span class="infra-metric-name">Authentication API</span>
+                  <div class="infra-metric-val">
+                    <span class="infra-ms">84 ms</span>
+                    <span class="infra-badge-ok">Operational</span>
                   </div>
                 </div>
-                <div class="health-legend-row">
-                  <div class="legend-label-col">
-                    <span class="legend-dot" style="background:#dc2626;"></span>
-                    <span>Expired</span>
-                  </div>
-                  <div class="legend-val-col">
-                    <strong>2,104</strong> <span class="legend-pct">(3%)</span>
+                <div class="infra-metric-row">
+                  <span class="infra-metric-name">License service</span>
+                  <div class="infra-metric-val">
+                    <span class="infra-ms">112 ms</span>
+                    <span class="infra-badge-ok">Operational</span>
                   </div>
                 </div>
-                <div class="health-legend-row">
-                  <div class="legend-label-col">
-                    <span class="legend-dot" style="background:#64748b;"></span>
-                    <span>Blocked</span>
+                <div class="infra-metric-row">
+                  <span class="infra-metric-name">Last database backup</span>
+                  <div class="infra-metric-val">
+                    <span class="infra-ms">12 min ago</span>
+                    <span class="infra-badge-ok">Completed</span>
                   </div>
-                  <div class="legend-val-col">
-                    <strong>1,233</strong> <span class="legend-pct">(2%)</span>
+                </div>
+                <div class="infra-metric-row">
+                  <span class="infra-metric-name">Security scan</span>
+                  <div class="infra-metric-val">
+                    <span class="infra-ms">No threats</span>
+                    <span class="infra-badge-ok">Protected</span>
                   </div>
                 </div>
               </div>
@@ -490,9 +513,9 @@
               <div class="card-top-header">
                 <div>
                   <div class="card-micro-tag">LATEST UPDATES</div>
-                  <h3 class="card-main-title">Recent activity</h3>
+                  <h3 class="card-main-title"><span class="red-bar-accent"></span>Recent activity</h3>
                 </div>
-                <a href="javascript:void(0)" onclick="switchTab('logs')" class="card-action-link">View all →</a>
+                <a href="javascript:void(0)" onclick="switchTab('logs')" class="card-action-link" style="color:#e5181f;font-weight:700;font-size:12px;text-decoration:none;">View all &gt;</a>
               </div>
 
               <div class="table-scroll-wrap">

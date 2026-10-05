@@ -922,6 +922,29 @@ function handleSearch(val) {
   renderLicensesTable();
 }
 
+function handleGlobalSearch(val) {
+  state.searchQuery = (val || '').trim();
+  const searchInputInLicenses = document.getElementById('search-input');
+  if (searchInputInLicenses) {
+    searchInputInLicenses.value = state.searchQuery;
+  }
+  if (state.searchQuery && state.currentTab !== 'licenses') {
+    switchTab('licenses');
+  }
+  renderLicensesTable();
+}
+
+window.addEventListener('keydown', (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+    e.preventDefault();
+    const gSearch = document.getElementById('global-search-input');
+    if (gSearch) {
+      gSearch.focus();
+      gSearch.select();
+    }
+  }
+});
+
 // Generate Key via REAL API
 async function submitGenerateKeys(e) {
   e.preventDefault();
