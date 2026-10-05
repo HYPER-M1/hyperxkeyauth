@@ -28,7 +28,7 @@
         "all"
       ],
       "totpSecret": "5XMSIKNTE4AXVENX",
-      "twofa_setup_done": false
+      "twofa_setup_done": true
     }
   ]
 }
