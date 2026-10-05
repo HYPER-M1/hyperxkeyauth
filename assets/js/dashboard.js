@@ -162,13 +162,12 @@ function showHyperAlert(message, options = {}) {
     div.id = 'hyper-dialog-overlay';
     div.innerHTML = `
       <div class="hyper-dialog-card" id="hyper-dialog-card">
-        <div class="hyper-dialog-stripe"></div>
         <div class="hyper-dialog-header">
-          <span class="hyper-dialog-badge" id="hyper-dialog-badge">⚡ HYPERX // SYSTEM NOTICE</span>
+          <span class="hyper-dialog-badge" id="hyper-dialog-badge">Notice</span>
           <button type="button" class="hyper-dialog-close-btn" id="hyper-dialog-close-btn" onclick="closeHyperDialog()">✕</button>
         </div>
         <div class="hyper-dialog-body">
-          <div class="hyper-dialog-icon-wrap success" id="hyper-dialog-icon-wrap">
+          <div class="hyper-dialog-icon-wrap" id="hyper-dialog-icon-wrap">
             <span id="hyper-dialog-icon">✓</span>
           </div>
           <h3 class="hyper-dialog-title" id="hyper-dialog-title">Notification</h3>
@@ -183,8 +182,7 @@ function showHyperAlert(message, options = {}) {
           <div class="hyper-dialog-actions" id="hyper-dialog-actions">
             <button type="button" class="hyper-dialog-btn-secondary" id="hyper-dialog-btn-cancel" style="display:none;" onclick="handleHyperDialogCancel()">Cancel</button>
             <button type="button" class="hyper-dialog-btn-primary" id="hyper-dialog-btn-ok" onclick="handleHyperDialogOk()">
-              <span>✓</span>
-              <span id="hyper-dialog-btn-ok-text">Acknowledge</span>
+              <span id="hyper-dialog-btn-ok-text">Done</span>
             </button>
           </div>
         </div>
@@ -194,6 +192,7 @@ function showHyperAlert(message, options = {}) {
     overlay = div;
   }
 
+  const card = document.getElementById('hyper-dialog-card');
   const iconWrap = document.getElementById('hyper-dialog-icon-wrap');
   const iconEl = document.getElementById('hyper-dialog-icon');
   const badgeEl = document.getElementById('hyper-dialog-badge');
@@ -210,49 +209,95 @@ function showHyperAlert(message, options = {}) {
   _hyperDialogCancelCallback = options.onCancel || null;
   _hyperDialogCopyData = '';
 
-  const str = String(message || '');
-  const lines = str.split('\n').map(l => l.trim()).filter(Boolean);
+  const rawStr = String(message || '').trim();
+  let cleanStr = rawStr.replace(/^[✓❌⛔⚠️ℹ️\?]\s*/, '').replace(/^(SUCCESS|ERROR|WARNING|NOTICE):\s*/i, '').trim();
 
-  let type = options.type || 'info';
+  let type = options.type || '';
+  if (!type) {
+    if (rawStr.includes('✓') || /success|created|updated|saved|deleted|reset|operational/i.test(rawStr)) {
+      type = 'success';
+    } else if (rawStr.includes('❌') || rawStr.includes('⛔') || /error|failed|denied|incorrect|invalid/i.test(rawStr)) {
+      type = 'error';
+    } else if (rawStr.includes('⚠️') || /insufficient|warning|caution/i.test(rawStr)) {
+      type = 'warning';
+    } else {
+      type = 'info';
+    }
+  }
+
+  // Set card class for CSS type styling (.type-success, .type-error, etc.)
+  if (card) {
+    card.className = 'hyper-dialog-card type-' + type;
+  }
+
+  const lines = cleanStr.split('\n').map(l => l.trim()).filter(Boolean);
+
   let title = options.title || '';
   let subtitleLines = [];
   let kvPairs = [];
 
-  // Auto-detect type from emojis and keywords
-  if (!options.type) {
-    if (str.includes('✓') || /success|created|updated|reset|operational/i.test(str)) {
-      type = 'success';
-    } else if (str.includes('❌') || str.includes('⛔') || /error|failed|denied|incorrect|invalid/i.test(str)) {
-      type = 'error';
-    } else if (str.includes('⚠️') || /insufficient|warning|caution/i.test(str)) {
-      type = 'warning';
-    }
-  }
-
-  // Parse Title and Key-Values
-  if (!title) {
-    if (lines.length > 0) {
-      let firstLine = lines[0]
-        .replace(/^[✓❌⛔⚠️ℹ️\?]\s*/, '')
-        .replace(/^(SUCCESS|ERROR|WARNING|NOTICE):\s*/i, '');
-      title = firstLine;
-    } else {
-      title = type === 'success' ? 'Operation Successful' : (type === 'error' ? 'Action Failed' : 'System Notice');
-    }
-  }
-
-  for (let i = 1; i < lines.length; i++) {
-    const line = lines[i];
-    const colonIdx = line.indexOf(':');
-    if (colonIdx > 0 && colonIdx < 30) {
-      const k = line.substring(0, colonIdx).trim();
-      const v = line.substring(colonIdx + 1).trim();
-      if (k && v) {
-        kvPairs.push({ key: k, value: v });
-        continue;
+  if (options.title) {
+    title = options.title;
+    for (let line of lines) {
+      const colonIdx = line.indexOf(':');
+      if (colonIdx > 0 && colonIdx < 30) {
+        const k = line.substring(0, colonIdx).trim();
+        const v = line.substring(colonIdx + 1).trim();
+        if (k && v) {
+          kvPairs.push({ key: k, value: v });
+          continue;
+        }
       }
+      subtitleLines.push(line);
     }
-    subtitleLines.push(line);
+  } else {
+    if (lines.length > 1) {
+      title = lines[0];
+      for (let i = 1; i < lines.length; i++) {
+        const line = lines[i];
+        const colonIdx = line.indexOf(':');
+        if (colonIdx > 0 && colonIdx < 30) {
+          const k = line.substring(0, colonIdx).trim();
+          const v = line.substring(colonIdx + 1).trim();
+          if (k && v) {
+            kvPairs.push({ key: k, value: v });
+            continue;
+          }
+        }
+        subtitleLines.push(line);
+      }
+    } else if (lines.length === 1) {
+      const single = lines[0];
+      if (/deleted|removed/i.test(single)) {
+        title = single.toLowerCase().includes('reseller') ? 'Reseller Deleted' : (single.toLowerCase().includes('key') ? 'Key Deleted' : 'Deleted Successfully');
+        subtitleLines.push(single);
+      } else if (/created/i.test(single)) {
+        title = single.toLowerCase().includes('reseller') ? 'Reseller Created' : (single.toLowerCase().includes('key') ? 'Key Generated' : 'Created Successfully');
+        subtitleLines.push(single);
+      } else if (/updated|saved|changed/i.test(single)) {
+        title = 'Changes Saved';
+        subtitleLines.push(single);
+      } else if (/reset/i.test(single)) {
+        title = 'Reset Complete';
+        subtitleLines.push(single);
+      } else if (/copied/i.test(single)) {
+        title = 'Copied to Clipboard';
+        subtitleLines.push(single);
+      } else if (type === 'error') {
+        title = 'Action Failed';
+        subtitleLines.push(single);
+      } else if (type === 'warning') {
+        title = 'Attention Required';
+        subtitleLines.push(single);
+      } else if (single.length <= 35) {
+        title = single;
+      } else {
+        title = type === 'success' ? 'Success' : 'Notice';
+        subtitleLines.push(single);
+      }
+    } else {
+      title = type === 'success' ? 'Success' : (type === 'error' ? 'Action Failed' : 'Notice');
+    }
   }
 
   // Setup Visuals
@@ -262,21 +307,21 @@ function showHyperAlert(message, options = {}) {
 
   if (iconEl) {
     if (type === 'success') {
-      iconEl.innerHTML = `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>`;
+      iconEl.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>`;
     } else if (type === 'error') {
-      iconEl.innerHTML = `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`;
+      iconEl.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`;
     } else if (type === 'warning') {
-      iconEl.innerHTML = `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`;
+      iconEl.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`;
     } else {
-      iconEl.innerHTML = `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`;
+      iconEl.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`;
     }
   }
 
   if (badgeEl) {
-    if (type === 'success') badgeEl.textContent = '⚡ HYPERX // SUCCESS';
-    else if (type === 'error') badgeEl.textContent = '⛔ HYPERX // ERROR';
-    else if (type === 'warning') badgeEl.textContent = '⚠️ HYPERX // WARNING';
-    else badgeEl.textContent = '⚡ HYPERX // SYSTEM NOTICE';
+    if (type === 'success') badgeEl.textContent = 'Success';
+    else if (type === 'error') badgeEl.textContent = 'Error';
+    else if (type === 'warning') badgeEl.textContent = 'Warning';
+    else badgeEl.textContent = 'Notice';
   }
 
   if (titleEl) titleEl.textContent = title;
@@ -316,7 +361,7 @@ function showHyperAlert(message, options = {}) {
   }
 
   if (okBtnText) {
-    okBtnText.textContent = options.btnText || (options.showCancel ? 'Confirm' : 'Acknowledge');
+    okBtnText.textContent = options.btnText || (options.showCancel ? 'Confirm' : 'Done');
   }
 
   overlay.classList.add('active');
@@ -2081,7 +2126,11 @@ function deleteReseller(id) {
 
   // 4. Update UI
   renderResellersTable();
-  alert(`✓ Reseller "${r.username}" has been permanently deleted.`);
+  showHyperAlert(`The reseller account "${r.username}" has been permanently removed.`, {
+    type: 'success',
+    title: 'Reseller Deleted',
+    btnText: 'Done'
+  });
 }
 
 // ==========================================================================
