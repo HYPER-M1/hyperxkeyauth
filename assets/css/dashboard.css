@@ -837,9 +837,21 @@ body.is-reseller .header-pill-admin {
   padding: 0 !important;
 }
 
-.view-heading-title,
+.view-heading-title {
+  display: block;
+  font-size: 17px;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 4px 0;
+  letter-spacing: -0.01em;
+}
+
 .view-sub-text {
-  display: none !important;
+  display: block;
+  font-size: 12px;
+  color: #8e95aa;
+  margin: 0;
+  line-height: 1.4;
 }
 
 .btn-action-primary {
@@ -2706,9 +2718,12 @@ html, body {
     display: none !important;
   }
 
-  /* Hide screen-crowding subtitles on general views, but show on License view */
   .view-sub-text {
-    display: none !important;
+    display: block !important;
+    font-size: 11px !important;
+    color: #8e95aa !important;
+    margin: 0 !important;
+    line-height: 1.35 !important;
   }
 
   /* View Header Strip for License Keys on Mobile - Match Reference Exactly */
@@ -2879,14 +2894,21 @@ html, body {
   .view-header-strip {
     display: flex !important;
     flex-direction: row !important;
-    justify-content: flex-end !important;
-    align-items: center !important;
-    gap: 8px !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
     margin-bottom: 12px !important;
+    flex-wrap: wrap !important;
   }
 
   .view-heading-title {
-    display: none !important;
+    display: block !important;
+    font-size: 16px !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
+    margin: 0 0 3px 0 !important;
+    line-height: 1.25 !important;
+    letter-spacing: -0.01em !important;
   }
 
   .view-header-strip .btn-action-primary,

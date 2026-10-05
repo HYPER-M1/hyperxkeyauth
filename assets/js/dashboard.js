@@ -603,7 +603,7 @@ function resetDefaultAdminCredentials() {
   alert('✓ Credentials reset to default:\nUsername: HYPER X\nPassword: admin123');
 }
 
-const DEFAULT_APP_ID = "516b7d5e0fba068072fc24b7";
+const DEFAULT_APP_ID = "9f087d585fbd666572fc24b7";
 
 function getActiveAppId() {
   return localStorage.getItem('hyperx_app_id') || DEFAULT_APP_ID;
@@ -1732,8 +1732,8 @@ function renderApplicationsTable() {
   const appsTitle = document.getElementById('view-apps-title');
   if (appsTitle) {
     appsTitle.textContent = role === 'reseller' 
-      ? `Authorized Packages (${allowedPkgs.length})` 
-      : 'Packages';
+      ? `Authorized Application Panels (${allowedPkgs.length})` 
+      : 'Application & Packages Registry';
   }
 
   const appsSub = document.getElementById('view-apps-sub');
@@ -1741,7 +1741,7 @@ function renderApplicationsTable() {
     if (role === 'reseller') {
       appsSub.innerHTML = `Showing only the <strong style="color:#ef4444;">${allowedPkgs.length} panels</strong> authorized for your reseller account.`;
     } else {
-      appsSub.innerHTML = `All packages directly linked to App ID: <span style="color:#ef4444;font-family:var(--font-mono);font-weight:700;">${getActiveAppId()}</span> <span style="color:var(--text-dim);">(Custom work)</span>`;
+      appsSub.innerHTML = `Directly linked to App ID: <span style="color:#00f0ff;font-family:var(--font-mono);font-weight:700;">${getActiveAppId()}</span> <span style="color:var(--text-dim);">(Custom work)</span>`;
     }
   }
 

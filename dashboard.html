@@ -597,8 +597,8 @@
         <section class="tab-view" id="view-logs">
           <div class="view-header-strip logs-view-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
             <div class="logs-header-intro">
-              <h2 class="view-heading-title" style="font-size:16px;font-weight:800;color:#fff;margin-bottom:4px;">System Audit &amp; Activity Logs</h2>
-              <p class="view-sub-text" style="font-size:11.5px;color:#64748b;margin:0;">Real-time audit stream tracking all authentication requests and actions performed on your panel.</p>
+              <h2 class="view-heading-title" id="view-logs-title" style="font-size:16px;font-weight:800;color:#fff;margin-bottom:4px;">Authentication &amp; Security Logs</h2>
+              <p class="view-sub-text" id="view-logs-sub" style="font-size:11.5px;color:#64748b;margin:0;">Captured authentication attempts and API proxy transactions.</p>
             </div>
             <button class="btn-action-primary btn-export-logs-red" onclick="exportLogsToCsv()" style="background:rgba(239,68,68,0.18);border:1px solid rgba(239,68,68,0.5);color:#fff;font-weight:700;font-size:12px;padding:7px 14px;border-radius:7px;display:flex;align-items:center;gap:6px;cursor:pointer;">
               <span>📩</span>
@@ -939,9 +939,9 @@
         <section class="tab-view" id="view-apps">
           <div class="view-header-strip apps-view-header" style="margin-bottom:14px;">
             <div class="apps-header-intro">
-              <h2 class="view-heading-title" id="view-apps-title" style="font-size:16px;font-weight:800;color:#fff;margin-bottom:4px;">Packages</h2>
+              <h2 class="view-heading-title" id="view-apps-title" style="font-size:16px;font-weight:800;color:#fff;margin-bottom:4px;">Application &amp; Packages Registry</h2>
               <p class="view-sub-text" id="view-apps-sub" style="font-size:11.5px;color:#64748b;margin:0;">
-                All packages directly linked to App ID: <span style="color:#ef4444;font-family:var(--font-mono);font-weight:700;" id="view-apps-appid">516b7d5e0fba068072fc24b7</span> <span style="color:var(--text-dim);">(Custom work)</span>
+                Directly linked to App ID: <span style="color:#00f0ff;font-family:var(--font-mono);font-weight:700;" id="view-apps-appid">9f087d585fbd666572fc24b7</span> <span style="color:var(--text-dim);">(Custom work)</span>
               </p>
             </div>
           </div>
@@ -1221,8 +1221,8 @@
           <!-- Reseller View Header -->
           <div class="view-header-strip reseller-view-header" style="margin-bottom:14px;">
             <div class="reseller-header-intro">
-              <h2 class="view-heading-title" style="font-size:16px;font-weight:800;color:#fff;margin-bottom:4px;">Reseller System &amp; Quota Distribution</h2>
-              <p class="view-sub-text" style="font-size:11.5px;color:#64748b;margin:0;">Authorize reseller accounts, grant key generation quotas, and assign panel access permissions.</p>
+              <h2 class="view-heading-title" id="view-resellers-title" style="font-size:16px;font-weight:800;color:#fff;margin-bottom:4px;">Reseller Management &amp; Distribution</h2>
+              <p class="view-sub-text" id="view-resellers-sub" style="font-size:11.5px;color:#64748b;margin:0;">Authorize reseller accounts, grant key generation quotas, and assign panel access permissions.</p>
             </div>
             <div style="display:flex;gap:10px;flex-wrap:wrap;flex-shrink:0;">
               <button class="btn-action-secondary" onclick="openModal('modal-transfer-credit')" style="color:#f59e0b;border-color:rgba(245,158,11,0.4);">
