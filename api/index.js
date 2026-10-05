@@ -7,7 +7,7 @@ const https = require('https');
 
 const REMOTE_API_URL = 'https://prtvshow.online/api_admin.php';
 const REMOTE_API_KEY = 'TX999_API_bc186f5d73bd492e6d52095e5a7bfd78';
-const DEFAULT_APP_ID = '9f087d585fbd666572fc24b7';
+const DEFAULT_APP_ID = '516b7d5e0fba068072fc24b7';
 
 module.exports = async (req, res) => {
   // Global CORS Headers

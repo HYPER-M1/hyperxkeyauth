@@ -581,10 +581,16 @@ function resetDefaultAdminCredentials() {
   alert('✓ Credentials reset to default:\nUsername: HYPER X\nPassword: admin123');
 }
 
-const DEFAULT_APP_ID = "9f087d585fbd666572fc24b7";
+const DEFAULT_APP_ID = "516b7d5e0fba068072fc24b7";
 
 function getActiveAppId() {
   return localStorage.getItem('hyperx_app_id') || DEFAULT_APP_ID;
+}
+
+function updateAppIdUI() {
+  const appId = getActiveAppId();
+  const el = document.getElementById('view-apps-appid');
+  if (el) el.textContent = appId;
 }
 
 let isPrimaryProxyUnavailable = false;
@@ -1570,32 +1576,67 @@ function renderApplicationsTable() {
   if (appsTitle) {
     appsTitle.textContent = role === 'reseller' 
       ? `Authorized Application Panels (${allowedPkgs.length})` 
-      : 'Application & Packages Registry';
+      : 'Application Packages';
   }
 
   const appsSub = document.getElementById('view-apps-sub');
-  if (appsSub && role === 'reseller') {
-    appsSub.innerHTML = `Showing only the <strong style="color:#00f0ff;">${allowedPkgs.length} panels</strong> authorized for your reseller account.`;
+  if (appsSub) {
+    if (role === 'reseller') {
+      appsSub.innerHTML = `Showing only the <strong style="color:#ef4444;">${allowedPkgs.length} panels</strong> authorized for your reseller account.`;
+    } else {
+      appsSub.innerHTML = `All packages directly linked to App ID: <span style="color:#ef4444;font-family:var(--font-mono);font-weight:700;">${getActiveAppId()}</span> <span style="color:var(--text-dim);">(Custom work)</span>`;
+    }
   }
 
   // Render Dashboard summary table as well
   renderDashboardPackagesSummary(allowedPkgs);
 
-  if (!tbody) return;
-
   if (allowedPkgs.length === 0) {
     allowedPkgs = DEFAULT_PACKAGES;
   }
 
-  tbody.innerHTML = allowedPkgs.map((pkg, idx) => `
-    <tr>
-      <td style="font-family:var(--font-mono);font-weight:700;color:#00f0ff;white-space:nowrap;">#${idx + 1}</td>
-      <td style="font-weight:700;color:#fff;font-size:13px;white-space:nowrap;">${pkg.package_name}</td>
-      <td class="col-pkg-id col-mobile-hide" style="font-family:var(--font-mono);color:#cbd5e1;font-size:11.5px;">${pkg.package_id}</td>
-      <td style="color:#38bdf8;font-weight:600;white-space:nowrap;">Custom work</td>
-      <td style="white-space:nowrap;"><span class="badge-pill-status badge-active-green">Active</span></td>
-    </tr>
-  `).join('');
+  // 1. Desktop Table Render
+  if (tbody) {
+    tbody.innerHTML = allowedPkgs.map((pkg, idx) => `
+      <tr>
+        <td style="font-family:var(--font-mono);font-weight:700;color:#ef4444;white-space:nowrap;">#${idx + 1}</td>
+        <td style="font-weight:700;color:#fff;font-size:13px;white-space:nowrap;">${pkg.package_name}</td>
+        <td class="col-pkg-id col-mobile-hide" style="font-family:var(--font-mono);color:#cbd5e1;font-size:11.5px;">${pkg.package_id}</td>
+        <td style="color:#ef4444;font-weight:600;white-space:nowrap;">${pkg.app_name || 'Custom work'}</td>
+        <td style="white-space:nowrap;"><span class="badge-pill-status badge-active-green">Active</span></td>
+      </tr>
+    `).join('');
+  }
+
+  // 2. Mobile Cards Render (Pixel-for-pixel matching user reference)
+  const mobileList = document.getElementById('apps-mobile-list');
+  if (mobileList) {
+    mobileList.innerHTML = allowedPkgs.map((pkg, idx) => `
+      <div class="mobile-app-card" onclick="openGenModalForPackage('${pkg.package_id || pkg.package_name}')" title="Click to generate key for ${pkg.package_name}">
+        <div class="mobile-app-num-badge">#${idx + 1}</div>
+        <div class="mobile-app-main">
+          <div class="mobile-app-name">${pkg.package_name}</div>
+          <div class="mobile-app-meta-row">
+            <div class="mobile-app-col">
+              <span class="mobile-app-col-lbl">Package ID</span>
+              <span class="mobile-app-col-val val-pkg-id" title="${pkg.package_id}">${pkg.package_id}</span>
+            </div>
+            <div class="mobile-app-col">
+              <span class="mobile-app-col-lbl">Target App</span>
+              <span class="mobile-app-col-val val-target-app">${pkg.app_name || 'Custom work'}</span>
+            </div>
+            <div class="mobile-app-col">
+              <span class="mobile-app-col-lbl">Status</span>
+              <div class="mobile-app-col-val">
+                <span class="badge-app-status-active"><span class="status-dot">●</span> Active</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mobile-app-arrow">›</div>
+      </div>
+    `).join('');
+  }
 }
 
 function renderDashboardPackagesSummary(pkgs) {

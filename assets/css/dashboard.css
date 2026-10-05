@@ -2592,8 +2592,9 @@ html, body {
   }
 }
 
-/* Default Desktop: Hide mobile license cards */
-.mobile-license-cards-wrap {
+/* Default Desktop: Hide mobile cards */
+.mobile-license-cards-wrap,
+.mobile-apps-cards-wrap {
   display: none;
 }
 
@@ -3482,6 +3483,155 @@ html, body {
 
   .mobile-lic-popover-menu .popover-btn.popover-delete {
     color: #ef4444 !important;
+  }
+
+  /* ==========================================================================
+     MOBILE APPLICATIONS CARDS (Pixel-for-Pixel Reference from User Phone)
+     ========================================================================== */
+  #view-apps .cyber-panel-table,
+  #view-apps .cyber-data-table-wrap,
+  #view-apps .apps-desktop-table-wrap,
+  #view-apps .dashboard-card-box {
+    display: none !important;
+  }
+
+  .mobile-apps-cards-wrap {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  .mobile-app-card {
+    display: flex !important;
+    align-items: center !important;
+    background: #090c15 !important;
+    border: 1px solid #161e2e !important;
+    border-radius: 10px !important;
+    padding: 12px 14px !important;
+    gap: 12px !important;
+    position: relative !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+    box-sizing: border-box !important;
+    transition: background 0.15s ease, border-color 0.15s ease !important;
+  }
+
+  .mobile-app-card:active {
+    background: #0f1524 !important;
+    border-color: rgba(239, 68, 68, 0.35) !important;
+  }
+
+  .mobile-app-num-badge {
+    flex: 0 0 34px !important;
+    width: 34px !important;
+    height: 34px !important;
+    background: rgba(239, 68, 68, 0.12) !important;
+    border: 1px solid rgba(239, 68, 68, 0.28) !important;
+    border-radius: 6px !important;
+    color: #ef4444 !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    align-self: center !important;
+    line-height: 1 !important;
+    letter-spacing: -0.5px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .mobile-app-main {
+    flex: 1 !important;
+    min-width: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 5px !important;
+  }
+
+  .mobile-app-name {
+    color: #ffffff !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.02em !important;
+    text-transform: uppercase !important;
+    line-height: 1.2 !important;
+  }
+
+  .mobile-app-meta-row {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 0.9fr) !important;
+    gap: 8px !important;
+    align-items: flex-start !important;
+  }
+
+  .mobile-app-col {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2px !important;
+    min-width: 0 !important;
+  }
+
+  .mobile-app-col-lbl {
+    font-size: 9.5px !important;
+    color: #64748b !important;
+    font-weight: 500 !important;
+    white-space: nowrap !important;
+    letter-spacing: 0.01em !important;
+  }
+
+  .mobile-app-col-val {
+    font-size: 11px !important;
+    line-height: 1.25 !important;
+  }
+
+  .mobile-app-col-val.val-pkg-id {
+    font-family: var(--font-mono) !important;
+    font-size: 10px !important;
+    color: #94a3b8 !important;
+    word-break: break-all !important;
+    line-height: 1.2 !important;
+  }
+
+  .mobile-app-col-val.val-target-app {
+    color: #ef4444 !important;
+    font-weight: 700 !important;
+    font-size: 11px !important;
+    white-space: nowrap !important;
+  }
+
+  .badge-app-status-active {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    background: rgba(16, 185, 129, 0.12) !important;
+    border: 1px solid rgba(16, 185, 129, 0.3) !important;
+    border-radius: 12px !important;
+    padding: 2px 7px !important;
+    color: #10b981 !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    white-space: nowrap !important;
+    line-height: 1 !important;
+    width: fit-content !important;
+  }
+
+  .badge-app-status-active .status-dot {
+    color: #10b981 !important;
+    font-size: 8px !important;
+    line-height: 1 !important;
+  }
+
+  .mobile-app-arrow {
+    flex: 0 0 14px !important;
+    color: #64748b !important;
+    font-size: 19px !important;
+    line-height: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    align-self: center !important;
+    flex-shrink: 0 !important;
   }
 }
 
