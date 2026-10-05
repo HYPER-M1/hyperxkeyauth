@@ -1713,9 +1713,11 @@ function renderApplicationsTable() {
   }
   const role = getUserRole();
 
-  // Update sidebar count text
+  // Update sidebar text
   const navAppsText = document.getElementById('nav-apps-text');
-  if (navAppsText) navAppsText.textContent = `Applications (${allowedPkgs.length})`;
+  if (navAppsText) navAppsText.textContent = 'PACKAGES';
+  const navAppsCountBadge = document.getElementById('nav-apps-count-badge');
+  if (navAppsCountBadge) navAppsCountBadge.remove();
 
   // Update Dashboard stat card
   const statPackagesCount = document.getElementById('stat-packages-count');

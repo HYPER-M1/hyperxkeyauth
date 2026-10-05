@@ -44,7 +44,7 @@ $admin_user = $_SESSION['prtv_admin_user'] ?? 'HYPER X';
 
         <button class="sidebar-nav-link" id="nav-apps" onclick="switchTab('apps')">
           <span class="nav-icon">📦</span>
-          <span>Applications</span>
+          <span id="nav-apps-text">PACKAGES</span>
         </button>
 
         <button class="sidebar-nav-link" id="nav-licenses" onclick="switchTab('licenses')">
