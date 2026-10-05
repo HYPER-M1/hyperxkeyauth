@@ -42,7 +42,7 @@
         "all"
       ],
       "totpSecret": "Q5UHSPLEHD7Z27QM",
-      "twofa_setup_done": false
+      "twofa_setup_done": true
     }
   ]
 }
