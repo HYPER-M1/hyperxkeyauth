@@ -1045,7 +1045,7 @@ function switchTab(tabId) {
       licenses: 'License Keys',
       logs: 'Audit Logs',
       resellers: 'Resellers',
-      apps: 'Applications',
+      apps: 'Packages',
       transfers: 'Transfers'
     };
     titleEl.textContent = titles[tabId] || 'Dashboard';
@@ -1715,7 +1715,7 @@ function renderApplicationsTable() {
 
   // Update sidebar text
   const navAppsText = document.getElementById('nav-apps-text');
-  if (navAppsText) navAppsText.textContent = 'PACKAGES';
+  if (navAppsText) navAppsText.textContent = 'Packages';
   const navAppsCountBadge = document.getElementById('nav-apps-count-badge');
   if (navAppsCountBadge) navAppsCountBadge.remove();
 
@@ -1732,8 +1732,8 @@ function renderApplicationsTable() {
   const appsTitle = document.getElementById('view-apps-title');
   if (appsTitle) {
     appsTitle.textContent = role === 'reseller' 
-      ? `Authorized Application Panels (${allowedPkgs.length})` 
-      : 'Application Packages';
+      ? `Authorized Packages (${allowedPkgs.length})` 
+      : 'Packages';
   }
 
   const appsSub = document.getElementById('view-apps-sub');
