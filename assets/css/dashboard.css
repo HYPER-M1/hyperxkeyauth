@@ -427,11 +427,11 @@ body {
 }
 
 .page-breadcrumb-title {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 800;
   color: #fff;
   letter-spacing: 0.02em;
-  display: none;
+  display: block;
 }
 
 .pulse-live-dot {

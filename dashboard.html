@@ -117,13 +117,6 @@
           <span class="nav-count-badge" id="nav-key-count" style="display:none;">LIVE</span>
         </button>
 
-        <button class="sidebar-nav-link" id="nav-devices" onclick="switchTab('licenses')">
-          <span class="nav-icon">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
-          </span>
-          <span>HWID &amp; devices</span>
-        </button>
-
         <button class="sidebar-nav-link" id="nav-logs" onclick="switchTab('logs')">
           <span class="nav-icon">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
@@ -169,14 +162,6 @@
       <header class="top-navbar">
         <div class="navbar-left">
           <button class="mobile-nav-toggle" onclick="toggleMobileSidebar()" aria-label="Toggle navigation">☰</button>
-          <div class="navbar-search-wrap">
-            <svg class="search-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-            <input type="text" class="navbar-search-input" id="global-search-input" placeholder="Search users, licenses, keys..." oninput="handleGlobalSearch(this.value)">
-            <kbd class="navbar-search-kbd">⌘ K</kbd>
-          </div>
           <span class="page-breadcrumb-title" id="page-title-display">Dashboard</span>
         </div>
 
@@ -220,11 +205,7 @@
                 H
               </div>
               <div>
-                <div class="dash-breadcrumb-tag">
-                  <span>LOGS &amp; AUDIT</span>
-                  <span>•</span>
-                  <span id="dash-welcome-role-badge">ROOT OWNER</span>
-                </div>
+                <span id="dash-welcome-role-badge" style="display:none;"></span>
                 <h2 class="dash-welcome-title">
                   Welcome back, <span id="dash-welcome-username" class="profile-name">Hyper X</span>
                 </h2>
