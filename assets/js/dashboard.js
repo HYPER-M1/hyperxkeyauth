@@ -745,6 +745,8 @@ function updateDashboardStatsUI() {
         const headerAdminIcon = document.getElementById('header-admin-icon');
         if (headerAdminIcon) headerAdminIcon.textContent = '👤';
         if (elRemaining) elRemaining.textContent = (res.balance || 0).toLocaleString();
+        const dashQuotaNum = document.getElementById('dash-welcome-quota-num');
+        if (dashQuotaNum) dashQuotaNum.textContent = (res.balance || 0).toLocaleString();
         
         // Calculate reseller's own keys
         const myKeys = state.licenses.filter(l => l.user && l.user.toLowerCase().includes(res.username.toLowerCase()));
@@ -835,6 +837,11 @@ function updateDashboardStatsUI() {
 
   const adminName = getStoredAdminUser();
   if (elAdminUser) elAdminUser.textContent = adminName;
+
+  const dashQuotaNum = document.getElementById('dash-welcome-quota-num');
+  if (dashQuotaNum) {
+    dashQuotaNum.textContent = (state.stats.remaining != null ? state.stats.remaining : 9922).toLocaleString();
+  }
 
   // Update profile name
   document.querySelectorAll('.profile-name').forEach(el => el.textContent = adminName);
@@ -2964,33 +2971,33 @@ function initUserRoleSession() {
       const dashAvatar = document.getElementById('dash-user-avatar');
       if (dashAvatar && res.username) {
         dashAvatar.textContent = res.username.charAt(0).toUpperCase();
-        dashAvatar.style.background = 'linear-gradient(135deg,#f59e0b,#ea580c)';
-        dashAvatar.style.boxShadow = '0 0 14px rgba(245,158,11,0.35)';
+        dashAvatar.style.background = 'rgba(245, 158, 11, 0.15)';
+        dashAvatar.style.borderColor = 'rgba(245, 158, 11, 0.35)';
+        dashAvatar.style.color = '#fbbf24';
+        dashAvatar.style.boxShadow = '0 0 14px rgba(245,158,11,0.25)';
       }
       const dashName = document.getElementById('dash-welcome-username');
       if (dashName) dashName.textContent = res.username;
 
       const dashRoleBadge = document.getElementById('dash-welcome-role-badge');
       if (dashRoleBadge) {
-        dashRoleBadge.textContent = '👤 RESELLER ACCOUNT';
-        dashRoleBadge.style.background = 'rgba(245,158,11,0.15)';
-        dashRoleBadge.style.borderColor = 'rgba(245,158,11,0.4)';
-        dashRoleBadge.style.color = '#fbbf24';
+        dashRoleBadge.className = 'dash-role-pill reseller';
+      }
+      const dashRoleText = document.getElementById('dash-welcome-role-text');
+      if (dashRoleText) {
+        dashRoleText.textContent = 'Authorized Reseller';
       }
 
       const dashRoleDesc = document.getElementById('dash-welcome-role-desc');
       if (dashRoleDesc) {
-        const pNames = (!res.panels || res.panels.includes('all')) ? 'All Packages' : res.panels.join(', ');
-        dashRoleDesc.innerHTML = `Reseller Portal Session | Logged in as: <strong style="color:#00f0ff;">${res.username}</strong> | Available Balance: <strong style="color:#38bdf8;">${res.balance} Keys</strong>`;
+        dashRoleDesc.innerHTML = `<span>Reseller Portal</span><span class="meta-sep">•</span><span>User: <strong>${res.username}</strong></span><span class="meta-sep">•</span><span>Quota: <strong style="color:#34d399;">${(res.balance || 0).toLocaleString()} Keys</strong></span>`;
       }
+
+      const dashQuotaLbl = document.getElementById('dash-welcome-quota-label');
+      if (dashQuotaLbl) dashQuotaLbl.textContent = 'RESELLER BALANCE';
 
       const dashQuotaNum = document.getElementById('dash-welcome-quota-num');
-      if (dashQuotaNum) dashQuotaNum.textContent = res.balance;
-
-      const dashQuotaBox = document.getElementById('dash-welcome-quota-box');
-      if (dashQuotaBox) {
-        dashQuotaBox.innerHTML = `⚡ Reseller Balance: <strong id="dash-welcome-quota-num" style="color:#00f0ff;font-weight:700;">${(res.balance || 0).toLocaleString()}</strong> Credits`;
-      }
+      if (dashQuotaNum) dashQuotaNum.textContent = (res.balance || 0).toLocaleString();
 
       // Hide admin-only sections
       const navResellers = document.getElementById('nav-resellers');
@@ -3096,26 +3103,35 @@ function initUserRoleSession() {
     const dashAvatar = document.getElementById('dash-user-avatar');
     if (dashAvatar) {
       dashAvatar.textContent = adminUser.charAt(0).toUpperCase();
-      dashAvatar.style.background = 'rgba(229, 24, 31, 0.12)';
-      dashAvatar.style.borderColor = 'rgba(229, 24, 31, 0.4)';
-      dashAvatar.style.color = '#ff3b47';
-      dashAvatar.style.boxShadow = '0 0 16px rgba(229, 24, 31, 0.25)';
+      dashAvatar.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%)';
+      dashAvatar.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+      dashAvatar.style.color = '#ffffff';
+      dashAvatar.style.boxShadow = '0 4px 14px rgba(0, 0, 0, 0.35)';
     }
     const dashName = document.getElementById('dash-welcome-username');
     if (dashName) dashName.textContent = adminUser;
+    
     const dashRoleBadge = document.getElementById('dash-welcome-role-badge');
     if (dashRoleBadge) {
-      dashRoleBadge.textContent = 'ROOT OWNER';
-      dashRoleBadge.style.color = '#8e95aa';
-      dashRoleBadge.style.background = 'transparent';
-      dashRoleBadge.style.border = 'none';
+      dashRoleBadge.className = 'dash-role-pill admin';
     }
+    const dashRoleText = document.getElementById('dash-welcome-role-text');
+    if (dashRoleText) {
+      dashRoleText.textContent = 'Master Administrator';
+    }
+
     const dashRoleDesc = document.getElementById('dash-welcome-role-desc');
-    if (dashRoleDesc) dashRoleDesc.textContent = 'Master Administrator Dashboard & Full System Access';
-    const dashQuotaBox = document.getElementById('dash-welcome-quota-box');
-    if (dashQuotaBox) {
+    if (dashRoleDesc) {
+      dashRoleDesc.innerHTML = `<span>Enterprise KeyAuth Engine</span><span class="meta-sep">•</span><span>Full Privileges</span><span class="meta-sep">•</span><span>AES-256 HMAC Enforced</span>`;
+    }
+
+    const dashQuotaLbl = document.getElementById('dash-welcome-quota-label');
+    if (dashQuotaLbl) dashQuotaLbl.textContent = 'KEY CREDITS';
+
+    const dashQuotaNum = document.getElementById('dash-welcome-quota-num');
+    if (dashQuotaNum) {
       const credCount = (state.stats && state.stats.remaining != null) ? state.stats.remaining : 9922;
-      dashQuotaBox.innerHTML = `⚡ Available Credit: <strong id="dash-welcome-quota-num" style="color:#34d399;font-weight:700;">${credCount.toLocaleString()}</strong> Credits`;
+      dashQuotaNum.textContent = credCount.toLocaleString();
     }
     const rBox = document.getElementById('dashboard-reseller-users-box');
     if (rBox) rBox.style.display = 'none';

@@ -1744,67 +1744,175 @@ body.is-reseller #modal-edit-reseller {
 
 /* 1. Welcome Strip */
 .dash-welcome-strip {
-  background: #11141f;
-  border: 1px solid #161924;
-  border-top: 1.5px solid #6b0f14;
-  border-left: 1.5px solid #6b0f14;
-  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(17, 24, 39, 0.75) 0%, rgba(13, 16, 23, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
   padding: 18px 24px;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
   gap: 16px;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+.dash-welcome-strip::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  left: 20px;
+  width: 240px;
+  height: 120px;
+  background: radial-gradient(ellipse, rgba(56, 189, 248, 0.1) 0%, transparent 70%);
+  pointer-events: none;
 }
 
 .dash-welcome-left {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.dash-avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
 }
 
 .dash-avatar-square {
-  width: 44px;
-  height: 44px;
-  border-radius: 9px;
-  background: rgba(107, 15, 20, 0.3);
-  border: 1px solid #5a0c10;
+  width: 48px;
+  height: 48px;
+  border-radius: 13px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 19px;
+  font-family: var(--font-sans);
+  font-size: 20px;
   font-weight: 800;
-  color: #ff3b47;
-  flex-shrink: 0;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  text-transform: uppercase;
+  transition: transform 0.2s ease;
+}
+
+.dash-avatar-square:hover {
+  transform: scale(1.04);
+}
+
+.dash-avatar-status {
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #10b981;
+  border: 2px solid #0d1017;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+}
+
+.dash-welcome-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.dash-welcome-top-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 2px;
+}
+
+.dash-role-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 2.5px 9px;
+  border-radius: 9999px;
   text-transform: uppercase;
 }
 
-.dash-breadcrumb-tag {
-  font-size: 10.5px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  color: #8e95aa;
-  text-transform: uppercase;
-  margin-bottom: 4px;
-  display: flex;
+.dash-role-pill.admin {
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  color: #38bdf8;
+}
+
+.dash-role-pill.reseller {
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  color: #fbbf24;
+}
+
+.status-dot-mini {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.dash-system-health-pill {
+  display: inline-flex;
   align-items: center;
   gap: 6px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  color: #94a3b8;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  padding: 2.5px 9px;
+  border-radius: 9999px;
+}
+
+.pulse-green-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.7);
 }
 
 .dash-welcome-title {
+  font-family: var(--font-sans);
   font-size: 21px;
-  font-weight: 800;
-  color: #fff;
-  line-height: 1.2;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.25;
   margin: 0;
+  letter-spacing: -0.015em;
+}
+
+.dash-welcome-title .profile-name {
+  color: #ffffff;
+  font-weight: 800;
 }
 
 .dash-welcome-subtitle {
   font-size: 12px;
-  color: #8e95aa;
-  margin: 3px 0 0 0;
+  color: #64748b;
+  margin: 1px 0 0 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.meta-sep {
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 11px;
 }
 
 .dash-welcome-right {
@@ -1812,21 +1920,85 @@ body.is-reseller #modal-edit-reseller {
   align-items: center;
   gap: 12px;
   flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
 }
 
-.dash-welcome-quota-badge {
-  background: rgba(16, 185, 129, 0.1);
-  border: 1px solid rgba(16, 185, 129, 0.28);
-  border-radius: 7px;
-  padding: 8px 14px;
-  font-size: 12px;
-  color: #10b981;
-  font-weight: 600;
+.dash-welcome-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 7px 14px;
 }
 
-.dash-welcome-quota-badge strong {
-  color: #34d399;
+.stat-mini-icon {
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-mini-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-mini-lbl {
+  font-family: var(--font-sans);
+  font-size: 9.5px;
   font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+.stat-mini-val {
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #f1f5f9;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.stat-mini-unit {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  color: #34d399;
+}
+
+.dash-btn-primary-action {
+  height: 38px;
+  padding: 0 16px;
+  background: #ffffff;
+  border: none;
+  border-radius: 9px;
+  color: #0b0f19;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+  box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
+}
+
+.dash-btn-primary-action:hover {
+  background: #e2e8f0;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.18);
+}
+
+.dash-btn-primary-action .btn-action-icon {
+  font-size: 16px;
+  font-weight: 800;
 }
 
 .dash-btn-generate-key {

@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/dashboard.css?v=2.4">
+  <link rel="stylesheet" href="assets/css/dashboard.css?v=2.5">
   <style>
     /* Reseller Isolation - Absolute Guaranteed Hiding on all devices */
     html.is-reseller .admin-only-feature,
@@ -179,24 +179,49 @@
           <!-- DASHBOARD USER WELCOME STRIP -->
           <div class="dash-welcome-strip" id="dashboard-user-welcome-strip">
             <div class="dash-welcome-left">
-              <div class="dash-avatar-square" id="dash-user-avatar">
-                H
+              <div class="dash-avatar-wrap">
+                <div class="dash-avatar-square" id="dash-user-avatar">H</div>
+                <span class="dash-avatar-status" title="Active Session"></span>
               </div>
-              <div>
-                <span id="dash-welcome-role-badge" style="display:none;"></span>
+              <div class="dash-welcome-meta">
+                <div class="dash-welcome-top-row">
+                  <span id="dash-welcome-role-badge" class="dash-role-pill admin">
+                    <span class="status-dot-mini"></span>
+                    <span id="dash-welcome-role-text">Master Administrator</span>
+                  </span>
+                  <span class="dash-system-health-pill">
+                    <span class="pulse-green-dot"></span>
+                    <span>All Systems Operational</span>
+                  </span>
+                </div>
                 <h2 class="dash-welcome-title">
-                  Welcome back, <span id="dash-welcome-username" class="profile-name">Hyper X</span>
+                  Welcome back, <span id="dash-welcome-username" class="profile-name">HYPER X</span>
                 </h2>
                 <p class="dash-welcome-subtitle" id="dash-welcome-role-desc">
-                  HMAC-SHA256 enforced • All services operational
+                  <span>Enterprise KeyAuth Engine</span>
+                  <span class="meta-sep">•</span>
+                  <span>Full Privileges</span>
+                  <span class="meta-sep">•</span>
+                  <span>AES-256 HMAC Enforced</span>
                 </p>
               </div>
             </div>
 
             <div class="dash-welcome-right">
-              <div id="dash-welcome-quota-box" class="dash-welcome-quota-badge" style="display:none;">
-                ⚡ Available Credit: <strong id="dash-welcome-quota-num">9,922</strong> Keys
+              <div id="dash-welcome-quota-box" class="dash-welcome-stat-card">
+                <div class="stat-mini-icon">💳</div>
+                <div class="stat-mini-content">
+                  <div class="stat-mini-lbl" id="dash-welcome-quota-label">KEY CREDITS</div>
+                  <div class="stat-mini-val">
+                    <span id="dash-welcome-quota-num">9,922</span>
+                    <span class="stat-mini-unit">Balance</span>
+                  </div>
+                </div>
               </div>
+              <button type="button" class="dash-btn-primary-action" onclick="openModal('modal-add-key')">
+                <span class="btn-action-icon">+</span>
+                <span>Generate Key</span>
+              </button>
             </div>
           </div>
 
@@ -232,17 +257,15 @@
                     var dAv = document.getElementById('dash-user-avatar');
                     if (dAv) { dAv.textContent = uInitial; dAv.style.background = 'rgba(245,158,11,0.15)'; dAv.style.borderColor = 'rgba(245,158,11,0.4)'; dAv.style.color = '#fbbf24'; }
                     var dBadge = document.getElementById('dash-welcome-role-badge');
-                    if (dBadge) { dBadge.textContent = 'RESELLER ACCOUNT'; dBadge.style.color = '#fbbf24'; }
+                    if (dBadge) { dBadge.className = 'dash-role-pill reseller'; }
+                    var dRoleText = document.getElementById('dash-welcome-role-text');
+                    if (dRoleText) { dRoleText.textContent = 'Authorized Reseller'; }
                     var dDesc = document.getElementById('dash-welcome-role-desc');
-                    if (dDesc) { dDesc.innerHTML = 'Reseller Portal Session • Logged in as: <strong style="color:#ff3b47;">' + uName + '</strong> • Available Balance: <strong style="color:#34d399;">' + (res.balance || 0) + ' Keys</strong>'; }
-                    var dQuotaBox = document.getElementById('dash-welcome-quota-box');
+                    if (dDesc) { dDesc.innerHTML = '<span>Reseller Session</span><span class="meta-sep">•</span><span>User: <strong>' + uName + '</strong></span><span class="meta-sep">•</span><span>Active Sync</span>'; }
+                    var dQuotaLbl = document.getElementById('dash-welcome-quota-label');
+                    if (dQuotaLbl) { dQuotaLbl.textContent = 'RESELLER BALANCE'; }
                     var dQuotaNum = document.getElementById('dash-welcome-quota-num');
-                    if (dQuotaBox && dQuotaNum) {
-                      dQuotaBox.style.display = 'inline-flex';
-                      if (dQuotaBox.childNodes && dQuotaBox.childNodes[0]) dQuotaBox.childNodes[0].textContent = '⚡ Reseller Balance: ';
-                      dQuotaNum.style.color = '#ff3b47';
-                      dQuotaNum.textContent = (res.balance || 0);
-                    }
+                    if (dQuotaNum) { dQuotaNum.textContent = (res.balance || 0).toLocaleString(); }
                     var sLimit = document.getElementById('stat-key-limit');
                     if (sLimit) { sLimit.textContent = uName; }
                     var sLimitT = document.getElementById('stat-key-limit-title');
@@ -1451,6 +1474,6 @@
     </div>
   </div>
 
-  <script src="assets/js/dashboard.js?v=2.4"></script>
+  <script src="assets/js/dashboard.js?v=2.5"></script>
 </body>
 </html>
