@@ -23,12 +23,12 @@ const DEFAULT_PACKAGES = [
 
 // Seed Licenses History (Saved in localStorage so generated keys persist)
 const SEED_LICENSES = [
-  { id: '1', key: 'HPERX-8F92-41AC-90B2-110A', app: 'Custom work', pkg: 'BASIC PANEL', user: 'AlphaDistro_ViperX', hwid: '4A8F-912C-00B4-E9D1', expiry: '2026-12-31', status: 'active', note: 'Created by AlphaDistro' },
-  { id: '2', key: 'HPERX-32KA-991L-M08P-4491', app: 'Custom work', pkg: 'EXTERNAL PANEL', user: 'AlphaDistro_SkyLord', hwid: '88CF-1102-BA54-77E0', expiry: '2026-10-15', status: 'active', note: 'Created by AlphaDistro' },
+  { id: '1', key: 'HPERX-8F92-41AC-90B2-110A', app: 'Custom work', pkg: 'BASIC PANEL', user: 'beta123_User', hwid: '4A8F-912C-00B4-E9D1', expiry: '2026-12-31', status: 'active', note: 'Created by beta123' },
+  { id: '2', key: 'HPERX-32KA-991L-M08P-4491', app: 'Custom work', pkg: 'EXTERNAL PANEL', user: 'madhukar_User', hwid: '88CF-1102-BA54-77E0', expiry: '2026-10-15', status: 'active', note: 'Created by madhukar' },
   { id: '3', key: 'HPERX-77XC-B943-LL90-0012', app: 'Custom work', pkg: 'UID BYPASS', user: 'ShadowFF', hwid: 'Unbound', expiry: '2026-10-07', status: 'active', note: 'Awaiting Device' },
-  { id: '4', key: 'HPERX-110A-BBA8-8832-5501', app: 'Custom work', pkg: 'AIMSILENT EXE', user: 'ViperKeys_Ghost', hwid: '9920-A001-B789-CC21', expiry: '2026-11-20', status: 'active', note: 'Created by ViperKeys' },
+  { id: '4', key: 'HPERX-110A-BBA8-8832-5501', app: 'Custom work', pkg: 'AIMSILENT EXE', user: 'Client_Ghost', hwid: '9920-A001-B789-CC21', expiry: '2026-11-20', status: 'active', note: 'Created by Owner' },
   { id: '5', key: 'HPERX-9923-00PA-8841-8899', app: 'Custom work', pkg: 'PVT AIMKILL', user: 'CrackerBot', hwid: 'TAMPER_DETECTED', expiry: '2026-11-01', status: 'banned', note: 'Memory Hook Violation' },
-  { id: '6', key: 'HPERX-55VK-7719-ABCD-2234', app: 'Custom work', pkg: 'VAULT PANEL', user: 'ViperKeys_User01', hwid: '99BC-2281-A011-9988', expiry: '2026-11-15', status: 'active', note: 'Created by ViperKeys' }
+  { id: '6', key: 'HPERX-55VK-7719-ABCD-2234', app: 'Custom work', pkg: 'VAULT PANEL', user: 'SecureClient', hwid: '99BC-2281-A011-9988', expiry: '2026-11-15', status: 'active', note: 'Created by Owner' }
 ];
 
 const SEED_LOGS = [
@@ -36,7 +36,7 @@ const SEED_LOGS = [
   { id: '2', action: 'key_gen', detail: 'License key created: HPERX-8F92-41AC-90B2-110A (30 Days)', time: '14s ago', ip: '127.0.0.1' },
   { id: '3', action: 'auth_fail', detail: 'HWID mismatch detected: Device unverified', time: '45s ago', ip: '89.144.12.5' },
   { id: '4', action: 'hwid_reset', detail: 'HWID reset executed for HPERX-32KA-991L-M08P-4491', time: '1m ago', ip: '127.0.0.1' },
-  { id: '5', action: 'credit_transfer', detail: 'Transfer 250 credits from HYPER X to AlphaDistro', time: '3m ago', ip: '127.0.0.1' },
+  { id: '5', action: 'credit_transfer', detail: 'Transfer 999 credits from HYPER X to beta123', time: '3m ago', ip: '127.0.0.1' },
   { id: '6', action: 'auth_success', detail: 'Client handshake v1.0.0 verified successfully', time: '5m ago', ip: '194.26.29.13' },
   { id: '7', action: 'auth_fail', detail: 'Invalid license key attempt: HPERX-UNKNOWN-XXXX', time: '8m ago', ip: '182.73.19.144' },
   { id: '8', action: 'key_ban', detail: 'Key banned by Admin: Memory hook tamper detected', time: '12m ago', ip: '127.0.0.1' }
@@ -44,16 +44,14 @@ const SEED_LOGS = [
 
 const SEED_RESELLERS = [
   { id: '17909518904974', username: 'beta123', password: 'beta1230', email: 'beta123@gmail.com', balance: 999, createdKeys: 1, status: 'Active', panels: ['all'], totpSecret: 'YLOG2E3ANGTE4B23', twofa_setup_done: true },
-  { id: '1790951896372', username: 'MADHUKARBETA', password: 'reseller4@123', email: 'madhukarsarkar004@gmail.com', balance: 260, createdKeys: 0, status: 'Active', panels: ['all'], totpSecret: 'JBSWY3DPEHPK3PXP', twofa_setup_done: true },
-  { id: '1', username: 'HYPER X (Root Owner)', password: 'adminPassword123', email: 'admin@prtvshow.online', balance: 9922, createdKeys: 77, status: 'Active (Root)', panels: ['all'], totpSecret: 'JBSWY3DPEHPK3PXP', twofa_setup_done: true },
-  { id: '2', username: 'AlphaDistro', password: 'alphaPass@2026', email: 'alpha.dist@outlook.com', balance: 250, createdKeys: 88, status: 'Active', panels: ['BASIC PANEL', 'EXTERNAL PANEL', 'FPS BOOSTER'], totpSecret: 'KRUGKIDROVUWG2ZA', twofa_setup_done: true },
-  { id: '3', username: 'ViperKeys', password: 'viperKey#99', email: 'viper.resell@yahoo.com', balance: 50, createdKeys: 49, status: 'Active', panels: ['AIMSILENT EXE', 'UID BYPASS', 'VAULT PANEL'], totpSecret: 'MFRGGZDFMZTWQ2LK', twofa_setup_done: true }
+  { id: '1791108883957', username: 'madhukar', password: 'madhukarbeta', email: 'madhukar@reseller.local', balance: 998, createdKeys: 1, status: 'Active', panels: ['all'], totpSecret: 'Z5N73VUTBHFC7MJF', twofa_setup_done: true },
+  { id: '1790951896372', username: 'MADHUKARBETA', password: 'reseller4@123', email: 'madhukarsarkar004@gmail.com', balance: 260, createdKeys: 0, status: 'Active', panels: ['all'], totpSecret: 'JBSWY3DPEHPK3PXP', twofa_setup_done: true }
 ];
 
 const SEED_TRANSFERS = [
-  { id: 'TX-891042', from: 'HYPER X', to: 'AlphaDistro', amount: 250, note: 'Initial Owner Quota Allocation', time: '2026-10-01 10:15', timestamp: 1759313700000, status: 'Completed' },
-  { id: 'TX-740219', from: 'HYPER X', to: 'ViperKeys', amount: 50, note: 'Initial Owner Quota Allocation', time: '2026-10-01 11:30', timestamp: 1759318200000, status: 'Completed' },
-  { id: 'TX-612984', from: 'AlphaDistro', to: 'ViperKeys', amount: 20, note: 'Peer Credit Transfer', time: '2026-10-02 14:05', timestamp: 1759413900000, status: 'Completed' }
+  { id: 'TX-891042', from: 'HYPER X', to: 'beta123', amount: 999, note: 'Initial Quota Allocation', time: '2026-10-01 10:15', timestamp: 1759313700000, status: 'Completed' },
+  { id: 'TX-740219', from: 'HYPER X', to: 'madhukar', amount: 998, note: 'Initial Quota Allocation', time: '2026-10-01 11:30', timestamp: 1759318200000, status: 'Completed' },
+  { id: 'TX-612984', from: 'HYPER X', to: 'MADHUKARBETA', amount: 260, note: 'Initial Quota Allocation', time: '2026-10-02 14:05', timestamp: 1759413900000, status: 'Completed' }
 ];
 
 class AppState {
@@ -70,15 +68,34 @@ class AppState {
     } catch (e) {}
     this.logs = (Array.isArray(storedLogs) && storedLogs.length > 0) ? storedLogs : SEED_LOGS;
 
-    let storedResellers = JSON.parse(localStorage.getItem('tx99_resellers')) || [];
-    if (!Array.isArray(storedResellers) || storedResellers.length === 0) {
-      storedResellers = SEED_RESELLERS;
-    } else {
-      SEED_RESELLERS.forEach(seedR => {
-        if (!storedResellers.some(r => r.username.toLowerCase() === seedR.username.toLowerCase())) {
-          storedResellers.push(seedR);
-        }
-      });
+    let deletedIds = [];
+    try {
+      deletedIds = JSON.parse(localStorage.getItem('tx99_deleted_resellers')) || [];
+    } catch (_) {}
+    const bannedDummyNames = ['hyper x (root owner)', 'alphadistro', 'viperkeys'];
+
+    let hadDummyOrDeleted = false;
+    let storedResellers = null;
+    try {
+      const storedRaw = JSON.parse(localStorage.getItem('tx99_resellers'));
+      if (Array.isArray(storedRaw)) {
+        storedResellers = storedRaw.filter(r => {
+          if (!r || (!r.id && !r.username)) return false;
+          const u = (r.username || '').toLowerCase().trim();
+          const drop = bannedDummyNames.includes(u) || deletedIds.includes(r.id) || deletedIds.includes(u);
+          if (drop) hadDummyOrDeleted = true;
+          return !drop;
+        });
+      }
+    } catch (_) {}
+
+    if (!Array.isArray(storedResellers)) {
+      storedResellers = SEED_RESELLERS.filter(r => !deletedIds.includes(r.id) && !deletedIds.includes(r.username.toLowerCase()));
+      hadDummyOrDeleted = true;
+    }
+    localStorage.setItem('tx99_resellers', JSON.stringify(storedResellers));
+    if (hadDummyOrDeleted) {
+      setTimeout(() => syncCredentialsToServer({ tx99_resellers: storedResellers }), 500);
     }
     this.resellers = storedResellers.map((r, idx) => {
       if (!r.password) r.password = 'reseller' + (idx + 1) + '@123';
@@ -425,7 +442,7 @@ async function syncCredentialsToServer(updates = {}) {
 
     const payload = {
       hyperx_admin_user: adminUser,
-      tx99_resellers: updates.tx99_resellers || resellers
+      tx99_resellers: (updates.tx99_resellers !== undefined) ? updates.tx99_resellers : resellers
     };
     if (adminPass) payload.hyperx_admin_pass = adminPass;
 
@@ -1903,6 +1920,12 @@ function submitAddReseller(e) {
     twofa_setup_done: false
   };
 
+  try {
+    let deletedIds = JSON.parse(localStorage.getItem('tx99_deleted_resellers')) || [];
+    deletedIds = deletedIds.filter(x => x !== username.toLowerCase());
+    localStorage.setItem('tx99_deleted_resellers', JSON.stringify(deletedIds));
+  } catch (_) {}
+
   state.resellers.push(newReseller);
   state.save();
   syncCredentialsToServer({ tx99_resellers: state.resellers });
@@ -2035,13 +2058,30 @@ function deleteReseller(id) {
   const r = state.resellers.find(item => item.id === id);
   if (!r) return;
 
-  if (!confirm(`⚠️ PERMANENT ACTION:\nAre you sure you want to delete reseller "${r.username}"?`)) return;
+  if (!confirm(`⚠️ PERMANENT ACTION:\nAre you sure you want to permanently delete reseller "${r.username}"?`)) return;
 
-  state.resellers = state.resellers.filter(item => item.id !== id);
+  // 1. Add to permanent tombstone blacklist
+  let deletedIds = [];
+  try {
+    deletedIds = JSON.parse(localStorage.getItem('tx99_deleted_resellers')) || [];
+  } catch (_) {}
+  if (!deletedIds.includes(id)) deletedIds.push(id);
+  if (r.username) {
+    const uname = r.username.toLowerCase().trim();
+    if (!deletedIds.includes(uname)) deletedIds.push(uname);
+  }
+  localStorage.setItem('tx99_deleted_resellers', JSON.stringify(deletedIds));
+
+  // 2. Remove from state and save
+  state.resellers = state.resellers.filter(item => item.id !== id && (r.username ? item.username.toLowerCase().trim() !== r.username.toLowerCase().trim() : true));
   state.save();
+
+  // 3. Sync to server
   syncCredentialsToServer({ tx99_resellers: state.resellers });
+
+  // 4. Update UI
   renderResellersTable();
-  alert(`Reseller "${r.username}" has been removed.`);
+  alert(`✓ Reseller "${r.username}" has been permanently deleted.`);
 }
 
 // ==========================================================================

@@ -2356,21 +2356,16 @@
             localStorage.setItem('hyperx_admin_pass', serverData.hyperx_admin_pass);
             localAdminPass = serverData.hyperx_admin_pass;
           }
-          if (Array.isArray(serverData.tx99_resellers) && serverData.tx99_resellers.length > 0) {
-            const map = new Map();
-            storedResellers.forEach(r => {
-              if (r && (r.id || r.username)) {
-                const k = (r.username || r.id || '').toLowerCase();
-                if (k) map.set(k, r);
-              }
+          if (Array.isArray(serverData.tx99_resellers)) {
+            let deletedIds = [];
+            try { deletedIds = JSON.parse(localStorage.getItem('tx99_deleted_resellers')) || []; } catch(_) {}
+            const banned = ['hyper x (root owner)', 'alphadistro', 'viperkeys'];
+            storedResellers = serverData.tx99_resellers.filter(sr => {
+              if (!sr || (!sr.id && !sr.username)) return false;
+              const u = (sr.username || '').toLowerCase().trim();
+              if (banned.includes(u) || deletedIds.includes(sr.id) || deletedIds.includes(u)) return false;
+              return true;
             });
-            serverData.tx99_resellers.forEach(sr => {
-              if (sr && (sr.id || sr.username)) {
-                const k = (sr.username || sr.id || '').toLowerCase();
-                if (k) map.set(k, map.has(k) ? { ...map.get(k), ...sr } : sr);
-              }
-            });
-            storedResellers = Array.from(map.values());
             localStorage.setItem('tx99_resellers', JSON.stringify(storedResellers));
           }
         }
@@ -2378,20 +2373,30 @@
         // Fast background sync without delaying user
         fetch('/api/data', { cache: 'no-store' }).then(r => r.json()).then(sd => {
           if (sd && Array.isArray(sd.tx99_resellers)) {
-            localStorage.setItem('tx99_resellers', JSON.stringify(sd.tx99_resellers));
+            let deletedIds = [];
+            try { deletedIds = JSON.parse(localStorage.getItem('tx99_deleted_resellers')) || []; } catch(_) {}
+            const banned = ['hyper x (root owner)', 'alphadistro', 'viperkeys'];
+            const cleanList = sd.tx99_resellers.filter(sr => {
+              if (!sr || (!sr.id && !sr.username)) return false;
+              const u = (sr.username || '').toLowerCase().trim();
+              if (banned.includes(u) || deletedIds.includes(sr.id) || deletedIds.includes(u)) return false;
+              return true;
+            });
+            localStorage.setItem('tx99_resellers', JSON.stringify(cleanList));
           }
         }).catch(() => {});
       }
 
       // Offline seed fallback containing real accounts if still empty
       if (!storedResellers || !Array.isArray(storedResellers) || storedResellers.length === 0) {
-        storedResellers = [
+        let deletedIds = [];
+        try { deletedIds = JSON.parse(localStorage.getItem('tx99_deleted_resellers')) || []; } catch(_) {}
+        const defaultReal = [
           { id: '17909518904974', username: 'beta123', password: 'beta1230', email: 'beta123@gmail.com', balance: 999, createdKeys: 1, status: 'Active', panels: ['all'], totpSecret: 'YLOG2E3ANGTE4B23', twofa_setup_done: true },
-          { id: '1790951896372', username: 'MADHUKARBETA', password: 'reseller4@123', email: 'madhukarsarkar004@gmail.com', balance: 260, createdKeys: 0, status: 'Active', panels: ['all'], totpSecret: 'JBSWY3DPEHPK3PXP', twofa_setup_done: true },
-          { id: '1', username: 'HYPER X (Root Owner)', password: 'adminPassword123', email: 'admin@prtvshow.online', balance: 9922, createdKeys: 77, status: 'Active (Root)', panels: ['all'], totpSecret: 'JBSWY3DPEHPK3PXP', twofa_setup_done: true },
-          { id: '2', username: 'AlphaDistro', password: 'alphaPass@2026', email: 'alpha.dist@outlook.com', balance: 250, createdKeys: 88, status: 'Active', panels: ['BASIC PANEL', 'EXTERNAL PANEL', 'FPS BOOSTER'], totpSecret: 'KRUGKIDROVUWG2ZA', twofa_setup_done: true },
-          { id: '3', username: 'ViperKeys', password: 'viperKey#99', email: 'viper.resell@yahoo.com', balance: 50, createdKeys: 49, status: 'Active', panels: ['AIMSILENT EXE', 'UID BYPASS', 'VAULT PANEL'], totpSecret: 'MFRGGZDFMZTWQ2LK', twofa_setup_done: true }
+          { id: '1791108883957', username: 'madhukar', password: 'madhukarbeta', email: 'madhukar@reseller.local', balance: 998, createdKeys: 1, status: 'Active', panels: ['all'], totpSecret: 'Z5N73VUTBHFC7MJF', twofa_setup_done: true },
+          { id: '1790951896372', username: 'MADHUKARBETA', password: 'reseller4@123', email: 'madhukarsarkar004@gmail.com', balance: 260, createdKeys: 0, status: 'Active', panels: ['all'], totpSecret: 'JBSWY3DPEHPK3PXP', twofa_setup_done: true }
         ];
+        storedResellers = defaultReal.filter(r => !deletedIds.includes(r.id) && !deletedIds.includes(r.username.toLowerCase()));
         localStorage.setItem('tx99_resellers', JSON.stringify(storedResellers));
       }
 
@@ -3008,7 +3013,17 @@
               if (data) {
                 if (data.hyperx_admin_user) localStorage.setItem('hyperx_admin_user', data.hyperx_admin_user);
                 if (data.hyperx_admin_pass) localStorage.setItem('hyperx_admin_pass', data.hyperx_admin_pass);
-                if (Array.isArray(data.tx99_resellers)) localStorage.setItem('tx99_resellers', JSON.stringify(data.tx99_resellers));
+                if (Array.isArray(data.tx99_resellers)) {
+                  let deletedIds = [];
+                  try { deletedIds = JSON.parse(localStorage.getItem('tx99_deleted_resellers')) || []; } catch(_) {}
+                  const banned = ['hyper x (root owner)', 'alphadistro', 'viperkeys'];
+                  const clean = data.tx99_resellers.filter(sr => {
+                    if (!sr || (!sr.id && !sr.username)) return false;
+                    const u = (sr.username || '').toLowerCase().trim();
+                    return !banned.includes(u) && !deletedIds.includes(sr.id) && !deletedIds.includes(u);
+                  });
+                  localStorage.setItem('tx99_resellers', JSON.stringify(clean));
+                }
               }
             })
             .catch(() => {});
