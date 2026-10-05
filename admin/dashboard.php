@@ -307,13 +307,29 @@ $admin_user = $_SESSION['prtv_admin_user'] ?? 'HYPER X';
 
         <!-- VIEW 3: LOGS -->
         <section class="tab-view" id="view-logs">
-          <div class="cyber-data-table-wrap">
+          <div class="view-header-strip logs-view-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
+            <div class="logs-header-intro">
+              <h2 class="view-heading-title" style="font-size:16px;font-weight:800;color:#fff;margin-bottom:4px;">System Audit &amp; Activity Logs</h2>
+              <p class="view-sub-text" style="font-size:11.5px;color:#64748b;margin:0;">Real-time audit stream tracking all authentication requests and actions performed on your panel.</p>
+            </div>
+            <button class="btn-action-primary btn-export-logs-red" onclick="exportLogsToCsv()" style="background:rgba(239,68,68,0.18);border:1px solid rgba(239,68,68,0.5);color:#fff;font-weight:700;font-size:12px;padding:7px 14px;border-radius:7px;display:flex;align-items:center;gap:6px;cursor:pointer;">
+              <span>📩</span>
+              <span>Export Logs</span>
+            </button>
+          </div>
+
+          <div class="cyber-data-table-wrap logs-desktop-table-wrap">
             <table class="cyber-panel-table" style="font-size:12.5px;">
               <thead>
                 <tr><th style="width:120px;">ACTION</th><th>DETAIL</th><th style="width:140px;">IP ADDRESS</th><th style="width:100px;">TIME</th></tr>
               </thead>
               <tbody id="full-logs-tbody"></tbody>
             </table>
+          </div>
+
+          <!-- Mobile Logs Cards View for Phone -->
+          <div class="mobile-logs-cards-wrap" id="logs-mobile-list">
+            <!-- Dynamically populated by JS -->
           </div>
         </section>
 

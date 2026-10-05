@@ -2594,7 +2594,8 @@ html, body {
 
 /* Default Desktop: Hide mobile cards */
 .mobile-license-cards-wrap,
-.mobile-apps-cards-wrap {
+.mobile-apps-cards-wrap,
+.mobile-logs-cards-wrap {
   display: none;
 }
 
@@ -3632,6 +3633,198 @@ html, body {
     justify-content: center !important;
     align-self: center !important;
     flex-shrink: 0 !important;
+  }
+
+  /* ==========================================================================
+     MOBILE SYSTEM LOGS CARDS (Pixel-for-Pixel Reference from User Phone)
+     ========================================================================== */
+  #view-logs .cyber-panel-table,
+  #view-logs .cyber-data-table-wrap,
+  #view-logs .logs-desktop-table-wrap {
+    display: none !important;
+  }
+
+  .mobile-logs-cards-wrap {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  .mobile-log-card {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    background: #090c14 !important;
+    border: 1px solid rgba(239, 68, 68, 0.4) !important;
+    border-radius: 10px !important;
+    padding: 12px 14px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45) !important;
+    box-sizing: border-box !important;
+    transition: border-color 0.15s ease, background 0.15s ease !important;
+  }
+
+  .mobile-log-card:active {
+    background: #0f1522 !important;
+    border-color: rgba(239, 68, 68, 0.6) !important;
+  }
+
+  .mobile-log-top-row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+  }
+
+  .mobile-log-action-wrap {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    min-width: 0 !important;
+  }
+
+  .log-type-icon {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    line-height: 1 !important;
+    flex-shrink: 0 !important;
+  }
+
+  .log-type-icon.icon-success {
+    color: #10b981 !important;
+    filter: drop-shadow(0 0 5px rgba(16, 185, 129, 0.5)) !important;
+  }
+
+  .log-type-icon.icon-key {
+    color: #ef4444 !important;
+    filter: drop-shadow(0 0 5px rgba(239, 68, 68, 0.5)) !important;
+  }
+
+  .log-type-icon.icon-hwid {
+    color: #f59e0b !important;
+    filter: drop-shadow(0 0 5px rgba(245, 158, 11, 0.5)) !important;
+  }
+
+  .log-type-icon.icon-danger {
+    color: #ef4444 !important;
+    filter: drop-shadow(0 0 5px rgba(239, 68, 68, 0.5)) !important;
+  }
+
+  .log-type-icon.icon-neutral {
+    color: #94a3b8 !important;
+  }
+
+  .mobile-log-badge {
+    font-family: var(--font-mono) !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    padding: 3px 8px !important;
+    border-radius: 6px !important;
+    line-height: 1.2 !important;
+    white-space: nowrap !important;
+  }
+
+  .mobile-log-badge.badge-auth-success {
+    background: rgba(16, 185, 129, 0.12) !important;
+    border: 1px solid rgba(16, 185, 129, 0.35) !important;
+    color: #10b981 !important;
+  }
+
+  .mobile-log-badge.badge-key-gen {
+    background: rgba(239, 68, 68, 0.12) !important;
+    border: 1px solid rgba(239, 68, 68, 0.35) !important;
+    color: #ef4444 !important;
+  }
+
+  .mobile-log-badge.badge-hwid-reset {
+    background: rgba(245, 158, 11, 0.12) !important;
+    border: 1px solid rgba(245, 158, 11, 0.35) !important;
+    color: #f59e0b !important;
+  }
+
+  .mobile-log-badge.badge-auth-fail {
+    background: rgba(239, 68, 68, 0.12) !important;
+    border: 1px solid rgba(239, 68, 68, 0.35) !important;
+    color: #ef4444 !important;
+  }
+
+  .mobile-log-badge.badge-neutral {
+    background: rgba(148, 163, 184, 0.12) !important;
+    border: 1px solid rgba(148, 163, 184, 0.25) !important;
+    color: #cbd5e1 !important;
+  }
+
+  .mobile-log-time-wrap {
+    display: flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    font-size: 11px !important;
+    color: #8e95aa !important;
+    font-weight: 500 !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+
+  .log-clock-svg {
+    color: #64748b !important;
+    flex-shrink: 0 !important;
+  }
+
+  .mobile-log-bot-row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+  }
+
+  .mobile-log-detail-wrap {
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+    flex: 1 !important;
+    min-width: 0 !important;
+  }
+
+  .log-doc-svg {
+    color: #8e95aa !important;
+    flex-shrink: 0 !important;
+    margin-top: 1px !important;
+  }
+
+  .mobile-log-detail-text {
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    color: #cbd5e1 !important;
+    line-height: 1.35 !important;
+    word-break: break-word !important;
+  }
+
+  .mobile-log-copy-btn {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 6px !important;
+    color: #8e95aa !important;
+    width: 28px !important;
+    height: 28px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    flex-shrink: 0 !important;
+    transition: all 0.15s ease !important;
+  }
+
+  .mobile-log-copy-btn:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+  }
+
+  .mobile-log-copy-btn:active {
+    background: rgba(239, 68, 68, 0.2) !important;
+    color: #ef4444 !important;
+    border-color: rgba(239, 68, 68, 0.4) !important;
   }
 }
 

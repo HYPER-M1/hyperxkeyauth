@@ -32,14 +32,14 @@ const SEED_LICENSES = [
 ];
 
 const SEED_LOGS = [
-  { id: '1', action: 'auth_success', detail: 'Key authenticated for app: Custom work (BASIC PANEL)', time: '2s ago', ip: '45.118.67.22' },
-  { id: '2', action: 'key_gen', detail: 'License key created: HPERX-8F92-41AC-90B2-110A (30 Days)', time: '14s ago', ip: '127.0.0.1' },
-  { id: '3', action: 'auth_fail', detail: 'HWID mismatch detected: Device unverified', time: '45s ago', ip: '89.144.12.5' },
-  { id: '4', action: 'hwid_reset', detail: 'HWID reset executed for HPERX-32KA-991L-M08P-4491', time: '1m ago', ip: '127.0.0.1' },
-  { id: '5', action: 'credit_transfer', detail: 'Transfer 999 credits from HYPER X to beta123', time: '3m ago', ip: '127.0.0.1' },
-  { id: '6', action: 'auth_success', detail: 'Client handshake v1.0.0 verified successfully', time: '5m ago', ip: '194.26.29.13' },
-  { id: '7', action: 'auth_fail', detail: 'Invalid license key attempt: HPERX-UNKNOWN-XXXX', time: '8m ago', ip: '182.73.19.144' },
-  { id: '8', action: 'key_ban', detail: 'Key banned by Admin: Memory hook tamper detected', time: '12m ago', ip: '127.0.0.1' }
+  { id: '1', action: 'auth_success', detail: 'Key authenticated for app: Custom work (FPS BOOST)', time: '2 minutes ago', ip: '45.118.67.22' },
+  { id: '2', action: 'auth_success', detail: 'Key authenticated for app: Custom work (FPS BOOST)', time: '5 minutes ago', ip: '45.118.67.22' },
+  { id: '3', action: 'key_gen', detail: 'Generated 1 key(s) for BASIC PANEL (1 Days) by test2_Client', time: '12 minutes ago', ip: '127.0.0.1' },
+  { id: '4', action: 'auth_success', detail: 'Key authenticated for app: Custom work (BASIC PANEL)', time: '18 minutes ago', ip: '45.118.67.22' },
+  { id: '5', action: 'key_gen', detail: 'License key created: HPERX-8F92-41AC-90B2-110A', time: '28 minutes ago', ip: '127.0.0.1' },
+  { id: '6', action: 'hwid_reset', detail: 'HWID reset executed for HPERX-32KA-991L-M08P', time: '41 minutes ago', ip: '127.0.0.1' },
+  { id: '7', action: 'auth_success', detail: 'Client handshake v1.0.0 verified successfully', time: '1 hour ago', ip: '194.26.29.13' },
+  { id: '8', action: 'auth_fail', detail: 'HWID mismatch detected: Device unverified', time: '2 hours ago', ip: '89.144.12.5' }
 ];
 
 const SEED_RESELLERS = [
@@ -1914,19 +1914,110 @@ function setChartPeriod(period) {
   }
 }
 
+function getLogActionVisual(action) {
+  const a = (action || '').toLowerCase();
+  if (a.includes('success') || a.includes('verified') || a.includes('handshake') || a.includes('login') || a.includes('active') || a.includes('unban')) {
+    return {
+      type: 'success',
+      badgeClass: 'badge-auth-success',
+      iconHtml: `<span class="log-type-icon icon-success"><svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg></span>`
+    };
+  } else if (a.includes('gen') || a.includes('create') || a.includes('key')) {
+    return {
+      type: 'key',
+      badgeClass: 'badge-key-gen',
+      iconHtml: `<span class="log-type-icon icon-key"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M7 14c-2.76 0-5-2.24-5-5s2.24-5 5-5c2.42 0 4.44 1.72 4.9 4H22v4h-2v2h-2v-2h-2v2h-2v-2h-2.1c-.46 2.28-2.48 4-4.9 4zm0-8C5.34 6 4 7.34 4 9s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg></span>`
+    };
+  } else if (a.includes('hwid') || a.includes('reset')) {
+    return {
+      type: 'hwid',
+      badgeClass: 'badge-hwid-reset',
+      iconHtml: `<span class="log-type-icon icon-hwid"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46A7.93 7.93 0 0020 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74A7.93 7.93 0 004 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg></span>`
+    };
+  } else if (a.includes('fail') || a.includes('ban') || a.includes('tamper') || a.includes('mismatch') || a.includes('delete')) {
+    return {
+      type: 'danger',
+      badgeClass: 'badge-auth-fail',
+      iconHtml: `<span class="log-type-icon icon-danger"><svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg></span>`
+    };
+  }
+  return {
+    type: 'neutral',
+    badgeClass: 'badge-neutral',
+    iconHtml: `<span class="log-type-icon icon-neutral"><svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><circle cx="10" cy="10" r="8"/></svg></span>`
+  };
+}
+
+function copyLogItem(str, btn) {
+  copyText(str);
+  if (btn) {
+    const orig = btn.innerHTML;
+    btn.innerHTML = `<svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14" style="color:#10b981;"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>`;
+    setTimeout(() => {
+      btn.innerHTML = orig;
+    }, 1200);
+  }
+}
+
 function renderFullLogsTable() {
   const tbody = document.getElementById('full-logs-tbody');
-  if (!tbody) return;
-
   const logs = getFilteredLogsForCurrentSession();
-  tbody.innerHTML = logs.map(log => `
-    <tr>
-      <td style="white-space:nowrap;">${formatLogBadge(log.action)}</td>
-      <td style="color:#fff;font-weight:500;">${log.detail}</td>
-      <td class="col-log-ip col-mobile-hide" style="font-family:var(--font-mono);color:#06b6d4;font-size:11.5px;white-space:nowrap;">${log.ip || '127.0.0.1'}</td>
-      <td style="font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);white-space:nowrap;">${log.time}</td>
-    </tr>
-  `).join('');
+
+  // 1. Desktop Table Render
+  if (tbody) {
+    tbody.innerHTML = logs.map(log => `
+      <tr>
+        <td style="white-space:nowrap;">${formatLogBadge(log.action)}</td>
+        <td style="color:#fff;font-weight:500;">${log.detail}</td>
+        <td class="col-log-ip col-mobile-hide" style="font-family:var(--font-mono);color:#06b6d4;font-size:11.5px;white-space:nowrap;">${log.ip || '127.0.0.1'}</td>
+        <td style="font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);white-space:nowrap;">${log.time}</td>
+      </tr>
+    `).join('');
+  }
+
+  // 2. Mobile Cards Render (Pixel-for-Pixel reference media_1791202036862.png)
+  const mobileList = document.getElementById('logs-mobile-list');
+  if (mobileList) {
+    mobileList.innerHTML = logs.map(log => {
+      const vis = getLogActionVisual(log.action);
+      const safeDetail = (log.detail || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+      return `
+        <div class="mobile-log-card">
+          <div class="mobile-log-top-row">
+            <div class="mobile-log-action-wrap">
+              ${vis.iconHtml}
+              <span class="mobile-log-badge ${vis.badgeClass}">${log.action}</span>
+            </div>
+            <div class="mobile-log-time-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13" class="log-clock-svg">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <span>${log.time}</span>
+            </div>
+          </div>
+          <div class="mobile-log-bot-row">
+            <div class="mobile-log-detail-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="15" height="15" class="log-doc-svg">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
+              <span class="mobile-log-detail-text">${log.detail}</span>
+            </div>
+            <button type="button" class="mobile-log-copy-btn" onclick="copyLogItem('${safeDetail}', this)" title="Copy log detail">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
 }
 
 function exportLogsToCsv() {
