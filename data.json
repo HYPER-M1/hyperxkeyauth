@@ -18,21 +18,6 @@
       "twofa_setup_done": true
     },
     {
-      "id": "1791201547205",
-      "username": "1",
-      "password": "1234",
-      "email": "1@reseller.local",
-      "balance": 100,
-      "totalQuota": 100,
-      "createdKeys": 0,
-      "status": "Active",
-      "panels": [
-        "all"
-      ],
-      "totpSecret": "Q5UHSPLEHD7Z27QM",
-      "twofa_setup_done": true
-    },
-    {
       "id": "1791275530807",
       "username": "test3",
       "password": "test123",
