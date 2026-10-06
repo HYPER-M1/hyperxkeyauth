@@ -16,6 +16,20 @@
       ],
       "totpSecret": "Z5N73VUTBHFC7MJF",
       "twofa_setup_done": true
+    },
+    {
+      "id": "1791295247097",
+      "username": "Mrindia",
+      "password": "Mrindia1",
+      "email": "mrindia@reseller.local",
+      "balance": 999,
+      "createdKeys": 0,
+      "status": "Active",
+      "panels": [
+        "all"
+      ],
+      "totpSecret": "DBMW7BYRMYHAPRQS",
+      "twofa_setup_done": false
     }
   ],
   "tx99_licenses": [
