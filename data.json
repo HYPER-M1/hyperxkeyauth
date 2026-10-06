@@ -73,7 +73,7 @@
         "all"
       ],
       "totpSecret": "OIAHUC7FIG6KWMRJ",
-      "twofa_setup_done": false
+      "twofa_setup_done": true
     }
   ],
   "tx99_licenses": [
