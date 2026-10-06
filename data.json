@@ -52,8 +52,8 @@
       "username": "test3",
       "password": "test123",
       "email": "test3@reseller.local",
-      "balance": 100,
-      "createdKeys": 0,
+      "balance": 99,
+      "createdKeys": 1,
       "status": "Active",
       "panels": [
         "LIB BYPASS"
