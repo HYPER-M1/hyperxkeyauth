@@ -59,7 +59,7 @@
         "LIB BYPASS"
       ],
       "totpSecret": "4OQ7QBI7V6CYAJRU",
-      "twofa_setup_done": false
+      "twofa_setup_done": true
     }
   ],
   "tx99_licenses": [
