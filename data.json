@@ -46,6 +46,20 @@
       ],
       "totpSecret": "Q5UHSPLEHD7Z27QM",
       "twofa_setup_done": true
+    },
+    {
+      "id": "1791275530807",
+      "username": "test3",
+      "password": "test123",
+      "email": "test3@reseller.local",
+      "balance": 100,
+      "createdKeys": 0,
+      "status": "Active",
+      "panels": [
+        "LIB BYPASS"
+      ],
+      "totpSecret": "4OQ7QBI7V6CYAJRU",
+      "twofa_setup_done": false
     }
   ],
   "tx99_licenses": [
