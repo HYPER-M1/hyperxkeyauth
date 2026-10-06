@@ -22,8 +22,8 @@
       "username": "Mrindia",
       "password": "Mrindia1",
       "email": "mrindia@reseller.local",
-      "balance": 999,
-      "createdKeys": 0,
+      "balance": 998,
+      "createdKeys": 1,
       "status": "Active",
       "panels": [
         "all"
