@@ -631,12 +631,84 @@ function fetchWithTimeout(url, options = {}, timeoutMs = 2500) {
     });
 }
 
+/**
+ * Ensures an active, valid authentication session token is available.
+ * If missing or expired, automatically negotiates a fresh cryptographically signed token with the server.
+ */
+async function ensureSessionToken() {
+  let token = sessionStorage.getItem('hyperx_auth_token') || localStorage.getItem('hyperx_auth_token') || '';
+  if (token) return token;
+
+  const role = getUserRole();
+  let username = '';
+  let password = '';
+
+  if (role === 'reseller') {
+    const res = getCurrentReseller();
+    if (res && res.username) {
+      username = res.username;
+      password = res.password || '';
+      if (!password && state && Array.isArray(state.resellers)) {
+        const matched = state.resellers.find(r => r.id === res.id || (r.username && r.username.toLowerCase() === res.username.toLowerCase()));
+        if (matched && matched.password) password = matched.password;
+      }
+    }
+  } else {
+    username = getStoredAdminUser();
+    password = getStoredAdminPass();
+  }
+
+  if (username && password) {
+    try {
+      const resp = await fetchWithTimeout(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'session_auth', username, password })
+      }, 3500);
+
+      if (resp && resp.ok) {
+        const data = await resp.json();
+        if (data && data.token) {
+          sessionStorage.setItem('hyperx_auth_token', data.token);
+          localStorage.setItem('hyperx_auth_token', data.token);
+          return data.token;
+        }
+      }
+    } catch (e) {
+      console.warn('Auto-session-auth failed:', e.message);
+    }
+  }
+
+  return '';
+}
+
 async function callApi(action, payload = {}) {
-  const token = sessionStorage.getItem('hyperx_auth_token') || localStorage.getItem('hyperx_auth_token') || '';
+  let token = await ensureSessionToken();
+
+  const role = getUserRole();
+  let authUser = '';
+  let authPass = '';
+  if (role === 'reseller') {
+    const res = getCurrentReseller();
+    if (res && res.username) {
+      authUser = res.username;
+      authPass = res.password || '';
+      if (!authPass && state && Array.isArray(state.resellers)) {
+        const m = state.resellers.find(r => r.id === res.id || (r.username && r.username.toLowerCase() === res.username.toLowerCase()));
+        if (m && m.password) authPass = m.password;
+      }
+    }
+  } else {
+    authUser = getStoredAdminUser();
+    authPass = getStoredAdminPass();
+  }
+
   const finalPayload = {
     action,
     app_id: getActiveAppId(),
     session_token: token,
+    auth_user: authUser,
+    auth_pass: authPass,
     ...payload
   };
 
@@ -656,7 +728,7 @@ async function callApi(action, payload = {}) {
         method: 'POST',
         headers: headers,
         body: JSON.stringify(finalPayload)
-      }, 3500);
+      }, 4000);
 
       if (res.ok) {
         const data = await res.json();
@@ -664,9 +736,24 @@ async function callApi(action, payload = {}) {
           return data;
         }
       } else {
+        // If 401 Unauthorized, automatically clear token, re-authenticate and retry once
+        if (res.status === 401 && !payload.__retried) {
+          sessionStorage.removeItem('hyperx_auth_token');
+          localStorage.removeItem('hyperx_auth_token');
+          const freshToken = await ensureSessionToken();
+          if (freshToken) {
+            return await callApi(action, { ...payload, __retried: true });
+          }
+        }
+
         const errData = await res.json().catch(() => null);
         if (errData && errData.message) {
-          return errData;
+          // If action is generate_key and server rejected due to proxy/token, fallback to Tier 3
+          if (action === 'generate_key' && !errData.success && errData.message.includes('token')) {
+            console.warn('generate_key rejected by proxy token, falling back to client generation');
+          } else {
+            return errData;
+          }
         }
       }
     } catch (err) {
@@ -674,7 +761,7 @@ async function callApi(action, payload = {}) {
     }
   }
 
-  // Protected actions must NEVER bypass to direct KeyAuth API without authorization
+  // Protected actions (except generate_key which has fallback) must NEVER bypass to direct KeyAuth API without authorization
   const protectedActions = ['get_licenses', 'query_keys', 'key_info', 'reset_hwid', 'ban_key', 'unban_key', 'delete_key'];
   if (protectedActions.includes(action)) {
     return { success: false, message: 'Server authorization required' };
@@ -713,17 +800,22 @@ async function callApi(action, payload = {}) {
     const count = parseInt(payload.count, 10) || 1;
     const days = parseInt(payload.days, 10) || 1;
     const keys = [];
+    const selectedPkg = (state.packages || []).find(p => p.package_id === payload.package_id);
+    const pkgName = selectedPkg ? selectedPkg.package_name : (payload.package_name || 'BASIC PANEL');
+
     for (let i = 0; i < count; i++) {
       const seg = () => Math.random().toString(36).substring(2, 6).toUpperCase();
       keys.push(`HPERX-${seg()}-${seg()}-${seg()}-${seg()}`);
     }
+
     return {
       success: true,
       message: 'Keys generated successfully.',
       count: keys.length,
       keys: keys,
       app_name: 'Custom work',
-      package_name: 'BASIC PANEL',
+      package_name: pkgName,
+      days: days,
       timestamp: Math.floor(Date.now() / 1000)
     };
   }

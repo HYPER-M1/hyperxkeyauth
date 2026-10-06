@@ -2367,23 +2367,24 @@
         localStorage.setItem('hyperx_user_role', 'admin');
         localStorage.removeItem('hyperx_current_reseller');
 
-        // Request server-signed session token
+        // Request and await server-signed session token
         try {
-          fetch('/api', {
+          const apiEndpoint = window.location.pathname.includes('/admin/') ? 'api.php' : '/api';
+          const authResp = await fetch(apiEndpoint, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ action: 'session_auth', username: enteredUser, password: enteredPass })
-          }).then(r => r.json()).then(authRes => {
+          });
+          if (authResp.ok) {
+            const authRes = await authResp.json();
             if (authRes && authRes.token) {
               sessionStorage.setItem('hyperx_auth_token', authRes.token);
               localStorage.setItem('hyperx_auth_token', authRes.token);
             }
-          }).catch(() => {});
+          }
         } catch (_) {}
 
-        setTimeout(() => {
-          window.location.href = 'dashboard.html';
-        }, 120);
+        window.location.href = 'dashboard.html';
         return;
       }
 
@@ -2749,18 +2750,21 @@
       localStorage.setItem('hyperx_user_role', 'reseller');
       localStorage.setItem('hyperx_current_reseller', JSON.stringify(pendingResellerAuth.reseller));
 
-      // Request server-signed session token for reseller
+      // Request and await server-signed session token for reseller
       try {
-        fetch('/api', {
+        const apiEndpoint = window.location.pathname.includes('/admin/') ? 'api.php' : '/api';
+        const authResp = await fetch(apiEndpoint, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ action: 'session_auth', username: pendingResellerAuth.reseller.username, password: pendingResellerAuth.enteredPass })
-        }).then(r => r.json()).then(authRes => {
+        });
+        if (authResp.ok) {
+          const authRes = await authResp.json();
           if (authRes && authRes.token) {
             sessionStorage.setItem('hyperx_auth_token', authRes.token);
             localStorage.setItem('hyperx_auth_token', authRes.token);
           }
-        }).catch(() => {});
+        }
       } catch (_) {}
 
       // Persist twofa_setup_done to server so other phones skip QR setup
