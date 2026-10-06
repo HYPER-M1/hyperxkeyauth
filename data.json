@@ -18,20 +18,6 @@
       "twofa_setup_done": true
     },
     {
-      "id": "1791275530807",
-      "username": "test3",
-      "password": "test123",
-      "email": "test3@reseller.local",
-      "balance": 99,
-      "createdKeys": 1,
-      "status": "Active",
-      "panels": [
-        "LIB BYPASS"
-      ],
-      "totpSecret": "4OQ7QBI7V6CYAJRU",
-      "twofa_setup_done": true
-    },
-    {
       "id": "1791294257905",
       "username": "test4",
       "password": "test123",
