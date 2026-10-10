@@ -22,14 +22,15 @@
       "username": "Mrindia",
       "password": "Mrindia1",
       "email": "mrindia@reseller.local",
-      "balance": 995,
+      "balance": 100,
       "createdKeys": 4,
       "status": "Active",
       "panels": [
         "all"
       ],
       "totpSecret": "DBMW7BYRMYHAPRQS",
-      "twofa_setup_done": true
+      "twofa_setup_done": true,
+      "totalQuota": 104
     }
   ],
   "tx99_licenses": [
