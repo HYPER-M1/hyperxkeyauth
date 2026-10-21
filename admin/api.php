@@ -328,7 +328,7 @@ if (in_array($action, $protectedActions, true)) {
                 for ($j = 0; $j < 5; $j++) {
                     $s .= $chars[random_int(0, $max)];
                 }
-                $generatedKeys[] = "HM-{$s}";
+                $generatedKeys[] = "HX-{$s}";
             } else {
                 $seg = function() { return strtoupper(bin2hex(random_bytes(2))); };
                 $generatedKeys[] = "HPERX-{$seg()}-{$seg()}-{$seg()}-{$seg()}";

@@ -76,8 +76,8 @@ function sendResponse($code, $payload) {
     exit;
 }
 
-function generateMobileKey($prefix = 'HM') {
-    // Generates short mobile key strictly under 10 characters (e.g. HM-98214 -> 8 chars)
+function generateMobileKey($prefix = 'HX') {
+    // Generates short mobile key strictly under 10 characters (e.g. HX-98214 -> 8 chars)
     $chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
     $s = '';
     $max = strlen($chars) - 1;
@@ -378,7 +378,7 @@ if (in_array($action, ['create_key', 'generate_key'])) {
     if (!isset($data['licenses'])) $data['licenses'] = [];
 
     for ($i = 0; $i < $count; $i++) {
-        $k = generateMobileKey($payload['prefix'] ?? 'HM');
+        $k = generateMobileKey($payload['prefix'] ?? 'HX');
         $item = [
             'id' => 'lic_phone_' . time() . '_' . $i,
             'key' => $k,

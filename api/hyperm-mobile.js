@@ -103,8 +103,8 @@ function getClientIP(req) {
   ).split(',')[0].trim();
 }
 
-// Helper: Short Mobile Key Generator (strictly under 10 characters, e.g. HM-98214 -> 8 chars)
-function generateRandomKey(prefix = 'HM') {
+// Helper: Short Mobile Key Generator (strictly under 10 characters, e.g. HX-98214 -> 8 chars)
+function generateRandomKey(prefix = 'HX') {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   const bytes = crypto.randomBytes(5);
   let chunk = '';
@@ -575,7 +575,7 @@ module.exports = async function hypermMobileHandler(req, res) {
     if (!data.licenses) data.licenses = [];
 
     for (let i = 0; i < count; i++) {
-      const newKey = generateRandomKey(payload.prefix || 'HM');
+      const newKey = generateRandomKey(payload.prefix || 'HX');
       const record = {
         id: `lic_phone_${Date.now()}_${i}`,
         key: newKey,

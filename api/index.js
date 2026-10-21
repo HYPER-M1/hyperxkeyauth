@@ -690,43 +690,47 @@ module.exports = async (req, res) => {
     let appName = 'Custom work';
     let pkgName = body.package_name || (body.package_id === 'phone_panel_001' ? 'PHONE PANEL' : 'BASIC PANEL');
 
-    // Try remote generation
-    if (body.package_id !== 'phone_panel_001') {
-    try {
-      const payload = {
-        api_key: REMOTE_API_KEY,
-        app_id: appId,
-        action: 'generate_key',
-        package_id: body.package_id,
-        days: days,
-        count: count
-      };
-      const remoteRes = await proxyToRemote(payload);
-      if (remoteRes.data && remoteRes.data.success && Array.isArray(remoteRes.data.keys)) {
-        generatedKeys = remoteRes.data.keys;
-        if (remoteRes.data.app_name) appName = remoteRes.data.app_name;
-        if (remoteRes.data.package_name) pkgName = remoteRes.data.package_name;
-      }
-    } catch (_) {}
-    }
+    const isPhonePanel = (
+      body.package_id === 'phone_panel_001' ||
+      body.package_id === 'phone_panel' ||
+      (pkgName && pkgName.toUpperCase().includes('PHONE')) ||
+      (body.package_name && body.package_name.toUpperCase().includes('PHONE'))
+    );
 
-    // Fallback generation if remote unavailable
-    const isPhonePanel = (body.package_id === 'phone_panel_001' || pkgName === 'PHONE PANEL');
     if (isPhonePanel) {
       appName = 'HYPERM SHOP';
       pkgName = 'PHONE PANEL VIP';
-    }
-
-    if (generatedKeys.length === 0) {
+      generatedKeys = [];
       const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
       for (let i = 0; i < count; i++) {
-        if (isPhonePanel) {
-          // Short mobile key strictly under 10 characters (8 chars: HM-XXXXX)
-          let s = '';
-          const bytes = crypto.randomBytes(5);
-          for (let b = 0; b < 5; b++) { s += chars[bytes[b] % chars.length]; }
-          generatedKeys.push(`HM-${s}`);
-        } else {
+        // Short mobile key strictly under 10 characters (8 chars: HX-XXXXX)
+        let s = '';
+        const bytes = crypto.randomBytes(5);
+        for (let b = 0; b < 5; b++) { s += chars[bytes[b] % chars.length]; }
+        generatedKeys.push(`HX-${s}`);
+      }
+    } else {
+      // Try remote generation for PC/standard packages
+      try {
+        const payload = {
+          api_key: REMOTE_API_KEY,
+          app_id: appId,
+          action: 'generate_key',
+          package_id: body.package_id,
+          days: days,
+          count: count
+        };
+        const remoteRes = await proxyToRemote(payload);
+        if (remoteRes.data && remoteRes.data.success && Array.isArray(remoteRes.data.keys)) {
+          generatedKeys = remoteRes.data.keys;
+          if (remoteRes.data.app_name) appName = remoteRes.data.app_name;
+          if (remoteRes.data.package_name) pkgName = remoteRes.data.package_name;
+        }
+      } catch (_) {}
+
+      // Fallback generation if remote unavailable
+      if (generatedKeys.length === 0) {
+        for (let i = 0; i < count; i++) {
           const seg = () => Math.random().toString(36).substring(2, 6).toUpperCase();
           generatedKeys.push(`HPERX-${seg()}-${seg()}-${seg()}-${seg()}`);
         }
