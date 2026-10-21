@@ -711,10 +711,60 @@ module.exports = async (req, res) => {
     }
 
     // Fallback generation if remote unavailable
+    const isPhonePanel = (body.package_id === 'phone_panel_001' || pkgName === 'PHONE PANEL');
+    if (isPhonePanel) {
+      appName = 'HYPERM SHOP';
+      pkgName = 'PHONE PANEL VIP';
+    }
+
     if (generatedKeys.length === 0) {
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
       for (let i = 0; i < count; i++) {
-        const seg = () => Math.random().toString(36).substring(2, 6).toUpperCase();
-        generatedKeys.push(`HPERX-${seg()}-${seg()}-${seg()}-${seg()}`);
+        if (isPhonePanel) {
+          // Short mobile key strictly under 10 characters (8 chars: HM-XXXXX)
+          let s = '';
+          const bytes = crypto.randomBytes(5);
+          for (let b = 0; b < 5; b++) { s += chars[bytes[b] % chars.length]; }
+          generatedKeys.push(`HM-${s}`);
+        } else {
+          const seg = () => Math.random().toString(36).substring(2, 6).toUpperCase();
+          generatedKeys.push(`HPERX-${seg()}-${seg()}-${seg()}-${seg()}`);
+        }
+      }
+    }
+
+    // Sync to dedicated hyperm-mobile-data.json if PHONE PANEL
+    if (isPhonePanel) {
+      try {
+        const mobDataPath = path.join(process.cwd(), 'hyperm-mobile-data.json');
+        if (fs.existsSync(mobDataPath)) {
+          const mData = JSON.parse(fs.readFileSync(mobDataPath, 'utf8'));
+          if (!mData.licenses) mData.licenses = [];
+          const nowIso = new Date().toISOString();
+          const expIso = days === 0 
+            ? new Date(Date.now() + 315360000000).toISOString()
+            : new Date(Date.now() + days * 86400000).toISOString();
+          const cleanUser = (body.user || 'Client').trim();
+          generatedKeys.forEach((kStr, idx) => {
+            mData.licenses.unshift({
+              id: `lic_phone_${Date.now()}_${idx}`,
+              key: kStr,
+              package: 'PHONE PANEL VIP',
+              created_by: authUser.username || 'HYPERM_SHOP_ADMIN',
+              client_name: count > 1 ? `${cleanUser}_${idx + 1}` : cleanUser,
+              hwid: 'UNBOUND',
+              created_at: nowIso,
+              expires_at: expIso,
+              status: 'active',
+              device_info: null,
+              ip_address: null,
+              note: `Generated from Dashboard (${days === 0 ? 'Lifetime' : days + ' Days'})`
+            });
+          });
+          fs.writeFileSync(mobDataPath, JSON.stringify(mData, null, 2), 'utf8');
+        }
+      } catch (err) {
+        console.error('Error syncing phone panel key to hyperm-mobile-data.json:', err.message);
       }
     }
 

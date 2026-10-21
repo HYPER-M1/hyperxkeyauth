@@ -19,12 +19,12 @@ const DEFAULT_PACKAGES = [
   { package_id: '154d1edaddd7203fbfd847f4', package_name: 'VAULT PANEL', app_name: 'Custom work' },
   { package_id: 'db3b90e8134ec738b94a9b05', package_name: 'LIB BYPASS', app_name: 'Custom work' },
   { package_id: '2411bc9db9f9a66c6e876ad2', package_name: 'FPS BOOSTER', app_name: 'Custom work' },
-  { package_id: 'phone_panel_001', package_name: 'PHONE PANEL', app_name: 'Custom work' }
+  { package_id: 'phone_panel_001', package_name: 'PHONE PANEL', app_name: 'HYPERM SHOP' }
 ];
 
 // Seed Licenses History (Saved in localStorage so generated keys persist)
 const SEED_LICENSES = [
-  { id: '8', key: 'HPERX-PHON-9901-ANDR-7721', app: 'Custom work', pkg: 'PHONE PANEL', user: 'Mobile_VIP', hwid: 'Not Bound', expiry: '30 Days', status: 'active', note: 'Created for Phone Panel', resellerId: 'owner' },
+  { id: '8', key: 'HM-VIP30', app: 'HYPERM SHOP', pkg: 'PHONE PANEL', user: 'Mobile_VIP', hwid: 'Not Bound', expiry: '30 Days', status: 'active', note: 'Created for Phone Panel (Short 8-char key)', resellerId: 'owner' },
   { id: '1', key: 'HPERX-8F92-41AC-90B2-110A', app: 'Custom work', pkg: 'BASIC PANEL', user: 'beta123_User', hwid: '4A8F-912C-00B4-E9D1', expiry: '2026-12-31', status: 'active', note: 'Created by beta123', resellerId: '17909518904974' },
   { id: '2', key: 'HPERX-32KA-991L-M08P-4491', app: 'Custom work', pkg: 'EXTERNAL PANEL', user: 'madhukar_User', hwid: '88CF-1102-BA54-77E0', expiry: '2026-10-15', status: 'active', note: 'Created by madhukar', resellerId: '1791108883957' },
   { id: '7', key: 'HPERX-44T1-8822-BB11-0099', app: 'Custom work', pkg: 'BASIC PANEL', user: 'test1_Client', hwid: 'Not Bound', expiry: '30 Days', status: 'active', note: 'Created by test1', resellerId: '1791196941383' },
@@ -803,11 +803,21 @@ async function callApi(action, payload = {}) {
     const days = parseInt(payload.days, 10) || 1;
     const keys = [];
     const selectedPkg = (state.packages || []).find(p => p.package_id === payload.package_id);
-    const pkgName = selectedPkg ? selectedPkg.package_name : (payload.package_name || 'BASIC PANEL');
+    const isPhone = (payload.package_id === 'phone_panel_001' || pkgName === 'PHONE PANEL');
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 
     for (let i = 0; i < count; i++) {
-      const seg = () => Math.random().toString(36).substring(2, 6).toUpperCase();
-      keys.push(`HPERX-${seg()}-${seg()}-${seg()}-${seg()}`);
+      if (isPhone) {
+        // Short mobile key strictly under 10 characters (8 chars: HM-XXXXX)
+        let s = '';
+        for (let j = 0; j < 5; j++) {
+          s += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        keys.push(`HM-${s}`);
+      } else {
+        const seg = () => Math.random().toString(36).substring(2, 6).toUpperCase();
+        keys.push(`HPERX-${seg()}-${seg()}-${seg()}-${seg()}`);
+      }
     }
 
     return {
@@ -815,8 +825,8 @@ async function callApi(action, payload = {}) {
       message: 'Keys generated successfully.',
       count: keys.length,
       keys: keys,
-      app_name: 'Custom work',
-      package_name: pkgName,
+      app_name: isPhone ? 'HYPERM SHOP' : 'Custom work',
+      package_name: isPhone ? 'PHONE PANEL VIP' : pkgName,
       days: days,
       timestamp: Math.floor(Date.now() / 1000)
     };
@@ -831,7 +841,7 @@ async function loadAdminPackages() {
   if (data && data.success && Array.isArray(data.packages) && data.packages.length > 0) {
     state.packages = data.packages;
     if (!state.packages.some(p => p.package_name === 'PHONE PANEL' || p.package_id === 'phone_panel_001')) {
-      state.packages.push({ package_id: 'phone_panel_001', package_name: 'PHONE PANEL', app_name: 'Custom work' });
+      state.packages.push({ package_id: 'phone_panel_001', package_name: 'PHONE PANEL', app_name: 'HYPERM SHOP' });
     }
     const appName = data.packages[0].app_name || 'Custom work';
     const appLabel = document.getElementById('active-app-name-label');
@@ -1504,13 +1514,48 @@ async function submitGenerateKeys(e) {
   const selectedPkg = allPkgs.find(p => p.package_id === pkgId);
   const pkgName = selectedPkg ? selectedPkg.package_name : (pkgId === 'phone_panel_001' ? 'PHONE PANEL' : 'BASIC PANEL');
 
-  const res = await callApi('generate_key', {
-    package_id: pkgId,
-    package_name: pkgName,
-    user: user,
-    days: days,
-    count: count
-  });
+  let res;
+  if (pkgId === 'phone_panel_001' || pkgName === 'PHONE PANEL') {
+    // Generate directly via dedicated HYPERM SHOP Mobile API (strictly 8-char keys)
+    try {
+      const mobRes = await fetchWithTimeout('/api/hyperm-mobile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'create_key',
+          admin_secret: '7f99a801e82b7c02b92138a011cd48f9',
+          package: 'PHONE PANEL VIP',
+          duration_days: days,
+          count: count,
+          client_name: user,
+          prefix: 'HM'
+        })
+      }, 4000);
+      if (mobRes && mobRes.ok) {
+        const mobData = await mobRes.json();
+        if (mobData && mobData.success && Array.isArray(mobData.keys)) {
+          res = {
+            success: true,
+            keys: mobData.keys.map(k => k.key),
+            app_name: 'HYPERM SHOP',
+            package_name: 'PHONE PANEL VIP',
+            days: days,
+            count: mobData.keys.length
+          };
+        }
+      }
+    } catch (_) {}
+  }
+
+  if (!res) {
+    res = await callApi('generate_key', {
+      package_id: pkgId,
+      package_name: pkgName,
+      user: user,
+      days: days,
+      count: count
+    });
+  }
 
   if (btn) {
     btn.disabled = false;

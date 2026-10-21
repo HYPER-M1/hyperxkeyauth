@@ -315,9 +315,24 @@ if (in_array($action, $protectedActions, true)) {
         }
 
         $generatedKeys = [];
+        $isPhone = (($body['package_id'] ?? '') === 'phone_panel_001' || ($body['package_name'] ?? '') === 'PHONE PANEL');
+        $appName = $isPhone ? 'HYPERM SHOP' : 'Custom work';
+        $pkgName = $isPhone ? 'PHONE PANEL VIP' : ($body['package_name'] ?? 'BASIC PANEL');
+
         for ($i = 0; $i < $count; $i++) {
-            $seg = function() { return strtoupper(bin2hex(random_bytes(2))); };
-            $generatedKeys[] = "HPERX-{$seg()}-{$seg()}-{$seg()}-{$seg()}";
+            if ($isPhone) {
+                // Short mobile key strictly under 10 chars (8 chars: HM-XXXXX)
+                $chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+                $s = '';
+                $max = strlen($chars) - 1;
+                for ($j = 0; $j < 5; $j++) {
+                    $s .= $chars[random_int(0, $max)];
+                }
+                $generatedKeys[] = "HM-{$s}";
+            } else {
+                $seg = function() { return strtoupper(bin2hex(random_bytes(2))); };
+                $generatedKeys[] = "HPERX-{$seg()}-{$seg()}-{$seg()}-{$seg()}";
+            }
         }
 
         $expiryText = ($days === 0) ? 'Lifetime Access' : "{$days} Days";
@@ -329,8 +344,8 @@ if (in_array($action, $protectedActions, true)) {
             array_unshift($store['tx99_licenses'], [
                 'id'         => (string)(time() . rand(100, 999)),
                 'key'        => $k,
-                'app'        => 'Custom work',
-                'pkg'        => $body['package_name'] ?? (($body['package_id'] ?? '') === 'phone_panel_001' ? 'PHONE PANEL' : 'BASIC PANEL'),
+                'app'        => $appName,
+                'pkg'        => $pkgName,
                 'user'       => $userPrefix . $rawUser,
                 'hwid'       => 'Not Bound',
                 'expiry'     => $expiryText,
@@ -341,13 +356,40 @@ if (in_array($action, $protectedActions, true)) {
         }
         save_store_data($store);
 
+        // Sync to hyperm-mobile-data.json if Phone Panel
+        if ($isPhone) {
+            $mobFile = dirname(__DIR__) . '/hyperm-mobile-data.json';
+            if (file_exists($mobFile)) {
+                $mobData = json_decode(file_get_contents($mobFile), true) ?: [];
+                if (!isset($mobData['licenses'])) $mobData['licenses'] = [];
+                $expIso = ($days === 0) ? date('c', time() + 315360000) : date('c', time() + ($days * 86400));
+                foreach ($generatedKeys as $idx => $k) {
+                    array_unshift($mobData['licenses'], [
+                        'id'          => 'lic_phone_' . time() . '_' . $idx,
+                        'key'         => $k,
+                        'package'     => 'PHONE PANEL VIP',
+                        'created_by'  => $authUser['username'] ?? 'HYPERM_SHOP_ADMIN',
+                        'client_name' => $rawUser,
+                        'hwid'        => 'UNBOUND',
+                        'created_at'  => date('c'),
+                        'expires_at'  => $expIso,
+                        'status'      => 'active',
+                        'device_info' => null,
+                        'ip_address'  => null,
+                        'note'        => "Generated from Dashboard ($expiryText)"
+                    ]);
+                }
+                @file_put_contents($mobFile, json_encode($mobData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+            }
+        }
+
         json_response([
             'success'      => true,
             'message'      => 'Keys generated successfully.',
             'count'        => count($generatedKeys),
             'keys'         => $generatedKeys,
-            'app_name'     => 'Custom work',
-            'package_name' => $body['package_name'] ?? (($body['package_id'] ?? '') === 'phone_panel_001' ? 'PHONE PANEL' : 'BASIC PANEL'),
+            'app_name'     => $appName,
+            'package_name' => $pkgName,
             'timestamp'    => time()
         ]);
     }
@@ -426,7 +468,7 @@ if (in_array($action, $remoteActions, true)) {
                     }
                 }
                 if (!$hasPhone) {
-                    $parsed['packages'][] = ['package_id' => 'phone_panel_001', 'package_name' => 'PHONE PANEL', 'app_name' => 'Custom work'];
+                    $parsed['packages'][] = ['package_id' => 'phone_panel_001', 'package_name' => 'PHONE PANEL', 'app_name' => 'HYPERM SHOP'];
                 }
                 json_response($parsed);
             }

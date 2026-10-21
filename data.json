@@ -36,14 +36,14 @@
   "tx99_licenses": [
     {
       "id": "17912759900000",
-      "key": "HPERX-PHON-9901-ANDR-7721",
-      "app": "Custom work",
-      "pkg": "PHONE PANEL",
+      "key": "HM-VIP30",
+      "app": "HYPERM SHOP",
+      "pkg": "PHONE PANEL VIP",
       "user": "Mobile_VIP",
       "hwid": "Not Bound",
       "expiry": "30 Days",
       "status": "active",
-      "note": "Created for Phone Panel",
+      "note": "Short 8-char Phone Panel VIP Key",
       "resellerId": "owner"
     },
     {
