@@ -70,25 +70,30 @@
          ============================================================ -->
     <aside class="sidebar" id="sidebar">
       <!-- Brand Header -->
-      <div class="sidebar-brand" style="padding:16px 16px 12px 16px;">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);display:flex;align-items:center;justify-content:center;box-shadow:0 0 14px rgba(239,68,68,0.4);flex-shrink:0;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="4 17 10 11 4 5"></polyline>
-              <line x1="12" y1="19" x2="20" y2="19"></line>
-            </svg>
+      <div class="sidebar-brand" style="height:64px;padding:0 16px;display:flex;align-items:center;border-bottom:1px solid rgba(255,255,255,0.06);">
+        <a href="dashboard.html" style="text-decoration:none;display:flex;align-items:center;gap:11px;width:100%;">
+          <!-- Premium Cyber Badge -->
+          <div style="position:relative;width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg, rgba(239,68,68,0.18) 0%, rgba(13,16,25,0.92) 100%);border:1px solid rgba(239,68,68,0.45);display:flex;align-items:center;justify-content:center;box-shadow:0 0 18px rgba(239,68,68,0.25), inset 0 1px 0 rgba(255,255,255,0.12);flex-shrink:0;overflow:hidden;">
+            <!-- Ambient Red Glow in Badge -->
+            <div style="position:absolute;width:24px;height:24px;border-radius:50%;background:rgba(239,68,68,0.4);filter:blur(8px);pointer-events:none;"></div>
+            <!-- Metallic HX Emblem -->
+            <img src="assets/images/hx_card_logo_clean.png" alt="HYPER X" style="height:22px;width:auto;object-fit:contain;filter:drop-shadow(0 0 8px rgba(239,68,68,0.7));position:relative;z-index:1;display:block;">
           </div>
-          <div style="display:flex;flex-direction:column;min-width:0;">
+          <!-- Brand Identity Typography -->
+          <div style="display:flex;flex-direction:column;min-width:0;justify-content:center;">
             <div style="display:flex;align-items:center;gap:6px;">
-              <span class="brand-name" style="font-size:13.5px;font-weight:800;letter-spacing:0.5px;color:#fff;">HYPER X</span>
-              <span style="width:6px;height:6px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px #22c55e;display:inline-block;"></span>
+              <span class="brand-name" style="font-size:14px;font-weight:900;letter-spacing:0.8px;color:#ffffff;font-family:var(--font-sans);line-height:1.2;">HYPER<span style="color:#ef4444;text-shadow:0 0 10px rgba(239,68,68,0.75);margin-left:2px;">X</span></span>
+              <span style="display:inline-flex;align-items:center;gap:3px;padding:1.5px 5px;background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.3);border-radius:10px;">
+                <span style="width:5px;height:5px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px #22c55e;display:inline-block;animation:pulse 1.8s infinite;"></span>
+                <span style="font-size:8px;font-weight:800;color:#4ade80;letter-spacing:0.4px;line-height:1;">LIVE</span>
+              </span>
             </div>
-            <div style="display:flex;align-items:center;gap:5px;margin-top:1px;">
-              <span style="font-size:10px;color:#64748b;font-family:var(--font-mono);">v1.0.0</span>
-              <span style="font-size:9px;color:#ef4444;font-weight:800;letter-spacing:0.5px;">PRO</span>
+            <div style="display:flex;align-items:center;gap:6px;margin-top:2px;">
+              <span style="font-size:9.5px;color:#64748b;font-family:var(--font-mono);font-weight:600;letter-spacing:0.3px;">v1.0.0</span>
+              <span style="font-size:8px;color:#ef4444;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);padding:0px 4px;border-radius:3px;font-weight:800;letter-spacing:0.6px;text-transform:uppercase;">ENTERPRISE</span>
             </div>
           </div>
-        </div>
+        </a>
       </div>
 
       <!-- Menu Navigation -->
