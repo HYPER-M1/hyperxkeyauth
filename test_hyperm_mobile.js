@@ -190,8 +190,8 @@ async function runTests() {
     });
     await hypermMobileHandler(req, res);
     const resp = getResponse();
-    assert('9. Key generation creates 2 valid HYPERM keys', resp.data?.success === true && resp.data?.keys?.length === 2);
-    assert('9b. Generated key starts with HYPERM-', resp.data?.keys[0]?.key?.startsWith('HYPERM-'));
+    assert('9. Key generation creates 2 valid short keys', resp.data?.success === true && resp.data?.keys?.length === 2);
+    assert('9b. Generated key is under 10 characters', resp.data?.keys[0]?.key?.length <= 10 && resp.data?.keys[0]?.key?.startsWith('HM-'));
   }
 
   // TEST 10: Zero References to PRTVSHOW

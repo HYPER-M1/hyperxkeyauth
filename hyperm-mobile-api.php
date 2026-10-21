@@ -76,17 +76,15 @@ function sendResponse($code, $payload) {
     exit;
 }
 
-function generateMobileKey($prefix = 'HYPERM') {
+function generateMobileKey($prefix = 'HM') {
+    // Generates short mobile key strictly under 10 characters (e.g. HM-98214 -> 8 chars)
     $chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-    $chunk = function($len) use ($chars) {
-        $s = '';
-        $max = strlen($chars) - 1;
-        for ($i = 0; $i < $len; $i++) {
-            $s .= $chars[random_int(0, $max)];
-        }
-        return $s;
-    };
-    return $prefix . '-' . $chunk(4) . '-' . $chunk(4) . '-' . $chunk(4);
+    $s = '';
+    $max = strlen($chars) - 1;
+    for ($i = 0; $i < 5; $i++) {
+        $s .= $chars[random_int(0, $max)];
+    }
+    return $prefix . '-' . $s;
 }
 
 // 3. Parse Request Payload
@@ -380,7 +378,7 @@ if (in_array($action, ['create_key', 'generate_key'])) {
     if (!isset($data['licenses'])) $data['licenses'] = [];
 
     for ($i = 0; $i < $count; $i++) {
-        $k = generateMobileKey('HYPERM');
+        $k = generateMobileKey($payload['prefix'] ?? 'HM');
         $item = [
             'id' => 'lic_phone_' . time() . '_' . $i,
             'key' => $k,
