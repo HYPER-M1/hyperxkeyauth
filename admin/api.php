@@ -327,7 +327,7 @@ if (in_array($action, $protectedActions, true)) {
                 'id'         => (string)(time() . rand(100, 999)),
                 'key'        => $k,
                 'app'        => 'Custom work',
-                'pkg'        => $body['package_name'] ?? 'BASIC PANEL',
+                'pkg'        => $body['package_name'] ?? (($body['package_id'] ?? '') === 'phone_panel_001' ? 'PHONE PANEL' : 'BASIC PANEL'),
                 'user'       => $userPrefix . $rawUser,
                 'hwid'       => 'Not Bound',
                 'expiry'     => $expiryText,
@@ -344,7 +344,7 @@ if (in_array($action, $protectedActions, true)) {
             'count'        => count($generatedKeys),
             'keys'         => $generatedKeys,
             'app_name'     => 'Custom work',
-            'package_name' => $body['package_name'] ?? 'BASIC PANEL',
+            'package_name' => $body['package_name'] ?? (($body['package_id'] ?? '') === 'phone_panel_001' ? 'PHONE PANEL' : 'BASIC PANEL'),
             'timestamp'    => time()
         ]);
     }
@@ -412,6 +412,22 @@ if (in_array($action, $remoteActions, true)) {
     curl_close($ch);
 
     if ($remoteResponse !== false) {
+        if ($action === 'get_admin_packages') {
+            $parsed = json_decode($remoteResponse, true);
+            if ($parsed && !empty($parsed['packages'])) {
+                $hasPhone = false;
+                foreach ($parsed['packages'] as $p) {
+                    if (($p['package_name'] ?? '') === 'PHONE PANEL' || ($p['package_id'] ?? '') === 'phone_panel_001') {
+                        $hasPhone = true;
+                        break;
+                    }
+                }
+                if (!$hasPhone) {
+                    $parsed['packages'][] = ['package_id' => 'phone_panel_001', 'package_name' => 'PHONE PANEL', 'app_name' => 'Custom work'];
+                }
+                json_response($parsed);
+            }
+        }
         http_response_code($httpCode ?: 200);
         echo $remoteResponse;
         exit;
@@ -422,6 +438,7 @@ if (in_array($action, $remoteActions, true)) {
 
 switch ($action) {
     case 'verify_key':
+    case 'auth':
         $licenseKey = trim($body['key'] ?? $_POST['key'] ?? '');
         $clientHwid = trim($body['hwid'] ?? $_POST['hwid'] ?? '');
 
@@ -465,10 +482,15 @@ switch ($action) {
 
             json_response([
                 'success'     => true,
+                'status'      => 'SUCCESS',
+                'key'         => $lic['license_key'],
                 'message'     => 'License Verified Successfully',
                 'app'         => $lic['app_name'],
+                'pkg'         => $lic['package_name'] ?? 'PHONE PANEL',
+                'package_name'=> $lic['package_name'] ?? 'PHONE PANEL',
                 'expiry'      => $lic['expiry_date'],
                 'user'        => $lic['assigned_user'],
+                'hwid'        => $clientHwid,
                 'timestamp'   => $timestamp,
                 'hmac_sha256' => $signature
             ]);
@@ -477,9 +499,11 @@ switch ($action) {
             $store = get_store_data();
             $cleanKey = strtolower($licenseKey);
             $found = null;
-            foreach ($store['tx99_licenses'] as $l) {
+            $foundIndex = -1;
+            foreach ($store['tx99_licenses'] as $idx => $l) {
                 if (strtolower($l['key'] ?? '') === $cleanKey) {
                     $found = $l;
+                    $foundIndex = $idx;
                     break;
                 }
             }
@@ -487,11 +511,49 @@ switch ($action) {
                 if (($found['status'] ?? '') === 'banned') {
                     json_response(['success' => false, 'message' => 'License key banned', 'status' => 'BANNED'], 403);
                 }
+                $expiryStr = trim($found['expiry'] ?? '');
+                $isLifetime = (stripos($expiryStr, 'lifetime') !== false || $expiryStr === '0' || $expiryStr === '0 Days');
+                $isRelative = (!$isLifetime && preg_match('/(\d+)\s*days?/i', $expiryStr, $matches));
+
+                if (!$isLifetime && !$isRelative && strtotime($expiryStr)) {
+                    if (strtotime($expiryStr) < time()) {
+                        json_response(['success' => false, 'message' => 'License key has expired', 'status' => 'EXPIRED'], 403);
+                    }
+                }
+
+                $currentHwid = trim($found['hwid'] ?? '');
+                $isUnbound = (empty($currentHwid) || $currentHwid === 'Not Bound' || $currentHwid === 'Unbound');
+
+                if ($isUnbound) {
+                    $store['tx99_licenses'][$foundIndex]['hwid'] = $clientHwid;
+                    $store['tx99_licenses'][$foundIndex]['status'] = 'active';
+                    if ($isRelative) {
+                        $days = (int)$matches[1];
+                        $newExpiry = date('Y-m-d', time() + ($days * 86400));
+                        $store['tx99_licenses'][$foundIndex]['expiry'] = $newExpiry;
+                        $found['expiry'] = $newExpiry;
+                    }
+                    save_store_data($store);
+                    $found['hwid'] = $clientHwid;
+                } elseif ($currentHwid !== $clientHwid) {
+                    json_response([
+                        'success' => false,
+                        'message' => 'Hardware ID mismatch. Contact admin to reset HWID.',
+                        'status'  => 'HWID_MISMATCH'
+                    ], 403);
+                }
+
                 json_response([
                     'success'     => true,
-                    'message'     => 'KeyAuth License Authenticated',
+                    'message'     => 'License Verified Successfully',
+                    'status'      => 'SUCCESS',
+                    'key'         => $found['key'],
                     'app'         => $found['app'] ?? 'Custom work',
-                    'expiry'      => $found['expiry'] ?? '2026-12-31',
+                    'pkg'         => $found['pkg'] ?? 'PHONE PANEL',
+                    'package_name'=> $found['pkg'] ?? 'PHONE PANEL',
+                    'user'        => $found['user'] ?? 'Client',
+                    'expiry'      => $found['expiry'] ?? 'Lifetime',
+                    'hwid'        => $found['hwid'] ?? $clientHwid,
                     'timestamp'   => $timestamp,
                     'hmac_sha256' => $signature
                 ]);

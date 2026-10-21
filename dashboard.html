@@ -70,23 +70,30 @@
          ============================================================ -->
     <aside class="sidebar" id="sidebar">
       <!-- Brand Header -->
-      <div class="sidebar-brand">
-        <div class="brand-equalizer" aria-hidden="true">
-          <span class="eq-bar eq-1"></span>
-          <span class="eq-bar eq-2"></span>
-          <span class="eq-bar eq-3"></span>
-        </div>
-        <div class="brand-title-wrap">
-          <div class="brand-title-row">
-            <span class="brand-name">HYPER X</span>
-            <span class="brand-live-dot"></span>
+      <div class="sidebar-brand" style="padding:16px 16px 12px 16px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);display:flex;align-items:center;justify-content:center;box-shadow:0 0 14px rgba(239,68,68,0.4);flex-shrink:0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="4 17 10 11 4 5"></polyline>
+              <line x1="12" y1="19" x2="20" y2="19"></line>
+            </svg>
+          </div>
+          <div style="display:flex;flex-direction:column;min-width:0;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span class="brand-name" style="font-size:13.5px;font-weight:800;letter-spacing:0.5px;color:#fff;">TERMINALX999</span>
+              <span style="width:6px;height:6px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px #22c55e;display:inline-block;"></span>
+            </div>
+            <div style="display:flex;align-items:center;gap:5px;margin-top:1px;">
+              <span style="font-size:10px;color:#64748b;font-family:var(--font-mono);">v1.0.0</span>
+              <span style="font-size:9px;color:#ef4444;font-weight:800;letter-spacing:0.5px;">PRO</span>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- Menu Navigation -->
       <nav class="sidebar-menu">
-        <span class="menu-category-label">MANAGEMENT</span>
+        <span class="menu-category-label">MAIN</span>
 
         <button class="sidebar-nav-link active" id="nav-dashboard" onclick="switchTab('dashboard')">
           <span class="nav-icon">📊</span>
@@ -95,18 +102,43 @@
 
         <button class="sidebar-nav-link" id="nav-apps" onclick="switchTab('apps')">
           <span class="nav-icon">📦</span>
-          <span id="nav-apps-text">Packages</span>
+          <span id="nav-apps-text">Applications</span>
         </button>
 
         <button class="sidebar-nav-link" id="nav-licenses" onclick="switchTab('licenses')">
           <span class="nav-icon">🔑</span>
-          <span>License keys</span>
+          <span>License Keys</span>
           <span class="nav-count-badge" id="nav-key-count" style="display:none;">LIVE</span>
         </button>
 
+        <button class="sidebar-nav-link" id="nav-emulator" onclick="switchTab('emulator')">
+          <span class="nav-icon">🎮</span>
+          <span>Emulator Bypass</span>
+        </button>
+
         <button class="sidebar-nav-link" id="nav-logs" onclick="switchTab('logs')">
-          <span class="nav-icon">📜</span>
-          <span>Logs &amp; audit</span>
+          <span class="nav-icon">📋</span>
+          <span>Logs</span>
+        </button>
+
+        <button class="sidebar-nav-link" id="nav-sdks" onclick="switchTab('sdks')">
+          <span class="nav-icon">💻</span>
+          <span>SDKs</span>
+        </button>
+
+        <button class="sidebar-nav-link" id="nav-api" onclick="switchTab('api')">
+          <span class="nav-icon">🔌</span>
+          <span>API Access</span>
+        </button>
+
+        <button class="sidebar-nav-link" id="nav-discord" onclick="switchTab('discord')">
+          <span class="nav-icon">🤖</span>
+          <span>Discord Bot</span>
+        </button>
+
+        <button class="sidebar-nav-link" id="nav-exegenerator" onclick="switchTab('exegenerator')" style="color:#ef4444;">
+          <span class="nav-icon">⚡</span>
+          <span style="font-weight:700;">EXE Generator</span>
         </button>
 
         <button class="sidebar-nav-link admin-only-feature" id="nav-resellers" onclick="switchTab('resellers')">
@@ -148,19 +180,42 @@
 
         <div class="navbar-right">
           <!-- Keys Stat -->
-          <div class="header-pill-stat" title="Total Keys Quota">
-            <span style="font-size:13px;">🔑</span>
+          <div class="header-pill-stat" title="Total Keys Quota" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.03);padding:4px 10px;border-radius:6px;border:1px solid rgba(255,255,255,0.06);font-size:11.5px;">
+            <span style="font-size:13px;color:#f59e0b;">🔑</span>
             <span style="color:#94a3b8;font-size:12px;font-weight:600;">Keys:</span>
-            <span class="stat-keys-tag" id="header-keys-stat">77 / 9999</span>
+            <span class="stat-keys-tag" id="header-keys-stat" style="color:#ffffff;font-weight:700;">122 / 9999</span>
           </div>
 
-          <!-- Notification Bell -->
-          <button class="header-icon-btn" onclick="alert('KeyAuth API Status: Operational & Signed with HMAC-SHA256')" title="Notifications">
-            🔔
-          </button>
+          <!-- Lib Stat -->
+          <div class="header-pill-stat" title="Library API Rate" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.03);padding:4px 10px;border-radius:6px;border:1px solid rgba(255,255,255,0.06);font-size:11.5px;">
+            <span style="color:#f59e0b;font-size:12px;">⚡</span>
+            <span style="color:#94a3b8;font-weight:600;">Lib:</span>
+            <span style="color:#f1f5f9;font-weight:700;">(35/24h)</span>
+          </div>
+
+          <!-- Notification Bell Wrap -->
+          <div style="position:relative;">
+            <button class="header-icon-btn" id="header-bell-btn" onclick="toggleNotificationDropdown()" title="Notifications" style="position:relative;">
+              🔔
+              <span id="bell-unread-dot" style="display:none;position:absolute;top:2px;right:2px;width:9px;height:9px;border-radius:50%;background:#ef4444;box-shadow:0 0 8px #ef4444;border:2px solid #06070a;"></span>
+            </button>
+
+            <!-- Notification Dropdown Menu -->
+            <div id="notification-dropdown" style="display:none;position:absolute;right:0;top:42px;width:340px;background:#0d1019;border:1px solid #1f2638;border-radius:8px;box-shadow:0 10px 35px rgba(0,0,0,0.7);z-index:9999;padding:12px;font-family:var(--font-sans);">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:8px;border-bottom:1px solid #191f2e;margin-bottom:10px;">
+                <span style="font-size:12px;font-weight:700;color:#fff;display:flex;align-items:center;gap:6px;">
+                  <span>🔔</span> System Notifications
+                </span>
+                <span id="notif-count-badge" style="font-size:10px;background:rgba(239,68,68,0.2);color:#ef4444;padding:1px 6px;border-radius:4px;font-weight:700;">LIVE</span>
+              </div>
+              <div id="notif-items-list" style="max-height:240px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;">
+                <!-- Populated dynamically -->
+              </div>
+            </div>
+          </div>
 
           <!-- Admin User Badge -->
-          <div class="header-pill-admin" id="header-admin-btn">
+          <div class="header-pill-admin" id="header-admin-btn" style="background:#0284c7;color:#fff;padding:4px 12px;border-radius:6px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
             <span id="header-admin-icon">🛡️</span>
             <span id="header-admin-name">Admin</span>
           </div>
@@ -169,6 +224,33 @@
 
       <!-- Viewport Content Area -->
       <main class="content-area">
+
+        <!-- Reseller Live Update Alert Banner -->
+        <div id="reseller-update-banner" style="display:none;margin-bottom:18px;background:linear-gradient(90deg, rgba(239,68,68,0.18) 0%, rgba(220,38,38,0.08) 100%);border:1px solid rgba(239,68,68,0.45);border-radius:8px;padding:12px 18px;align-items:center;justify-content:space-between;box-shadow:0 0 25px rgba(239,68,68,0.2);">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:36px;height:36px;border-radius:8px;background:rgba(239,68,68,0.25);border:1px solid #ef4444;display:flex;align-items:center;justify-content:center;color:#ef4444;font-size:18px;flex-shrink:0;">
+              ⚡
+            </div>
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span style="color:#ffffff;font-size:13px;font-weight:800;letter-spacing:0.3px;" id="banner-update-title">NEW CLIENT UPDATE RELEASED!</span>
+                <span style="background:#ef4444;color:#fff;font-size:9.5px;padding:2px 6px;border-radius:3px;font-weight:800;">NEW BUILD</span>
+              </div>
+              <p style="color:#cbd5e1;font-size:11.5px;margin-top:2px;" id="banner-update-desc">
+                Admin has deployed an updated Master Core binary. Please download or rebuild your branded client.
+              </p>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <button type="button" class="btn-exe-primary" style="width:auto;padding:7px 15px;font-size:11.5px;display:inline-flex;align-items:center;gap:6px;" onclick="downloadLatestUpdateAndDismiss()">
+              <span>⬇</span>
+              <span>Download Update</span>
+            </button>
+            <button type="button" onclick="dismissUpdateBanner()" style="background:transparent;border:none;color:#64748b;font-size:16px;cursor:pointer;padding:4px 8px;" title="Dismiss Notification">
+              ✕
+            </button>
+          </div>
+        </div>
 
         <!-- ============================================================
              VIEW 1: DASHBOARD
@@ -1014,6 +1096,13 @@
                   <td style="color:#ef4444;font-weight:600;">Custom work</td>
                   <td><span class="badge-pill-status badge-active-green">Active</span></td>
                 </tr>
+                <tr>
+                  <td style="font-family:var(--font-mono);font-weight:700;color:#ef4444;">#9</td>
+                  <td style="font-weight:700;color:#fff;font-size:13px;">PHONE PANEL</td>
+                  <td class="col-pkg-id col-mobile-hide" style="font-family:var(--font-mono);color:#cbd5e1;font-size:11.5px;">phone_panel_001</td>
+                  <td style="color:#ef4444;font-weight:600;">Custom work</td>
+                  <td><span class="badge-pill-status badge-active-green">Active</span></td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -1196,6 +1285,30 @@
                   <div class="mobile-app-col">
                     <span class="mobile-app-col-lbl">Package ID</span>
                     <span class="mobile-app-col-val val-pkg-id">2411bc9db9f9a66c6e876ad2</span>
+                  </div>
+                  <div class="mobile-app-col">
+                    <span class="mobile-app-col-lbl">Target App</span>
+                    <span class="mobile-app-col-val val-target-app">Custom work</span>
+                  </div>
+                  <div class="mobile-app-col">
+                    <span class="mobile-app-col-lbl">Status</span>
+                    <div class="mobile-app-col-val">
+                      <span class="badge-app-status-active"><span class="status-dot">●</span> Active</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mobile-app-arrow">›</div>
+            </div>
+
+            <div class="mobile-app-card" onclick="openGenModalForPackage('phone_panel_001')">
+              <div class="mobile-app-num-badge">#9</div>
+              <div class="mobile-app-main">
+                <div class="mobile-app-name">PHONE PANEL</div>
+                <div class="mobile-app-meta-row">
+                  <div class="mobile-app-col">
+                    <span class="mobile-app-col-lbl">Package ID</span>
+                    <span class="mobile-app-col-val val-pkg-id">phone_panel_001</span>
                   </div>
                   <div class="mobile-app-col">
                     <span class="mobile-app-col-lbl">Target App</span>
@@ -1568,6 +1681,277 @@
           </div>
         </section>
 
+        <!-- ============================================================
+             VIEW: EXE GENERATOR & BRANDING (TERMINALX999 PRO)
+             ============================================================ -->
+        <section class="tab-view" id="view-exegenerator">
+          
+          <!-- Top Cards Grid -->
+          <div class="exe-grid-top">
+            
+            <!-- Card 1: Master Core ZIP -->
+            <div class="exe-card-box card-master-core">
+              <div>
+                <div class="exe-card-header">
+                  <div class="exe-card-title-group">
+                    <div class="exe-card-icon-wrap" style="background:rgba(234,88,12,0.18);border:1px solid rgba(234,88,12,0.45);color:#ea580c;">
+                      📦
+                    </div>
+                    <div>
+                      <div class="exe-card-title-text">Master Core ZIP</div>
+                      <div style="font-size:10px;color:#64748b;letter-spacing:0.4px;">CENTRAL KERNEL BUILD</div>
+                    </div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:6px;">
+                    <span class="exe-badge-amber" id="card2-update-alert-badge" style="display:none;background:rgba(239,68,68,0.2);border:1px solid #ef4444;color:#ef4444;font-size:10px;padding:3px 8px;border-radius:4px;font-weight:700;">● NEW UPDATE</span>
+                    <span class="exe-badge-green" id="master-core-size-badge" style="font-size:10.5px;padding:3px 9px;">1.98 MB</span>
+                  </div>
+                </div>
+
+                <!-- Console Inset Box -->
+                <div class="exe-console-box">
+                  <div class="exe-console-label">Compiled Source Core</div>
+                  <div class="exe-console-val">
+                    <span style="color:#22c55e;font-size:10px;">●</span>
+                    <span id="master-core-filename">KERNEL-CSHARP.exe</span>
+                    <span style="font-size:10px;color:#00f0ff;background:rgba(0,240,255,0.1);padding:2px 6px;border-radius:4px;border:1px solid rgba(0,240,255,0.25);font-family:var(--font-sans);font-weight:600;">x64 Native PE</span>
+                  </div>
+                </div>
+
+                <!-- 2x2 Metric Tiles -->
+                <div class="exe-metric-grid">
+                  <div class="exe-metric-tile">
+                    <div class="m-lbl">Last Deployed</div>
+                    <div class="m-val" id="master-core-updated-time">11 Oct, 20:40</div>
+                  </div>
+                  <div class="exe-metric-tile">
+                    <div class="m-lbl">Reseller Sync</div>
+                    <div class="m-val green" id="master-core-sync-label">Instant Push Active</div>
+                  </div>
+                  <div class="exe-metric-tile">
+                    <div class="m-lbl">Security Layer</div>
+                    <div class="m-val" style="color:#38bdf8;">HMAC-SHA256 Active</div>
+                  </div>
+                  <div class="exe-metric-tile">
+                    <div class="m-lbl">Target Platform</div>
+                    <div class="m-val" style="color:#a78bfa;">Win 10/11 x64</div>
+                  </div>
+                </div>
+
+                <!-- Security Verification Notice -->
+                <div style="background:rgba(234,88,12,0.06);border:1px solid rgba(234,88,12,0.22);border-radius:8px;padding:10px 14px;font-size:11px;color:#cbd5e1;display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+                  <span style="font-size:16px;">🔒</span>
+                  <div>
+                    <span style="font-weight:700;color:#fff;">Cryptographic Integrity:</span>
+                    <span style="color:#94a3b8;margin-left:4px;">Master binary HMAC-SHA256 signature verified by KeyAuth Engine.</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Admin Upload Zone (admin only) -->
+              <div class="admin-only-feature" id="admin-upload-zone-wrap" style="margin-top:14px;">
+                <input type="file" id="admin-core-upload-input" accept=".zip,.exe" style="display:none;" onchange="handleAdminCoreUpload(event)">
+
+                <!-- Drag & Drop Zone -->
+                <div id="admin-drop-zone"
+                  onclick="document.getElementById('admin-core-upload-input').click()"
+                  ondragover="event.preventDefault();this.classList.add('dz-hover')"
+                  ondragleave="this.classList.remove('dz-hover')"
+                  ondrop="handleAdminDropZone(event)"
+                  style="border:2px dashed rgba(2,132,199,0.5);border-radius:12px;padding:18px 16px;text-align:center;cursor:pointer;background:rgba(2,132,199,0.05);transition:all 0.2s;">
+                  <div style="font-size:26px;margin-bottom:6px;">📤</div>
+                  <div style="font-size:13px;font-weight:700;color:#38bdf8;margin-bottom:3px;">Drop .zip / .exe here</div>
+                  <div style="font-size:11px;color:#64748b;">or click to browse files</div>
+                </div>
+
+                <!-- Progress / Status -->
+                <div id="admin-upload-progress" style="display:none;font-size:11px;color:#00f0ff;text-align:center;font-family:var(--font-mono);margin-top:8px;padding:6px 10px;background:rgba(0,240,255,0.05);border-radius:6px;border:1px solid rgba(0,240,255,0.15);"></div>
+
+                <!-- Last Uploaded Info -->
+                <div id="admin-last-upload-info" style="display:none;margin-top:8px;font-size:10px;color:#64748b;text-align:center;"></div>
+              </div>
+
+              <div style="margin-top:10px;display:flex;flex-direction:column;gap:8px;">
+                <!-- Download / Status Button -->
+                <button type="button" class="btn-exe-green-active" id="btn-master-core-action" style="cursor:default;pointer-events:none;opacity:0.85;">
+                  <span>✔</span>
+                  <span>HMAC Protected Master Active</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 2: My Branded Client -->
+            <div class="exe-card-box card-branded-client">
+              <div>
+                <div class="exe-card-header">
+                  <div class="exe-card-title-group">
+                    <div class="exe-card-icon-wrap" style="background:rgba(168,85,247,0.18);border:1px solid rgba(168,85,247,0.45);color:#c084fc;">
+                      👤
+                    </div>
+                    <div>
+                      <div class="exe-card-title-text">My Branded Client</div>
+                      <div style="font-size:10px;color:#64748b;letter-spacing:0.4px;">EXCLUSIVE CUSTOM CLIENT</div>
+                    </div>
+                  </div>
+                  <div style="display:flex;gap:5px;">
+                    <span class="exe-badge-green">Up to Date</span>
+                    <span class="exe-badge-green">Quota Free</span>
+                  </div>
+                </div>
+
+                <!-- Brand Identity Box -->
+                <div class="exe-console-box" style="display:flex;align-items:center;justify-content:space-between;">
+                  <div>
+                    <div class="exe-console-label">Client Brand Identity</div>
+                    <div style="font-size:18px;font-weight:900;color:#ffffff;letter-spacing:0.5px;margin-top:2px;" id="client-brand-display-name">HYPER X</div>
+                  </div>
+                  <div style="text-align:right;">
+                    <span style="font-size:10px;color:#cbd5e1;font-family:var(--font-mono);background:#101422;padding:3px 8px;border-radius:4px;border:1px solid #1c2236;display:inline-block;">Auto-Lock HWID</span>
+                    <div style="font-size:9.5px;color:#22c55e;font-weight:700;margin-top:4px;">● Full Lifetime Access</div>
+                  </div>
+                </div>
+
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+                  <div style="display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#cbd5e1;">
+                    <span style="color:#f59e0b;">🛠️</span>
+                    <span>Assigned Modules & Bypass Layers (8 Active)</span>
+                  </div>
+                  <span class="exe-badge-green" style="font-size:9.5px;padding:2px 6px;">● All Unlocked</span>
+                </div>
+
+                <!-- 8 Panels Grid Chips - 4x2 Layout -->
+                <div class="exe-panels-chip-grid">
+                  <div class="exe-panel-chip">⚙️ Basic Panel</div>
+                  <div class="exe-panel-chip">🎯 PVT AIMKILL</div>
+                  <div class="exe-panel-chip">🎯 AimSilent</div>
+                  <div class="exe-panel-chip">🔐 Vault Panel</div>
+                  <div class="exe-panel-chip">🛡️ UID Bypass</div>
+                  <div class="exe-panel-chip">🛡️ LIB Bypass</div>
+                  <div class="exe-panel-chip">💻 External Panel</div>
+                  <div class="exe-panel-chip">🚀 FPS BOOSTER</div>
+                </div>
+
+                <!-- Hardware Lock Notice -->
+                <div style="background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.22);border-radius:8px;padding:10px 14px;font-size:11px;color:#cbd5e1;display:flex;align-items:center;gap:10px;margin-top:6px;">
+                  <span style="font-size:16px;">🛡️</span>
+                  <div>
+                    <span style="font-weight:700;color:#fff;">Hardware Signature Active:</span>
+                    <span style="color:#94a3b8;margin-left:4px;">Unique memory-injected client mapped to your active license.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div style="margin-top:16px;">
+                <button type="button" class="btn-exe-primary" onclick="redownloadClientAuto()">
+                  <span>⚡</span>
+                  <span>Re-download Client (Auto Free)</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Bottom Section: Saved Client Presets History -->
+          <div class="exe-history-card">
+            <div class="exe-history-header">
+              <div class="exe-history-title">
+                <span style="color:#ef4444;font-size:16px;">📑</span>
+                <span>Saved Client Presets History</span>
+              </div>
+              <div class="exe-history-actions">
+                <button type="button" class="btn-exe-bulk" onclick="bulkDownloadAllPresets()">
+                  <span>📦</span>
+                  <span id="exe-bulk-btn-text">Bulk Download All (1)</span>
+                </button>
+                <span class="badge-exe-saved" id="exe-saved-badge">1 Saved</span>
+              </div>
+            </div>
+
+            <div style="overflow-x:auto;">
+              <table class="exe-table">
+                <thead>
+                  <tr>
+                    <th style="width:160px;">BRAND TITLE</th>
+                    <th>INCLUDED PANELS</th>
+                    <th style="width:130px;">STATUS</th>
+                    <th style="width:140px;">ACTION</th>
+                  </tr>
+                </thead>
+                <tbody id="exe-presets-tbody">
+                  <!-- Rendered dynamically by renderExeGeneratorView() -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- VIEW: EMULATOR BYPASS -->
+        <section class="tab-view" id="view-emulator">
+          <div class="exe-history-card" style="padding:28px;text-align:center;">
+            <div style="font-size:36px;margin-bottom:12px;">🎮</div>
+            <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px;">EMULATOR BYPASS ENGINE</h2>
+            <p style="color:#8e95aa;font-size:12.5px;max-width:500px;margin:0 auto 20px auto;">
+              Active driver-level hook bypass for GameLoop 32/64-bit, LDPlayer 9, and BlueStacks 5.
+            </p>
+            <div style="display:inline-flex;gap:12px;margin-bottom:20px;">
+              <span class="exe-badge-green" style="font-size:11px;padding:4px 10px;">● GameLoop: Operational</span>
+              <span class="exe-badge-green" style="font-size:11px;padding:4px 10px;">● LDPlayer: Protected</span>
+              <span class="exe-badge-green" style="font-size:11px;padding:4px 10px;">● Anti-Cheat: Undetected</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- VIEW: SDKS -->
+        <section class="tab-view" id="view-sdks">
+          <div class="exe-history-card" style="padding:28px;">
+            <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px;">DEVELOPER SDKS &amp; CLIENT LIBS</h2>
+            <p style="color:#8e95aa;font-size:12.5px;margin-bottom:20px;">Direct integration SDKs with embedded HMAC SHA-256 verification.</p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:14px;">
+              <div class="exe-card-box" style="min-height:auto;padding:16px;">
+                <div style="font-weight:700;color:#fff;font-size:14px;margin-bottom:4px;">C# / .NET SDK</div>
+                <div style="color:#64748b;font-size:11px;margin-bottom:12px;">WinForms, WPF, Console (v2.4)</div>
+                <button class="btn-exe-download" style="width:100%;justify-content:center;" onclick="alert('Downloading C# SDK...')">Download .nupkg</button>
+              </div>
+              <div class="exe-card-box" style="min-height:auto;padding:16px;">
+                <div style="font-weight:700;color:#fff;font-size:14px;margin-bottom:4px;">C++ Native SDK</div>
+                <div style="color:#64748b;font-size:11px;margin-bottom:12px;">x86/x64 Static Library &amp; Header</div>
+                <button class="btn-exe-download" style="width:100%;justify-content:center;" onclick="alert('Downloading C++ Native SDK...')">Download .zip</button>
+              </div>
+              <div class="exe-card-box" style="min-height:auto;padding:16px;">
+                <div style="font-weight:700;color:#fff;font-size:14px;margin-bottom:4px;">Python Wrapper</div>
+                <div style="color:#64748b;font-size:11px;margin-bottom:12px;">pip install hyperx-keyauth</div>
+                <button class="btn-exe-download" style="width:100%;justify-content:center;" onclick="alert('pip install hyperx-keyauth')">Copy Command</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- VIEW: API ACCESS -->
+        <section class="tab-view" id="view-api">
+          <div class="exe-history-card" style="padding:28px;">
+            <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px;">REST API &amp; AUTH ENDPOINTS</h2>
+            <p style="color:#8e95aa;font-size:12.5px;margin-bottom:20px;">Use your secret Seller Key to manage licenses and authenticate users programmatically.</p>
+            <div class="exe-preview-box" style="padding:16px;font-family:var(--font-mono);font-size:12px;color:#cbd5e1;line-height:1.7;">
+              <span style="color:#ef4444;">POST</span> /api/1.2/?type=init&amp;ver=1.0&amp;name=HYPER_X<br>
+              <span style="color:#22c55e;">POST</span> /api/1.2/?type=license&amp;key=HYPERX-XXXX-XXXX&amp;hwid=DEVICE_HWID<br>
+              <span style="color:#00f0ff;">POST</span> /api/1.2/?type=var&amp;varid=PAYLOAD_HASH
+            </div>
+          </div>
+        </section>
+
+        <!-- VIEW: DISCORD BOT -->
+        <section class="tab-view" id="view-discord">
+          <div class="exe-history-card" style="padding:28px;text-align:center;">
+            <div style="font-size:36px;margin-bottom:12px;">🤖</div>
+            <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px;">DISCORD INTEGRATION BOT</h2>
+            <p style="color:#8e95aa;font-size:12.5px;max-width:500px;margin:0 auto 20px auto;">
+              Automatically issue roles to purchasers, generate trial keys via slash commands, and announce status updates.
+            </p>
+            <span class="exe-badge-green" style="font-size:11px;padding:6px 14px;">● Discord Gateway Connected (23.4ms latency)</span>
+          </div>
+        </section>
+
       </main>
     </div>
   </div>
@@ -1597,6 +1981,7 @@
               <option value="154d1edaddd7203fbfd847f4">VAULT PANEL</option>
               <option value="db3b90e8134ec738b94a9b05">LIB BYPASS</option>
               <option value="2411bc9db9f9a66c6e876ad2">FPS BOOSTER</option>
+              <option value="phone_panel_001">PHONE PANEL</option>
             </select>
           </div>
 

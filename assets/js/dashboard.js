@@ -18,11 +18,13 @@ const DEFAULT_PACKAGES = [
   { package_id: 'd4f0ce93349f236711344cb5', package_name: 'PVT AIMKILL', app_name: 'Custom work' },
   { package_id: '154d1edaddd7203fbfd847f4', package_name: 'VAULT PANEL', app_name: 'Custom work' },
   { package_id: 'db3b90e8134ec738b94a9b05', package_name: 'LIB BYPASS', app_name: 'Custom work' },
-  { package_id: '2411bc9db9f9a66c6e876ad2', package_name: 'FPS BOOSTER', app_name: 'Custom work' }
+  { package_id: '2411bc9db9f9a66c6e876ad2', package_name: 'FPS BOOSTER', app_name: 'Custom work' },
+  { package_id: 'phone_panel_001', package_name: 'PHONE PANEL', app_name: 'Custom work' }
 ];
 
 // Seed Licenses History (Saved in localStorage so generated keys persist)
 const SEED_LICENSES = [
+  { id: '8', key: 'HPERX-PHON-9901-ANDR-7721', app: 'Custom work', pkg: 'PHONE PANEL', user: 'Mobile_VIP', hwid: 'Not Bound', expiry: '30 Days', status: 'active', note: 'Created for Phone Panel', resellerId: 'owner' },
   { id: '1', key: 'HPERX-8F92-41AC-90B2-110A', app: 'Custom work', pkg: 'BASIC PANEL', user: 'beta123_User', hwid: '4A8F-912C-00B4-E9D1', expiry: '2026-12-31', status: 'active', note: 'Created by beta123', resellerId: '17909518904974' },
   { id: '2', key: 'HPERX-32KA-991L-M08P-4491', app: 'Custom work', pkg: 'EXTERNAL PANEL', user: 'madhukar_User', hwid: '88CF-1102-BA54-77E0', expiry: '2026-10-15', status: 'active', note: 'Created by madhukar', resellerId: '1791108883957' },
   { id: '7', key: 'HPERX-44T1-8822-BB11-0099', app: 'Custom work', pkg: 'BASIC PANEL', user: 'test1_Client', hwid: 'Not Bound', expiry: '30 Days', status: 'active', note: 'Created by test1', resellerId: '1791196941383' },
@@ -828,6 +830,9 @@ async function loadAdminPackages() {
   const data = await callApi('get_admin_packages');
   if (data && data.success && Array.isArray(data.packages) && data.packages.length > 0) {
     state.packages = data.packages;
+    if (!state.packages.some(p => p.package_name === 'PHONE PANEL' || p.package_id === 'phone_panel_001')) {
+      state.packages.push({ package_id: 'phone_panel_001', package_name: 'PHONE PANEL', app_name: 'Custom work' });
+    }
     const appName = data.packages[0].app_name || 'Custom work';
     const appLabel = document.getElementById('active-app-name-label');
     if (appLabel) appLabel.textContent = appName;
@@ -1137,8 +1142,13 @@ function switchTab(tabId) {
       licenses: 'License Keys',
       logs: 'Audit Logs',
       resellers: 'Resellers',
-      apps: 'Packages',
-      transfers: 'Transfers'
+      apps: 'Applications',
+      transfers: 'Transfers',
+      exegenerator: 'EXE Generator & Branding',
+      emulator: 'Emulator Bypass',
+      sdks: 'Developer SDKs',
+      api: 'API Access',
+      discord: 'Discord Bot'
     };
     titleEl.textContent = titles[tabId] || 'Dashboard';
   }
@@ -1157,6 +1167,8 @@ function switchTab(tabId) {
     initUserRoleSession();
   } else if (tabId === 'licenses') {
     renderLicensesTable();
+  } else if (tabId === 'exegenerator') {
+    renderExeGeneratorView();
   }
 
   closeMobileSidebar();
@@ -1488,11 +1500,14 @@ async function submitGenerateKeys(e) {
     btn.innerHTML = '<span>⏳</span> Generating on API...';
   }
 
-  const selectedPkg = state.packages.find(p => p.package_id === pkgId);
-  const pkgName = selectedPkg ? selectedPkg.package_name : 'BASIC PANEL';
+  const allPkgs = (state.packages && state.packages.length > 0) ? state.packages : DEFAULT_PACKAGES;
+  const selectedPkg = allPkgs.find(p => p.package_id === pkgId);
+  const pkgName = selectedPkg ? selectedPkg.package_name : (pkgId === 'phone_panel_001' ? 'PHONE PANEL' : 'BASIC PANEL');
 
   const res = await callApi('generate_key', {
     package_id: pkgId,
+    package_name: pkgName,
+    user: user,
     days: days,
     count: count
   });
@@ -3850,3 +3865,620 @@ document.addEventListener('DOMContentLoaded', () => {
     role !== 'reseller' ? loadResellerStats() : Promise.resolve()
   ]);
 });
+
+
+// ==========================================================================
+// EXE GENERATOR & BRANDING MODULE (TERMINALX999 PRO)
+// ==========================================================================
+
+const DEFAULT_EXE_PRESETS = [
+  {
+    id: 'preset_hyper_x',
+    brandTitle: 'HYPER X',
+    panels: ['Basic Panel', 'AimSilent Exe', 'UID Bypass', 'External Panel', 'PVT AIMKILL', 'Vault Panel', 'LIB Bypass', 'FPS BOOSTER'],
+    status: 'Up to Date',
+    date: '10 Oct, 20:56'
+  }
+];
+
+function getExePresets() {
+  try {
+    const data = localStorage.getItem('tx99_exe_presets');
+    if (data) return JSON.parse(data);
+  } catch (e) {}
+  return [...DEFAULT_EXE_PRESETS];
+}
+
+function saveExePresets(presets) {
+  try {
+    localStorage.setItem('tx99_exe_presets', JSON.stringify(presets));
+  } catch (e) {}
+}
+
+function getBuildQuota() {
+  const q = localStorage.getItem('tx99_build_quota');
+  return q !== null ? parseInt(q, 10) : 5;
+}
+
+function setBuildQuota(val) {
+  localStorage.setItem('tx99_build_quota', val.toString());
+}
+
+async function fetchBuildMetadata() {
+  try {
+    const res = await fetch('/api/build-meta');
+    if (res.ok) {
+      const meta = await res.json();
+      const sizeBadge = document.getElementById('master-core-size-badge');
+      if (sizeBadge && meta.masterSize) sizeBadge.textContent = meta.masterSize;
+
+      const filenameEl = document.getElementById('master-core-filename');
+      if (filenameEl && (meta.exeFileName || meta.masterFileName)) filenameEl.textContent = meta.exeFileName || meta.masterFileName;
+
+      const timeEl = document.getElementById('master-core-updated-time');
+      if (timeEl && meta.lastUpdated) timeEl.textContent = meta.lastUpdated;
+
+      const syncEl = document.getElementById('master-core-sync-label');
+      if (syncEl && meta.resellerSync) syncEl.textContent = meta.resellerSync;
+    }
+  } catch (e) {}
+}
+
+// Drag & Drop support for admin upload zone
+function handleAdminDropZone(event) {
+  event.preventDefault();
+  const dz = document.getElementById('admin-drop-zone');
+  if (dz) dz.classList.remove('dz-hover');
+  const file = event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files[0];
+  if (!file) return;
+  // Reuse the same upload logic by faking an event
+  handleAdminCoreUploadFile(file);
+}
+
+async function handleAdminCoreUpload(event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+  await handleAdminCoreUploadFile(file);
+  event.target.value = '';
+}
+
+async function handleAdminCoreUploadFile(file) {
+  const role = getUserRole();
+  if (role === 'reseller') {
+    alert('⛔ Access Denied: Only Admin (Root Owner) can upload new master builds.');
+    return;
+  }
+
+  const progressEl = document.getElementById('admin-upload-progress');
+  const lastInfo = document.getElementById('admin-last-upload-info');
+
+  if (progressEl) {
+    progressEl.style.display = 'block';
+    progressEl.style.color = '#00f0ff';
+    progressEl.textContent = `⏳ Uploading ${file.name} (${(file.size / (1024 * 1024)).toFixed(2)} MB)...`;
+  }
+
+  try {
+    const res = await fetch(`/api/upload?filename=${encodeURIComponent(file.name)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/octet-stream' },
+      body: file
+    });
+
+    const data = await res.json();
+    if (data.success) {
+      if (progressEl) {
+        progressEl.style.color = '#22c55e';
+        progressEl.textContent = `✔ Deployed successfully to Resellers!`;
+        setTimeout(() => { progressEl.style.display = 'none'; progressEl.style.color = '#00f0ff'; }, 4000);
+      }
+      if (lastInfo) {
+        lastInfo.style.display = 'block';
+        const now = new Date().toLocaleTimeString();
+        lastInfo.textContent = `Last Upload: ${file.name} (${(file.size/(1024*1024)).toFixed(2)} MB) · ${now}`;
+      }
+      await fetchBuildMetadata();
+      alert(`✅ Master Core Successfully Uploaded!\n\nFile: ${file.name}\nSize: ${data.meta.masterSize || data.meta.exeSize}\nReseller Status: Automatic Push Deployed`);
+    } else {
+      throw new Error(data.error || 'Upload failed');
+    }
+  } catch (err) {
+    if (progressEl) {
+      progressEl.style.color = '#ef4444';
+      progressEl.textContent = `❌ Upload failed: ${err.message}`;
+    }
+    alert('Upload error: ' + err.message);
+  }
+}
+
+function renderExeGeneratorView() {
+  const role = getUserRole();
+  const presets = getExePresets();
+  const quota = getBuildQuota();
+
+  // Role customization for Admin vs Reseller
+  const accNameEl = document.getElementById('exe-active-account-name');
+  const roleBadgeEl = document.getElementById('exe-active-role-badge');
+  const masterActionBtn = document.getElementById('btn-master-core-action');
+  const brandTitleEl = document.getElementById('client-brand-display-name');
+
+  if (role === 'reseller') {
+    const reseller = getCurrentReseller() || {};
+    const resName = reseller.username || reseller.name || 'Reseller';
+    if (accNameEl) accNameEl.textContent = resName;
+    if (roleBadgeEl) roleBadgeEl.innerHTML = '<span>●</span> Verified Reseller';
+    if (masterActionBtn) {
+      masterActionBtn.innerHTML = '<span>⬇</span><span>Master Core ZIP – Ready</span>';
+      masterActionBtn.style.pointerEvents = 'none';
+      masterActionBtn.style.cursor = 'default';
+      masterActionBtn.style.opacity = '0.85';
+      masterActionBtn.removeAttribute('onclick');
+    }
+    if (brandTitleEl) brandTitleEl.textContent = resName;
+    
+    // Reseller Brand Default
+    const b1 = document.getElementById('builder-brand-1');
+    if (b1 && (!b1.value || b1.value === 'HYPER')) b1.value = resName;
+  } else {
+    if (accNameEl) accNameEl.textContent = 'HYPER X';
+    if (roleBadgeEl) roleBadgeEl.innerHTML = '<span>●</span> Verified Owner';
+    if (masterActionBtn) masterActionBtn.innerHTML = '<span>✔</span><span>HMAC Protected Master Active</span>';
+    if (brandTitleEl) brandTitleEl.textContent = 'HYPER X';
+  }
+
+  fetchBuildMetadata();
+
+  // Update Quota labels
+  const quotaLabel = document.getElementById('exe-quota-display');
+  if (quotaLabel) quotaLabel.textContent = `${quota} Credits Left`;
+
+  const buildsLeftBadge = document.getElementById('exe-builds-left-badge');
+  if (buildsLeftBadge) buildsLeftBadge.textContent = `${quota} Builds Left`;
+
+  const savedBadge = document.getElementById('exe-saved-badge');
+  if (savedBadge) savedBadge.textContent = `${presets.length} Saved`;
+
+  const bulkBtn = document.getElementById('exe-bulk-btn-text');
+  if (bulkBtn) bulkBtn.textContent = `Bulk Download All (${presets.length})`;
+
+  // Render Table
+  const tbody = document.getElementById('exe-presets-tbody');
+  if (!tbody) return;
+
+  if (presets.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="4" style="text-align:center;padding:24px;color:#64748b;">
+          No custom client presets saved yet.
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  tbody.innerHTML = presets.map((p, idx) => {
+    const panelsList = Array.isArray(p.panels) ? p.panels.join(', ') : p.panels;
+    return `
+      <tr>
+        <td class="exe-brand-cell">${escapeHtml(p.brandTitle)}</td>
+        <td class="exe-panels-cell" title="${escapeHtml(panelsList)}">${escapeHtml(panelsList)}</td>
+        <td>
+          <span class="exe-badge-green">
+            <span style="font-size:8px;">●</span> ${escapeHtml(p.status || 'Up to Date')}
+          </span>
+        </td>
+        <td>
+          <div class="exe-action-btns">
+            <button class="btn-exe-download" onclick="downloadExePreset(${idx})" title="Download Executable Build">
+              <span>⬇</span>
+              <span>Download</span>
+            </button>
+            <button class="btn-exe-delete" onclick="deleteExePreset(${idx})" title="Delete Build Preset">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              </svg>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function updateBuilderPreviewTitle() {
+  const b1 = (document.getElementById('builder-brand-1')?.value || '').trim();
+  const b2 = (document.getElementById('builder-brand-2')?.value || '').trim();
+  const title = [b1, b2].filter(Boolean).join(' ') || 'HYPER X';
+
+  const previewEl = document.getElementById('builder-preview-title');
+  if (previewEl) {
+    previewEl.textContent = title;
+  }
+}
+
+function switchBuilderSubTab(tab) {
+  const btnPanels = document.getElementById('subtab-btn-panels');
+  const btnCore = document.getElementById('subtab-btn-core');
+  const listPanels = document.getElementById('builder-list-panels');
+  const listCore = document.getElementById('builder-list-core');
+
+  if (tab === 'panels') {
+    btnPanels?.classList.add('active');
+    btnCore?.classList.remove('active');
+    if (listPanels) listPanels.style.display = 'flex';
+    if (listCore) listCore.style.display = 'none';
+  } else {
+    btnCore?.classList.add('active');
+    btnPanels?.classList.remove('active');
+    if (listCore) listCore.style.display = 'flex';
+    if (listPanels) listPanels.style.display = 'none';
+  }
+}
+
+function triggerGenerateCustomBuild() {
+  const b1 = (document.getElementById('builder-brand-1')?.value || '').trim();
+  const b2 = (document.getElementById('builder-brand-2')?.value || '').trim();
+  const brandName = [b1, b2].filter(Boolean).join(' ') || 'HYPER X';
+
+  let quota = getBuildQuota();
+  if (quota <= 0) {
+    alert('❌ Build Quota Depleted: You have 0 credits remaining. Please contact Root Owner for quota replenishment.');
+    return;
+  }
+
+  // Collect checked checkboxes
+  const selected = [];
+  document.querySelectorAll('.builder-checkbox:checked').forEach(cb => {
+    selected.push(cb.value);
+  });
+
+  if (selected.length === 0) {
+    alert('⚠️ Please select at least one module or panel to include in your build.');
+    return;
+  }
+
+  const btn = document.getElementById('btn-generate-build');
+  const origHtml = btn ? btn.innerHTML : '';
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<span>⚡</span><span>COMPILING PE BINARY...</span>';
+  }
+
+  setTimeout(() => {
+    // Deduct quota
+    quota = Math.max(0, quota - 1);
+    setBuildQuota(quota);
+
+    // Add preset
+    const presets = getExePresets();
+    presets.unshift({
+      id: 'preset_' + Date.now(),
+      brandTitle: brandName,
+      panels: selected,
+      status: 'Up to Date',
+      date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })
+    });
+    saveExePresets(presets);
+    renderExeGeneratorView();
+
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = origHtml;
+    }
+
+    // Trigger real file download from HTTP server
+    triggerFileDownload(`${brandName.replace(/\s+/g, '_')}_Client_x64.exe`, 'exe', brandName);
+  }, 1200);
+}
+
+function triggerFileDownload(filename, type, brand) {
+  const cleanBrand = (brand || 'HYPER_X').replace(/\s+/g, '_');
+  const url = `/api/download?brand=${encodeURIComponent(cleanBrand)}&type=${encodeURIComponent(type || 'exe')}`;
+  
+  const a = document.createElement('a');
+  a.href = url;
+  a.setAttribute('download', filename);
+  a.style.display = 'none';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => {
+    if (a.parentNode) a.parentNode.removeChild(a);
+  }, 2000);
+}
+
+function downloadExePreset(index) {
+  const presets = getExePresets();
+  const p = presets[index];
+  const brand = p ? p.brandTitle : 'HYPER_X';
+  const cleanBrand = brand.replace(/\s+/g, '_');
+  triggerFileDownload(`${cleanBrand}_Client_x64.exe`, 'exe', brand);
+}
+
+function deleteExePreset(index) {
+  const presets = getExePresets();
+  if (!presets[index]) return;
+  if (confirm(`Are you sure you want to delete "${presets[index].brandTitle}" preset?`)) {
+    presets.splice(index, 1);
+    saveExePresets(presets);
+    renderExeGeneratorView();
+  }
+}
+
+function bulkDownloadAllPresets() {
+  const presets = getExePresets();
+  if (presets.length === 0) {
+    alert('No saved presets available to download.');
+    return;
+  }
+  presets.forEach((p, i) => {
+    setTimeout(() => {
+      downloadExePreset(i);
+    }, i * 500);
+  });
+}
+
+function downloadMasterZip() {
+  const a = document.createElement('a');
+  a.href = '/api/download?target=master';
+  a.setAttribute('download', 'Master_Core_KERNEL_CSHARP_v1.0.0.zip');
+  a.style.display = 'none';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => {
+    if (a.parentNode) a.parentNode.removeChild(a);
+  }, 2000);
+}
+
+function redownloadClientAuto() {
+  triggerFileDownload('HYPER_X_AutoBranded_Client.exe', 'exe', 'HYPER_X');
+}
+
+// Auto-initialize EXE Generator view on load
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    try { renderExeGeneratorView(); } catch (_) {}
+  });
+} else {
+  try { renderExeGeneratorView(); } catch (_) {}
+}
+
+// Auto-switch tab if requested in URL (e.g. ?tab=exegenerator)
+(function() {
+  function checkUrlTab() {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const tab = params.get('tab') || window.location.hash.replace('#', '');
+      if (tab && typeof switchTab === 'function') {
+        setTimeout(() => switchTab(tab), 200);
+      }
+    } catch (_) {}
+  }
+  if (document.readyState === 'loading') {
+    window.addEventListener('load', checkUrlTab);
+  } else {
+    checkUrlTab();
+  }
+})();
+
+
+// ==========================================================================
+// RESELLER DASHBOARD ROUTING & ROLE SWITCHER
+// ==========================================================================
+
+(function() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const roleParam = params.get('role');
+    if (roleParam === 'reseller') {
+      let resellers = [];
+      try { resellers = JSON.parse(localStorage.getItem('tx99_resellers')) || []; } catch (_) {}
+      const defaultRes = resellers[0] || {
+        id: '1791108883957',
+        username: 'madhukar',
+        password: 'madhukarbeta',
+        email: 'madhukar@reseller.local',
+        balance: 996,
+        totalQuota: 999,
+        status: 'Active',
+        panels: ['all']
+      };
+      sessionStorage.setItem('hyperx_logged_in', 'true');
+      sessionStorage.setItem('hyperx_user_role', 'reseller');
+      sessionStorage.setItem('hyperx_current_reseller', JSON.stringify(defaultRes));
+      localStorage.setItem('hyperx_logged_in', 'true');
+      localStorage.setItem('hyperx_user_role', 'reseller');
+      localStorage.setItem('hyperx_current_reseller', JSON.stringify(defaultRes));
+    } else if (roleParam === 'admin') {
+      sessionStorage.setItem('hyperx_logged_in', 'true');
+      sessionStorage.setItem('hyperx_user_role', 'admin');
+      sessionStorage.removeItem('hyperx_current_reseller');
+      localStorage.setItem('hyperx_logged_in', 'true');
+      localStorage.setItem('hyperx_user_role', 'admin');
+      localStorage.removeItem('hyperx_current_reseller');
+    }
+  } catch (_) {}
+})();
+
+window.toggleRoleView = function() {
+  const currentRole = getUserRole();
+  if (currentRole === 'reseller') {
+    window.location.href = 'dashboard.html?role=admin&tab=exegenerator';
+  } else {
+    window.location.href = 'dashboard.html?role=reseller&tab=exegenerator';
+  }
+};
+
+// Update Topbar Role Pill
+(function() {
+  function updateRolePill() {
+    const role = getUserRole();
+    const btn = document.getElementById('header-admin-btn');
+    const nameEl = document.getElementById('header-admin-name');
+    const iconEl = document.getElementById('header-admin-icon');
+
+    if (btn) {
+      btn.style.cursor = 'pointer';
+      btn.setAttribute('title', 'Click to switch between Admin & Reseller dashboard');
+      btn.onclick = window.toggleRoleView;
+    }
+
+    if (role === 'reseller') {
+      const res = getCurrentReseller() || { username: 'Reseller' };
+      if (nameEl) nameEl.textContent = `${res.username} (Reseller ⇄ Admin)`;
+      if (iconEl) iconEl.textContent = '👥';
+      if (btn) btn.style.background = '#059669'; // Green badge for reseller
+    } else {
+      if (nameEl) nameEl.textContent = 'Admin View (⇄ Reseller)';
+      if (iconEl) iconEl.textContent = '🛡️';
+      if (btn) btn.style.background = '#0284c7'; // Blue badge for admin
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    window.addEventListener('load', updateRolePill);
+  } else {
+    updateRolePill();
+  }
+})();
+
+
+// ==========================================================================
+// RESELLER LIVE UPDATE NOTIFICATION SYSTEM
+// ==========================================================================
+
+let latestBuildMeta = null;
+
+async function checkBuildUpdatesForReseller() {
+  try {
+    const res = await fetch('/api/build-meta', { cache: 'no-store' });
+    if (!res.ok) return;
+    const meta = await res.json();
+    latestBuildMeta = meta;
+
+    const role = getUserRole();
+    const lastSeenId = localStorage.getItem('tx99_last_seen_update_id');
+    const isNew = meta.hasNewUpdate && meta.updateId && meta.updateId.toString() !== lastSeenId;
+
+    const bannerEl = document.getElementById('reseller-update-banner');
+    const bellDot = document.getElementById('bell-unread-dot');
+    const cardBadge = document.getElementById('card2-update-alert-badge');
+    const bannerTitle = document.getElementById('banner-update-title');
+    const bannerDesc = document.getElementById('banner-update-desc');
+
+    if (isNew && role === 'reseller') {
+      if (bannerEl) bannerEl.style.display = 'flex';
+      if (bellDot) bellDot.style.display = 'block';
+      if (cardBadge) cardBadge.style.display = 'inline-block';
+      if (bannerTitle && meta.updateTitle) bannerTitle.textContent = meta.updateTitle;
+      if (bannerDesc && meta.updateDesc) bannerDesc.textContent = meta.updateDesc;
+    } else {
+      if (bannerEl && !isNew) bannerEl.style.display = 'none';
+      if (cardBadge && !isNew) cardBadge.style.display = 'none';
+    }
+
+    renderNotificationDropdownItems(meta, isNew);
+  } catch (_) {}
+}
+
+window.dismissUpdateBanner = function() {
+  const bannerEl = document.getElementById('reseller-update-banner');
+  if (bannerEl) bannerEl.style.display = 'none';
+  const bellDot = document.getElementById('bell-unread-dot');
+  if (bellDot) bellDot.style.display = 'none';
+  const cardBadge = document.getElementById('card2-update-alert-badge');
+  if (cardBadge) cardBadge.style.display = 'none';
+  if (latestBuildMeta && latestBuildMeta.updateId) {
+    localStorage.setItem('tx99_last_seen_update_id', latestBuildMeta.updateId.toString());
+  }
+  fetch('/api/dismiss-update').catch(() => {});
+};
+
+window.downloadLatestUpdateAndDismiss = function() {
+  const filename = (latestBuildMeta && latestBuildMeta.latestUploadedFile) 
+    ? latestBuildMeta.latestUploadedFile 
+    : ((latestBuildMeta && latestBuildMeta.masterFileName) ? latestBuildMeta.masterFileName : 'Master_Core_Update.zip');
+    
+  const a = document.createElement('a');
+  a.href = '/api/download?target=update';
+  a.setAttribute('download', filename);
+  a.style.display = 'none';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => {
+    if (a.parentNode) a.parentNode.removeChild(a);
+  }, 2000);
+
+  dismissUpdateBanner();
+};
+
+window.toggleNotificationDropdown = function() {
+  const dropdown = document.getElementById('notification-dropdown');
+  const bellDot = document.getElementById('bell-unread-dot');
+  if (!dropdown) return;
+
+  const isClosed = dropdown.style.display === 'none' || !dropdown.style.display;
+  dropdown.style.display = isClosed ? 'block' : 'none';
+
+  if (isClosed && bellDot) {
+    bellDot.style.display = 'none';
+  }
+};
+
+// Close dropdown on outside click
+document.addEventListener('click', (e) => {
+  const dropdown = document.getElementById('notification-dropdown');
+  const bellBtn = document.getElementById('header-bell-btn');
+  if (dropdown && dropdown.style.display === 'block') {
+    if (!dropdown.contains(e.target) && bellBtn && !bellBtn.contains(e.target)) {
+      dropdown.style.display = 'none';
+    }
+  }
+});
+
+function renderNotificationDropdownItems(meta, isUnread) {
+  const listEl = document.getElementById('notif-items-list');
+  if (!listEl) return;
+
+  if (meta && meta.updateTitle) {
+    listEl.innerHTML = `
+      <div style="background:#131726;border:1px solid ${isUnread ? '#ef4444' : '#1e2438'};border-radius:6px;padding:10px;display:flex;flex-direction:column;gap:6px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span style="font-size:11.5px;font-weight:800;color:#ffffff;display:flex;align-items:center;gap:5px;">
+            <span style="color:#ef4444;">⚡</span> ${escapeHtml(meta.updateTitle)}
+          </span>
+          <span style="font-size:10px;color:#64748b;font-family:var(--font-mono);">${escapeHtml(meta.lastUpdated || 'Just now')}</span>
+        </div>
+        <p style="font-size:11px;color:#94a3b8;line-height:1.4;margin:0;">
+          ${escapeHtml(meta.updateDesc || 'Admin released a new client core update.')}
+        </p>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px;">
+          <span style="font-size:10px;color:#22c55e;font-weight:700;">Size: ${escapeHtml(meta.masterSize || '1.98 MB')}</span>
+          <button type="button" class="btn-exe-download" style="padding:3px 10px;font-size:10.5px;" onclick="downloadLatestUpdateAndDismiss()">
+            <span>⬇</span> Download
+          </button>
+        </div>
+      </div>
+      <div style="background:#111420;border:1px solid #1a1e2e;border-radius:6px;padding:8px 10px;display:flex;align-items:center;justify-content:space-between;">
+        <div style="font-size:11px;color:#cbd5e1;display:flex;align-items:center;gap:5px;">
+          <span style="color:#22c55e;">●</span> KeyAuth Gateway Operational
+        </div>
+        <span style="font-size:9.5px;color:#64748b;">HMAC-SHA256</span>
+      </div>
+    `;
+  } else {
+    listEl.innerHTML = `
+      <div style="padding:16px;text-align:center;color:#64748b;font-size:11.5px;">
+        No active update alerts. System is up to date.
+      </div>
+    `;
+  }
+}
+
+// Start live notification polling every 4 seconds
+setInterval(checkBuildUpdatesForReseller, 4000);
+if (document.readyState === 'loading') {
+  window.addEventListener('load', checkBuildUpdatesForReseller);
+} else {
+  checkBuildUpdatesForReseller();
+}

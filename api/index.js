@@ -264,6 +264,149 @@ module.exports = async (req, res) => {
   }
 
   // =========================================================================
+  // 1B. CLIENT AUTH / VERIFY KEY (Phone Panel & Client Loaders)
+  // Public endpoint: Verifies license, binds device HWID, checks expiration
+  // =========================================================================
+  if (action === 'verify_key' || action === 'auth') {
+    const licenseKey = (body.key || req.query.key || '').trim();
+    const clientHwid = (body.hwid || req.query.hwid || '').trim();
+
+    if (!licenseKey || !clientHwid) {
+      return res.status(400).json({
+        success: false,
+        message: 'Missing license key or client HWID parameter',
+        status: 'INVALID_PARAMS'
+      });
+    }
+
+    const cleanKey = licenseKey.toLowerCase();
+    let lic = licenses.find(l => l.key && l.key.toLowerCase() === cleanKey);
+
+    // If key not found in local store, try remote KeyAuth proxy
+    if (!lic) {
+      try {
+        const payload = {
+          api_key: REMOTE_API_KEY,
+          app_id: appId,
+          action: 'verify_key',
+          key: licenseKey,
+          hwid: clientHwid
+        };
+        const remoteRes = await proxyToRemote(payload);
+        if (remoteRes.data && (remoteRes.data.success || remoteRes.data.status)) {
+          return res.status(remoteRes.statusCode || 200).json(remoteRes.data);
+        }
+      } catch (_) {}
+      return res.status(404).json({
+        success: false,
+        message: 'License key does not exist or invalid format',
+        status: 'NOT_FOUND'
+      });
+    }
+
+    // 1. Check ban status
+    if (lic.status === 'banned') {
+      return res.status(403).json({
+        success: false,
+        message: 'License key is banned',
+        status: 'BANNED'
+      });
+    }
+
+    // 2. Check Expiration
+    const expiryStr = (lic.expiry || '').trim();
+    const isLifetime = expiryStr.toLowerCase().includes('lifetime') || expiryStr === '0' || expiryStr === '0 Days';
+    const isRelative = !isLifetime && /(\d+)\s*days?/i.test(expiryStr);
+
+    if (!isLifetime && !isRelative && !isNaN(Date.parse(expiryStr))) {
+      const expTimestamp = new Date(expiryStr).getTime();
+      if (expTimestamp < Date.now()) {
+        lic.status = 'expired';
+        saveStoreData(storeData);
+        return res.status(403).json({
+          success: false,
+          message: 'License key has expired',
+          status: 'EXPIRED'
+        });
+      }
+    }
+
+    // 3. HWID Binding & Activation
+    const isUnbound = !lic.hwid || lic.hwid === 'Not Bound' || lic.hwid === 'Unbound';
+    if (isUnbound) {
+      lic.hwid = clientHwid;
+      lic.status = 'active';
+
+      // If relative duration (e.g., "30 Days"), activate from now
+      if (isRelative) {
+        const match = expiryStr.match(/(\d+)/);
+        const days = match ? parseInt(match[1], 10) : 30;
+        const targetDate = new Date(Date.now() + (days * 24 * 60 * 60 * 1000));
+        lic.expiry = targetDate.toISOString().split('T')[0];
+      }
+      lic.activated_at = new Date().toISOString();
+      saveStoreData(storeData);
+    } else if (lic.hwid !== clientHwid) {
+      return res.status(403).json({
+        success: false,
+        message: 'Hardware ID mismatch. Contact admin to reset HWID.',
+        status: 'HWID_MISMATCH'
+      });
+    }
+
+    // Cryptographic signature
+    const timestamp = Math.floor(Date.now() / 1000);
+    const payloadToSign = `${lic.key}|${clientHwid}|${timestamp}`;
+    const signature = crypto.createHmac('sha256', HMAC_SECRET).update(payloadToSign).digest('hex');
+
+    return res.status(200).json({
+      success: true,
+      message: 'License Verified Successfully',
+      status: 'SUCCESS',
+      key: lic.key,
+      app: lic.app || 'Custom work',
+      pkg: lic.pkg || 'PHONE PANEL',
+      package_name: lic.pkg || 'PHONE PANEL',
+      user: lic.user || 'Client',
+      expiry: lic.expiry || 'Lifetime',
+      hwid: lic.hwid,
+      timestamp: timestamp,
+      hmac_sha256: signature
+    });
+  }
+
+  // =========================================================================
+  // 1C. GET ADMIN PACKAGES (Ensures PHONE PANEL is always listed)
+  // =========================================================================
+  if (action === 'get_admin_packages') {
+    let pkgs = [];
+    try {
+      const payload = { api_key: REMOTE_API_KEY, app_id: appId, action: 'get_admin_packages' };
+      const remoteRes = await proxyToRemote(payload);
+      if (remoteRes.data && remoteRes.data.success && Array.isArray(remoteRes.data.packages)) {
+        pkgs = remoteRes.data.packages;
+      }
+    } catch (_) {}
+
+    if (pkgs.length === 0) {
+      pkgs = [
+        { package_id: 'e52c1515c53453b85d0d4e87', package_name: 'BASIC PANEL', app_name: 'Custom work' },
+        { package_id: 'affc8da8fd5ace99981ab877', package_name: 'AIMSILENT EXE', app_name: 'Custom work' },
+        { package_id: 'cb921031dc43197e8ccb6828', package_name: 'UID BYPASS', app_name: 'Custom work' },
+        { package_id: '3d1c6c948b4715fbd2fada2d', package_name: 'EXTERNAL PANEL', app_name: 'Custom work' },
+        { package_id: 'd4f0ce93349f236711344cb5', package_name: 'PVT AIMKILL', app_name: 'Custom work' },
+        { package_id: '154d1edaddd7203fbfd847f4', package_name: 'VAULT PANEL', app_name: 'Custom work' },
+        { package_id: 'db3b90e8134ec738b94a9b05', package_name: 'LIB BYPASS', app_name: 'Custom work' },
+        { package_id: '2411bc9db9f9a66c6e876ad2', package_name: 'FPS BOOSTER', app_name: 'Custom work' }
+      ];
+    }
+    if (!pkgs.some(p => p.package_name === 'PHONE PANEL' || p.package_id === 'phone_panel_001')) {
+      pkgs.push({ package_id: 'phone_panel_001', package_name: 'PHONE PANEL', app_name: 'Custom work' });
+    }
+    return res.status(200).json({ success: true, packages: pkgs });
+  }
+
+  // =========================================================================
   // 2. AUTHENTICATION & ACCESS CONTROL FOR PROTECTED ACTIONS
   // =========================================================================
   const authUser = getAuthenticatedUser(req, body, storeData);
@@ -515,9 +658,10 @@ module.exports = async (req, res) => {
 
     let generatedKeys = [];
     let appName = 'Custom work';
-    let pkgName = body.package_name || 'BASIC PANEL';
+    let pkgName = body.package_name || (body.package_id === 'phone_panel_001' ? 'PHONE PANEL' : 'BASIC PANEL');
 
     // Try remote generation
+    if (body.package_id !== 'phone_panel_001') {
     try {
       const payload = {
         api_key: REMOTE_API_KEY,
@@ -534,6 +678,7 @@ module.exports = async (req, res) => {
         if (remoteRes.data.package_name) pkgName = remoteRes.data.package_name;
       }
     } catch (_) {}
+    }
 
     // Fallback generation if remote unavailable
     if (generatedKeys.length === 0) {

@@ -35,6 +35,18 @@
   ],
   "tx99_licenses": [
     {
+      "id": "17912759900000",
+      "key": "HPERX-PHON-9901-ANDR-7721",
+      "app": "Custom work",
+      "pkg": "PHONE PANEL",
+      "user": "Mobile_VIP",
+      "hwid": "Not Bound",
+      "expiry": "30 Days",
+      "status": "active",
+      "note": "Created for Phone Panel",
+      "resellerId": "owner"
+    },
+    {
       "id": "17912067841570",
       "key": "HPERX-CYR8-9TG8-RKSQ-28WZ",
       "app": "Custom work",

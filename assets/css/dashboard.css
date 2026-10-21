@@ -4126,3 +4126,545 @@ html, body {
 
 
 
+
+
+/* ==========================================================================
+   EXE GENERATOR & BRANDING STYLES (TERMINALX999 PIXEL-PERFECT MATCH)
+   ========================================================================== */
+
+#view-exegenerator {
+  width: 100%;
+  max-width: 1140px;
+}
+
+.exe-grid-top {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  margin-bottom: 22px;
+}
+
+@media (max-width: 992px) {
+  .exe-grid-top {
+    grid-template-columns: 1fr;
+  }
+}
+
+.exe-card-box {
+  background: linear-gradient(180deg, #0e121e 0%, #080a12 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 26px 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  position: relative;
+  min-height: 480px;
+  transition: all 0.25s ease;
+}
+
+.exe-card-box.card-master-core {
+  border-top: 2px solid #ea580c;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.55), 0 0 25px rgba(234, 88, 12, 0.12), inset 0 1px 0 rgba(234, 88, 12, 0.3);
+}
+
+.exe-card-box.card-branded-client {
+  border-top: 2px solid #ef4444;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.55), 0 0 25px rgba(239, 68, 68, 0.12), inset 0 1px 0 rgba(239, 68, 68, 0.3);
+}
+
+.exe-card-box:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.7);
+}
+
+.exe-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.exe-card-title-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.exe-card-icon-wrap {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  flex-shrink: 0;
+}
+
+.exe-card-title-text {
+  font-size: 16px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.3px;
+}
+
+.exe-badge-quota {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #ef4444;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 5px;
+}
+
+.exe-badge-green {
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  color: #22c55e;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.exe-badge-amber {
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  color: #f59e0b;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 5px;
+}
+
+/* Premium Inset Console Box */
+.exe-console-box {
+  background: #05070e;
+  border: 1px solid #131726;
+  border-radius: 9px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+}
+
+.exe-console-label {
+  font-size: 10px;
+  color: #64748b;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+
+.exe-console-val {
+  font-size: 14px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: #ffffff;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* 2x2 Metric Tiles inside Master Core */
+.exe-metric-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.exe-metric-tile {
+  background: #070912;
+  border: 1px solid #131724;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.exe-metric-tile .m-lbl {
+  font-size: 10px;
+  color: #64748b;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.exe-metric-tile .m-val {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #e2e8f0;
+  margin-top: 3px;
+}
+
+.exe-metric-tile .m-val.green {
+  color: #22c55e;
+}
+
+/* Premium 4-Column Module Chips Grid */
+.exe-panels-chip-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 12px 0 16px 0;
+}
+
+@media (max-width: 680px) {
+  .exe-panels-chip-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.exe-panel-chip {
+  background: #060810;
+  border: 1px solid #151928;
+  border-radius: 6px;
+  padding: 9px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: all 0.2s ease;
+}
+
+.exe-panel-chip:hover {
+  border-color: #ef4444;
+  color: #ffffff;
+  background: #111422;
+  transform: translateY(-1px);
+}
+
+.exe-brand-inputs-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.exe-brand-input-wrap label {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  color: #64748b;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.exe-brand-input-wrap input {
+  width: 100%;
+  background: #050608;
+  border: 1px solid #1c212e;
+  color: #ffffff;
+  padding: 6px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font-sans);
+  outline: none;
+}
+
+.exe-brand-input-wrap input:focus {
+  border-color: #ef4444;
+}
+
+.exe-preview-box {
+  background: #06070a;
+  border: 1px solid #161a25;
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin-bottom: 12px;
+}
+
+.exe-preview-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  margin-bottom: 6px;
+}
+
+.exe-preview-dots {
+  color: #ef4444;
+  letter-spacing: 2px;
+  font-size: 13px;
+}
+
+.exe-preview-exe-title {
+  color: #f1f5f9;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.exe-pe-tag {
+  background: #14532d;
+  color: #4ade80;
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+}
+
+.exe-subtabs-row {
+  display: flex;
+  gap: 12px;
+  border-bottom: 1px solid #141824;
+  margin-bottom: 8px;
+}
+
+.exe-subtab-btn {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 4px 6px 4px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.exe-subtab-btn.active {
+  color: #ef4444;
+  border-bottom-color: #ef4444;
+}
+
+.exe-checkbox-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  max-height: 95px;
+  overflow-y: auto;
+}
+
+.exe-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #cbd5e1;
+  cursor: pointer;
+}
+
+.exe-checkbox-label input[type="checkbox"] {
+  accent-color: #ef4444;
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+.btn-exe-primary {
+  width: 100%;
+  background: linear-gradient(135deg, #e5181f 0%, #b91c1c 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 11px 18px;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  letter-spacing: 0.3px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 18px rgba(229, 24, 31, 0.4);
+}
+
+.btn-exe-primary:hover {
+  background: linear-gradient(135deg, #f01e25 0%, #dc2626 100%);
+  box-shadow: 0 6px 25px rgba(229, 24, 31, 0.55);
+  transform: translateY(-2px);
+}
+
+.btn-exe-green-active {
+  width: 100%;
+  background: linear-gradient(135deg, #091a12 0%, #05100a 100%);
+  border: 1px solid #16a34a;
+  color: #22c55e;
+  border-radius: 8px;
+  padding: 11px 18px;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  letter-spacing: 0.3px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 18px rgba(22, 163, 74, 0.25);
+}
+
+.btn-exe-green-active:hover {
+  background: #0d261a;
+  border-color: #4ade80;
+  box-shadow: 0 6px 25px rgba(34, 197, 94, 0.35);
+  transform: translateY(-2px);
+}
+
+.exe-history-card {
+  background: linear-gradient(180deg, #0e121e 0%, #080a12 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 22px 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.exe-history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.exe-history-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.exe-history-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-exe-bulk {
+  background: #e5181f;
+  color: #ffffff;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 5px;
+  font-size: 11.5px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-exe-bulk:hover {
+  background: #f01e25;
+}
+
+.badge-exe-saved {
+  background: #0284c7;
+  color: #ffffff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
+.exe-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.exe-table th {
+  text-align: left;
+  font-size: 10px;
+  font-weight: 800;
+  color: #64748b;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  padding: 10px 12px;
+  border-bottom: 1px solid #161924;
+}
+
+.exe-table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #121520;
+  font-size: 12.5px;
+  color: #f1f5f9;
+  vertical-align: middle;
+}
+
+.exe-brand-cell {
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.3px;
+}
+
+.exe-panels-cell {
+  color: #8e95aa;
+  font-size: 11.5px;
+  max-width: 500px;
+  line-height: 1.4;
+}
+
+.exe-action-btns {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-exe-download {
+  background: #e5181f;
+  color: #ffffff;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-exe-download:hover {
+  background: #f01e25;
+}
+
+.btn-exe-delete {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  padding: 5px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.btn-exe-delete:hover {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+#nav-exegenerator.active {
+  background: linear-gradient(90deg, rgba(229, 24, 31, 0.25) 0%, rgba(229, 24, 31, 0.05) 100%) !important;
+  border-left: 3px solid #e5181f !important;
+  color: #ffffff !important;
+}
