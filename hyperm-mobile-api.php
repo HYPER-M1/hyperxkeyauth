@@ -32,10 +32,10 @@ if (file_exists($configFile)) {
 if (empty($config)) {
     $config = [
         'brand' => 'HYPERM SHOP',
-        'app_name' => 'HYPERM SHOP Mobile',
+        'app_name' => 'HYPERM SHOP',
         'api_version' => '2.0.0-mobile',
-        'owner_id' => 'hyperm_mobile_owner_9f087d',
-        'app_secret' => 'hyperm_shop_sec_7f99a801e82b7c02b92138a011cd48f9',
+        'owner_id' => '9f087d585fbd666572fc24b7',
+        'app_secret' => '7f99a801e82b7c02b92138a011cd48f9',
         'status' => 'Operational'
     ];
 }
