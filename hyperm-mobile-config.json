@@ -1,0 +1,65 @@
+{
+  "brand": "HYPERM SHOP",
+  "app_name": "HYPERM SHOP Mobile",
+  "api_version": "2.0.0-mobile",
+  "owner_id": "hyperm_mobile_owner_9f087d",
+  "app_secret": "hyperm_shop_sec_7f99a801e82b7c02b92138a011cd48f9",
+  "status": "Operational",
+  "support": {
+    "discord": "https://discord.gg/neGxQey4GF",
+    "telegram": "https://t.me/HYPERM_SHOP",
+    "email": "support@hypermshop.net"
+  },
+  "mobile_packages": [
+    {
+      "id": "phone_panel_vip",
+      "name": "PHONE PANEL VIP",
+      "description": "Premium Mobile Phone Panel with Floating Menu & Injector for Android/iOS",
+      "supported_devices": ["Android 9-15 (Root & Non-Root)", "iOS 14-17 (Jailbreak & Sideload)"],
+      "features": ["Floating Mod Menu", "Custom Crosshair", "Headshot Lock", "Fast Speed", "Antiban Protection"]
+    },
+    {
+      "id": "hyperm_mobile_pro",
+      "name": "HYPERM MOBILE PRO",
+      "description": "All-in-one Mobile Gaming Suite with full ESP and Bullet Tracking",
+      "supported_devices": ["Android All Versions", "PC Emulators", "Tablets"],
+      "features": ["ESP Box / Line / Skeleton", "Aimlock 360", "No Recoil", "Safe Bypass"]
+    },
+    {
+      "id": "hyperm_antiban_bypass",
+      "name": "HYPERM NON-ROOT BYPASS",
+      "description": "Kernel-level Device Cloaking & Memory Hook Protection",
+      "supported_devices": ["All Mobile Phones"],
+      "features": ["HWID Masking", "Signature Spoofing", "Zero Ban Rate"]
+    }
+  ],
+  "mobile_app_update": {
+    "latest_version": "2.4.1",
+    "version_code": 241,
+    "release_date": "2026-10-21",
+    "apk_download_url": "https://hypermshop.net/downloads/HYPERM_SHOP_Mobile_v2.4.1.apk",
+    "is_mandatory": false,
+    "changelog": [
+      "Added native Phone Panel KeyAuth integration",
+      "Ultra-low latency device HWID locking for mobile phones",
+      "Fixed Android 14/15 permission overlay bug",
+      "Enhanced Kernel bypass security"
+    ]
+  },
+  "announcements": [
+    {
+      "id": "ann_101",
+      "title": "Welcome to HYPERM SHOP Mobile Portal!",
+      "message": "Direct mobile licensing and Phone Panel API is now live. Enjoy blazing fast authorization.",
+      "date": "2026-10-21",
+      "badge": "NEW"
+    },
+    {
+      "id": "ann_102",
+      "title": "Phone Panel VIP Integration Active",
+      "message": "Enter your license key in your mobile mod menu or APK to auto-bind your phone HWID.",
+      "date": "2026-10-21",
+      "badge": "INFO"
+    }
+  ]
+}

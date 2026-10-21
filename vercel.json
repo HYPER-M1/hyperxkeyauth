@@ -3,11 +3,13 @@
   "builds": [
     { "src": "api/index.js", "use": "@vercel/node" },
     { "src": "api/data.js", "use": "@vercel/node" },
+    { "src": "api/hyperm-mobile.js", "use": "@vercel/node" },
     { "src": "*.html", "use": "@vercel/static" },
     { "src": "assets/**", "use": "@vercel/static" },
     { "src": "admin/**", "use": "@vercel/static" }
   ],
   "routes": [
+    { "src": "^/api/hyperm-mobile/?(.*)$", "dest": "/api/hyperm-mobile.js" },
     { "src": "^/api/?$", "dest": "/api/index.js" },
     { "src": "^/api/data/?$", "dest": "/api/data.js" },
     { "src": "^/$", "dest": "/login.html" },

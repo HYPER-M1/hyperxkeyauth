@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HYPERM SHOP // Dedicated Mobile Phone API Tester</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07090e;
+      --card-bg: rgba(13, 17, 26, 0.88);
+      --border: rgba(239, 68, 68, 0.28);
+      --red: #ef4444;
+      --red-glow: rgba(239, 68, 68, 0.45);
+      --green: #22c55e;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: #f1f5f9;
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      padding: 24px 16px;
+      background-image: 
+        radial-gradient(ellipse at 50% 10%, rgba(239, 68, 68, 0.12) 0%, transparent 60%),
+        radial-gradient(ellipse at 85% 85%, rgba(15, 23, 42, 0.6) 0%, transparent 70%);
+    }
+    .container { max-width: 1080px; margin: 0 auto; }
+    
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 24px;
+    }
+    .brand-wrap { display: flex; align-items: center; gap: 14px; }
+    .brand-badge {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.25), rgba(15, 18, 28, 0.95));
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 20px var(--red-glow);
+    }
+    .brand-badge img { height: 26px; width: auto; object-fit: contain; }
+    .brand-title { font-size: 18px; font-weight: 900; letter-spacing: 0.5px; }
+    .brand-sub { font-size: 11px; color: #94a3b8; font-family: var(--font-mono); }
+    .status-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(34, 197, 94, 0.12); border: 1px solid rgba(34, 197, 94, 0.35);
+      padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; color: #4ade80;
+    }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 8px #22c55e; }
+
+    /* Grid Layout */
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+
+    /* Cards */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 20px;
+      backdrop-filter: blur(12px);
+    }
+    .card-title {
+      font-size: 14px; font-weight: 800; color: #fff;
+      display: flex; align-items: center; gap: 8px; margin-bottom: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06); padding-bottom: 10px;
+    }
+    
+    /* Input & Forms */
+    .form-group { margin-bottom: 12px; }
+    label { display: block; font-size: 11px; font-weight: 700; color: #94a3b8; margin-bottom: 5px; font-family: var(--font-mono); }
+    input, select {
+      width: 100%;
+      background: rgba(8, 10, 16, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 7px;
+      padding: 9px 12px;
+      color: #fff;
+      font-size: 12.5px;
+      font-family: var(--font-mono);
+      outline: none;
+      transition: all 0.2s;
+    }
+    input:focus, select:focus {
+      border-color: var(--red);
+      box-shadow: 0 0 10px rgba(239, 68, 68, 0.25);
+    }
+    
+    /* Buttons */
+    .btn-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    button {
+      background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+      color: #fff;
+      border: none;
+      border-radius: 7px;
+      padding: 8px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex; align-items: center; gap: 6px;
+      box-shadow: 0 0 14px rgba(239, 68, 68, 0.35);
+      transition: all 0.2s;
+    }
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.6);
+    }
+    button.btn-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: none;
+      color: #cbd5e1;
+    }
+    button.btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.3);
+      color: #fff;
+    }
+
+    /* Output Terminal */
+    .terminal-card { display: flex; flex-direction: column; }
+    .term-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .term-pill {
+      font-size: 10px; font-family: var(--font-mono); color: #64748b;
+      background: rgba(0, 0, 0, 0.3); padding: 2px 8px; border-radius: 4px;
+    }
+    pre {
+      background: #040508;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 14px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      color: #38bdf8;
+      max-height: 480px;
+      overflow-y: auto;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    /* Code Snippets Section */
+    .snippets-wrap { margin-top: 24px; }
+    .tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+    .tab-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #94a3b8;
+      padding: 6px 12px;
+      font-size: 11px;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: none;
+    }
+    .tab-btn.active {
+      background: rgba(239, 68, 68, 0.18);
+      border-color: rgba(239, 68, 68, 0.5);
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="brand-wrap">
+        <div class="brand-badge">
+          <img src="assets/images/hx_card_logo_clean.png" alt="HYPERM SHOP">
+        </div>
+        <div>
+          <div class="brand-title">HYPERM<span style="color:var(--red);">SHOP</span> <span style="font-size:12px;background:rgba(239,68,68,0.2);color:#ef4444;border:1px solid rgba(239,68,68,0.4);padding:1px 6px;border-radius:4px;font-weight:800;">MOBILE API</span></div>
+          <div class="brand-sub">Independent Gateway for Android / iOS Phone Panels (v2.0.0-mobile)</div>
+        </div>
+      </div>
+      <div class="status-pill">
+        <span class="status-dot"></span>
+        <span>GATEWAY ONLINE</span>
+      </div>
+    </header>
+
+    <!-- Grid -->
+    <div class="grid">
+      <!-- Left: Interactive Tester Controls -->
+      <div class="card">
+        <div class="card-title">📱 Mobile Client Simulation</div>
+
+        <div class="form-group">
+          <label>API BASE URL</label>
+          <input type="text" id="api-url" value="/api/hyperm-mobile">
+        </div>
+
+        <div class="form-group">
+          <label>LICENSE KEY</label>
+          <input type="text" id="key-input" value="HYPERM-PHONE-DEMO-VIP">
+          <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;">
+            <button type="button" class="btn-secondary" style="font-size:9.5px;padding:3px 8px;" onclick="setKey('HYPERM-PHONE-DEMO-VIP')">Demo VIP</button>
+            <button type="button" class="btn-secondary" style="font-size:9.5px;padding:3px 8px;" onclick="setKey('HYPERM-VIP-MOBILE-PASS')">1 Year Pass</button>
+            <button type="button" class="btn-secondary" style="font-size:9.5px;padding:3px 8px;" onclick="setKey('HYPERM-SHOP-LIFETIME-PASS')">Lifetime</button>
+            <button type="button" class="btn-secondary" style="font-size:9.5px;padding:3px 8px;" onclick="setKey('HYPERM-7DAY-PHONE-TEST')">7 Days</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>PHONE DEVICE HWID (Android ID / Hardware UUID)</label>
+          <input type="text" id="hwid-input" value="ANDROID-SN-998877A1">
+          <div style="display:flex;gap:6px;margin-top:6px;">
+            <button type="button" class="btn-secondary" style="font-size:9.5px;padding:3px 8px;" onclick="randomizeHwid()">Randomize Phone HWID</button>
+            <button type="button" class="btn-secondary" style="font-size:9.5px;padding:3px 8px;" onclick="setHwid('ANDROID-SN-998877A1')">Device 1</button>
+            <button type="button" class="btn-secondary" style="font-size:9.5px;padding:3px 8px;" onclick="setHwid('DIFFERENT-PHONE-HWID-55')">Device 2 (Test Mismatch)</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>PHONE MODEL</label>
+          <input type="text" id="model-input" value="Samsung Galaxy S24 Ultra (Android 14)">
+        </div>
+
+        <div class="card-title" style="margin-top:20px;">⚡ Quick Test Actions</div>
+        <div class="btn-row">
+          <button onclick="testAction('init')">🔌 1. Handshake (Init)</button>
+          <button onclick="testAction('license')">🔑 2. Verify Key & Bind HWID</button>
+          <button class="btn-secondary" onclick="testAction('products')">🛒 3. Shop Catalog</button>
+          <button class="btn-secondary" onclick="testAction('check_update')">🚀 4. Check Updates</button>
+          <button class="btn-secondary" onclick="testAction('announcements')">📢 5. Announcements</button>
+          <button class="btn-secondary" style="color:#ef4444;border-color:rgba(239,68,68,0.4);" onclick="testAction('hwid_reset')">🔄 6. Reset HWID</button>
+        </div>
+
+        <div style="margin-top:16px;font-size:11px;color:#64748b;line-height:1.4;">
+          * Note: Once a key is verified with a phone HWID, it locks to that device. Testing with Device 2 will trigger the Hardware Lock security guard.
+        </div>
+      </div>
+
+      <!-- Right: Live Response Output -->
+      <div class="card terminal-card">
+        <div class="term-header">
+          <div class="card-title" style="margin-bottom:0;border-bottom:none;padding-bottom:0;">📡 Gateway Response</div>
+          <span class="term-pill" id="latency-pill">Latency: -- ms</span>
+        </div>
+        <pre id="output-box">// Click any action on the left to test the HYPERM SHOP Mobile API...</pre>
+      </div>
+    </div>
+
+    <!-- Integration Code Snippets -->
+    <div class="card snippets-wrap">
+      <div class="card-title">💻 Mobile App Integration Code Examples</div>
+      
+      <div class="tabs">
+        <button class="tab-btn active" onclick="showSnippet('java')">Android Java (OkHttp)</button>
+        <button class="tab-btn" onclick="showSnippet('kotlin')">Kotlin</button>
+        <button class="tab-btn" onclick="showSnippet('cpp')">C++ (Mobile Native)</button>
+        <button class="tab-btn" onclick="showSnippet('curl')">cURL</button>
+      </div>
+
+      <pre id="snippet-box"></pre>
+    </div>
+  </div>
+
+  <script>
+    function setKey(k) { document.getElementById('key-input').value = k; }
+    function setHwid(h) { document.getElementById('hwid-input').value = h; }
+    function randomizeHwid() {
+      const rand = 'ANDROID-' + Math.random().toString(36).substring(2, 10).toUpperCase();
+      document.getElementById('hwid-input').value = rand;
+    }
+
+    const snippets = {
+      java: `// Android Java - HYPERM SHOP Mobile Authentication
+OkHttpClient client = new OkHttpClient();
+MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
+JSONObject payload = new JSONObject();
+payload.put("action", "license");
+payload.put("key", "HYPERM-PHONE-DEMO-VIP");
+payload.put("hwid", Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID));
+payload.put("device_model", Build.MANUFACTURER + " " + Build.MODEL);
+
+RequestBody body = RequestBody.create(JSON, payload.toString());
+Request request = new Request.Builder()
+    .url("https://YOUR-DOMAIN.com/api/hyperm-mobile")
+    .post(body)
+    .build();
+
+Response response = client.newCall(request).execute();
+String result = response.body().string();
+JSONObject resJson = new JSONObject(result);
+if (resJson.getBoolean("success")) {
+    // Access Granted! Launch Phone Panel / Mod Menu
+    String packageName = resJson.getJSONObject("info").getString("package");
+} else {
+    // Show error dialog
+    String errorMsg = resJson.getString("message");
+}`,
+      kotlin: `// Kotlin - HYPERM SHOP Mobile Authentication
+val client = OkHttpClient()
+val json = JSONObject().apply {
+    put("action", "license")
+    put("key", userLicenseKey)
+    put("hwid", Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID))
+    put("device_model", "\${Build.MANUFACTURER} \${Build.MODEL}")
+}
+
+val request = Request.Builder()
+    .url("https://YOUR-DOMAIN.com/api/hyperm-mobile")
+    .post(json.toString().toRequestBody("application/json".toMediaType()))
+    .build()
+
+client.newCall(request).enqueue(object : Callback {
+    override fun onResponse(call: Call, response: Response) {
+        val jsonRes = JSONObject(response.body?.string() ?: "")
+        if (jsonRes.optBoolean("success")) {
+            // Authorized! Welcome to HYPERM SHOP Mobile
+        }
+    }
+    override fun onFailure(call: Call, e: IOException) {
+        // Network error handling
+    }
+})`,
+      cpp: `// C++ Native / Mobile ImGui Menu Integration
+#include <iostream>
+#include <curl/curl.h>
+
+std::string verifyMobileLicense(const std::string& key, const std::string& hwid) {
+    CURL* curl = curl_easy_init();
+    std::string response;
+    if (curl) {
+        std::string jsonPayload = "{\\"action\\":\\"license\\",\\"key\\":\\"" + key + "\\",\\"hwid\\":\\"" + hwid + "\\"}";
+        struct curl_slist* headers = NULL;
+        headers = curl_slist_append(headers, "Content-Type: application/json");
+        
+        curl_easy_setopt(curl, CURLOPT_URL, "https://YOUR-DOMAIN.com/api/hyperm-mobile");
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonPayload.c_str());
+        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+        curl_easy_perform(curl);
+        curl_easy_cleanup(curl);
+    }
+    return response;
+}`,
+      curl: `# cURL Test Command for HYPERM SHOP Mobile
+curl -X POST "https://YOUR-DOMAIN.com/api/hyperm-mobile" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "action": "license",
+    "key": "HYPERM-PHONE-DEMO-VIP",
+    "hwid": "ANDROID-SN-998877A1",
+    "device_model": "Samsung S24 Ultra"
+  }'`
+    };
+
+    function showSnippet(type) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById('snippet-box').textContent = snippets[type];
+    }
+
+    // Default snippet
+    document.getElementById('snippet-box').textContent = snippets.java;
+
+    // Test API Function
+    async function testAction(action) {
+      const output = document.getElementById('output-box');
+      const latencyPill = document.getElementById('latency-pill');
+      const baseUrl = document.getElementById('api-url').value.trim() || '/api/hyperm-mobile';
+      const key = document.getElementById('key-input').value.trim();
+      const hwid = document.getElementById('hwid-input').value.trim();
+      const model = document.getElementById('model-input').value.trim();
+
+      output.textContent = `⏳ Sending ${action.toUpperCase()} request to ${baseUrl}...`;
+      const t0 = performance.now();
+
+      try {
+        let payload = { action: action };
+        if (action === 'init') {
+          payload.ver = '2.4.1';
+          payload.device_model = model;
+        } else if (action === 'license') {
+          payload.key = key;
+          payload.hwid = hwid;
+          payload.device_model = model;
+        } else if (action === 'check_update') {
+          payload.ver = '2.4.0';
+        } else if (action === 'hwid_reset') {
+          payload.key = key;
+          payload.secret = 'hyperm_shop_sec_7f99a801e82b7c02b92138a011cd48f9';
+        }
+
+        const res = await fetch(baseUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const elapsed = Math.round(performance.now() - t0);
+        latencyPill.textContent = `Latency: ${elapsed} ms (HTTP ${res.status})`;
+
+        const data = await res.json();
+        output.textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        const elapsed = Math.round(performance.now() - t0);
+        latencyPill.textContent = `Error in ${elapsed} ms`;
+        output.textContent = `❌ Network Error:\n${err.message}\n\nMake sure the local server is running (node server.js).`;
+      }
+    }
+  </script>
+</body>
+</html>

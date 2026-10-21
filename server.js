@@ -47,6 +47,36 @@ const server = http.createServer((req, res) => {
   const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
   let pathname = decodeURIComponent(parsedUrl.pathname);
 
+  // 0. HYPERM SHOP DEDICATED MOBILE API HANDLER (/api/hyperm-mobile)
+  if (pathname === '/api/hyperm-mobile' || pathname.startsWith('/api/hyperm-mobile/')) {
+    const hypermMobileHandler = require('./api/hyperm-mobile.js');
+    let bodyData = '';
+    req.on('data', chunk => { bodyData += chunk; });
+    req.on('end', () => {
+      try {
+        req.body = JSON.parse(bodyData);
+      } catch (_) {
+        req.body = {};
+      }
+      req.query = Object.fromEntries(parsedUrl.searchParams.entries());
+      if (!res.status) {
+        res.status = function(code) {
+          res.statusCode = code;
+          return res;
+        };
+      }
+      if (!res.json) {
+        res.json = function(data) {
+          res.setHeader('Content-Type', 'application/json; charset=utf-8');
+          res.end(JSON.stringify(data));
+          return res;
+        };
+      }
+      hypermMobileHandler(req, res);
+    });
+    return;
+  }
+
   // 0. REST API HANDLER (/api)
   if (pathname === '/api' || pathname === '/api/') {
     const apiHandler = require('./api/index.js');

@@ -1,0 +1,155 @@
+{
+  "shop_info": {
+    "name": "HYPERM SHOP",
+    "portal": "HYPERM SHOP Mobile Licensing Server",
+    "currency": "INR",
+    "currency_symbol": "₹",
+    "active_nodes": 4
+  },
+  "products": [
+    {
+      "id": "prod_phone_panel_1d",
+      "name": "HYPERM Phone Panel (1 Day Trial)",
+      "package": "PHONE PANEL VIP",
+      "price": 99,
+      "currency": "INR",
+      "duration": "1 Day",
+      "duration_seconds": 86400,
+      "badge": "TRIAL",
+      "status": "In Stock",
+      "description": "Full access to mobile floating injector panel for 24 hours.",
+      "features": ["Floating Mod Menu", "Headshot Lock", "Auto HWID Binding", "Instant Delivery"]
+    },
+    {
+      "id": "prod_phone_panel_7d",
+      "name": "HYPERM Phone Panel (7 Days Pass)",
+      "package": "PHONE PANEL VIP",
+      "price": 299,
+      "currency": "INR",
+      "duration": "7 Days",
+      "duration_seconds": 604800,
+      "badge": "POPULAR",
+      "status": "In Stock",
+      "description": "Weekly competitive pass for phone panel with daily antiban security updates.",
+      "features": ["360 ESP Overlay", "Aimbot Assist", "Stream Proof", "24/7 Support"]
+    },
+    {
+      "id": "prod_phone_panel_30d",
+      "name": "HYPERM Phone Panel (30 Days VIP)",
+      "package": "PHONE PANEL VIP",
+      "price": 699,
+      "currency": "INR",
+      "duration": "30 Days",
+      "duration_seconds": 2592000,
+      "badge": "BEST VALUE",
+      "status": "In Stock",
+      "description": "Monthly VIP mobile subscription with priority server routing and unlimited HWID resets.",
+      "features": ["All VIP Features", "Zero Ban Guarantee", "Priority Support", "1 HWID Reset Free"]
+    },
+    {
+      "id": "prod_hyperm_mobile_lifetime",
+      "name": "HYPERM Phone Panel (Lifetime Master)",
+      "package": "PHONE PANEL VIP",
+      "price": 1499,
+      "currency": "INR",
+      "duration": "Lifetime",
+      "duration_seconds": 315360000,
+      "badge": "LIFETIME VIP",
+      "status": "In Stock",
+      "description": "Never pay again. Permanent access to all current and future HYPERM mobile tools.",
+      "features": ["Lifetime Updates", "All Packages Included", "Dedicated Support Ticket", "Private Discord Role"]
+    },
+    {
+      "id": "prod_hyperm_bypass_30d",
+      "name": "HYPERM Non-Root Bypass (30 Days)",
+      "package": "HYPERM NON-ROOT BYPASS",
+      "price": 499,
+      "currency": "INR",
+      "duration": "30 Days",
+      "duration_seconds": 2592000,
+      "badge": "SAFE",
+      "status": "In Stock",
+      "description": "Safest mobile bypass for tournament matches without rooting device.",
+      "features": ["No Root Required", "Anticheat Emulator Shield", "Clean Logs"]
+    }
+  ],
+  "licenses": [
+    {
+      "id": "lic_phone_001",
+      "key": "HYPERM-PHONE-DEMO-VIP",
+      "package": "PHONE PANEL VIP",
+      "created_by": "HYPERM_SHOP_ADMIN",
+      "client_name": "DemoTesterMobile",
+      "hwid": "UNBOUND",
+      "created_at": "2026-10-21T18:00:00Z",
+      "expires_at": "2026-11-20T18:00:00Z",
+      "status": "active",
+      "device_info": null,
+      "ip_address": null,
+      "note": "Ready-to-use demo key for mobile phones"
+    },
+    {
+      "id": "lic_phone_002",
+      "key": "HYPERM-VIP-MOBILE-PASS",
+      "package": "PHONE PANEL VIP",
+      "created_by": "HYPERM_SHOP_ADMIN",
+      "client_name": "VIPCustomer",
+      "hwid": "UNBOUND",
+      "created_at": "2026-10-21T18:00:00Z",
+      "expires_at": "2027-10-21T18:00:00Z",
+      "status": "active",
+      "device_info": null,
+      "ip_address": null,
+      "note": "1 Year Phone Panel VIP Key"
+    },
+    {
+      "id": "lic_phone_003",
+      "key": "HYPERM-SHOP-LIFETIME-PASS",
+      "package": "PHONE PANEL VIP",
+      "created_by": "HYPERM_SHOP_ADMIN",
+      "client_name": "MasterMobileUser",
+      "hwid": "UNBOUND",
+      "created_at": "2026-10-21T18:00:00Z",
+      "expires_at": "2099-12-31T23:59:59Z",
+      "status": "active",
+      "device_info": null,
+      "ip_address": null,
+      "note": "Permanent Lifetime Access"
+    },
+    {
+      "id": "lic_phone_004",
+      "key": "HYPERM-7DAY-PHONE-TEST",
+      "package": "PHONE PANEL VIP",
+      "created_by": "HYPERM_SHOP_ADMIN",
+      "client_name": "WeeklyGamer",
+      "hwid": "UNBOUND",
+      "created_at": "2026-10-21T18:00:00Z",
+      "expires_at": "2026-10-28T18:00:00Z",
+      "status": "active",
+      "device_info": null,
+      "ip_address": null,
+      "note": "7 Days Phone Panel Key"
+    }
+  ],
+  "vouchers": [
+    {
+      "code": "HYPERM100",
+      "discount_amount": 100,
+      "discount_type": "flat",
+      "valid_until": "2026-12-31",
+      "status": "active",
+      "usage_limit": 500,
+      "used_count": 12
+    },
+    {
+      "code": "WELCOMEPHONE",
+      "discount_amount": 20,
+      "discount_type": "percentage",
+      "valid_until": "2026-12-31",
+      "status": "active",
+      "usage_limit": 1000,
+      "used_count": 48
+    }
+  ],
+  "audit_logs": []
+}
