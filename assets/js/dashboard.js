@@ -1145,10 +1145,10 @@ function switchTab(tabId) {
       apps: 'Applications',
       transfers: 'Transfers',
       exegenerator: 'EXE Generator & Branding',
-      emulator: 'Emulator Bypass',
-      sdks: 'Developer SDKs',
-      api: 'API Access',
-      discord: 'Discord Bot'
+
+
+
+
     };
     titleEl.textContent = titles[tabId] || 'Dashboard';
   }
@@ -3868,7 +3868,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // ==========================================================================
-// EXE GENERATOR & BRANDING MODULE (TERMINALX999 PRO)
+// EXE GENERATOR & BRANDING MODULE (HYPER X PRO)
 // ==========================================================================
 
 const DEFAULT_EXE_PRESETS = [

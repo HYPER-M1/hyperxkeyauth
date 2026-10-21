@@ -1,6 +1,6 @@
 <?php
 /**
- * PRTV SHOW // TERMINALX999 - REST API & KEYAUTH VERIFICATION ENGINE
+ * PRTV SHOW // HYPER X - REST API & KEYAUTH VERIFICATION ENGINE
  * Endpoints for Client Loaders, License Auth, HWID Binding, Telemetry & Reseller Access Control
  */
 

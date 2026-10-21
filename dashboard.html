@@ -80,7 +80,7 @@
           </div>
           <div style="display:flex;flex-direction:column;min-width:0;">
             <div style="display:flex;align-items:center;gap:6px;">
-              <span class="brand-name" style="font-size:13.5px;font-weight:800;letter-spacing:0.5px;color:#fff;">TERMINALX999</span>
+              <span class="brand-name" style="font-size:13.5px;font-weight:800;letter-spacing:0.5px;color:#fff;">HYPER X</span>
               <span style="width:6px;height:6px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px #22c55e;display:inline-block;"></span>
             </div>
             <div style="display:flex;align-items:center;gap:5px;margin-top:1px;">
@@ -111,30 +111,12 @@
           <span class="nav-count-badge" id="nav-key-count" style="display:none;">LIVE</span>
         </button>
 
-        <button class="sidebar-nav-link" id="nav-emulator" onclick="switchTab('emulator')">
-          <span class="nav-icon">🎮</span>
-          <span>Emulator Bypass</span>
-        </button>
 
         <button class="sidebar-nav-link" id="nav-logs" onclick="switchTab('logs')">
           <span class="nav-icon">📋</span>
           <span>Logs</span>
         </button>
 
-        <button class="sidebar-nav-link" id="nav-sdks" onclick="switchTab('sdks')">
-          <span class="nav-icon">💻</span>
-          <span>SDKs</span>
-        </button>
-
-        <button class="sidebar-nav-link" id="nav-api" onclick="switchTab('api')">
-          <span class="nav-icon">🔌</span>
-          <span>API Access</span>
-        </button>
-
-        <button class="sidebar-nav-link" id="nav-discord" onclick="switchTab('discord')">
-          <span class="nav-icon">🤖</span>
-          <span>Discord Bot</span>
-        </button>
 
         <button class="sidebar-nav-link" id="nav-exegenerator" onclick="switchTab('exegenerator')" style="color:#ef4444;">
           <span class="nav-icon">⚡</span>
@@ -1682,7 +1664,7 @@
         </section>
 
         <!-- ============================================================
-             VIEW: EXE GENERATOR & BRANDING (TERMINALX999 PRO)
+             VIEW: EXE GENERATOR & BRANDING (HYPER X PRO)
              ============================================================ -->
         <section class="tab-view" id="view-exegenerator">
           
@@ -1886,71 +1868,7 @@
 
         </section>
 
-        <!-- VIEW: EMULATOR BYPASS -->
-        <section class="tab-view" id="view-emulator">
-          <div class="exe-history-card" style="padding:28px;text-align:center;">
-            <div style="font-size:36px;margin-bottom:12px;">🎮</div>
-            <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px;">EMULATOR BYPASS ENGINE</h2>
-            <p style="color:#8e95aa;font-size:12.5px;max-width:500px;margin:0 auto 20px auto;">
-              Active driver-level hook bypass for GameLoop 32/64-bit, LDPlayer 9, and BlueStacks 5.
-            </p>
-            <div style="display:inline-flex;gap:12px;margin-bottom:20px;">
-              <span class="exe-badge-green" style="font-size:11px;padding:4px 10px;">● GameLoop: Operational</span>
-              <span class="exe-badge-green" style="font-size:11px;padding:4px 10px;">● LDPlayer: Protected</span>
-              <span class="exe-badge-green" style="font-size:11px;padding:4px 10px;">● Anti-Cheat: Undetected</span>
-            </div>
-          </div>
-        </section>
 
-        <!-- VIEW: SDKS -->
-        <section class="tab-view" id="view-sdks">
-          <div class="exe-history-card" style="padding:28px;">
-            <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px;">DEVELOPER SDKS &amp; CLIENT LIBS</h2>
-            <p style="color:#8e95aa;font-size:12.5px;margin-bottom:20px;">Direct integration SDKs with embedded HMAC SHA-256 verification.</p>
-            <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:14px;">
-              <div class="exe-card-box" style="min-height:auto;padding:16px;">
-                <div style="font-weight:700;color:#fff;font-size:14px;margin-bottom:4px;">C# / .NET SDK</div>
-                <div style="color:#64748b;font-size:11px;margin-bottom:12px;">WinForms, WPF, Console (v2.4)</div>
-                <button class="btn-exe-download" style="width:100%;justify-content:center;" onclick="alert('Downloading C# SDK...')">Download .nupkg</button>
-              </div>
-              <div class="exe-card-box" style="min-height:auto;padding:16px;">
-                <div style="font-weight:700;color:#fff;font-size:14px;margin-bottom:4px;">C++ Native SDK</div>
-                <div style="color:#64748b;font-size:11px;margin-bottom:12px;">x86/x64 Static Library &amp; Header</div>
-                <button class="btn-exe-download" style="width:100%;justify-content:center;" onclick="alert('Downloading C++ Native SDK...')">Download .zip</button>
-              </div>
-              <div class="exe-card-box" style="min-height:auto;padding:16px;">
-                <div style="font-weight:700;color:#fff;font-size:14px;margin-bottom:4px;">Python Wrapper</div>
-                <div style="color:#64748b;font-size:11px;margin-bottom:12px;">pip install hyperx-keyauth</div>
-                <button class="btn-exe-download" style="width:100%;justify-content:center;" onclick="alert('pip install hyperx-keyauth')">Copy Command</button>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- VIEW: API ACCESS -->
-        <section class="tab-view" id="view-api">
-          <div class="exe-history-card" style="padding:28px;">
-            <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px;">REST API &amp; AUTH ENDPOINTS</h2>
-            <p style="color:#8e95aa;font-size:12.5px;margin-bottom:20px;">Use your secret Seller Key to manage licenses and authenticate users programmatically.</p>
-            <div class="exe-preview-box" style="padding:16px;font-family:var(--font-mono);font-size:12px;color:#cbd5e1;line-height:1.7;">
-              <span style="color:#ef4444;">POST</span> /api/1.2/?type=init&amp;ver=1.0&amp;name=HYPER_X<br>
-              <span style="color:#22c55e;">POST</span> /api/1.2/?type=license&amp;key=HYPERX-XXXX-XXXX&amp;hwid=DEVICE_HWID<br>
-              <span style="color:#00f0ff;">POST</span> /api/1.2/?type=var&amp;varid=PAYLOAD_HASH
-            </div>
-          </div>
-        </section>
-
-        <!-- VIEW: DISCORD BOT -->
-        <section class="tab-view" id="view-discord">
-          <div class="exe-history-card" style="padding:28px;text-align:center;">
-            <div style="font-size:36px;margin-bottom:12px;">🤖</div>
-            <h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:6px;">DISCORD INTEGRATION BOT</h2>
-            <p style="color:#8e95aa;font-size:12.5px;max-width:500px;margin:0 auto 20px auto;">
-              Automatically issue roles to purchasers, generate trial keys via slash commands, and announce status updates.
-            </p>
-            <span class="exe-badge-green" style="font-size:11px;padding:6px 14px;">● Discord Gateway Connected (23.4ms latency)</span>
-          </div>
-        </section>
 
       </main>
     </div>
