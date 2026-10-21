@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-$action = $_GET['action'] ?? $_POST['action'] ?? '';
+$action = $_GET['action'] ?? $_POST['action'] ?? $_GET['type'] ?? $_POST['type'] ?? '';
 
 // Read JSON Input Body if present
 $rawBody = file_get_contents('php://input');
@@ -24,6 +24,9 @@ $body = json_decode($rawBody, true) ?: [];
 
 if (empty($action) && isset($body['action'])) {
     $action = $body['action'];
+}
+if (empty($action) && isset($body['type'])) {
+    $action = $body['type'];
 }
 
 // Data store helper (reads data.json)
@@ -437,8 +440,25 @@ if (in_array($action, $remoteActions, true)) {
 }
 
 switch ($action) {
+    case 'init':
+        $sessionId = 'hx_' . bin2hex(random_bytes(16));
+        json_response([
+            'success'   => true,
+            'message'   => 'Initialized',
+            'sessionid' => $sessionId,
+            'appinfo'   => [
+                'numUsers'       => '1429',
+                'numOnlineUsers' => '124',
+                'numKeys'        => '100',
+                'version'        => $body['ver'] ?? $_GET['ver'] ?? '1.0',
+                'customerPanel'  => 'https://prtvshow.online'
+            ]
+        ]);
+        break;
+
     case 'verify_key':
     case 'auth':
+    case 'license':
         $licenseKey = trim($body['key'] ?? $_POST['key'] ?? '');
         $clientHwid = trim($body['hwid'] ?? $_POST['hwid'] ?? '');
 
@@ -492,7 +512,18 @@ switch ($action) {
                 'user'        => $lic['assigned_user'],
                 'hwid'        => $clientHwid,
                 'timestamp'   => $timestamp,
-                'hmac_sha256' => $signature
+                'hmac_sha256' => $signature,
+                'info'        => [
+                    'username'      => $lic['assigned_user'],
+                    'subscriptions' => [[
+                        'subscription' => $lic['package_name'] ?? 'PHONE PANEL',
+                        'key'          => $lic['license_key'],
+                        'expiry'       => $lic['expiry_date'],
+                        'timeleft'     => 2592000
+                    ]],
+                    'ip'            => $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1',
+                    'hwid'          => $clientHwid
+                ]
             ]);
         } else {
             // Check in data.json
@@ -555,7 +586,18 @@ switch ($action) {
                     'expiry'      => $found['expiry'] ?? 'Lifetime',
                     'hwid'        => $found['hwid'] ?? $clientHwid,
                     'timestamp'   => $timestamp,
-                    'hmac_sha256' => $signature
+                    'hmac_sha256' => $signature,
+                    'info'        => [
+                        'username'      => $found['user'] ?? 'Client',
+                        'subscriptions' => [[
+                            'subscription' => $found['pkg'] ?? 'PHONE PANEL',
+                            'key'          => $found['key'],
+                            'expiry'       => $found['expiry'] ?? 'Lifetime',
+                            'timeleft'     => 2592000
+                        ]],
+                        'ip'            => $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1',
+                        'hwid'          => $found['hwid'] ?? $clientHwid
+                    ]
                 ]);
             } else {
                 json_response(['success' => false, 'message' => 'Invalid license format or expired key', 'status' => 'INVALID_KEY'], 403);

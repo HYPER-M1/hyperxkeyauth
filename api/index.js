@@ -181,7 +181,7 @@ module.exports = async (req, res) => {
   }
   body = body || {};
 
-  const action = body.action || req.query.action || '';
+  const action = body.action || req.query.action || body.type || req.query.type || '';
   const appId = body.app_id || DEFAULT_APP_ID;
 
   if (!action) {
@@ -264,10 +264,29 @@ module.exports = async (req, res) => {
   }
 
   // =========================================================================
+  // 1A. KEYAUTH SDK INIT (KeyAuthApp.init())
+  // =========================================================================
+  if (action === 'init') {
+    const sessionid = 'hx_' + crypto.randomBytes(16).toString('hex');
+    return res.status(200).json({
+      success: true,
+      message: 'Initialized',
+      sessionid: sessionid,
+      appinfo: {
+        numUsers: '1429',
+        numOnlineUsers: '124',
+        numKeys: licenses.length.toString(),
+        version: body.ver || req.query.ver || '1.0',
+        customerPanel: 'https://prtvshow.online'
+      }
+    });
+  }
+
+  // =========================================================================
   // 1B. CLIENT AUTH / VERIFY KEY (Phone Panel & Client Loaders)
   // Public endpoint: Verifies license, binds device HWID, checks expiration
   // =========================================================================
-  if (action === 'verify_key' || action === 'auth') {
+  if (action === 'verify_key' || action === 'auth' || action === 'license') {
     const licenseKey = (body.key || req.query.key || '').trim();
     const clientHwid = (body.hwid || req.query.hwid || '').trim();
 
@@ -371,7 +390,18 @@ module.exports = async (req, res) => {
       expiry: lic.expiry || 'Lifetime',
       hwid: lic.hwid,
       timestamp: timestamp,
-      hmac_sha256: signature
+      hmac_sha256: signature,
+      info: {
+        username: lic.user || 'Client',
+        subscriptions: [{
+          subscription: lic.pkg || 'PHONE PANEL',
+          key: lic.key,
+          expiry: lic.expiry || 'Lifetime',
+          timeleft: 2592000
+        }],
+        ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress || '127.0.0.1',
+        hwid: lic.hwid
+      }
     });
   }
 
