@@ -321,7 +321,7 @@ if (in_array($action, $protectedActions, true)) {
 
         for ($i = 0; $i < $count; $i++) {
             if ($isPhone) {
-                // Short mobile key strictly under 10 chars (8 chars: HM-XXXXX)
+                // Short mobile key strictly under 10 chars (8 chars: HX-XXXXX)
                 $chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
                 $s = '';
                 $max = strlen($chars) - 1;

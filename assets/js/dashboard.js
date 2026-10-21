@@ -24,7 +24,7 @@ const DEFAULT_PACKAGES = [
 
 // Seed Licenses History (Saved in localStorage so generated keys persist)
 const SEED_LICENSES = [
-  { id: '8', key: 'HM-VIP30', app: 'HYPERM SHOP', pkg: 'PHONE PANEL', user: 'Mobile_VIP', hwid: 'Not Bound', expiry: '30 Days', status: 'active', note: 'Created for Phone Panel (Short 8-char key)', resellerId: 'owner' },
+  { id: '8', key: 'HX-VIP30', app: 'HYPERM SHOP', pkg: 'PHONE PANEL', user: 'Mobile_VIP', hwid: 'Not Bound', expiry: '30 Days', status: 'active', note: 'Created for Phone Panel (Short 8-char key)', resellerId: 'owner' },
   { id: '1', key: 'HPERX-8F92-41AC-90B2-110A', app: 'Custom work', pkg: 'BASIC PANEL', user: 'beta123_User', hwid: '4A8F-912C-00B4-E9D1', expiry: '2026-12-31', status: 'active', note: 'Created by beta123', resellerId: '17909518904974' },
   { id: '2', key: 'HPERX-32KA-991L-M08P-4491', app: 'Custom work', pkg: 'EXTERNAL PANEL', user: 'madhukar_User', hwid: '88CF-1102-BA54-77E0', expiry: '2026-10-15', status: 'active', note: 'Created by madhukar', resellerId: '1791108883957' },
   { id: '7', key: 'HPERX-44T1-8822-BB11-0099', app: 'Custom work', pkg: 'BASIC PANEL', user: 'test1_Client', hwid: 'Not Bound', expiry: '30 Days', status: 'active', note: 'Created by test1', resellerId: '1791196941383' },
