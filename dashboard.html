@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -29,6 +29,172 @@
       width: 0 !important;
       overflow: hidden !important;
       opacity: 0 !important;
+    }
+    /* Ultra-Premium Sidebar Brand Header */
+    .brand-header-premium {
+      height: 68px !important;
+      padding: 0 16px !important;
+      display: flex !important;
+      align-items: center !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07) !important;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, transparent 100%) !important;
+    }
+    .brand-link-wrap {
+      text-decoration: none !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+      width: 100% !important;
+    }
+    .brand-badge-premium {
+      position: relative !important;
+      width: 42px !important;
+      height: 42px !important;
+      border-radius: 12px !important;
+      background: linear-gradient(145deg, rgba(38, 16, 26, 0.95) 0%, rgba(18, 20, 30, 0.96) 50%, rgba(9, 11, 16, 0.98) 100%) !important;
+      border: 1px solid rgba(239, 68, 68, 0.38) !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), 0 0 18px rgba(239, 68, 68, 0.22), inset 0 1px 1px rgba(255, 255, 255, 0.25), inset 0 -1px 2px rgba(0, 0, 0, 0.5) !important;
+      flex-shrink: 0 !important;
+      overflow: hidden !important;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    .brand-link-wrap:hover .brand-badge-premium {
+      transform: translateY(-1px) scale(1.03) !important;
+      border-color: rgba(239, 68, 68, 0.6) !important;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.7), 0 0 25px rgba(239, 68, 68, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.35) !important;
+    }
+    .badge-specular-light {
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      height: 1px !important;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent) !important;
+      pointer-events: none !important;
+    }
+    .badge-ambient-glow {
+      position: absolute !important;
+      width: 28px !important;
+      height: 28px !important;
+      border-radius: 50% !important;
+      background: radial-gradient(circle, rgba(239, 68, 68, 0.55) 0%, transparent 70%) !important;
+      filter: blur(5px) !important;
+      pointer-events: none !important;
+    }
+    .badge-logo-img {
+      height: 24px !important;
+      width: auto !important;
+      object-fit: contain !important;
+      filter: drop-shadow(0 2px 8px rgba(239, 68, 68, 0.7)) !important;
+      position: relative !important;
+      z-index: 2 !important;
+      display: block !important;
+      transition: transform 0.3s ease !important;
+    }
+    .brand-link-wrap:hover .badge-logo-img {
+      transform: scale(1.05) !important;
+    }
+    .brand-text-column {
+      display: flex !important;
+      flex-direction: column !important;
+      min-width: 0 !important;
+      justify-content: center !important;
+    }
+    .brand-title-line {
+      display: flex !important;
+      align-items: center !important;
+      gap: 7px !important;
+    }
+    .brand-name-text {
+      font-size: 15px !important;
+      font-weight: 900 !important;
+      letter-spacing: 1px !important;
+      color: #ffffff !important;
+      font-family: var(--font-sans) !important;
+      line-height: 1.2 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+    }
+    .brand-x-accent {
+      color: #ef4444 !important;
+      text-shadow: 0 0 12px rgba(239, 68, 68, 0.85) !important;
+      margin-left: 1.5px !important;
+    }
+    /* Luxury Radar Beacon Dot (No Text) */
+    .status-beacon-wrap {
+      position: relative !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 13px !important;
+      height: 13px !important;
+      margin-left: 3px !important;
+      flex-shrink: 0 !important;
+    }
+    .beacon-radar-ring {
+      position: absolute !important;
+      width: 100% !important;
+      height: 100% !important;
+      border-radius: 50% !important;
+      background: rgba(34, 197, 94, 0.45) !important;
+      animation: beaconRadar 2.2s cubic-bezier(0, 0, 0.2, 1) infinite !important;
+      pointer-events: none !important;
+    }
+    .beacon-soft-aura {
+      position: absolute !important;
+      width: 8px !important;
+      height: 8px !important;
+      border-radius: 50% !important;
+      background: #22c55e !important;
+      filter: blur(2px) !important;
+      opacity: 0.8 !important;
+      pointer-events: none !important;
+    }
+    .beacon-core-dot {
+      position: relative !important;
+      width: 6.5px !important;
+      height: 6.5px !important;
+      border-radius: 50% !important;
+      background: #22c55e !important;
+      box-shadow: 0 0 8px #22c55e, 0 0 14px rgba(34, 197, 94, 0.75) !important;
+      display: inline-block !important;
+    }
+    @keyframes beaconRadar {
+      0% {
+        transform: scale(0.6);
+        opacity: 0.95;
+      }
+      70%, 100% {
+        transform: scale(2.4);
+        opacity: 0;
+      }
+    }
+    .brand-sub-line {
+      display: flex !important;
+      align-items: center !important;
+      gap: 5px !important;
+      margin-top: 2.5px !important;
+    }
+    .brand-version-code {
+      font-size: 9.5px !important;
+      color: #64748b !important;
+      font-family: var(--font-mono) !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.5px !important;
+    }
+    .brand-sub-sep {
+      font-size: 8px !important;
+      color: #334155 !important;
+    }
+    .brand-sub-status {
+      font-size: 8.5px !important;
+      color: #10b981 !important;
+      font-family: var(--font-mono) !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.6px !important;
     }
   </style>
   <script>
@@ -69,27 +235,33 @@
          1. SIDEBAR (HYPER X)
          ============================================================ -->
     <aside class="sidebar" id="sidebar">
-      <!-- Brand Header -->
-      <div class="sidebar-brand" style="height:64px;padding:0 16px;display:flex;align-items:center;border-bottom:1px solid rgba(255,255,255,0.06);">
-        <a href="dashboard.html" style="text-decoration:none;display:flex;align-items:center;gap:11px;width:100%;">
+      <!-- Brand Header (Ultra-Premium Cyber Luxury) -->
+      <div class="sidebar-brand brand-header-premium">
+        <a href="dashboard.html" class="brand-link-wrap">
           <!-- Premium Cyber Badge -->
-          <div style="position:relative;width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg, rgba(239,68,68,0.18) 0%, rgba(13,16,25,0.92) 100%);border:1px solid rgba(239,68,68,0.45);display:flex;align-items:center;justify-content:center;box-shadow:0 0 18px rgba(239,68,68,0.25), inset 0 1px 0 rgba(255,255,255,0.12);flex-shrink:0;overflow:hidden;">
-            <!-- Ambient Red Glow in Badge -->
-            <div style="position:absolute;width:24px;height:24px;border-radius:50%;background:rgba(239,68,68,0.4);filter:blur(8px);pointer-events:none;"></div>
+          <div class="brand-badge-premium">
+            <!-- Specular Top Rim Highlight -->
+            <div class="badge-specular-light"></div>
+            <!-- Ambient Internal Crimson Core Glow -->
+            <div class="badge-ambient-glow"></div>
             <!-- Metallic HX Emblem -->
-            <img src="assets/images/hx_card_logo_clean.png" alt="HYPER X" style="height:22px;width:auto;object-fit:contain;filter:drop-shadow(0 0 8px rgba(239,68,68,0.7));position:relative;z-index:1;display:block;">
+            <img src="assets/images/hx_card_logo_clean.png" alt="HYPER X" class="badge-logo-img">
           </div>
           <!-- Brand Identity Typography -->
-          <div style="display:flex;flex-direction:column;min-width:0;justify-content:center;">
-            <div style="display:flex;align-items:center;gap:6px;">
-              <span class="brand-name" style="font-size:14px;font-weight:900;letter-spacing:0.8px;color:#ffffff;font-family:var(--font-sans);line-height:1.2;">HYPER<span style="color:#ef4444;text-shadow:0 0 10px rgba(239,68,68,0.75);margin-left:2px;">X</span></span>
-              <span style="display:inline-flex;align-items:center;gap:3px;padding:1.5px 5px;background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.3);border-radius:10px;">
-                <span style="width:5px;height:5px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px #22c55e;display:inline-block;animation:pulse 1.8s infinite;"></span>
-                <span style="font-size:8px;font-weight:800;color:#4ade80;letter-spacing:0.4px;line-height:1;">LIVE</span>
+          <div class="brand-text-column">
+            <div class="brand-title-line">
+              <span class="brand-name-text">HYPER<span class="brand-x-accent">X</span></span>
+              <!-- Luxury Radar-Pulsing Green Live Dot (Clean, No Text) -->
+              <span class="status-beacon-wrap" title="Status: Online &amp; Active">
+                <span class="beacon-radar-ring"></span>
+                <span class="beacon-soft-aura"></span>
+                <span class="beacon-core-dot"></span>
               </span>
             </div>
-            <div style="display:flex;align-items:center;gap:6px;margin-top:2px;">
-              <span style="font-size:9.5px;color:#64748b;font-family:var(--font-mono);font-weight:600;letter-spacing:0.3px;">v1.0.0</span>
+            <div class="brand-sub-line">
+              <span class="brand-version-code">v1.0.0</span>
+              <span class="brand-sub-sep">&bull;</span>
+              <span class="brand-sub-status">ACTIVE</span>
             </div>
           </div>
         </a>
@@ -2354,6 +2526,6 @@
     </div>
   </div>
 
-  <script src="assets/js/dashboard.js?v=20261021_hx_strict_live"></script>
+  <script src="assets/js/dashboard.js?v=20261023_ultra_brand"></script>
 </body>
 </html>
