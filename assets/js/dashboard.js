@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ==========================================================================
  * HYPER X // KEYAUTH ENGINE & DASHBOARD CONTROLLER
  * Live KeyAuth API Integration (prtvshow.online / api_admin.php)
@@ -948,6 +948,14 @@ function updateDashboardStatsUI() {
         const statPackagesLabel = document.getElementById('stat-packages-label');
         if (statPackagesLabel) statPackagesLabel.textContent = 'ASSIGNED PANELS';
 
+        // Package Inventory Stat Card (Reseller sees strictly assigned panels count)
+        const statAppsCount = document.getElementById('stat-apps-count');
+        if (statAppsCount) statAppsCount.textContent = allowedPkgs.length;
+        const statAppsBadge = document.getElementById('stat-apps-badge');
+        if (statAppsBadge) statAppsBadge.textContent = `${allowedPkgs.length} ${allowedPkgs.length === 1 ? 'PANEL' : 'PANELS'}`;
+        const statAppsLabel = document.getElementById('stat-apps-label');
+        if (statAppsLabel) statAppsLabel.textContent = 'PACKAGE INVENTORY';
+
         const barPkgCount = document.getElementById('dashboard-bar-pkg-count');
         if (barPkgCount) barPkgCount.textContent = `${allowedPkgs.length} Packages`;
 
@@ -1002,6 +1010,15 @@ function updateDashboardStatsUI() {
 
   const statPackagesLabel = document.getElementById('stat-packages-label');
   if (statPackagesLabel) statPackagesLabel.textContent = 'ACTIVE PACKAGES';
+
+  // Package Inventory Stat Card (Root Admin sees all available panels)
+  const allPkgs = getAllAvailablePackages();
+  const statAppsCount = document.getElementById('stat-apps-count');
+  if (statAppsCount) statAppsCount.textContent = allPkgs.length;
+  const statAppsBadge = document.getElementById('stat-apps-badge');
+  if (statAppsBadge) statAppsBadge.textContent = `${allPkgs.length} PANELS`;
+  const statAppsLabel = document.getElementById('stat-apps-label');
+  if (statAppsLabel) statAppsLabel.textContent = 'PACKAGE INVENTORY';
 
   const adminName = getStoredAdminUser();
   if (elAdminUser) elAdminUser.textContent = adminName;
@@ -2109,6 +2126,15 @@ function renderApplicationsTable() {
   if (navAppsCountBadge) navAppsCountBadge.remove();
 
   // Update Dashboard stat card
+  const statAppsCount = document.getElementById('stat-apps-count');
+  if (statAppsCount) statAppsCount.textContent = allowedPkgs.length;
+
+  const statAppsBadge = document.getElementById('stat-apps-badge');
+  if (statAppsBadge) statAppsBadge.textContent = `${allowedPkgs.length} ${allowedPkgs.length === 1 ? 'PANEL' : 'PANELS'}`;
+
+  const statAppsLabel = document.getElementById('stat-apps-label');
+  if (statAppsLabel) statAppsLabel.textContent = 'PACKAGE INVENTORY';
+
   const statPackagesCount = document.getElementById('stat-packages-count');
   if (statPackagesCount) statPackagesCount.textContent = allowedPkgs.length;
 
@@ -2191,13 +2217,13 @@ function renderDashboardPackagesSummary(pkgs) {
   const role = getUserRole();
 
   if (!pkgs || pkgs.length === 0) {
-    pkgs = DEFAULT_PACKAGES;
+    pkgs = role === 'reseller' ? getResellerAllowedPackages() : getAllAvailablePackages();
   }
 
   if (title) {
     title.textContent = role === 'reseller' 
       ? `Authorized Panels (${pkgs.length} Assigned)` 
-      : `Application Packages (${pkgs.length} Total)`;
+      : `Package Inventory (${pkgs.length} Total)`;
   }
 
   if (!tbody) return;
