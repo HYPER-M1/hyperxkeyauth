@@ -244,25 +244,9 @@ function calculateLicenseTimeleft(lic) {
     return { days: 0, timeleft: "infinite", expiry: "Lifetime Access", isExpired: false };
   }
 
-  let days = 0;
-  if (typeof lic.days === 'number') {
-    days = lic.days;
-  } else if (lic.days !== undefined && lic.days !== null && lic.days !== '') {
-    days = parseInt(lic.days, 10);
-    if (isNaN(days)) days = 0;
-  } else if (lic.expiry) {
-    const expStr = lic.expiry.toString().trim();
-    if (expStr.toLowerCase().includes('lifetime') || expStr === '0') {
-      days = 0;
-    } else {
-      const dMatch = expStr.match(/^(\d+)\s*Days?$/i) || expStr.match(/(\d+)\s*Days?/i);
-      if (dMatch) {
-        days = parseInt(dMatch[1], 10) || 0;
-      }
-    }
-  }
+  const expStr = lic.expiry ? lic.expiry.toString().trim().toLowerCase() : '';
+  const isLifetime = expStr.includes('lifetime') || ((lic.days === 0 || lic.days === '0') && !expStr.includes('-') && !lic.expires_at);
 
-  const isLifetime = (days === 0) || (lic.expiry && lic.expiry.toString().toLowerCase().includes('lifetime'));
   if (isLifetime) {
     return {
       days: 0,
@@ -272,24 +256,47 @@ function calculateLicenseTimeleft(lic) {
     };
   }
 
+  let days = 0;
+  if (typeof lic.days === 'number' && lic.days > 0) {
+    days = lic.days;
+  } else if (lic.days !== undefined && lic.days !== null && lic.days !== '') {
+    days = parseInt(lic.days, 10);
+    if (isNaN(days)) days = 0;
+  }
+
+  if (days === 0 && expStr) {
+    const dMatch = expStr.match(/^(\d+)\s*days?/i) || expStr.match(/(\d+)\s*days?/i);
+    if (dMatch) {
+      days = parseInt(dMatch[1], 10) || 0;
+    }
+  }
+
   const nowMs = Date.now();
   let targetMs = 0;
 
   if (lic.expires_at && !isNaN(new Date(lic.expires_at).getTime())) {
     targetMs = new Date(lic.expires_at).getTime();
   } else if (lic.expiry && lic.expiry.toString().includes('-') && !isNaN(new Date(lic.expiry.toString()).getTime())) {
-    const expStr = lic.expiry.toString().trim();
-    const dObj = new Date(expStr.length === 10 ? expStr + 'T23:59:59.999Z' : expStr);
+    const dateStr = lic.expiry.toString().trim();
+    const dObj = new Date(dateStr.length === 10 ? dateStr + 'T23:59:59.999Z' : dateStr);
     targetMs = dObj.getTime();
-  } else if (lic.activated_at && !isNaN(new Date(lic.activated_at).getTime())) {
+  } else if (lic.activated_at && !isNaN(new Date(lic.activated_at).getTime()) && days > 0) {
     targetMs = new Date(lic.activated_at).getTime() + (days * 86400 * 1000);
-  } else {
-    // Unactivated key: remaining is full duration
+  } else if (days > 0) {
+    // Unactivated timed key: full duration remaining
     const fullSeconds = days * 86400;
     return {
       days: days,
       timeleft: fullSeconds.toString(),
       expiry: `${days} Days`,
+      isExpired: false
+    };
+  } else {
+    // Fallback if neither days nor date is found
+    return {
+      days: 0,
+      timeleft: "infinite",
+      expiry: "Lifetime Access",
       isExpired: false
     };
   }
