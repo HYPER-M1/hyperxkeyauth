@@ -19,7 +19,9 @@ const DEFAULT_PACKAGES = [
   { package_id: '154d1edaddd7203fbfd847f4', package_name: 'VAULT PANEL', app_name: 'Custom work' },
   { package_id: 'db3b90e8134ec738b94a9b05', package_name: 'LIB BYPASS', app_name: 'Custom work' },
   { package_id: '2411bc9db9f9a66c6e876ad2', package_name: 'FPS BOOSTER', app_name: 'Custom work' },
-  { package_id: 'phone_panel_001', package_name: 'PHONE PANEL', app_name: 'HYPERM SHOP' }
+  { package_id: 'phone_panel_001', package_name: 'PHONE PANEL', app_name: 'HYPERM SHOP' },
+  { package_id: 'pkg_v2_aimkill_pvt', package_name: 'AIMKILL PVT V2', app_name: "Hyperm575's Application", isV2: true },
+  { package_id: 'pkg_v2_streamer_x', package_name: 'STREAMER X', app_name: "Hyperm575's Application", isV2: true }
 ];
 
 // Seed Licenses History (Saved in localStorage so generated keys persist)
@@ -838,6 +840,15 @@ async function callApi(action, payload = {}) {
 
 // Expose callApi to global window scope for modular extensions (e.g. V2 engine)
 window.callApi = callApi;
+window.getUserRole = getUserRole;
+window.getCurrentReseller = getCurrentReseller;
+window.getResellerAllowedPackages = getResellerAllowedPackages;
+window.syncCredentialsToServer = syncCredentialsToServer;
+window.updateDashboardStatsUI = updateDashboardStatsUI;
+window.openModal = openModal;
+window.closeModal = closeModal;
+window.renderResellerClientUsers = renderResellerClientUsers;
+window.getAllAvailablePackages = getAllAvailablePackages;
 
 // Load real packages from get_admin_packages
 async function loadAdminPackages() {
@@ -845,7 +856,9 @@ async function loadAdminPackages() {
   if (data && data.success && Array.isArray(data.packages) && data.packages.length > 0) {
     state.packages = data.packages;
     if (!state.packages.some(p => p.package_name === 'PHONE PANEL' || p.package_id === 'phone_panel_001')) {
-      state.packages.push({ package_id: 'phone_panel_001', package_name: 'PHONE PANEL', app_name: 'HYPERM SHOP' });
+      state.packages.push({ package_id: 'phone_panel_001', package_name: 'PHONE PANEL', app_name: 'HYPERM SHOP' },
+  { package_id: 'pkg_v2_aimkill_pvt', package_name: 'AIMKILL PVT V2', app_name: "Hyperm575's Application", isV2: true },
+  { package_id: 'pkg_v2_streamer_x', package_name: 'STREAMER X', app_name: "Hyperm575's Application", isV2: true });
     }
     const appName = data.packages[0].app_name || 'Custom work';
     const appLabel = document.getElementById('active-app-name-label');
@@ -1008,7 +1021,7 @@ function updateDashboardStatsUI() {
 
 function getResellerAllowedPackages() {
   const role = getUserRole();
-  const allPkgs = (state.packages && state.packages.length > 0) ? state.packages : DEFAULT_PACKAGES;
+  const allPkgs = getAllAvailablePackages();
   if (role !== 'reseller') return allPkgs;
 
   const res = getCurrentReseller();
@@ -1124,7 +1137,7 @@ function populatePackageDropdown() {
   const select = document.getElementById('gen-package-select');
   if (!select) return;
 
-  const pkgs = getResellerAllowedPackages();
+  const pkgs = getResellerAllowedPackages().filter(p => !p.isV2);
   select.innerHTML = pkgs.map(p => `
     <option value="${p.package_id}">${p.package_name}</option>
   `).join('');
@@ -2392,7 +2405,18 @@ function exportLogsToCsv() {
 // 5. RESELLERS & ACCESS CONTROL ENGINE
 // ==========================================================================
 function getAllAvailablePackages() {
-  return (state.packages && state.packages.length > 0) ? state.packages : DEFAULT_PACKAGES;
+  const current = (state.packages && state.packages.length > 0) ? state.packages : DEFAULT_PACKAGES;
+  const v2Packages = [
+    { package_id: 'pkg_v2_aimkill_pvt', package_name: 'AIMKILL PVT V2', app_name: "Hyperm575's Application", isV2: true },
+    { package_id: 'pkg_v2_streamer_x', package_name: 'STREAMER X', app_name: "Hyperm575's Application", isV2: true }
+  ];
+  const combined = [...current];
+  v2Packages.forEach(v2 => {
+    if (!combined.some(p => p.package_name === v2.package_name || p.package_id === v2.package_id)) {
+      combined.push(v2);
+    }
+  });
+  return combined;
 }
 
 function populateResellerPanelsCheckboxes(mode, selectedPanels = []) {
@@ -2404,6 +2428,7 @@ function populateResellerPanelsCheckboxes(mode, selectedPanels = []) {
 
   container.innerHTML = pkgs.map((pkg, idx) => {
     const isChecked = isAll || selectedPanels.includes(pkg.package_name) || selectedPanels.includes(pkg.package_id);
+    const v2Badge = pkg.isV2 ? '<span style="background:rgba(16,185,129,0.18);color:#34d399;font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;margin-left:6px;border:1px solid rgba(16,185,129,0.4);letter-spacing:0.04em;">V2</span>' : '';
     return `
       <label class="panel-checkbox-item ${isChecked ? 'checked' : ''}" id="panel-box-${mode}-${idx}">
         <input type="checkbox" name="reseller-panel-${mode}" value="${pkg.package_name}" ${isChecked ? 'checked' : ''} onchange="onPanelCheckboxChange(this, 'panel-box-${mode}-${idx}')">
@@ -2850,6 +2875,8 @@ function getCurrentUserTransferDetails() {
     const balance = res ? (parseInt(res.balance, 10) || 0) : 0;
     return { role: 'reseller', username, balance, resellerObj: res };
   } else {
+    const navLicV2Admin = document.getElementById('nav-licenses-v2');
+    if (navLicV2Admin) navLicV2Admin.style.display = 'flex';
     const adminUser = getStoredAdminUser();
     const balance = (state.stats && state.stats.remaining !== undefined) ? state.stats.remaining : 9922;
     return { role: 'admin', username: adminUser, balance, resellerObj: null };
@@ -3385,6 +3412,27 @@ function openModal(id) {
     }
   }
 
+  if (id === 'modal-add-key-v2') {
+    if (typeof window.populateV2PackageDropdown === 'function') {
+      const allowed = window.populateV2PackageDropdown();
+      if (!allowed) {
+        if (m) m.classList.remove('active');
+        alert('? Access Denied: You do not have permissions for any License V2 panels. Please contact Root Admin.');
+        return;
+      }
+    }
+    const noticeV2 = document.getElementById('gen-v2-modal-reseller-notice');
+    if (noticeV2) {
+      if (role === 'reseller') {
+        const liveRes = getCurrentReseller() || { username: 'Reseller', balance: 0 };
+        noticeV2.style.display = 'block';
+        noticeV2.innerHTML = `🛡️ Generating V2 key as Reseller: <strong>${liveRes.username}</strong> | Available Credit: <strong style="color:#10b981;">${liveRes.balance} Keys</strong>`;
+      } else {
+        noticeV2.style.display = 'none';
+      }
+    }
+  }
+
   if (id === 'modal-add-key') {
     populatePackageDropdown();
     const notice = document.getElementById('gen-modal-reseller-notice');
@@ -3798,6 +3846,16 @@ function initUserRoleSession() {
         headerKeys.style.color = '';
       }
 
+      // Check V2 panel permissions for Reseller
+      const hasV2Access = allowedPkgs.some(p => p.isV2 || p.package_name === 'AIMKILL PVT V2' || p.package_name === 'STREAMER X');
+      const navLicV2 = document.getElementById('nav-licenses-v2');
+      if (navLicV2) {
+        navLicV2.style.display = hasV2Access ? 'flex' : 'none';
+      }
+      if (typeof window.renderLicensesV2Table === 'function') {
+        window.renderLicensesV2Table();
+      }
+
       // Update View headings
       const viewAppsTitle = document.getElementById('view-apps-title');
       const viewAppsSub = document.getElementById('view-apps-sub');
@@ -3845,6 +3903,8 @@ function initUserRoleSession() {
     const existingBanner = document.getElementById('reseller-session-banner');
     if (existingBanner) existingBanner.remove();
 
+    const navLicV2Admin = document.getElementById('nav-licenses-v2');
+    if (navLicV2Admin) navLicV2Admin.style.display = 'flex';
     const adminUser = getStoredAdminUser();
     document.querySelectorAll('.profile-name').forEach(el => el.textContent = adminUser);
 

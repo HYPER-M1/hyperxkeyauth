@@ -151,6 +151,69 @@
     syncLicensesV2FromServer();
   }
 
+  // Security check: Verify if current user/reseller owns this V2 key
+  function canAccessKeyV2(keyStr) {
+    if (!keyStr) return false;
+    const role = typeof window.getUserRole === 'function' ? window.getUserRole() : 'admin';
+    if (role !== 'reseller') return true;
+    if (!window.state || !Array.isArray(window.state.licenses_v2)) return false;
+    const lic = window.state.licenses_v2.find(l => l.key && l.key.toLowerCase() === keyStr.toLowerCase());
+    if (!lic) return false;
+    const res = typeof window.getCurrentReseller === 'function' ? window.getCurrentReseller() : null;
+    if (!res || !res.id) return false;
+    const rid = res.id.toString();
+    const uLower = (res.username || '').toLowerCase();
+    if (lic.resellerId !== undefined && lic.resellerId !== null) {
+      return lic.resellerId.toString() === rid;
+    }
+    return (lic.user && lic.user.toLowerCase().startsWith(uLower + '_')) ||
+           (lic.note && lic.note.toLowerCase().includes('by ' + uLower));
+  }
+
+  // Get canonical V2 keys list for current session (Admin gets all, Reseller gets only their own)
+  function getResellerOwnedKeysV2() {
+    if (!window.state || !Array.isArray(window.state.licenses_v2)) return [];
+    const role = typeof window.getUserRole === 'function' ? window.getUserRole() : 'admin';
+    if (role !== 'reseller') return window.state.licenses_v2;
+    const res = typeof window.getCurrentReseller === 'function' ? window.getCurrentReseller() : null;
+    if (!res || !res.id) return [];
+    const rid = res.id.toString();
+    const uLower = (res.username || '').toLowerCase();
+    return window.state.licenses_v2.filter(l => {
+      if (l.resellerId !== undefined && l.resellerId !== null) {
+        return l.resellerId.toString() === rid;
+      }
+      return (l.user && l.user.toLowerCase().startsWith(uLower + '_')) ||
+             (l.note && l.note.toLowerCase().includes('by ' + uLower));
+    });
+  }
+
+  // Dynamically populate V2 Package Dropdown based on Reseller allowed panels
+  window.populateV2PackageDropdown = function () {
+    const select = document.getElementById('gen-v2-package-select');
+    if (!select) return false;
+
+    const role = typeof window.getUserRole === 'function' ? window.getUserRole() : 'admin';
+    const allV2 = [
+      { id: 'pkg_v2_aimkill_pvt', name: 'AIMKILL PVT V2' },
+      { id: 'pkg_v2_streamer_x', name: 'STREAMER X' }
+    ];
+
+    let allowed = allV2;
+    if (role === 'reseller') {
+      const resPkgs = typeof window.getResellerAllowedPackages === 'function' ? window.getResellerAllowedPackages() : [];
+      allowed = allV2.filter(v => resPkgs.some(p => p.package_name === v.name || p.package_id === v.id));
+      if (allowed.length === 0) {
+        return false;
+      }
+    }
+
+    select.innerHTML = allowed.map((p, idx) => `
+      <option value="${p.id}" ${idx === 0 ? 'selected' : ''}>${p.name}</option>
+    `).join('');
+    return true;
+  };
+
   // Hook into switchTab
   function hookSwitchTab() {
     const origSwitchTab = window.switchTab;
@@ -167,6 +230,18 @@
 
         const titleEl = document.getElementById('page-title-display');
         if (titleEl) titleEl.textContent = 'License Keys v2';
+
+        const role = typeof window.getUserRole === 'function' ? window.getUserRole() : 'admin';
+        const res = typeof window.getCurrentReseller === 'function' ? window.getCurrentReseller() : null;
+        const subEl = document.getElementById('view-licenses-v2-sub');
+        if (subEl) {
+          if (role === 'reseller' && res) {
+            subEl.style.display = 'block';
+            subEl.innerHTML = `Showing V2 license keys generated for reseller: <strong style="color:#00f0ff;">${res.username}</strong> | Available credit: <strong style="color:#10b981;">${res.balance} Keys</strong>`;
+          } else {
+            subEl.style.display = 'none';
+          }
+        }
 
         renderLicensesV2Table();
         syncLicensesV2FromServer(); // Auto-refresh table with latest server status
@@ -194,7 +269,7 @@
       return;
     }
 
-    let list = [...window.state.licenses_v2];
+    let list = [...getResellerOwnedKeysV2()];
 
     if (window.state.activeFilterV2 && window.state.activeFilterV2 !== 'all') {
       list = list.filter(l => l.status === window.state.activeFilterV2);
@@ -393,6 +468,34 @@
     const lockEl = document.getElementById('gen-v2-hwid-lock');
     const hwidLock = lockEl ? (lockEl.tagName === 'SELECT' ? lockEl.value !== 'false' : lockEl.checked) : true;
     const pkgName = pkgSelect ? pkgSelect.options[pkgSelect.selectedIndex]?.text : 'AIMKILL PVT V2';
+    const role = typeof window.getUserRole === 'function' ? window.getUserRole() : 'admin';
+    let currentReseller = null;
+    let finalUser = user;
+
+    if (role === 'reseller') {
+      currentReseller = typeof window.getCurrentReseller === 'function' ? window.getCurrentReseller() : null;
+      if (!currentReseller) {
+        alert('⚠️ Reseller session error. Please log in again.');
+        return;
+      }
+
+      if (count > currentReseller.balance) {
+        alert(`⚠️ Insufficient Key Credits!\nYou only have ${currentReseller.balance} keys remaining in your balance, but you requested ${count}.`);
+        return;
+      }
+
+      if (typeof window.getResellerAllowedPackages === 'function') {
+        const allowedPkgs = window.getResellerAllowedPackages();
+        const hasPermission = allowedPkgs.some(p => p.package_name === pkgName || p.package_id === pkgSelect?.value);
+        if (!hasPermission) {
+          alert(`⚠️ Access Denied: Your reseller account does not have permission for panel "${pkgName}".`);
+          return;
+        }
+      }
+
+      finalUser = `${currentReseller.username}_${user}`;
+    }
+
     const btn = document.getElementById('btn-submit-generate-v2');
 
     if (btn) {
@@ -417,13 +520,18 @@
     if (!window.state) window.state = {};
     if (!Array.isArray(window.state.licenses_v2)) window.state.licenses_v2 = [];
 
+    const canonicalResellerId = (role === 'reseller' && currentReseller) ? currentReseller.id.toString() : 'owner';
+    const genNote = (role === 'reseller' && currentReseller)
+      ? `Generated by ${currentReseller.username} (KeyAuth V2)`
+      : `KeyAuth V2 Official Engine - Generated by Owner (${new Date().toLocaleDateString()})`;
+
     generatedKeys.forEach((keyStr, idx) => {
       window.state.licenses_v2.unshift({
         id: 'v2_' + Date.now().toString() + idx,
         key: keyStr,
         app: KEYAUTH_V2_CONFIG.appName,
         pkg: pkgName,
-        user: count > 1 ? `${user}_${idx + 1}` : user,
+        user: count > 1 ? `${finalUser}_${idx + 1}` : finalUser,
         hwid: 'Not Bound',
         hwid_lock: hwidLock,
         days: days,
@@ -432,10 +540,36 @@
         created_at: new Date().toISOString(),
         activated_at: null,
         expires_at: null,
-        note: `Generated via KeyAuth V2 API (${new Date().toLocaleDateString()})`,
-        resellerId: 'owner'
+        note: genNote,
+        resellerId: canonicalResellerId
       });
     });
+
+    // Deduct reseller balance if generated as Reseller
+    if (role === 'reseller' && currentReseller) {
+      currentReseller.balance = Math.max(0, (currentReseller.balance || 0) - count);
+      currentReseller.createdKeys = (currentReseller.createdKeys || 0) + count;
+      sessionStorage.setItem('hyperx_current_reseller', JSON.stringify(currentReseller));
+      localStorage.setItem('hyperx_current_reseller', JSON.stringify(currentReseller));
+
+      if (window.state && Array.isArray(window.state.resellers)) {
+        const rIdx = window.state.resellers.findIndex(r => r.id === currentReseller.id || (r.username && currentReseller.username && r.username.toLowerCase() === currentReseller.username.toLowerCase()));
+        if (rIdx !== -1) {
+          window.state.resellers[rIdx] = currentReseller;
+        }
+      }
+
+      if (typeof window.syncCredentialsToServer === 'function') {
+        window.syncCredentialsToServer({ tx99_resellers: window.state ? window.state.resellers : [] });
+      }
+
+      if (typeof window.updateDashboardStatsUI === 'function') {
+        window.updateDashboardStatsUI();
+      }
+      if (typeof window.renderResellerClientUsers === 'function') {
+        window.renderResellerClientUsers(currentReseller);
+      }
+    }
 
     if (typeof window.state.save === 'function') {
       window.state.save();
@@ -480,7 +614,7 @@
       if (typeof window.callApi === 'function') {
         window.callApi('generate_key_v2', {
           package_name: pkgName,
-          user: user,
+          user: finalUser,
           days: days,
           count: count,
           hwid_lock: hwidLock,
@@ -492,6 +626,7 @@
 
   // Toggle HWID Lock (ON / OFF) for V2 Key
   window.toggleHwidLockV2Live = async function (key) {
+    if (!canAccessKeyV2(key)) { alert('⚠️ Access Denied: You can only manage your own V2 license keys.'); return; }
     if (!window.state || !Array.isArray(window.state.licenses_v2)) return;
     const lic = window.state.licenses_v2.find(l => l.key.toLowerCase() === key.toLowerCase());
     if (lic) {
@@ -545,6 +680,7 @@
 
   // Inspect Key Details for V2 (Shows Full Device HWID + Lock Switch)
   window.inspectKeyV2Live = function (key) {
+    if (!canAccessKeyV2(key)) { alert('⚠️ Access Denied: You can only inspect your own V2 license keys.'); return; }
     if (!window.state || !Array.isArray(window.state.licenses_v2)) return;
     const lic = window.state.licenses_v2.find(l => l.key.toLowerCase() === key.toLowerCase());
     if (!lic) {
@@ -624,6 +760,7 @@
 
   // Reset HWID for V2
   window.resetHwidV2Live = function (key) {
+    if (!canAccessKeyV2(key)) { alert('⚠️ Access Denied: You can only reset your own V2 license keys.'); return; }
     if (!window.state || !Array.isArray(window.state.licenses_v2)) return;
     const lic = window.state.licenses_v2.find(l => l.key.toLowerCase() === key.toLowerCase());
     if (lic) {
@@ -646,6 +783,7 @@
 
   // Toggle Ban for V2
   window.toggleBanV2Live = function (key, currentStatus) {
+    if (!canAccessKeyV2(key)) { alert('⚠️ Access Denied: You can only ban/unban your own V2 license keys.'); return; }
     if (!window.state || !Array.isArray(window.state.licenses_v2)) return;
     const lic = window.state.licenses_v2.find(l => l.key.toLowerCase() === key.toLowerCase());
     if (lic) {
@@ -669,6 +807,7 @@
 
   // Delete V2 Key
   window.deleteKeyV2Live = function (key) {
+    if (!canAccessKeyV2(key)) { alert('⚠️ Access Denied: You can only delete your own V2 license keys.'); return; }
     if (!confirm(`Are you sure you want to permanently delete V2 License Key:\n${key}?`)) return;
     if (!window.state || !Array.isArray(window.state.licenses_v2)) return;
     window.state.licenses_v2 = window.state.licenses_v2.filter(l => l.key.toLowerCase() !== key.toLowerCase());
