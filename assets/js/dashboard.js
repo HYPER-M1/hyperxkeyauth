@@ -487,7 +487,7 @@ function updateAdminUI() {
   document.querySelectorAll('.profile-name').forEach(el => el.textContent = currentAdmin);
 
   const headerAdminName = document.getElementById('header-admin-name');
-  if (headerAdminName) headerAdminName.textContent = 'Admin';
+  if (headerAdminName) headerAdminName.textContent = 'Owner';
   const headerAdminIcon = document.getElementById('header-admin-icon');
   if (headerAdminIcon) headerAdminIcon.textContent = '🛡️';
 
@@ -956,7 +956,7 @@ function updateDashboardStatsUI() {
     headerKeys.style.color = '';
   }
   const headerAdminName = document.getElementById('header-admin-name');
-  if (headerAdminName) headerAdminName.textContent = 'Admin';
+  if (headerAdminName) headerAdminName.textContent = 'Owner';
   const headerAdminIcon = document.getElementById('header-admin-icon');
   if (headerAdminIcon) headerAdminIcon.textContent = '🛡️';
 
@@ -3849,9 +3849,9 @@ function initUserRoleSession() {
     const adminHeaderIcon = document.getElementById('header-admin-icon');
     const adminHeaderName = document.getElementById('header-admin-name');
     if (adminHeaderIcon) adminHeaderIcon.textContent = '🛡️';
-    if (adminHeaderName) adminHeaderName.textContent = 'Admin';
+    if (adminHeaderName) adminHeaderName.textContent = 'Owner';
     if (adminHeaderBtn) {
-      adminHeaderBtn.title = `Admin: ${adminUser}`;
+      adminHeaderBtn.title = `Owner: ${adminUser}`;
     }
 
     const headerKeys = document.getElementById('header-keys-stat');
@@ -4408,13 +4408,13 @@ window.toggleRoleView = function() {
 
     if (role === 'reseller') {
       const res = getCurrentReseller() || { username: 'Reseller' };
-      if (nameEl) nameEl.textContent = `${res.username} (Reseller ⇄ Admin)`;
+      if (nameEl) nameEl.textContent = `${res.username} (Reseller)`;
       if (iconEl) iconEl.textContent = '👥';
-      if (btn) btn.style.background = '#059669'; // Green badge for reseller
+      if (btn) { btn.style.background = '#059669'; btn.setAttribute('title', 'Reseller Mode (Click to switch to Owner view)'); }
     } else {
-      if (nameEl) nameEl.textContent = 'Admin View (⇄ Reseller)';
+      if (nameEl) nameEl.textContent = 'Owner';
       if (iconEl) iconEl.textContent = '🛡️';
-      if (btn) btn.style.background = '#0284c7'; // Blue badge for admin
+      if (btn) { btn.style.background = '#0284c7'; btn.setAttribute('title', 'Root Owner (Click to switch to Reseller view)'); }
     }
   }
 
