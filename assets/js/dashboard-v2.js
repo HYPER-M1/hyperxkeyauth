@@ -332,7 +332,6 @@
         const actionButtons = `
           <div style="display:flex;gap:5px;align-items:center;justify-content:center;white-space:nowrap;">
             <button type="button" onclick="inspectKeyV2Live('${lic.key}')" class="btn-row-action" title="Inspect Key & Full Device HWID">🔍</button>
-            <button type="button" onclick="toggleHwidLockV2Live('${lic.key}')" class="btn-row-action" style="${isLockOn ? 'color:#38bdf8;border-color:rgba(56,189,248,0.35);' : 'color:#f87171;border-color:rgba(239,68,68,0.35);'}" title="${isLockOn ? 'HWID Lock is ON - Click to Turn OFF' : 'HWID Lock is OFF - Click to Turn ON'}">${isLockOn ? '🔒 ON' : '🔓 OFF'}</button>
             <button type="button" onclick="resetHwidV2Live('${lic.key}')" class="btn-row-action" title="Reset Bound HWID">🔄</button>
             <button type="button" onclick="toggleBanV2Live('${lic.key}', '${lic.status}')" class="btn-row-action" style="${isBanned ? 'color:#10b981;border-color:rgba(16,185,129,0.35);' : 'color:#f59e0b;border-color:rgba(245,158,11,0.35);'}" title="${isBanned ? 'Unban Key' : 'Ban Key'}">${isBanned ? '🔓' : '🚫'}</button>
             <button type="button" onclick="deleteKeyV2Live('${lic.key}')" class="btn-row-action" style="color:#ef4444;border-color:rgba(239,68,68,0.35);" title="Delete Key">🗑️</button>
@@ -421,7 +420,6 @@
             </div>
             <div class="mobile-lic-actions">
               <button class="mobile-btn-action" onclick="inspectKeyV2Live('${lic.key}')" title="Inspect">🔍 Inspect</button>
-              <button class="mobile-btn-action" onclick="toggleHwidLockV2Live('${lic.key}')" style="${isLockOn ? 'color:#38bdf8;' : 'color:#f87171;'}" title="Toggle Lock">${isLockOn ? '🔒 Lock ON' : '🔓 Lock OFF'}</button>
               <button class="mobile-btn-action" onclick="resetHwidV2Live('${lic.key}')" title="Reset HWID">🔄 HWID</button>
               <button class="mobile-btn-action ${isBanned ? 'btn-unban' : 'btn-ban'}" onclick="toggleBanV2Live('${lic.key}', '${lic.status}')" title="${isBanned ? 'Unban' : 'Ban'}">${isBanned ? '🔓 Unban' : '🚫 Ban'}</button>
               <button class="mobile-btn-action btn-del" onclick="deleteKeyV2Live('${lic.key}')" title="Delete">🗑️ Del</button>
