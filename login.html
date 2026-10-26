@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -2294,6 +2294,9 @@
             });
             localStorage.setItem('tx99_resellers', JSON.stringify(storedResellers));
           }
+          if (Array.isArray(serverData.tx99_licenses_v2)) {
+            localStorage.setItem('tx99_licenses_v2', JSON.stringify(serverData.tx99_licenses_v2));
+          }
         }
       } else {
         // Fast background sync without delaying user
@@ -2309,6 +2312,9 @@
               return true;
             });
             localStorage.setItem('tx99_resellers', JSON.stringify(cleanList));
+          }
+          if (Array.isArray(sd.tx99_licenses_v2)) {
+            localStorage.setItem('tx99_licenses_v2', JSON.stringify(sd.tx99_licenses_v2));
           }
         }).catch(() => {});
       }
@@ -2975,6 +2981,9 @@
                     return !banned.includes(u) && !deletedIds.includes(sr.id) && !deletedIds.includes(u);
                   });
                   localStorage.setItem('tx99_resellers', JSON.stringify(clean));
+                }
+                if (Array.isArray(data.tx99_licenses_v2)) {
+                  localStorage.setItem('tx99_licenses_v2', JSON.stringify(data.tx99_licenses_v2));
                 }
               }
             })

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Vercel Serverless Function: GET/POST /api/data
  * 
  * Persistent Cloud Credentials Engine with GitHub Backing & In-Memory Caching:
@@ -232,12 +232,27 @@ module.exports = async (req, res) => {
       }
 
       const current = await getLatestCredentials();
+            let mergedV2 = current.tx99_licenses_v2 || [];
+      if (Array.isArray(body.tx99_licenses_v2)) {
+        const map = new Map();
+        (current.tx99_licenses_v2 || []).forEach(l => {
+          if (l && l.key) map.set(l.key.toLowerCase(), l);
+        });
+        body.tx99_licenses_v2.forEach(l => {
+          if (l && l.key) {
+            const existing = map.get(l.key.toLowerCase());
+            map.set(l.key.toLowerCase(), existing ? { ...existing, ...l } : l);
+          }
+        });
+        mergedV2 = Array.from(map.values());
+      }
+
       const updated = {
         hyperx_admin_user: body.hyperx_admin_user || current.hyperx_admin_user,
         hyperx_admin_pass: body.hyperx_admin_pass || current.hyperx_admin_pass,
         tx99_resellers: Array.isArray(body.tx99_resellers) ? body.tx99_resellers : current.tx99_resellers,
         tx99_licenses: Array.isArray(body.tx99_licenses) ? body.tx99_licenses : (current.tx99_licenses || DEFAULT_DATA.tx99_licenses),
-        tx99_licenses_v2: Array.isArray(body.tx99_licenses_v2) ? body.tx99_licenses_v2 : (current.tx99_licenses_v2 || DEFAULT_DATA.tx99_licenses_v2 || [])
+        tx99_licenses_v2: mergedV2
       };
 
       // Persist to GitHub in background (fire and wait up to 4s)

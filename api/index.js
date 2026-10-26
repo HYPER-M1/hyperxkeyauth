@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Vercel Serverless Function: POST /api
  * Master Proxy & Server-Side Access Control Engine for HYPER X KeyAuth
  */
@@ -241,7 +241,7 @@ function getAuthenticatedUser(req, body, storeData) {
 // Dynamic License Expiry & Timeleft Engine
 function calculateLicenseTimeleft(lic) {
   if (!lic) {
-    return { days: 0, timeleft: "infinite", expiry: "Lifetime", isExpired: false };
+    return { days: 0, timeleft: "infinite", expiry: "Lifetime Access", isExpired: false };
   }
 
   let days = 0;
@@ -258,12 +258,6 @@ function calculateLicenseTimeleft(lic) {
       const dMatch = expStr.match(/^(\d+)\s*Days?$/i) || expStr.match(/(\d+)\s*Days?/i);
       if (dMatch) {
         days = parseInt(dMatch[1], 10) || 0;
-      } else if (expStr.includes('-')) {
-        const target = new Date(expStr).getTime();
-        if (!isNaN(target)) {
-          const diffMs = target - Date.now();
-          days = Math.max(0, Math.ceil(diffMs / (86400 * 1000)));
-        }
       }
     }
   }
@@ -273,30 +267,42 @@ function calculateLicenseTimeleft(lic) {
     return {
       days: 0,
       timeleft: "infinite",
-      expiry: "Lifetime",
+      expiry: "Lifetime Access",
       isExpired: false
     };
   }
 
-  const nowSec = Math.floor(Date.now() / 1000);
-  const totalSeconds = days * 86400;
+  const nowMs = Date.now();
+  let targetMs = 0;
 
-  if (!lic.activated_at_sec) {
-    if (lic.activated_at && !isNaN(new Date(lic.activated_at).getTime())) {
-      lic.activated_at_sec = Math.floor(new Date(lic.activated_at).getTime() / 1000);
-    } else {
-      lic.activated_at_sec = nowSec;
-    }
+  if (lic.expires_at && !isNaN(new Date(lic.expires_at).getTime())) {
+    targetMs = new Date(lic.expires_at).getTime();
+  } else if (lic.expiry && lic.expiry.toString().includes('-') && !isNaN(new Date(lic.expiry.toString()).getTime())) {
+    const expStr = lic.expiry.toString().trim();
+    const dObj = new Date(expStr.length === 10 ? expStr + 'T23:59:59.999Z' : expStr);
+    targetMs = dObj.getTime();
+  } else if (lic.activated_at && !isNaN(new Date(lic.activated_at).getTime())) {
+    targetMs = new Date(lic.activated_at).getTime() + (days * 86400 * 1000);
+  } else {
+    // Unactivated key: remaining is full duration
+    const fullSeconds = days * 86400;
+    return {
+      days: days,
+      timeleft: fullSeconds.toString(),
+      expiry: `${days} Days`,
+      isExpired: false
+    };
   }
 
-  const elapsed = Math.max(0, nowSec - lic.activated_at_sec);
-  const remainingSeconds = Math.max(0, totalSeconds - elapsed);
-  const isExpired = remainingSeconds <= 0;
+  const remainingMs = targetMs - nowMs;
+  const remainingSeconds = Math.max(0, Math.floor(remainingMs / 1000));
+  const remainingDays = Math.max(1, Math.ceil(remainingSeconds / 86400));
+  const isExpired = remainingMs <= 0;
 
   return {
-    days: days,
-    timeleft: remainingSeconds.toString(),
-    expiry: `${days} Days`,
+    days: remainingDays,
+    timeleft: isExpired ? "0" : remainingSeconds.toString(),
+    expiry: isExpired ? "Expired" : `${remainingDays} Days`,
     isExpired: isExpired
   };
 }
@@ -543,6 +549,15 @@ module.exports = async (req, res) => {
             matchedLic.hwid = clientHwid;
           }
           matchedLic.status = 'active';
+          if (!matchedLic.activated_at) {
+            matchedLic.activated_at = new Date().toISOString();
+            const d = (typeof matchedLic.days === 'number') ? matchedLic.days : (matchedLic.days ? parseInt(matchedLic.days, 10) : 0);
+            if (d > 0) {
+              const expDate = new Date(Date.now() + (d * 86400 * 1000));
+              matchedLic.expires_at = expDate.toISOString();
+              matchedLic.expiry = expDate.toISOString().split('T')[0];
+            }
+          }
           await saveStoreData(storeData);
         } else if (clientHwid && clientHwid !== 'DEFAULT_TEST_HWID' && matchedLic.hwid && matchedLic.hwid !== 'DEFAULT_TEST_HWID' && matchedLic.hwid !== clientHwid) {
           return res.status(403).json({
@@ -723,15 +738,20 @@ module.exports = async (req, res) => {
         lic.hwid = clientHwid;
       }
       lic.status = 'active';
-
-      // If relative duration (e.g., "30 Days"), activate from now
-      if (isRelative) {
-        const match = expiryStr.match(/(\d+)/);
-        const days = match ? parseInt(match[1], 10) : 30;
-        const targetDate = new Date(Date.now() + (days * 24 * 60 * 60 * 1000));
-        lic.expiry = targetDate.toISOString().split('T')[0];
+      if (!lic.activated_at) {
+        lic.activated_at = new Date().toISOString();
+        let d = (typeof lic.days === 'number') ? lic.days : (lic.days ? parseInt(lic.days, 10) : 0);
+        if (d === 0 && isRelative) {
+          const match = expiryStr.match(/(\d+)/);
+          d = match ? parseInt(match[1], 10) : 30;
+          lic.days = d;
+        }
+        if (d > 0) {
+          const targetDate = new Date(Date.now() + (d * 86400 * 1000));
+          lic.expires_at = targetDate.toISOString();
+          lic.expiry = targetDate.toISOString().split('T')[0];
+        }
       }
-      lic.activated_at = new Date().toISOString();
       await saveStoreData(storeData);
     } else if (clientHwid && clientHwid !== 'DEFAULT_TEST_HWID' && lic.hwid && lic.hwid !== 'DEFAULT_TEST_HWID' && lic.hwid !== clientHwid) {
       return res.status(403).json({
@@ -1262,6 +1282,8 @@ module.exports = async (req, res) => {
           expiry: expiryText,
           status: 'active',
           created_at: new Date().toISOString(),
+          activated_at: null,
+          expires_at: null,
           note: 'Generated by ' + (authUser ? (authUser.username || 'Owner') : 'Owner') + ' (KeyAuth V2: ' + KEYAUTH_V2_CONFIG.appName + ')',
           resellerId: 'owner'
         });

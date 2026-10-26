@@ -1,4 +1,4 @@
-/**
+﻿/**
  * ==========================================================================
  * HYPER X // KEYAUTH ENGINE & DASHBOARD CONTROLLER
  * Live KeyAuth API Integration (prtvshow.online / api_admin.php)
@@ -835,6 +835,9 @@ async function callApi(action, payload = {}) {
 
   return { success: false, message: 'Unable to reach KeyAuth API. Please check internet connection.' };
 }
+
+// Expose callApi to global window scope for modular extensions (e.g. V2 engine)
+window.callApi = callApi;
 
 // Load real packages from get_admin_packages
 async function loadAdminPackages() {

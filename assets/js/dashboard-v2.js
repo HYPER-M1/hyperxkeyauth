@@ -23,7 +23,7 @@
     supportedPackages: ["AIMKILL PVT V2", "STREAMER X"]
   };
 
-  // Seed default V2 licenses
+  // Seed default V2 licenses fallback
   const SEED_LICENSES_V2 = [
     {
       id: 'v2_1792900000001',
@@ -51,6 +51,77 @@
     }
   ];
 
+  // Helper: Merge incoming server licenses with local state cleanly without losing keys
+  function mergeV2Licenses(serverList) {
+    if (!Array.isArray(serverList)) return;
+    if (!window.state) window.state = {};
+    if (!Array.isArray(window.state.licenses_v2)) window.state.licenses_v2 = [];
+
+    const map = new Map();
+    // 1. Add server keys as source of truth
+    serverList.forEach(lic => {
+      if (lic && lic.key) map.set(lic.key.toLowerCase(), lic);
+    });
+
+    // 2. Keep any locally generated keys that might still be syncing
+    window.state.licenses_v2.forEach(lic => {
+      if (lic && lic.key && !map.has(lic.key.toLowerCase())) {
+        map.set(lic.key.toLowerCase(), lic);
+      }
+    });
+
+    window.state.licenses_v2 = Array.from(map.values());
+    try {
+      localStorage.setItem('tx99_licenses_v2', JSON.stringify(window.state.licenses_v2));
+    } catch (_) {}
+  }
+
+  // Live Cloud Synchronization: Fetch authoritative V2 keys from backend & cloud
+  async function syncLicensesV2FromServer() {
+    let serverLicenses = null;
+
+    // 1. Try authenticated backend API
+    try {
+      if (typeof window.callApi === 'function') {
+        const res = await window.callApi('get_licenses_v2', {});
+        if (res && res.success && Array.isArray(res.licenses) && res.licenses.length > 0) {
+          serverLicenses = res.licenses;
+        }
+      }
+    } catch (_) {}
+
+    // 2. Direct fallback to /api/data GitHub persistence
+    if (!serverLicenses || serverLicenses.length === 0) {
+      try {
+        const resp = await fetch('/api/data', { cache: 'no-store' });
+        if (resp.ok) {
+          const data = await resp.json();
+          if (data && Array.isArray(data.tx99_licenses_v2) && data.tx99_licenses_v2.length > 0) {
+            serverLicenses = data.tx99_licenses_v2;
+          }
+        }
+      } catch (_) {}
+    }
+
+    if (Array.isArray(serverLicenses) && serverLicenses.length > 0) {
+      mergeV2Licenses(serverLicenses);
+      renderLicensesV2Table();
+    }
+  }
+
+  // Push V2 state to cloud storage for cross-device & cross-logout persistence
+  function syncV2ToCloud() {
+    try {
+      fetch('/api/data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          tx99_licenses_v2: window.state ? (window.state.licenses_v2 || []) : []
+        })
+      }).catch(function () {});
+    } catch (_) {}
+  }
+
   // Initialize or bind V2 state into global state
   function initV2State() {
     if (!window.state) return;
@@ -74,18 +145,8 @@
       if (origSave) origSave();
     };
 
-    // Sync from server if available
-    try {
-      if (typeof window.callApi === 'function') {
-        window.callApi('get_licenses_v2', {}).then(res => {
-          if (res && res.success && Array.isArray(res.licenses) && res.licenses.length > 0) {
-            window.state.licenses_v2 = res.licenses;
-            window.state.save();
-            renderLicensesV2Table();
-          }
-        }).catch(() => {});
-      }
-    } catch (_) {}
+    // Immediately trigger server sync
+    syncLicensesV2FromServer();
   }
 
   // Hook into switchTab
@@ -106,6 +167,8 @@
         if (titleEl) titleEl.textContent = 'License Keys v2';
 
         renderLicensesV2Table();
+        syncLicensesV2FromServer(); // Auto-refresh table with latest server status
+
         if (typeof window.closeMobileSidebar === 'function') {
           window.closeMobileSidebar();
         }
@@ -180,7 +243,7 @@
               <span style="font-family:var(--font-mono);color:#34d399;display:block;font-weight:600;">${lic.pkg || 'AIMKILL PVT V2'}</span>
               <span style="font-size:10.5px;color:var(--text-dim);">${lic.app || KEYAUTH_V2_CONFIG.appName}</span>
             </td>
-            <td class="col-user col-mobile-hide" style="color:#cbd5e1;font-weight:600;white-space:nowrap;">${lic.user || 'Root Admin'}</td>
+            <td class="col-user col-mobile-hide" style="color:#cbd5e1;font-weight:600;white-space:nowrap;">${lic.user || 'Client_V2'}</td>
             <td class="col-hwid col-mobile-hide" style="font-family:var(--font-mono);font-size:11px;white-space:nowrap;color:${lic.hwid === 'Unbound' || lic.hwid === 'Not Bound' ? '#f59e0b' : '#8e95aa'};">${lic.hwid || 'Not Bound'}</td>
             <td style="font-family:var(--font-mono);font-size:11px;color:#e2e8f0;white-space:nowrap;">${lic.expiry || 'Lifetime Access'}</td>
             <td style="white-space:nowrap;">${statusBadge}</td>
@@ -218,33 +281,37 @@
 
         return `
           <div class="mobile-lic-card">
-            <div class="mobile-lic-top-row">
-              <div class="mobile-lic-key-group">
-                <span class="mobile-lic-icon">🛡️</span>
-                <span class="mobile-lic-key-text" onclick="copyText('${lic.key}')">${lic.key}</span>
-                <button type="button" class="mobile-lic-copy-btn" onclick="copyText('${lic.key}')" title="Copy Key">📋</button>
-              </div>
+            <div class="mobile-lic-header">
+              <span class="mobile-lic-pkg">${lic.pkg || 'AIMKILL PVT V2'}</span>
               ${statusBadge}
             </div>
-            <div class="mobile-lic-meta-row">
-              <div class="mobile-lic-meta-col">
-                <span class="mobile-lic-meta-label">PACKAGE</span>
-                <span class="mobile-lic-meta-val pkg-val" style="color:#34d399;">${lic.pkg || 'AIMKILL PVT V2'}</span>
+            <div class="mobile-lic-key-row">
+              <span class="mobile-lic-key-val">${lic.key}</span>
+              <button class="mobile-lic-copy-btn" onclick="copyText('${lic.key}')" title="Copy Key">📋</button>
+            </div>
+            <div class="mobile-lic-meta-grid">
+              <div class="mobile-lic-meta-item">
+                <span class="meta-label">User</span>
+                <span class="meta-val">${lic.user || 'Client_V2'}</span>
               </div>
-              <div class="mobile-lic-meta-col">
-                <span class="mobile-lic-meta-label">DURATION</span>
-                <span class="mobile-lic-meta-val expiry-val">${lic.expiry || 'Lifetime Access'}</span>
+              <div class="mobile-lic-meta-item">
+                <span class="meta-label">HWID</span>
+                <span class="meta-val ${lic.hwid === 'Not Bound' || lic.hwid === 'Unbound' ? 'val-unbound' : 'val-bound'}">${lic.hwid || 'Not Bound'}</span>
               </div>
-              <div class="mobile-lic-meta-col">
-                <span class="mobile-lic-meta-label">HWID</span>
-                <span class="mobile-lic-meta-val hwid-val" style="color:${lic.hwid === 'Unbound' || lic.hwid === 'Not Bound' ? '#f59e0b' : '#94a3b8'};">${lic.hwid || 'Not Bound'}</span>
+              <div class="mobile-lic-meta-item">
+                <span class="meta-label">Duration</span>
+                <span class="meta-val">${lic.expiry || 'Lifetime Access'}</span>
+              </div>
+              <div class="mobile-lic-meta-item">
+                <span class="meta-label">App</span>
+                <span class="meta-val">${lic.app || KEYAUTH_V2_CONFIG.appName}</span>
               </div>
             </div>
-            <div class="mobile-lic-actions-row">
-              <button type="button" class="mobile-lic-action-btn action-inspect" onclick="inspectKeyV2Live('${lic.key}')">🔍 Inspect</button>
-              <button type="button" class="mobile-lic-action-btn action-hwid" onclick="resetHwidV2Live('${lic.key}')">🔄 Reset HWID</button>
-              <button type="button" class="mobile-lic-action-btn ${isBanned ? 'action-unban' : 'action-ban'}" onclick="toggleBanV2Live('${lic.key}', '${lic.status}')">${isBanned ? '🔓 Unban' : '🚫 Ban'}</button>
-              <button type="button" class="mobile-lic-action-btn action-delete" onclick="deleteKeyV2Live('${lic.key}')">🗑️ Delete</button>
+            <div class="mobile-lic-actions">
+              <button class="mobile-btn-action" onclick="inspectKeyV2Live('${lic.key}')" title="Inspect">🔍 Inspect</button>
+              <button class="mobile-btn-action" onclick="resetHwidV2Live('${lic.key}')" title="Reset HWID">🔄 HWID</button>
+              <button class="mobile-btn-action ${isBanned ? 'btn-unban' : 'btn-ban'}" onclick="toggleBanV2Live('${lic.key}', '${lic.status}')" title="${isBanned ? 'Unban' : 'Ban'}">${isBanned ? '🔓 Unban' : '🚫 Ban'}</button>
+              <button class="mobile-btn-action btn-del" onclick="deleteKeyV2Live('${lic.key}')" title="Delete">🗑️ Delete</button>
             </div>
           </div>
         `;
@@ -252,37 +319,31 @@
     }
   };
 
-  // Filter handler for V2
+  // Filter Handler for V2
   window.setFilterV2 = function (filter, btn) {
     if (!window.state) return;
     window.state.activeFilterV2 = filter;
-    ['filter-v2-all', 'filter-v2-active', 'filter-v2-expired', 'filter-v2-banned'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.classList.remove('active');
+    document.querySelectorAll('.v2-filter-btn').forEach(b => {
+      b.classList.remove('active');
+      b.style.borderColor = 'rgba(255,255,255,0.08)';
+      b.style.background = '#0d1322';
+      b.style.color = 'var(--text-dim)';
     });
-    if (btn) btn.classList.add('active');
+    if (btn) {
+      btn.classList.add('active');
+      btn.style.borderColor = 'var(--accent-cyan)';
+      btn.style.background = 'rgba(6,182,212,0.12)';
+      btn.style.color = '#fff';
+    }
     renderLicensesV2Table();
   };
 
-  // Search handler for V2
+  // Search Handler for V2
   window.handleSearchV2 = function (val) {
     if (!window.state) return;
     window.state.searchQueryV2 = (val || '').trim();
     renderLicensesV2Table();
   };
-
-  // Sync V2 licenses to cloud GitHub persistence
-  function syncV2ToCloud() {
-    try {
-      fetch('/api/data', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          tx99_licenses_v2: window.state ? (window.state.licenses_v2 || []) : []
-        })
-      }).catch(function() {});
-    } catch (_) {}
-  }
 
   // Key generation for V2
   window.submitGenerateKeysV2 = async function (e) {
@@ -327,6 +388,9 @@
         days: days,
         expiry: expiryText,
         status: 'active',
+        created_at: new Date().toISOString(),
+        activated_at: null,
+        expires_at: null,
         note: `Generated via KeyAuth V2 API (${new Date().toLocaleDateString()})`,
         resellerId: 'owner'
       });
@@ -367,7 +431,10 @@
       window.showToast('KeyAuth V2 Generated', `${count} V2 License Key(s) generated successfully for ${pkgName}`, '✅');
     }
 
-    // Background sync to backend API
+    // Permanent cloud persistence
+    syncV2ToCloud();
+
+    // Background sync to backend API endpoint
     try {
       if (typeof window.callApi === 'function') {
         window.callApi('generate_key_v2', {
@@ -376,7 +443,7 @@
           days: days,
           count: count,
           keys: generatedKeys
-        });
+        }).catch(function () {});
       }
     } catch (_) {}
   };
@@ -388,9 +455,8 @@
 
     if (!key) {
       if (typeof window.showToast === 'function') {
-        window.showToast('Input Required', 'Please enter a V2 License Key in the field first.', '⚠️');
+        window.showToast('Key Required', 'Please enter a valid V2 License Key first.', '⚠️');
       }
-      if (input) input.focus();
       return;
     }
 
@@ -407,30 +473,32 @@
     }
   };
 
-  // Inspect V2 Key
+  // Inspect Key Details for V2
   window.inspectKeyV2Live = function (key) {
     if (!window.state || !Array.isArray(window.state.licenses_v2)) return;
     const lic = window.state.licenses_v2.find(l => l.key.toLowerCase() === key.toLowerCase());
     if (!lic) {
       if (typeof window.showToast === 'function') {
-        window.showToast('Key Not Found', `V2 Key "${key}" not found in current registry.`, '❌');
+        window.showToast('Key Not Found', `No V2 license found matching "${key}".`, '⚠️');
       }
       return;
     }
 
-    const modalTitle = document.getElementById('lic-detail-key-title');
-    const modalBody = document.getElementById('lic-detail-body');
-    if (modalTitle) modalTitle.textContent = lic.key;
+    const modalBody = document.getElementById('lic-details-body');
     if (modalBody) {
       modalBody.innerHTML = `
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-family:var(--font-mono);font-size:12px;">
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;font-size:12px;">
+          <div style="grid-column:span 2;background:#090d16;padding:12px;border-radius:6px;border:1px solid #1a2235;">
+            <span style="color:#64748b;display:block;font-size:10px;margin-bottom:4px;">KEYAUTH V2 LICENSE KEY</span>
+            <span style="font-family:var(--font-mono);font-size:14px;color:#10b981;font-weight:700;">${lic.key}</span>
+          </div>
           <div style="background:#090d16;padding:10px;border-radius:6px;border:1px solid #1a2235;">
-            <span style="color:#64748b;display:block;font-size:10px;">ENGINE</span>
-            <span style="color:#10b981;font-weight:700;">KeyAuth V2 (${KEYAUTH_V2_CONFIG.appName})</span>
+            <span style="color:#64748b;display:block;font-size:10px;">APPLICATION</span>
+            <span style="color:#fff;font-weight:600;">${lic.app || KEYAUTH_V2_CONFIG.appName}</span>
           </div>
           <div style="background:#090d16;padding:10px;border-radius:6px;border:1px solid #1a2235;">
             <span style="color:#64748b;display:block;font-size:10px;">OWNER ID</span>
-            <span style="color:#38bdf8;font-weight:700;">gyREPmpEjt</span>
+            <span style="color:#38bdf8;font-weight:700;">${KEYAUTH_V2_CONFIG.ownerId}</span>
           </div>
           <div style="background:#090d16;padding:10px;border-radius:6px;border:1px solid #1a2235;">
             <span style="color:#64748b;display:block;font-size:10px;">PACKAGE</span>
@@ -468,6 +536,8 @@
       lic.hwid = 'Not Bound';
       window.state.save();
       renderLicensesV2Table();
+      syncV2ToCloud();
+
       if (typeof window.showToast === 'function') {
         window.showToast('HWID Reset', `Hardware ID reset successfully for V2 key "${key}".`, '✅');
       }
@@ -489,6 +559,8 @@
       lic.status = newStatus;
       window.state.save();
       renderLicensesV2Table();
+      syncV2ToCloud();
+
       if (typeof window.showToast === 'function') {
         window.showToast(newStatus === 'banned' ? 'Key Banned' : 'Key Unbanned', `V2 Key "${key}" is now ${newStatus}.`, newStatus === 'banned' ? '🚫' : '✅');
       }
@@ -508,6 +580,8 @@
     window.state.licenses_v2 = window.state.licenses_v2.filter(l => l.key.toLowerCase() !== key.toLowerCase());
     window.state.save();
     renderLicensesV2Table();
+    syncV2ToCloud();
+
     if (typeof window.showToast === 'function') {
       window.showToast('Key Deleted', `V2 Key "${key}" permanently deleted.`, '🗑️');
     }
