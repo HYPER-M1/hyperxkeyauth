@@ -160,9 +160,9 @@
     "tx99_licenses_v2":  [
                              {
                                  "id":  "v2_1792900000001",
-                                 "key":  "HX2-VIP-9921-A7B8-44CD",
+                                 "key":  "HX2-AIMK-9921-A7B8-44CD",
                                  "app":  "hyper x",
-                                 "pkg":  "HYPER X VIP (v2)",
+                                 "pkg":  "AIMKILL PVT V2",
                                  "user":  "Root_Owner_V2",
                                  "hwid":  "Not Bound",
                                  "expiry":  "Lifetime Access",
@@ -172,10 +172,10 @@
                              },
                              {
                                  "id":  "v2_1792900000002",
-                                 "key":  "HX2-AIM-3312-C899-22FA",
+                                 "key":  "HX2-STRM-3312-C899-22FA",
                                  "app":  "hyper x",
-                                 "pkg":  "HYPER X AIMSILENT (v2)",
-                                 "user":  "V2_ProClient",
+                                 "pkg":  "STREAMER X",
+                                 "user":  "Streamer_Pro",
                                  "hwid":  "Not Bound",
                                  "expiry":  "30 Days",
                                  "status":  "active",

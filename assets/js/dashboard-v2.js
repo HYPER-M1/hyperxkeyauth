@@ -1,4 +1,4 @@
-/**
+﻿/**
  * HYPER X // LICENSE KEYS V2 ENGINE & CONTROLLER
  * Dedicated KeyAuth V2 Slot Integration
  * 
@@ -16,9 +16,9 @@
   const SEED_LICENSES_V2 = [
     {
       id: 'v2_1792900000001',
-      key: 'HX2-VIP-9921-A7B8-44CD',
+      key: 'HX2-AIMK-9921-A7B8-44CD',
       app: 'hyper x',
-      pkg: 'HYPER X VIP (v2)',
+      pkg: 'AIMKILL PVT V2',
       user: 'Root_Owner_V2',
       hwid: 'Not Bound',
       expiry: 'Lifetime Access',
@@ -28,10 +28,10 @@
     },
     {
       id: 'v2_1792900000002',
-      key: 'HX2-AIM-3312-C899-22FA',
+      key: 'HX2-STRM-3312-C899-22FA',
       app: 'hyper x',
-      pkg: 'HYPER X AIMSILENT (v2)',
-      user: 'V2_ProClient',
+      pkg: 'STREAMER X',
+      user: 'Streamer_Pro',
       hwid: 'Not Bound',
       expiry: '30 Days',
       status: 'active',
@@ -267,7 +267,7 @@
     const user = (document.getElementById('gen-v2-user-input')?.value || 'Client_V2').trim();
     const days = parseInt(document.getElementById('gen-v2-days-select')?.value, 10) || 0;
     const count = Math.min(50, Math.max(1, parseInt(document.getElementById('gen-v2-count-input')?.value, 10) || 1));
-    const pkgName = pkgSelect ? pkgSelect.options[pkgSelect.selectedIndex]?.text : 'HYPER X VIP (v2)';
+    const pkgName = pkgSelect ? pkgSelect.options[pkgSelect.selectedIndex]?.text : 'AIMKILL PVT V2';
     const btn = document.getElementById('btn-submit-generate-v2');
 
     if (btn) {
