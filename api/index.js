@@ -551,6 +551,8 @@ module.exports = async (req, res) => {
         }
         const clientHwid = (body.hwid || req.query.hwid || 'DEFAULT_TEST_HWID').trim();
         const isUnbound = !matchedLic.hwid || matchedLic.hwid === 'Not Bound' || matchedLic.hwid === 'Unbound' || matchedLic.hwid === 'DEFAULT_TEST_HWID';
+        const isHwidLockEnabled = matchedLic.hwid_lock !== false;
+
         if (isUnbound) {
           if (clientHwid && clientHwid !== 'DEFAULT_TEST_HWID') {
             matchedLic.hwid = clientHwid;
@@ -566,12 +568,15 @@ module.exports = async (req, res) => {
             }
           }
           await saveStoreData(storeData);
-        } else if (clientHwid && clientHwid !== 'DEFAULT_TEST_HWID' && matchedLic.hwid && matchedLic.hwid !== 'DEFAULT_TEST_HWID' && matchedLic.hwid !== clientHwid) {
+        } else if (isHwidLockEnabled && clientHwid && clientHwid !== 'DEFAULT_TEST_HWID' && matchedLic.hwid && matchedLic.hwid !== 'DEFAULT_TEST_HWID' && matchedLic.hwid !== clientHwid) {
           return res.status(403).json({
             success: false,
             message: 'Hardware ID mismatch. Contact admin to reset HWID.',
             status: 'HWID_MISMATCH'
           });
+        } else if (!isHwidLockEnabled && clientHwid && clientHwid !== 'DEFAULT_TEST_HWID' && matchedLic.hwid !== clientHwid) {
+          matchedLic.hwid = clientHwid;
+          await saveStoreData(storeData);
         }
 
         const licExpInfo = calculateLicenseTimeleft(matchedLic);
@@ -740,6 +745,8 @@ module.exports = async (req, res) => {
 
     // 3. HWID Binding & Activation
     const isUnbound = !lic.hwid || lic.hwid === 'Not Bound' || lic.hwid === 'Unbound' || lic.hwid === 'DEFAULT_TEST_HWID';
+    const isHwidLockEnabled = lic.hwid_lock !== false;
+
     if (isUnbound) {
       if (clientHwid && clientHwid !== 'DEFAULT_TEST_HWID') {
         lic.hwid = clientHwid;
@@ -760,12 +767,15 @@ module.exports = async (req, res) => {
         }
       }
       await saveStoreData(storeData);
-    } else if (clientHwid && clientHwid !== 'DEFAULT_TEST_HWID' && lic.hwid && lic.hwid !== 'DEFAULT_TEST_HWID' && lic.hwid !== clientHwid) {
+    } else if (isHwidLockEnabled && clientHwid && clientHwid !== 'DEFAULT_TEST_HWID' && lic.hwid && lic.hwid !== 'DEFAULT_TEST_HWID' && lic.hwid !== clientHwid) {
       return res.status(403).json({
         success: false,
         message: 'Hardware ID mismatch. Contact admin to reset HWID.',
         status: 'HWID_MISMATCH'
       });
+    } else if (!isHwidLockEnabled && clientHwid && clientHwid !== 'DEFAULT_TEST_HWID' && lic.hwid !== clientHwid) {
+      lic.hwid = clientHwid;
+      await saveStoreData(storeData);
     }
 
     const licExpInfo = calculateLicenseTimeleft(lic);
@@ -848,7 +858,7 @@ module.exports = async (req, res) => {
   const authUser = getAuthenticatedUser(req, body, storeData);
 
   // Protected actions require valid authentication
-  const protectedActions = ['get_licenses', 'query_keys', 'key_info', 'reset_hwid', 'ban_key', 'unban_key', 'delete_key', 'generate_key', 'reseller_stats', 'get_licenses_v2', 'key_info_v2', 'reset_hwid_v2', 'ban_key_v2', 'unban_key_v2', 'delete_key_v2', 'generate_key_v2'];
+  const protectedActions = ['get_licenses', 'query_keys', 'key_info', 'reset_hwid', 'ban_key', 'unban_key', 'delete_key', 'generate_key', 'reseller_stats', 'get_licenses_v2', 'key_info_v2', 'reset_hwid_v2', 'ban_key_v2', 'unban_key_v2', 'delete_key_v2', 'generate_key_v2', 'toggle_hwid_lock_v2'];
   
   if (protectedActions.includes(action)) {
     // If running in development without token, allow fallback to query/body only if explicit dev mode, else verify
@@ -1339,6 +1349,21 @@ module.exports = async (req, res) => {
       storeData.tx99_licenses_v2 = storeData.tx99_licenses_v2.filter(l => l.key && l.key.toLowerCase() !== key);
       await saveStoreData(storeData);
       return res.status(200).json({ success: true, message: 'V2 Key deleted: ' + key });
+    }
+    return res.status(404).json({ success: false, message: 'V2 Key not found' });
+  }
+
+  if (action === 'toggle_hwid_lock_v2') {
+    const key = (body.key || req.query.key || '').trim().toLowerCase();
+    const lic = (storeData.tx99_licenses_v2 || []).find(l => l.key && l.key.toLowerCase() === key);
+    if (lic) {
+      lic.hwid_lock = (lic.hwid_lock === false) ? true : false;
+      await saveStoreData(storeData);
+      return res.status(200).json({
+        success: true,
+        message: 'HWID Lock for ' + lic.key + ' is now ' + (lic.hwid_lock ? 'ENABLED' : 'DISABLED'),
+        hwid_lock: lic.hwid_lock
+      });
     }
     return res.status(404).json({ success: false, message: 'V2 Key not found' });
   }

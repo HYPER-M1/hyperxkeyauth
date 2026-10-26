@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -2264,6 +2264,16 @@
           <div class="form-group-item">
             <label class="form-label-title">Number of Keys to Generate (Max 50)</label>
             <input type="number" id="gen-v2-count-input" class="form-input-box" min="1" max="50" value="1">
+          </div>
+
+          <div class="form-group-item" style="grid-column: span 2; background: rgba(16, 185, 129, 0.06); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 8px; padding: 12px 14px;">
+            <label style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; margin: 0;">
+              <div>
+                <span style="display: block; font-weight: 700; font-size: 13px; color: #10b981;">🔒 Device HWID Lock (Bind to Device)</span>
+                <span style="display: block; font-size: 11px; color: var(--text-dim); margin-top: 3px;">Checked = Lock to 1 phone (recommended). Unchecked = Allow multi-device bypass.</span>
+              </div>
+              <input type="checkbox" id="gen-v2-hwid-lock" checked style="width: 20px; height: 20px; accent-color: #10b981; cursor: pointer;">
+            </label>
           </div>
         </div>
 

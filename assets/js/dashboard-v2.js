@@ -32,6 +32,7 @@
       pkg: 'AIMKILL PVT V2',
       user: 'Root_Owner_V2',
       hwid: 'Not Bound',
+      hwid_lock: true,
       expiry: 'Lifetime Access',
       status: 'active',
       note: 'KeyAuth V2 Official Engine - Initial Master Key',
@@ -44,6 +45,7 @@
       pkg: 'STREAMER X',
       user: 'Streamer_Pro',
       hwid: 'Not Bound',
+      hwid_lock: true,
       expiry: '30 Days',
       status: 'active',
       note: 'Generated via V2 API slot',
@@ -203,7 +205,8 @@
       list = list.filter(l =>
         (l.key && l.key.toLowerCase().includes(q)) ||
         (l.user && l.user.toLowerCase().includes(q)) ||
-        (l.pkg && l.pkg.toLowerCase().includes(q))
+        (l.pkg && l.pkg.toLowerCase().includes(q)) ||
+        (l.hwid && l.hwid.toLowerCase().includes(q))
       );
     }
 
@@ -221,10 +224,41 @@
         if (lic.status === 'banned') statusBadge = '<span class="badge-pill-status badge-auth-fail">Banned</span>';
 
         const isBanned = lic.status === 'banned';
+        const isLockOn = lic.hwid_lock !== false;
+        const isHwidBound = lic.hwid && lic.hwid !== 'Not Bound' && lic.hwid !== 'Unbound';
+
+        // Enhanced HWID Binding Display
+        let hwidDisplay = '';
+        if (!isLockOn) {
+          hwidDisplay = `
+            <span class="badge" style="background:rgba(239,68,68,0.12);color:#f87171;border:1px solid rgba(239,68,68,0.3);padding:3px 8px;border-radius:6px;font-size:11px;display:inline-flex;align-items:center;gap:4px;" title="HWID Lock is OFF. Multiple devices allowed.">
+              <span>🔓 Lock OFF</span>
+              ${isHwidBound ? `<span style="color:#94a3b8;font-size:10px;">(${lic.hwid.substring(0, 8)}...)</span>` : ''}
+            </span>
+          `;
+        } else if (isHwidBound) {
+          const shortHwid = lic.hwid.length > 16 ? lic.hwid.substring(0, 14) + '...' : lic.hwid;
+          hwidDisplay = `
+            <div style="display:inline-flex;align-items:center;gap:5px;">
+              <span class="badge" style="background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(16,185,129,0.3);padding:3px 8px;border-radius:6px;font-size:11px;font-family:var(--font-mono);cursor:pointer;" onclick="inspectKeyV2Live('${lic.key}')" title="Bound Device: ${lic.hwid} (Click to inspect)">
+                📱 ${shortHwid}
+              </span>
+              <button type="button" onclick="copyText('${lic.hwid}')" class="btn-copy-inline" title="Copy Device HWID">📋</button>
+            </div>
+          `;
+        } else {
+          hwidDisplay = `
+            <span class="badge" style="background:rgba(245,158,11,0.15);color:#fbbf24;border:1px solid rgba(245,158,11,0.3);padding:3px 8px;border-radius:6px;font-size:11px;display:inline-flex;align-items:center;gap:4px;" title="Awaiting first login on Android APK">
+              <span>⚠️ Not Bound</span>
+            </span>
+          `;
+        }
+
         const actionButtons = `
-          <div style="display:flex;gap:6px;align-items:center;justify-content:center;white-space:nowrap;">
-            <button type="button" onclick="inspectKeyV2Live('${lic.key}')" class="btn-row-action" title="Inspect Key Info">🔍</button>
-            <button type="button" onclick="resetHwidV2Live('${lic.key}')" class="btn-row-action" title="Reset HWID">🔄</button>
+          <div style="display:flex;gap:5px;align-items:center;justify-content:center;white-space:nowrap;">
+            <button type="button" onclick="inspectKeyV2Live('${lic.key}')" class="btn-row-action" title="Inspect Key & Full Device HWID">🔍</button>
+            <button type="button" onclick="toggleHwidLockV2Live('${lic.key}')" class="btn-row-action" style="${isLockOn ? 'color:#38bdf8;border-color:rgba(56,189,248,0.35);' : 'color:#f87171;border-color:rgba(239,68,68,0.35);'}" title="${isLockOn ? 'HWID Lock is ON - Click to Turn OFF' : 'HWID Lock is OFF - Click to Turn ON'}">${isLockOn ? '🔒 ON' : '🔓 OFF'}</button>
+            <button type="button" onclick="resetHwidV2Live('${lic.key}')" class="btn-row-action" title="Reset Bound HWID">🔄</button>
             <button type="button" onclick="toggleBanV2Live('${lic.key}', '${lic.status}')" class="btn-row-action" style="${isBanned ? 'color:#10b981;border-color:rgba(16,185,129,0.35);' : 'color:#f59e0b;border-color:rgba(245,158,11,0.35);'}" title="${isBanned ? 'Unban Key' : 'Ban Key'}">${isBanned ? '🔓' : '🚫'}</button>
             <button type="button" onclick="deleteKeyV2Live('${lic.key}')" class="btn-row-action" style="color:#ef4444;border-color:rgba(239,68,68,0.35);" title="Delete Key">🗑️</button>
           </div>
@@ -244,7 +278,7 @@
               <span style="font-size:10.5px;color:var(--text-dim);">${lic.app || KEYAUTH_V2_CONFIG.appName}</span>
             </td>
             <td class="col-user col-mobile-hide" style="color:#cbd5e1;font-weight:600;white-space:nowrap;">${lic.user || 'Client_V2'}</td>
-            <td class="col-hwid col-mobile-hide" style="font-family:var(--font-mono);font-size:11px;white-space:nowrap;color:${lic.hwid === 'Unbound' || lic.hwid === 'Not Bound' ? '#f59e0b' : '#8e95aa'};">${lic.hwid || 'Not Bound'}</td>
+            <td class="col-hwid col-mobile-hide" style="white-space:nowrap;">${hwidDisplay}</td>
             <td style="font-family:var(--font-mono);font-size:11px;color:#e2e8f0;white-space:nowrap;">${lic.expiry || 'Lifetime Access'}</td>
             <td style="white-space:nowrap;">${statusBadge}</td>
             <td style="white-space:nowrap;text-align:center;">${actionButtons}</td>
@@ -257,6 +291,9 @@
     if (mobileList) {
       mobileList.innerHTML = list.map(lic => {
         const isBanned = lic.status === 'banned';
+        const isLockOn = lic.hwid_lock !== false;
+        const isHwidBound = lic.hwid && lic.hwid !== 'Not Bound' && lic.hwid !== 'Unbound';
+
         let statusBadge = `
           <span class="mobile-lic-status-badge status-active">
             <span class="status-dot dot-green"></span>
@@ -295,23 +332,24 @@
                 <span class="meta-val">${lic.user || 'Client_V2'}</span>
               </div>
               <div class="mobile-lic-meta-item">
-                <span class="meta-label">HWID</span>
-                <span class="meta-val ${lic.hwid === 'Not Bound' || lic.hwid === 'Unbound' ? 'val-unbound' : 'val-bound'}">${lic.hwid || 'Not Bound'}</span>
+                <span class="meta-label">HWID Device</span>
+                <span class="meta-val ${isHwidBound ? 'val-bound' : 'val-unbound'}" style="font-family:var(--font-mono);font-size:10.5px;">${isHwidBound ? lic.hwid.substring(0, 10) + '...' : 'Not Bound'}</span>
+              </div>
+              <div class="mobile-lic-meta-item">
+                <span class="meta-label">HWID Lock</span>
+                <span class="meta-val" style="color:${isLockOn ? '#10b981' : '#f87171'};font-weight:700;">${isLockOn ? '🔒 ON' : '🔓 OFF'}</span>
               </div>
               <div class="mobile-lic-meta-item">
                 <span class="meta-label">Duration</span>
                 <span class="meta-val">${lic.expiry || 'Lifetime Access'}</span>
               </div>
-              <div class="mobile-lic-meta-item">
-                <span class="meta-label">App</span>
-                <span class="meta-val">${lic.app || KEYAUTH_V2_CONFIG.appName}</span>
-              </div>
             </div>
             <div class="mobile-lic-actions">
               <button class="mobile-btn-action" onclick="inspectKeyV2Live('${lic.key}')" title="Inspect">🔍 Inspect</button>
+              <button class="mobile-btn-action" onclick="toggleHwidLockV2Live('${lic.key}')" style="${isLockOn ? 'color:#38bdf8;' : 'color:#f87171;'}" title="Toggle Lock">${isLockOn ? '🔒 Lock ON' : '🔓 Lock OFF'}</button>
               <button class="mobile-btn-action" onclick="resetHwidV2Live('${lic.key}')" title="Reset HWID">🔄 HWID</button>
               <button class="mobile-btn-action ${isBanned ? 'btn-unban' : 'btn-ban'}" onclick="toggleBanV2Live('${lic.key}', '${lic.status}')" title="${isBanned ? 'Unban' : 'Ban'}">${isBanned ? '🔓 Unban' : '🚫 Ban'}</button>
-              <button class="mobile-btn-action btn-del" onclick="deleteKeyV2Live('${lic.key}')" title="Delete">🗑️ Delete</button>
+              <button class="mobile-btn-action btn-del" onclick="deleteKeyV2Live('${lic.key}')" title="Delete">🗑️ Del</button>
             </div>
           </div>
         `;
@@ -352,6 +390,7 @@
     const user = (document.getElementById('gen-v2-user-input')?.value || 'Client_V2').trim();
     const days = parseInt(document.getElementById('gen-v2-days-select')?.value, 10) || 0;
     const count = Math.min(50, Math.max(1, parseInt(document.getElementById('gen-v2-count-input')?.value, 10) || 1));
+    const hwidLock = document.getElementById('gen-v2-hwid-lock') ? document.getElementById('gen-v2-hwid-lock').checked : true;
     const pkgName = pkgSelect ? pkgSelect.options[pkgSelect.selectedIndex]?.text : 'AIMKILL PVT V2';
     const btn = document.getElementById('btn-submit-generate-v2');
 
@@ -385,6 +424,7 @@
         pkg: pkgName,
         user: count > 1 ? `${user}_${idx + 1}` : user,
         hwid: 'Not Bound',
+        hwid_lock: hwidLock,
         days: days,
         expiry: expiryText,
         status: 'active',
@@ -424,11 +464,11 @@
     renderLicensesV2Table();
 
     if (window.state && typeof window.state.addLog === 'function') {
-      window.state.addLog('GENERATE_KEYS_V2', `Generated ${count} key(s) for package "${pkgName}" (KeyAuth V2 API)`);
+      window.state.addLog('GENERATE_KEYS_V2', `Generated ${count} key(s) for package "${pkgName}" with HWID Lock: ${hwidLock ? 'ON' : 'OFF'}`);
     }
 
     if (typeof window.showToast === 'function') {
-      window.showToast('KeyAuth V2 Generated', `${count} V2 License Key(s) generated successfully for ${pkgName}`, '✅');
+      window.showToast('KeyAuth V2 Generated', `${count} V2 Key(s) generated [HWID Lock: ${hwidLock ? 'ON' : 'OFF'}]`, '✅');
     }
 
     // Permanent cloud persistence
@@ -442,10 +482,37 @@
           user: user,
           days: days,
           count: count,
+          hwid_lock: hwidLock,
           keys: generatedKeys
         }).catch(function () {});
       }
     } catch (_) {}
+  };
+
+  // Toggle HWID Lock (ON / OFF) for V2 Key
+  window.toggleHwidLockV2Live = async function (key) {
+    if (!window.state || !Array.isArray(window.state.licenses_v2)) return;
+    const lic = window.state.licenses_v2.find(l => l.key.toLowerCase() === key.toLowerCase());
+    if (lic) {
+      lic.hwid_lock = (lic.hwid_lock === false) ? true : false;
+      window.state.save();
+      renderLicensesV2Table();
+      syncV2ToCloud();
+
+      const newStatus = lic.hwid_lock ? 'ENABLED (Locked to Device)' : 'DISABLED (Bypass ON)';
+      if (typeof window.showToast === 'function') {
+        window.showToast('HWID Lock ' + (lic.hwid_lock ? 'ON' : 'OFF'), `HWID Lock is now ${newStatus} for "${key}".`, lic.hwid_lock ? '🔒' : '🔓');
+      }
+      if (window.state && typeof window.state.addLog === 'function') {
+        window.state.addLog('TOGGLE_HWID_LOCK_V2', `Set HWID Lock to ${lic.hwid_lock ? 'ON' : 'OFF'} for ${key}`);
+      }
+
+      try {
+        if (typeof window.callApi === 'function') {
+          window.callApi('toggle_hwid_lock_v2', { key: key }).catch(function () {});
+        }
+      } catch (_) {}
+    }
   };
 
   // Quick remote tools for V2
@@ -464,6 +531,8 @@
       inspectKeyV2Live(key);
     } else if (action === 'reset_hwid') {
       resetHwidV2Live(key);
+    } else if (action === 'toggle_lock') {
+      toggleHwidLockV2Live(key);
     } else if (action === 'ban') {
       toggleBanV2Live(key, 'active');
     } else if (action === 'unban') {
@@ -473,7 +542,7 @@
     }
   };
 
-  // Inspect Key Details for V2
+  // Inspect Key Details for V2 (Shows Full Device HWID + Lock Switch)
   window.inspectKeyV2Live = function (key) {
     if (!window.state || !Array.isArray(window.state.licenses_v2)) return;
     const lic = window.state.licenses_v2.find(l => l.key.toLowerCase() === key.toLowerCase());
@@ -484,21 +553,49 @@
       return;
     }
 
+    const isLockOn = lic.hwid_lock !== false;
+    const isBound = lic.hwid && lic.hwid !== 'Not Bound' && lic.hwid !== 'Unbound';
+
     const modalBody = document.getElementById('lic-details-body');
     if (modalBody) {
       modalBody.innerHTML = `
         <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;font-size:12px;">
-          <div style="grid-column:span 2;background:#090d16;padding:12px;border-radius:6px;border:1px solid #1a2235;">
-            <span style="color:#64748b;display:block;font-size:10px;margin-bottom:4px;">KEYAUTH V2 LICENSE KEY</span>
+          <!-- Key Display -->
+          <div style="grid-column:span 2;background:#090d16;padding:12px;border-radius:8px;border:1px solid #1a2235;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+              <span style="color:#64748b;font-size:10px;font-weight:700;">KEYAUTH V2 LICENSE KEY</span>
+              <button onclick="copyText('${lic.key}')" class="btn-copy-inline" style="background:rgba(16,185,129,0.15);border:1px solid #10b981;color:#10b981;padding:2px 8px;border-radius:4px;font-size:11px;">📋 Copy Key</button>
+            </div>
             <span style="font-family:var(--font-mono);font-size:14px;color:#10b981;font-weight:700;">${lic.key}</span>
           </div>
+
+          <!-- Full Device HWID Display with Copy -->
+          <div style="grid-column:span 2;background:#090d16;padding:12px;border-radius:8px;border:1px solid ${isBound ? 'rgba(16,185,129,0.3)' : '#1a2235'};">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+              <span style="color:#64748b;font-size:10px;font-weight:700;">BOUND DEVICE HARDWARE ID (HWID)</span>
+              ${isBound ? `<button onclick="copyText('${lic.hwid}')" style="background:rgba(56,189,248,0.15);border:1px solid #38bdf8;color:#38bdf8;border-radius:4px;padding:2px 8px;font-size:11px;cursor:pointer;">📋 Copy Device HWID</button>` : ''}
+            </div>
+            <span style="font-family:var(--font-mono);font-size:12px;color:${isBound ? '#38bdf8' : '#f59e0b'};word-break:break-all;font-weight:600;">
+              ${isBound ? lic.hwid : '⚠️ Not Bound (Device has not logged in yet)'}
+            </span>
+          </div>
+
+          <!-- HWID Lock Toggle Box -->
+          <div style="grid-column:span 2;background:#090d16;padding:12px;border-radius:8px;border:1px solid #1a2235;display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <span style="color:#64748b;display:block;font-size:10px;font-weight:700;">HWID LOCK STATUS</span>
+              <span style="color:${isLockOn ? '#10b981' : '#f87171'};font-weight:700;font-size:13px;">
+                ${isLockOn ? '🔒 LOCKED (Strict 1-Device Binding)' : '🔓 UNLOCKED (Multiple Devices Allowed)'}
+              </span>
+            </div>
+            <button type="button" onclick="toggleHwidLockV2Live('${lic.key}');inspectKeyV2Live('${lic.key}');" style="padding:6px 14px;font-size:11.5px;font-weight:700;border-radius:6px;cursor:pointer;background:${isLockOn ? 'rgba(239,68,68,0.15)' : 'rgba(16,185,129,0.15)'};border:1px solid ${isLockOn ? '#ef4444' : '#10b981'};color:${isLockOn ? '#ef4444' : '#10b981'};">
+              ${isLockOn ? '🔓 Turn Lock OFF' : '🔒 Turn Lock ON'}
+            </button>
+          </div>
+
           <div style="background:#090d16;padding:10px;border-radius:6px;border:1px solid #1a2235;">
             <span style="color:#64748b;display:block;font-size:10px;">APPLICATION</span>
             <span style="color:#fff;font-weight:600;">${lic.app || KEYAUTH_V2_CONFIG.appName}</span>
-          </div>
-          <div style="background:#090d16;padding:10px;border-radius:6px;border:1px solid #1a2235;">
-            <span style="color:#64748b;display:block;font-size:10px;">OWNER ID</span>
-            <span style="color:#38bdf8;font-weight:700;">${KEYAUTH_V2_CONFIG.ownerId}</span>
           </div>
           <div style="background:#090d16;padding:10px;border-radius:6px;border:1px solid #1a2235;">
             <span style="color:#64748b;display:block;font-size:10px;">PACKAGE</span>
@@ -512,13 +609,9 @@
             <span style="color:#64748b;display:block;font-size:10px;">ASSIGNED USER</span>
             <span style="color:#fff;">${lic.user || 'None'}</span>
           </div>
-          <div style="background:#090d16;padding:10px;border-radius:6px;border:1px solid #1a2235;">
-            <span style="color:#64748b;display:block;font-size:10px;">EXPIRATION</span>
-            <span style="color:#fff;">${lic.expiry}</span>
-          </div>
           <div style="grid-column:span 2;background:#090d16;padding:10px;border-radius:6px;border:1px solid #1a2235;">
-            <span style="color:#64748b;display:block;font-size:10px;">HWID BINDING</span>
-            <span style="color:${lic.hwid === 'Not Bound' ? '#f59e0b' : '#38bdf8'};">${lic.hwid}</span>
+            <span style="color:#64748b;display:block;font-size:10px;">VALIDITY / EXPIRY</span>
+            <span style="color:#fff;font-weight:600;">${lic.expiry || 'Lifetime Access'}</span>
           </div>
         </div>
       `;
@@ -539,7 +632,7 @@
       syncV2ToCloud();
 
       if (typeof window.showToast === 'function') {
-        window.showToast('HWID Reset', `Hardware ID reset successfully for V2 key "${key}".`, '✅');
+        window.showToast('HWID Reset', `Hardware ID reset to "Not Bound" for V2 key "${key}".`, '✅');
       }
       if (window.state && typeof window.state.addLog === 'function') {
         window.state.addLog('RESET_HWID_V2', `Reset HWID for key ${key}`);
