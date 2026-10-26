@@ -11,7 +11,9 @@
       "totalQuota": 999,
       "createdKeys": 3,
       "status": "Active",
-      "panels": ["all"],
+      "panels": [
+        "all"
+      ],
       "totpSecret": "Z5N73VUTBHFC7MJF",
       "twofa_setup_done": true
     },
@@ -23,7 +25,9 @@
       "balance": 100,
       "createdKeys": 4,
       "status": "Active",
-      "panels": ["all"],
+      "panels": [
+        "all"
+      ],
       "totpSecret": "DBMW7BYRMYHAPRQS",
       "twofa_setup_done": true,
       "totalQuota": 104
@@ -36,7 +40,9 @@
       "balance": 100,
       "createdKeys": 0,
       "status": "Active",
-      "panels": ["all"],
+      "panels": [
+        "all"
+      ],
       "totpSecret": "ISVJ2L5EGEIUJDJ3",
       "twofa_setup_done": true
     }
@@ -175,7 +181,7 @@
       "status": "active",
       "note": "KeyAuth V2 Official Engine - Initial Master Key",
       "resellerId": "owner",
-      "activated_at": "2026-10-26T09:53:36.201Z"
+      "activated_at": "2026-10-26T10:24:26.565Z"
     },
     {
       "id": "v2_1792900000002",
