@@ -316,6 +316,12 @@
           <span class="nav-count-badge" id="nav-key-count" style="display:none;">LIVE</span>
         </button>
 
+        <button class="sidebar-nav-link" id="nav-licenses-v2" onclick="switchTab('licenses-v2')">
+          <span class="nav-icon">🛡️</span>
+          <span>License Keys v2</span>
+          <span class="nav-count-badge" id="nav-key-count-v2" style="background:#10b981;color:#fff;">V2</span>
+        </button>
+
 
         <button class="sidebar-nav-link" id="nav-logs" onclick="switchTab('logs')">
           <span class="nav-icon">📋</span>
@@ -853,6 +859,77 @@
 
             <!-- Mobile Cards View for Phone -->
             <div class="mobile-license-cards-wrap" id="licenses-mobile-list">
+              <!-- Dynamically populated by JS (Mobile) -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ============================================================
+             VIEW 2B: LICENSE KEYS V2 (KEYAUTH V2 ENGINE)
+             ============================================================ -->
+        <section class="tab-view" id="view-licenses-v2">
+          <div class="view-header-strip lic-view-header">
+            <div class="lic-header-intro">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                <h2 class="view-heading-title" id="view-licenses-v2-title">KeyAuth License Keys v2</h2>
+                <span style="background:rgba(16,185,129,0.18);color:#10b981;border:1px solid rgba(16,185,129,0.4);font-size:10px;padding:2px 8px;border-radius:4px;font-weight:700;letter-spacing:0.5px;">HYPER X ENGINE</span>
+              </div>
+              <p class="view-sub-text" id="view-licenses-v2-sub">
+                Connected to KeyAuth App: <span style="color:#00f0ff;font-family:var(--font-mono);font-weight:700;">hyper x</span> • Owner ID: <span style="color:#10b981;font-family:var(--font-mono);font-weight:700;">gyREPmpEjt</span> • Secret: <span style="color:#a855f7;font-family:var(--font-mono);">d605...f363</span> • Version: <span style="color:#f59e0b;font-family:var(--font-mono);font-weight:700;">1.0</span>
+              </p>
+            </div>
+            <button class="btn-action-primary btn-gen-key-red" style="background:linear-gradient(135deg,#059669,#10b981);border-color:#10b981;box-shadow:0 0 15px rgba(16,185,129,0.3);" onclick="openModal('modal-add-key-v2')">
+              <span class="btn-bolt-glyph">⚡</span>
+              <span class="btn-gen-label">+ Generate Key(s) v2</span>
+            </button>
+          </div>
+
+          <!-- Quick Key Remote Tools Bar for V2 -->
+          <div class="quick-key-card" style="border-color:rgba(16,185,129,0.25);">
+            <span class="quick-key-title" style="font-weight:700;font-size:13px;color:#fff;display:block;margin-bottom:8px;">🛠️ Quick Remote Key Tool (V2):</span>
+            <div class="quick-tools-row">
+              <input type="text" id="quick-key-input-v2" class="form-input-box" placeholder="Paste or type any V2 License Key here (e.g. HX2-VIP-XXXX-XXXX...)">
+              <button class="btn-action-secondary btn-quick-inspect" onclick="runQuickKeyActionV2('inspect')">🔍 Inspect</button>
+            </div>
+            <div class="quick-tools-actions">
+              <button class="btn-action-secondary" style="color:#38bdf8;" onclick="runQuickKeyActionV2('reset_hwid')">🔄 Reset HWID</button>
+              <button id="quick-tool-ban-v2" class="btn-action-secondary" style="color:#f59e0b;" onclick="runQuickKeyActionV2('ban')">🚫 Ban</button>
+              <button id="quick-tool-unban-v2" class="btn-action-secondary" style="color:#10b981;" onclick="runQuickKeyActionV2('unban')">✅ Unban</button>
+              <button id="quick-tool-delete-v2" class="btn-action-secondary" style="color:#ef4444;" onclick="runQuickKeyActionV2('delete')">🗑️ Delete</button>
+            </div>
+            <div id="quick-key-result-v2" style="display:none;"></div>
+          </div>
+
+          <div class="search-filter-bar">
+            <input type="text" id="search-input-v2" class="input-search-cyber" placeholder="Search V2 keys by key, package, or user..." oninput="handleSearchV2(this.value)">
+            <div class="filter-buttons-row">
+              <button class="btn-filter-pill active" id="filter-v2-all" onclick="setFilterV2('all', this)">All V2 Keys</button>
+              <button class="btn-filter-pill" id="filter-v2-active" onclick="setFilterV2('active', this)">Active</button>
+              <button class="btn-filter-pill" id="filter-v2-expired" onclick="setFilterV2('expired', this)">Expired</button>
+              <button class="btn-filter-pill" id="filter-v2-banned" onclick="setFilterV2('banned', this)">Banned</button>
+            </div>
+          </div>
+
+          <div class="cyber-data-table-wrap">
+            <table class="cyber-panel-table" style="font-size:12.5px;">
+              <thead>
+                <tr>
+                  <th style="min-width:180px;">V2 LICENSE KEY</th>
+                  <th>PACKAGE / APP</th>
+                  <th class="col-user col-mobile-hide">ASSIGNED USER</th>
+                  <th class="col-hwid col-mobile-hide">HWID BINDING</th>
+                  <th>DURATION / EXPIRY</th>
+                  <th>STATUS</th>
+                  <th style="min-width:160px;text-align:center;">ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody id="licenses-v2-tbody">
+                <!-- Dynamically populated by JS (Desktop) -->
+              </tbody>
+            </table>
+
+            <!-- Mobile Cards View for Phone -->
+            <div class="mobile-license-cards-wrap" id="licenses-v2-mobile-list">
               <!-- Dynamically populated by JS (Mobile) -->
             </div>
           </div>
@@ -2141,6 +2218,66 @@
   </div>
 
   <!-- ============================================================
+       MODAL 1B: GENERATE LICENSE KEY V2 (KEYAUTH V2 ENGINE)
+       ============================================================ -->
+  <div class="modal-layer" id="modal-add-key-v2">
+    <div class="modal-box-card">
+      <div class="modal-header-strip">
+        <span class="modal-title-text">🛡️ Generate KeyAuth License Keys (V2 Engine)</span>
+        <button onclick="closeModal('modal-add-key-v2')" style="background:transparent;border:none;color:#94a3b8;cursor:pointer;font-size:16px;">✕</button>
+      </div>
+
+      <form onsubmit="submitGenerateKeysV2(event)">
+        <div class="modal-body-content">
+          <div style="background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.35);color:#34d399;padding:8px 12px;border-radius:6px;font-size:11.5px;margin-bottom:14px;font-family:var(--font-mono);">
+            ⚡ Connected to KeyAuth App: <strong>hyper x</strong> (Owner ID: gyREPmpEjt • Ver: 1.0)
+          </div>
+
+          <div class="form-group-item">
+            <label class="form-label-title">Target Package (V2)</label>
+            <select id="gen-v2-package-select" class="form-input-box" required>
+              <option value="pkg_v2_vip" selected>HYPER X VIP (v2)</option>
+              <option value="pkg_v2_aimsilent">HYPER X AIMSILENT (v2)</option>
+              <option value="pkg_v2_bypass">HYPER X BYPASS (v2)</option>
+              <option value="pkg_v2_mastercore">HYPER X MASTER CORE (v2)</option>
+            </select>
+          </div>
+
+          <div class="form-group-item">
+            <label class="form-label-title">Assigned User / Client Name</label>
+            <input type="text" id="gen-v2-user-input" class="form-input-box" placeholder="e.g. V2_Client_01" value="Client_V2">
+          </div>
+
+          <div class="form-group-item">
+            <label class="form-label-title">Validity Duration</label>
+            <select id="gen-v2-days-select" class="form-input-box">
+              <option value="0">Lifetime Access (0 Days)</option>
+              <option value="1">1 Day Trial</option>
+              <option value="3">3 Days</option>
+              <option value="7">7 Days (Weekly)</option>
+              <option value="15">15 Days</option>
+              <option value="30" selected>30 Days (Monthly)</option>
+              <option value="60">60 Days (2 Months)</option>
+              <option value="90">90 Days (Quarterly)</option>
+              <option value="365">365 Days (1 Year)</option>
+            </select>
+          </div>
+
+          <div class="form-group-item">
+            <label class="form-label-title">Number of Keys to Generate (Max 50)</label>
+            <input type="number" id="gen-v2-count-input" class="form-input-box" min="1" max="50" value="1">
+          </div>
+        </div>
+
+        <div class="modal-footer-strip">
+          <button type="button" class="btn-action-secondary" onclick="closeModal('modal-add-key-v2')">Cancel</button>
+          <button type="submit" class="btn-action-primary" id="btn-submit-generate-v2" style="background:linear-gradient(135deg,#059669,#10b981);border-color:#10b981;">Generate V2 Keys Now ⚡</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================================
        MODAL 2: GENERATED KEYS DISPLAY & 1-CLICK EXPORT
        ============================================================ -->
   <div class="modal-layer" id="modal-generated-keys">
@@ -2560,5 +2697,6 @@
   </div>
 
   <script src="assets/js/dashboard.js?v=20261023_pro_logout_final"></script>
+  <script src="assets/js/dashboard-v2.js?v=20261026_v2_engine"></script>
 </body>
 </html>

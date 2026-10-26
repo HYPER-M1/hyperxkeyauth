@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * PRTV SHOW // HYPER X - REST API & KEYAUTH VERIFICATION ENGINE
  * Endpoints for Client Loaders, License Auth, HWID Binding, Telemetry & Reseller Access Control
@@ -179,7 +179,7 @@ if ($action === 'session_auth' || $action === 'login') {
 }
 
 // Protected actions requiring authorization
-$protectedActions = ['get_licenses', 'query_keys', 'key_info', 'reset_hwid', 'ban_key', 'unban_key', 'delete_key', 'generate_key', 'reseller_stats'];
+$protectedActions = ['get_licenses', 'query_keys', 'key_info', 'reset_hwid', 'ban_key', 'unban_key', 'delete_key', 'generate_key', 'reseller_stats', 'get_licenses_v2', 'key_info_v2', 'reset_hwid_v2', 'ban_key_v2', 'unban_key_v2', 'delete_key_v2', 'generate_key_v2'];
 
 if (in_array($action, $protectedActions, true)) {
     $store = get_store_data();
@@ -392,6 +392,118 @@ if (in_array($action, $protectedActions, true)) {
             'package_name' => $pkgName,
             'timestamp'    => time()
         ]);
+    }
+
+    // =========================================================================
+    // V2 KEYAUTH ACTIONS (Slot 2: HYPER X V2 Engine)
+    // App: hyper x • Owner: gyREPmpEjt • Secret: d605...f363 • Ver: 1.0
+    // =========================================================================
+    if ($action === 'get_licenses_v2') {
+        $v2Licenses = $store['tx99_licenses_v2'] ?? [];
+        json_response([
+            'success'   => true,
+            'licenses'  => array_values($v2Licenses),
+            'total'     => count($v2Licenses),
+            'app_name'  => 'hyper x',
+            'owner_id'  => 'gyREPmpEjt',
+            'version'   => '1.0'
+        ]);
+    }
+
+    if ($action === 'generate_key_v2') {
+        $count = max(1, (int)($body['count'] ?? 1));
+        $days = (int)($body['days'] ?? 0);
+        $pkgName = $body['package_name'] ?? 'HYPER X VIP (v2)';
+        $rawUser = trim($body['user'] ?? 'Client_V2');
+        $expiryText = ($days === 0) ? 'Lifetime Access' : "{$days} Days";
+
+        $generatedKeys = [];
+        if (!empty($body['keys']) && is_array($body['keys'])) {
+            $generatedKeys = $body['keys'];
+        } else {
+            $chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            $cMax = strlen($chars) - 1;
+            for ($i = 0; $i < $count; $i++) {
+                $seg = function() use ($chars, $cMax) {
+                    $s = '';
+                    for ($j = 0; $j < 4; $j++) { $s .= $chars[random_int(0, $cMax)]; }
+                    return $s;
+                };
+                $generatedKeys[] = "HX2-{$seg()}-{$seg()}-{$seg()}-{$seg()}";
+            }
+        }
+
+        if (!isset($store['tx99_licenses_v2']) || !is_array($store['tx99_licenses_v2'])) {
+            $store['tx99_licenses_v2'] = [];
+        }
+
+        foreach ($generatedKeys as $idx => $k) {
+            array_unshift($store['tx99_licenses_v2'], [
+                'id'         => 'v2_' . time() . rand(100, 999) . $idx,
+                'key'        => $k,
+                'app'        => 'hyper x',
+                'pkg'        => $pkgName,
+                'user'       => $count > 1 ? "{$rawUser}_" . ($idx + 1) : $rawUser,
+                'hwid'       => 'Not Bound',
+                'expiry'     => $expiryText,
+                'status'     => 'active',
+                'note'       => 'Generated via KeyAuth V2 API',
+                'resellerId' => 'owner'
+            ]);
+        }
+        save_store_data($store);
+
+        json_response([
+            'success'      => true,
+            'message'      => 'V2 Keys generated successfully.',
+            'count'        => count($generatedKeys),
+            'keys'         => $generatedKeys,
+            'app_name'     => 'hyper x',
+            'owner_id'     => 'gyREPmpEjt',
+            'package_name' => $pkgName,
+            'timestamp'    => time()
+        ]);
+    }
+
+    if ($action === 'reset_hwid_v2') {
+        $targetKey = strtolower(trim($body['key'] ?? ''));
+        if (isset($store['tx99_licenses_v2']) && is_array($store['tx99_licenses_v2'])) {
+            foreach ($store['tx99_licenses_v2'] as &$l) {
+                if (strtolower($l['key'] ?? '') === $targetKey) {
+                    $l['hwid'] = 'Not Bound';
+                    save_store_data($store);
+                    json_response(['success' => true, 'message' => "V2 HWID reset for {$targetKey}"]);
+                }
+            }
+        }
+        json_response(['success' => false, 'message' => 'V2 Key not found'], 404);
+    }
+
+    if ($action === 'ban_key_v2' || $action === 'unban_key_v2') {
+        $targetKey = strtolower(trim($body['key'] ?? ''));
+        $newStatus = ($action === 'ban_key_v2') ? 'banned' : 'active';
+        if (isset($store['tx99_licenses_v2']) && is_array($store['tx99_licenses_v2'])) {
+            foreach ($store['tx99_licenses_v2'] as &$l) {
+                if (strtolower($l['key'] ?? '') === $targetKey) {
+                    $l['status'] = $newStatus;
+                    save_store_data($store);
+                    json_response(['success' => true, 'message' => "V2 Key {$newStatus}"]);
+                }
+            }
+        }
+        json_response(['success' => false, 'message' => 'V2 Key not found'], 404);
+    }
+
+    if ($action === 'delete_key_v2') {
+        $targetKey = strtolower(trim($body['key'] ?? ''));
+        if (isset($store['tx99_licenses_v2']) && is_array($store['tx99_licenses_v2'])) {
+            $store['tx99_licenses_v2'] = array_values(array_filter($store['tx99_licenses_v2'], function($l) use ($targetKey) {
+                return strtolower($l['key'] ?? '') !== $targetKey;
+            }));
+            save_store_data($store);
+            json_response(['success' => true, 'message' => "V2 Key deleted: {$targetKey}"]);
+        }
+        json_response(['success' => false, 'message' => 'V2 Key not found'], 404);
     }
 
     // 4. RESELLER STATS

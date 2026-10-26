@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Vercel Serverless Function: POST /api
  * Master Proxy & Server-Side Access Control Engine for HYPER X KeyAuth
  */
@@ -45,7 +45,8 @@ function getStoreData() {
     hyperx_admin_user: 'HYPER X',
     hyperx_admin_pass: 'hyperm2000',
     tx99_resellers: [],
-    tx99_licenses: []
+    tx99_licenses: [],
+    tx99_licenses_v2: []
   };
 }
 
@@ -267,18 +268,22 @@ module.exports = async (req, res) => {
   // 1A. KEYAUTH SDK INIT (KeyAuthApp.init())
   // =========================================================================
   if (action === 'init') {
-    const sessionid = 'hx_' + crypto.randomBytes(16).toString('hex');
+    const isV2 = (body.name === 'hyper x' || req.query.name === 'hyper x' || body.ownerid === 'gyREPmpEjt' || req.query.ownerid === 'gyREPmpEjt');
+    const sessionid = (isV2 ? 'hx_v2_' : 'hx_') + crypto.randomBytes(16).toString('hex');
+    const licCount = isV2 ? (storeData.tx99_licenses_v2 || []).length : licenses.length;
     return res.status(200).json({
       success: true,
       message: 'Initialized',
       sessionid: sessionid,
       appinfo: {
-        numUsers: '1429',
-        numOnlineUsers: '124',
-        numKeys: licenses.length.toString(),
+        numUsers: isV2 ? '1' : '1429',
+        numOnlineUsers: isV2 ? '1' : '124',
+        numKeys: licCount.toString(),
         version: body.ver || req.query.ver || '1.0',
-        customerPanel: 'https://prtvshow.online'
+        customerPanel: isV2 ? 'https://keyauth.win' : 'https://prtvshow.online'
       }
+    });
+  }
     });
   }
 
@@ -299,7 +304,11 @@ module.exports = async (req, res) => {
     }
 
     const cleanKey = licenseKey.toLowerCase();
+    const licensesV2 = storeData.tx99_licenses_v2 || [];
     let lic = licenses.find(l => l.key && l.key.toLowerCase() === cleanKey);
+    if (!lic) {
+      lic = licensesV2.find(l => l.key && l.key.toLowerCase() === cleanKey);
+    }
 
     // If key not found in local store, try remote KeyAuth proxy
     if (!lic) {
@@ -442,7 +451,7 @@ module.exports = async (req, res) => {
   const authUser = getAuthenticatedUser(req, body, storeData);
 
   // Protected actions require valid authentication
-  const protectedActions = ['get_licenses', 'query_keys', 'key_info', 'reset_hwid', 'ban_key', 'unban_key', 'delete_key', 'generate_key', 'reseller_stats'];
+  const protectedActions = ['get_licenses', 'query_keys', 'key_info', 'reset_hwid', 'ban_key', 'unban_key', 'delete_key', 'generate_key', 'reseller_stats', 'get_licenses_v2', 'key_info_v2', 'reset_hwid_v2', 'ban_key_v2', 'unban_key_v2', 'delete_key_v2', 'generate_key_v2'];
   
   if (protectedActions.includes(action)) {
     // If running in development without token, allow fallback to query/body only if explicit dev mode, else verify
@@ -809,6 +818,128 @@ module.exports = async (req, res) => {
   // =========================================================================
   // 9. RESELLER STATS (Isolated per reseller)
   // =========================================================================
+  // =========================================================================
+  // 8B. V2 KEYAUTH ACTIONS (Dedicated Slot for hyper x V2 Engine)
+  // App: hyper x • Owner: gyREPmpEjt • Secret: d605...f363 • Version: 1.0
+  // =========================================================================
+  if (action === 'get_licenses_v2') {
+    const licensesV2 = storeData.tx99_licenses_v2 || [];
+    let result = [...licensesV2];
+
+    const searchQuery = (body.search || req.query.search || '').trim().toLowerCase();
+    if (searchQuery) {
+      result = result.filter(l =>
+        (l.key && l.key.toLowerCase().includes(searchQuery)) ||
+        (l.user && l.user.toLowerCase().includes(searchQuery)) ||
+        (l.pkg && l.pkg.toLowerCase().includes(searchQuery)) ||
+        (l.app && l.app.toLowerCase().includes(searchQuery))
+      );
+    }
+
+    const statusFilter = (body.status || req.query.status || 'all').trim().toLowerCase();
+    if (statusFilter && statusFilter !== 'all') {
+      result = result.filter(l => l.status && l.status.toLowerCase() === statusFilter);
+    }
+
+    return res.status(200).json({
+      success: true,
+      licenses: result,
+      total: result.length,
+      app_name: 'hyper x',
+      owner_id: 'gyREPmpEjt',
+      version: '1.0'
+    });
+  }
+
+  if (action === 'generate_key_v2') {
+    const count = parseInt(body.count, 10) || 1;
+    const days = parseInt(body.days, 10) || 0;
+    const pkgName = body.package_name || 'HYPER X VIP (v2)';
+    const rawUser = (body.user || 'Client_V2').trim();
+    const expiryText = days === 0 ? 'Lifetime Access' : ${days} Days;
+
+    let generatedKeys = Array.isArray(body.keys) && body.keys.length > 0 ? body.keys : [];
+    if (generatedKeys.length === 0) {
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      for (let i = 0; i < count; i++) {
+        let segs = [];
+        for (let s = 0; s < 4; s++) {
+          let seg = '';
+          const bytes = crypto.randomBytes(4);
+          for (let b = 0; b < 4; b++) { seg += chars[bytes[b] % chars.length]; }
+          segs.push(seg);
+        }
+        generatedKeys.push(HX2-);
+      }
+    }
+
+    if (!Array.isArray(storeData.tx99_licenses_v2)) {
+      storeData.tx99_licenses_v2 = [];
+    }
+
+    generatedKeys.forEach((keyStr, idx) => {
+      if (!storeData.tx99_licenses_v2.some(l => l.key.toLowerCase() === keyStr.toLowerCase())) {
+        storeData.tx99_licenses_v2.unshift({
+          id: 'v2_' + Date.now().toString() + idx,
+          key: keyStr,
+          app: 'hyper x',
+          pkg: pkgName,
+          user: count > 1 ? ${rawUser}_ : rawUser,
+          hwid: 'Not Bound',
+          expiry: expiryText,
+          status: 'active',
+          note: Generated by  (KeyAuth V2 API),
+          resellerId: 'owner'
+        });
+      }
+    });
+
+    saveStoreData(storeData);
+
+    return res.status(200).json({
+      success: true,
+      message: 'V2 Keys generated successfully.',
+      count: generatedKeys.length,
+      keys: generatedKeys,
+      app_name: 'hyper x',
+      owner_id: 'gyREPmpEjt',
+      package_name: pkgName,
+      timestamp: Math.floor(Date.now() / 1000)
+    });
+  }
+
+  if (action === 'reset_hwid_v2') {
+    const key = (body.key || req.query.key || '').trim().toLowerCase();
+    const lic = (storeData.tx99_licenses_v2 || []).find(l => l.key && l.key.toLowerCase() === key);
+    if (lic) {
+      lic.hwid = 'Not Bound';
+      saveStoreData(storeData);
+      return res.status(200).json({ success: true, message: V2 HWID reset for  });
+    }
+    return res.status(404).json({ success: false, message: 'V2 Key not found' });
+  }
+
+  if (action === 'ban_key_v2' || action === 'unban_key_v2') {
+    const key = (body.key || req.query.key || '').trim().toLowerCase();
+    const lic = (storeData.tx99_licenses_v2 || []).find(l => l.key && l.key.toLowerCase() === key);
+    if (lic) {
+      lic.status = action === 'ban_key_v2' ? 'banned' : 'active';
+      saveStoreData(storeData);
+      return res.status(200).json({ success: true, message: V2 Key  });
+    }
+    return res.status(404).json({ success: false, message: 'V2 Key not found' });
+  }
+
+  if (action === 'delete_key_v2') {
+    const key = (body.key || req.query.key || '').trim().toLowerCase();
+    if (Array.isArray(storeData.tx99_licenses_v2)) {
+      storeData.tx99_licenses_v2 = storeData.tx99_licenses_v2.filter(l => l.key && l.key.toLowerCase() !== key);
+      saveStoreData(storeData);
+      return res.status(200).json({ success: true, message: V2 Key deleted:  });
+    }
+    return res.status(404).json({ success: false, message: 'V2 Key not found' });
+  }
+
   if (action === 'reseller_stats') {
     if (authUser && authUser.role === 'reseller') {
       const rid = authUser.resellerId.toString();
