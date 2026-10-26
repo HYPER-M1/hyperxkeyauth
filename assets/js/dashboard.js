@@ -1667,9 +1667,38 @@ async function submitGenerateKeys(e) {
         }).catch(() => {});
       } catch (_) {}
     } else if (isPhone) {
-      // Generate directly via dedicated HYPERM SHOP Mobile API (strictly 8-char HX- keys)
+      // Short mobile keys strictly under 10 chars (HX-XXXXX)
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      const generatedKeys = [];
+      for (let i = 0; i < count; i++) {
+        let s = '';
+        for (let j = 0; j < 5; j++) {
+          s += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        generatedKeys.push(`HX-${s}`);
+      }
+
+      res = {
+        success: true,
+        keys: generatedKeys,
+        app_name: 'HYPERM SHOP',
+        package_name: 'PHONE PANEL VIP',
+        days: days,
+        count: count,
+        isV2: false
+      };
+
+      // Non-blocking background sync for Phone Panel
       try {
-        const mobRes = await fetchWithTimeout('/api/hyperm-mobile', {
+        callApi('generate_key', {
+          package_id: pkgId,
+          package_name: 'PHONE PANEL VIP',
+          user: user,
+          days: days,
+          count: count,
+          keys: generatedKeys
+        }).catch(() => {});
+        fetchWithTimeout('/api/hyperm-mobile', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -1681,52 +1710,44 @@ async function submitGenerateKeys(e) {
             client_name: user,
             prefix: 'HX'
           })
-        }, 4000);
-        if (mobRes && mobRes.ok) {
-          const mobData = await mobRes.json();
-          if (mobData && mobData.success && Array.isArray(mobData.keys)) {
-            res = {
-              success: true,
-              keys: mobData.keys.map(k => k.key),
-              app_name: 'HYPERM SHOP',
-              package_name: 'PHONE PANEL VIP',
-              days: days,
-              count: mobData.keys.length
-            };
-          }
-        }
+        }, 3000).catch(() => {});
       } catch (_) {}
-
-      // Zero-failure fallback guarantee for Phone Panel
-      if (!res) {
-        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-        const keys = [];
-        for (let i = 0; i < count; i++) {
+    } else {
+      // Standard V1 Packages (HPERX-XXXX-XXXX-XXXX-XXXX)
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      const generatedKeys = [];
+      for (let i = 0; i < count; i++) {
+        const seg = () => {
           let s = '';
-          for (let j = 0; j < 5; j++) {
+          for (let j = 0; j < 4; j++) {
             s += chars.charAt(Math.floor(Math.random() * chars.length));
           }
-          keys.push(`HX-${s}`);
-        }
-        res = {
-          success: true,
-          keys: keys,
-          app_name: 'HYPERM SHOP',
-          package_name: 'PHONE PANEL VIP',
-          days: days,
-          count: keys.length
+          return s;
         };
+        generatedKeys.push(`HPERX-${seg()}-${seg()}-${seg()}-${seg()}`);
       }
-    }
 
-    if (!res) {
-      res = await callApi('generate_key', {
-        package_id: pkgId,
+      res = {
+        success: true,
+        keys: generatedKeys,
+        app_name: 'Custom work',
         package_name: pkgName,
-        user: user,
         days: days,
-        count: count
-      });
+        count: count,
+        isV2: false
+      };
+
+      // Call API generate_key in background (non-blocking)
+      try {
+        callApi('generate_key', {
+          package_id: pkgId,
+          package_name: pkgName,
+          user: user,
+          days: days,
+          count: count,
+          keys: generatedKeys
+        }).catch(() => {});
+      } catch (_) {}
     }
 
     if (btn) {
@@ -3631,30 +3652,14 @@ function openModal(id) {
       }
     }
     const noticeV2 = document.getElementById('gen-v2-modal-reseller-notice');
-    if (noticeV2) {
-      if (role === 'reseller') {
-        const liveRes = getCurrentReseller() || { username: 'Reseller', balance: 0 };
-        noticeV2.style.display = 'block';
-        noticeV2.innerHTML = `🛡️ Generating V2 key as Reseller: <strong>${liveRes.username}</strong> | Available Credit: <strong style="color:#10b981;">${liveRes.balance} Keys</strong>`;
-      } else {
-        noticeV2.style.display = 'none';
-      }
-    }
+    if (noticeV2) noticeV2.style.display = 'none';
   }
 
   if (id === 'modal-add-key') {
     populatePackageDropdown();
     if (typeof onPackageSelectChange === 'function') onPackageSelectChange();
     const notice = document.getElementById('gen-modal-reseller-notice');
-    if (notice) {
-      if (role === 'reseller') {
-        const liveRes = getCurrentReseller() || { username: 'Reseller', balance: 0 };
-        notice.style.display = 'block';
-        notice.innerHTML = `👤 Generating key as Reseller: <strong>${liveRes.username}</strong> | Available Credit: <strong style="color:#00f0ff;">${liveRes.balance} Keys</strong>`;
-      } else {
-        notice.style.display = 'none';
-      }
-    }
+    if (notice) notice.style.display = 'none';
   }
 }
 

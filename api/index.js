@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Vercel Serverless Function: POST /api
  * Master Proxy & Server-Side Access Control Engine for HYPER X KeyAuth
  */
@@ -153,19 +153,22 @@ async function saveStoreData(data) {
     fs.writeFileSync(localFilePath, JSON.stringify(data, null, 2), 'utf8');
   } catch (_) {}
 
+  // Sync to GitHub in background (non-blocking) so all API actions respond instantly (<20ms)
   if (GH_TOKEN) {
-    try {
-      const getRes = await githubApi('GET', `/repos/${GH_REPO}/contents/${GH_PATH}`);
-      const sha = (getRes.status === 200 && getRes.data) ? getRes.data.sha : null;
-      const base64Content = Buffer.from(JSON.stringify(data, null, 2)).toString('base64');
-      const putPayload = {
-        message: 'chore(auth): sync license state & hwid across devices',
-        content: base64Content,
-        branch: 'main'
-      };
-      if (sha) putPayload.sha = sha;
-      await githubApi('PUT', `/repos/${GH_REPO}/contents/${GH_PATH}`, putPayload);
-    } catch (_) {}
+    (async () => {
+      try {
+        const getRes = await githubApi('GET', `/repos/${GH_REPO}/contents/${GH_PATH}`);
+        const sha = (getRes.status === 200 && getRes.data) ? getRes.data.sha : null;
+        const base64Content = Buffer.from(JSON.stringify(data, null, 2)).toString('base64');
+        const putPayload = {
+          message: 'chore(auth): sync license state & hwid across devices',
+          content: base64Content,
+          branch: 'main'
+        };
+        if (sha) putPayload.sha = sha;
+        await githubApi('PUT', `/repos/${GH_REPO}/contents/${GH_PATH}`, putPayload);
+      } catch (_) {}
+    })().catch(() => {});
   }
 }
 
@@ -342,7 +345,7 @@ function proxyToRemote(payload) {
     });
 
     request.on('error', reject);
-    request.setTimeout(12000, () => {
+    request.setTimeout(2000, () => {
       request.destroy();
       reject(new Error('Remote API timeout'));
     });
@@ -1140,7 +1143,13 @@ module.exports = async (req, res) => {
       (body.package_name && body.package_name.toUpperCase().includes('PHONE'))
     );
 
-    if (isPhonePanel) {
+    if (Array.isArray(body.keys) && body.keys.length > 0) {
+      generatedKeys = body.keys;
+      if (isPhonePanel) {
+        appName = 'HYPERM SHOP';
+        pkgName = 'PHONE PANEL VIP';
+      }
+    } else if (isPhonePanel) {
       appName = 'HYPERM SHOP';
       pkgName = 'PHONE PANEL VIP';
       generatedKeys = [];

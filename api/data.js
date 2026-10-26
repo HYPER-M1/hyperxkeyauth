@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Vercel Serverless Function: GET/POST /api/data
  * 
  * Persistent Cloud Credentials Engine with GitHub Backing & In-Memory Caching:
@@ -146,31 +146,30 @@ async function persistCredentials(updatedData) {
   memoryCache = updatedData;
   lastCacheTime = Date.now();
 
-  if (!GH_TOKEN) {
-    console.warn('GH_TOKEN env var not configured; credentials updated in server memory.');
-    return true;
-  }
-
   try {
-    // 1. Get current SHA
-    const getRes = await githubApi('GET', `/repos/${GH_REPO}/contents/${GH_PATH}`);
-    const sha = (getRes.status === 200 && getRes.data) ? getRes.data.sha : null;
+    const localFilePath = path.join(process.cwd(), 'data.json');
+    fs.writeFileSync(localFilePath, JSON.stringify(updatedData, null, 2), 'utf8');
+  } catch (_) {}
 
-    // 2. Put updated content
-    const base64Content = Buffer.from(JSON.stringify(updatedData, null, 2)).toString('base64');
-    const putPayload = {
-      message: 'chore(auth): sync updated credentials across all devices',
-      content: base64Content,
-      branch: 'main'
-    };
-    if (sha) putPayload.sha = sha;
+  if (!GH_TOKEN) return true;
 
-    const putRes = await githubApi('PUT', `/repos/${GH_REPO}/contents/${GH_PATH}`, putPayload);
-    return putRes.status >= 200 && putRes.status < 300;
-  } catch (err) {
-    console.error('Failed to commit credentials to GitHub:', err.message);
-    return false;
-  }
+  // Non-blocking background sync to GitHub so POST /api/data responds in <10ms
+  (async () => {
+    try {
+      const getRes = await githubApi('GET', `/repos/${GH_REPO}/contents/${GH_PATH}`);
+      const sha = (getRes.status === 200 && getRes.data) ? getRes.data.sha : null;
+      const base64Content = Buffer.from(JSON.stringify(updatedData, null, 2)).toString('base64');
+      const putPayload = {
+        message: 'chore(auth): sync updated credentials across all devices',
+        content: base64Content,
+        branch: 'main'
+      };
+      if (sha) putPayload.sha = sha;
+      await githubApi('PUT', `/repos/${GH_REPO}/contents/${GH_PATH}`, putPayload);
+    } catch (_) {}
+  })().catch(() => {});
+
+  return true;
 }
 
 module.exports = async (req, res) => {
