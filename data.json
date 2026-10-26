@@ -33,18 +33,18 @@
       "totalQuota": 104
     },
     {
-      "id": "1792841267026",
-      "username": "Test1",
-      "password": "Test123",
-      "email": "test1@reseller.local",
-      "balance": 99,
-      "createdKeys": 1,
+      "id": "1793030819288",
+      "username": "test9",
+      "password": "test123",
+      "email": "test9@reseller.local",
+      "balance": 100,
+      "createdKeys": 0,
       "status": "Active",
       "panels": [
-        "all"
+        "AIMKILL PVT V2"
       ],
-      "totpSecret": "ISVJ2L5EGEIUJDJ3",
-      "twofa_setup_done": true
+      "totpSecret": "4GUSJOCV4Z4UU2W2",
+      "twofa_setup_done": false
     }
   ],
   "tx99_licenses": [
