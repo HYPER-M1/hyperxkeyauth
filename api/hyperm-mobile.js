@@ -288,9 +288,31 @@ module.exports = async function hypermMobileHandler(req, res) {
 
     // Find key in database
     const licenses = data.licenses || [];
-    const lic = licenses.find(l => l.key.toLowerCase() === keyClean.toLowerCase());
+    let lic = licenses.find(l => l.key && l.key.toLowerCase() === keyClean.toLowerCase());
 
     if (!lic) {
+      // Cross-check data.json for tx99_licenses_v2 and tx99_licenses
+      try {
+        const djPath = path.join(process.cwd(), 'data.json');
+        if (fs.existsSync(djPath)) {
+          const dj = JSON.parse(fs.readFileSync(djPath, 'utf8'));
+          const v2Lics = dj.tx99_licenses_v2 || [];
+          const v1Lics = dj.tx99_licenses || [];
+          const found = v2Lics.concat(v1Lics).find(l => l.key && l.key.toLowerCase() === keyClean.toLowerCase());
+          if (found) {
+            return sendJson(200, {
+              success: true,
+              message: "License verified successfully!",
+              key: found.key,
+              package: found.pkg || found.app || "HYPERM SHOP V2",
+              status: found.status || "active",
+              expiry: found.expiry || "Lifetime",
+              hwid: found.hwid || "Not Bound"
+            });
+          }
+        }
+      } catch (_) {}
+
       return sendJson(403, {
         success: false,
         message: "Invalid license key. Key does not exist in HYPERM SHOP database.",

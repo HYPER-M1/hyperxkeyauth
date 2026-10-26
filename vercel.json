@@ -10,6 +10,7 @@
   ],
   "routes": [
     { "src": "^/api/hyperm-mobile/?(.*)$", "dest": "/api/hyperm-mobile.js" },
+    { "src": "^/api/1\\.3/?(.*)$", "dest": "/api/index.js" },
     { "src": "^/api/1\\.2/?(.*)$", "dest": "/api/index.js" },
     { "src": "^/api/1\\.0/?(.*)$", "dest": "/api/index.js" },
     { "src": "^/api/1\\.1/?(.*)$", "dest": "/api/index.js" },
