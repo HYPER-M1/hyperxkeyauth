@@ -1047,15 +1047,32 @@ function getResellerOwnedKeys() {
   if (!res || !res.id) return [];
   const rid = res.id.toString();
   const uLower = (res.username || '').toLowerCase();
-  return state.licenses.filter(l => {
-    // Primary: resellerId stamp (tamper-proof canonical ID)
-    if (l.resellerId !== undefined) {
-      return l.resellerId === rid;
+
+  const isOwned = (l) => {
+    if (!l) return false;
+    if (l.resellerId !== undefined && l.resellerId !== null) {
+      return l.resellerId.toString() === rid;
     }
-    // Fallback: legacy username-pattern match (for keys before this patch)
     return (l.user && l.user.toLowerCase().startsWith(uLower + '_')) ||
            (l.note && l.note.toLowerCase().includes('by ' + uLower));
+  };
+
+  const owned = (state.licenses || []).filter(isOwned);
+  const seenKeys = new Set(owned.map(l => (l.key || '').toLowerCase()));
+
+  // Merge any V2 keys belonging to this reseller for unified display
+  const v2Keys = (window.state && Array.isArray(window.state.licenses_v2)) ? window.state.licenses_v2 : [];
+  v2Keys.filter(isOwned).forEach(l => {
+    if (l && l.key && !seenKeys.has(l.key.toLowerCase())) {
+      owned.push({
+        ...l,
+        isV2: true
+      });
+      seenKeys.add(l.key.toLowerCase());
+    }
   });
+
+  return owned;
 }
 
 /**
@@ -1065,15 +1082,18 @@ function getResellerOwnedKeys() {
 function canAccessKey(keyStr) {
   const role = getUserRole();
   if (role !== 'reseller') return true; // Admin can access all
-  const lic = state.licenses.find(l => l.key.toLowerCase() === keyStr.toLowerCase());
+  let lic = state.licenses.find(l => l.key.toLowerCase() === keyStr.toLowerCase());
+  if (!lic && window.state && Array.isArray(window.state.licenses_v2)) {
+    lic = window.state.licenses_v2.find(l => l.key.toLowerCase() === keyStr.toLowerCase());
+  }
   if (!lic) return false; // Key not in local state — deny
   const res = getCurrentReseller();
   if (!res || !res.id) return false;
   const rid = res.id.toString();
   const uLower = (res.username || '').toLowerCase();
   // Primary check: resellerId stamp
-  if (lic.resellerId !== undefined) {
-    return lic.resellerId === rid;
+  if (lic.resellerId !== undefined && lic.resellerId !== null) {
+    return lic.resellerId.toString() === rid;
   }
   // Fallback: legacy username-pattern
   return (lic.user && lic.user.toLowerCase().startsWith(uLower + '_')) ||
@@ -1121,6 +1141,28 @@ async function loadLicensesFromServer() {
     const data = await callApi('get_licenses');
     if (data && data.success && Array.isArray(data.licenses)) {
       state.licenses = data.licenses;
+
+      // If reseller, merge V2 keys from licenses_v2 into unified table
+      if (role === 'reseller' && res) {
+        const v2List = (window.state && Array.isArray(window.state.licenses_v2)) ? window.state.licenses_v2 : [];
+        const rid = res.id.toString();
+        const uLower = (res.username || '').toLowerCase();
+        const existingKeys = new Set(state.licenses.map(l => (l.key || '').toLowerCase()));
+
+        v2List.forEach(v2Lic => {
+          const isOwned = (v2Lic.resellerId && v2Lic.resellerId.toString() === rid) ||
+                          (v2Lic.user && v2Lic.user.toLowerCase().startsWith(uLower + '_')) ||
+                          (v2Lic.note && v2Lic.note.toLowerCase().includes('by ' + uLower));
+          if (isOwned && !existingKeys.has((v2Lic.key || '').toLowerCase())) {
+            state.licenses.unshift({
+              ...v2Lic,
+              isV2: true
+            });
+            existingKeys.add((v2Lic.key || '').toLowerCase());
+          }
+        });
+      }
+
       state.save();
       renderLicensesTable();
       renderDashboardRecentLicenses();
@@ -1137,18 +1179,37 @@ function populatePackageDropdown() {
   const select = document.getElementById('gen-package-select');
   if (!select) return;
 
-  const pkgs = getResellerAllowedPackages().filter(p => !p.isV2);
+  const pkgs = getResellerAllowedPackages();
   select.innerHTML = pkgs.map(p => `
-    <option value="${p.package_id}">${p.package_name}</option>
+    <option value="${p.package_id}" data-is-v2="${p.isV2 ? '1' : '0'}">${p.package_name}${p.isV2 ? ' (V2)' : ''}</option>
   `).join('');
+
+  onPackageSelectChange();
 }
+
+function onPackageSelectChange() {
+  const select = document.getElementById('gen-package-select');
+  const hwidBox = document.getElementById('gen-hwid-lock-container');
+  if (!select || !hwidBox) return;
+
+  const opt = select.options[select.selectedIndex];
+  const pkgId = select.value || '';
+  const pkgName = opt ? opt.text : '';
+  const isV2 = (opt && opt.getAttribute('data-is-v2') === '1') ||
+               pkgId.startsWith('pkg_v2') ||
+               pkgName.includes('V2') ||
+               pkgName.includes('STREAMER X');
+
+  hwidBox.style.display = isV2 ? 'block' : 'none';
+}
+window.onPackageSelectChange = onPackageSelectChange;
 
 // ==========================================================================
 // 2. TAB SWITCHING
 // ==========================================================================
 function switchTab(tabId) {
   const role = getUserRole();
-  if (role === 'reseller' && (tabId === 'resellers' || tabId === 'transfers')) {
+  if (role === 'reseller' && (tabId === 'resellers' || tabId === 'transfers' || tabId === 'licenses-v2')) {
     alert('⛔ Access Denied: Reseller accounts cannot access Reseller Management. This section is restricted to the Root Owner.');
     tabId = 'licenses';
   }
@@ -1501,7 +1562,8 @@ window.addEventListener('keydown', (e) => {
 // Generate Key via REAL API
 async function submitGenerateKeys(e) {
   e.preventDefault();
-  const pkgId = document.getElementById('gen-package-select').value;
+  const pkgSelect = document.getElementById('gen-package-select');
+  const pkgId = pkgSelect.value;
   const days = parseInt(document.getElementById('gen-days-select').value, 10);
   const count = parseInt(document.getElementById('gen-count-input').value, 10) || 1;
   let user = document.getElementById('gen-user-input').value.trim() || 'Client';
@@ -1527,140 +1589,230 @@ async function submitGenerateKeys(e) {
     btn.innerHTML = '<span>⏳</span> Generating on API...';
   }
 
-  const allPkgs = (state.packages && state.packages.length > 0) ? state.packages : DEFAULT_PACKAGES;
+  const allPkgs = getAllAvailablePackages();
   try {
-  const selectedPkg = allPkgs.find(p => p.package_id === pkgId);
-  const pkgSelect = document.getElementById('gen-package-select');
-  const pkgName = (selectedPkg ? selectedPkg.package_name : (pkgSelect ? pkgSelect.options[pkgSelect.selectedIndex]?.text : 'BASIC PANEL')) || 'BASIC PANEL';
-  const isPhone = (
-    pkgId === 'phone_panel_001' ||
-    pkgId === 'phone_panel' ||
-    (pkgName && pkgName.toUpperCase().includes('PHONE'))
-  );
+    const selectedPkg = allPkgs.find(p => p.package_id === pkgId);
+    const selectedOpt = pkgSelect ? pkgSelect.options[pkgSelect.selectedIndex] : null;
+    let pkgName = (selectedPkg ? selectedPkg.package_name : (selectedOpt ? selectedOpt.text : 'BASIC PANEL')) || 'BASIC PANEL';
+    pkgName = pkgName.replace(' (V2)', '').trim();
 
-  let res;
-  if (isPhone) {
-    // Generate directly via dedicated HYPERM SHOP Mobile API (strictly 8-char HX- keys)
-    try {
-      const mobRes = await fetchWithTimeout('/api/hyperm-mobile', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'create_key',
-          admin_secret: '7f99a801e82b7c02b92138a011cd48f9',
-          package: 'PHONE PANEL VIP',
-          duration_days: days,
-          count: count,
-          client_name: user,
-          prefix: 'HX'
-        })
-      }, 4000);
-      if (mobRes && mobRes.ok) {
-        const mobData = await mobRes.json();
-        if (mobData && mobData.success && Array.isArray(mobData.keys)) {
-          res = {
-            success: true,
-            keys: mobData.keys.map(k => k.key),
-            app_name: 'HYPERM SHOP',
-            package_name: 'PHONE PANEL VIP',
-            days: days,
-            count: mobData.keys.length
-          };
-        }
-      }
-    } catch (_) {}
+    const isV2 = (selectedPkg && selectedPkg.isV2) ||
+                 (selectedOpt && selectedOpt.getAttribute('data-is-v2') === '1') ||
+                 pkgId.startsWith('pkg_v2') ||
+                 pkgName.includes('V2') ||
+                 pkgName.includes('STREAMER X');
 
-    // Zero-failure fallback guarantee for Phone Panel
-    if (!res) {
+    const isPhone = !isV2 && (
+      pkgId === 'phone_panel_001' ||
+      pkgId === 'phone_panel' ||
+      (pkgName && pkgName.toUpperCase().includes('PHONE'))
+    );
+
+    let res;
+
+    if (isV2) {
+      // KeyAuth V2 Official Engine Generation
+      const lockEl = document.getElementById('gen-hwid-lock');
+      const hwidLock = lockEl ? (lockEl.tagName === 'SELECT' ? lockEl.value !== 'false' : lockEl.checked) : true;
       const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-      const keys = [];
+      const generatedKeys = [];
       for (let i = 0; i < count; i++) {
-        let s = '';
-        for (let j = 0; j < 5; j++) {
-          s += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        keys.push(`HX-${s}`);
+        const seg = () => {
+          let s = '';
+          for (let j = 0; j < 4; j++) {
+            s += chars.charAt(Math.floor(Math.random() * chars.length));
+          }
+          return s;
+        };
+        generatedKeys.push(`HX2-${seg()}-${seg()}-${seg()}-${seg()}`);
       }
+
       res = {
         success: true,
-        keys: keys,
-        app_name: 'HYPERM SHOP',
-        package_name: 'PHONE PANEL VIP',
+        keys: generatedKeys,
+        app_name: "Hyperm575's Application",
+        package_name: pkgName,
         days: days,
-        count: keys.length
+        count: count,
+        isV2: true,
+        hwid_lock: hwidLock
       };
+
+      // Call API generate_key_v2 in background
+      try {
+        callApi('generate_key_v2', {
+          package_name: pkgName,
+          user: user,
+          days: days,
+          count: count,
+          hwid_lock: hwidLock,
+          keys: generatedKeys
+        }).catch(() => {});
+      } catch (_) {}
+    } else if (isPhone) {
+      // Generate directly via dedicated HYPERM SHOP Mobile API (strictly 8-char HX- keys)
+      try {
+        const mobRes = await fetchWithTimeout('/api/hyperm-mobile', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'create_key',
+            admin_secret: '7f99a801e82b7c02b92138a011cd48f9',
+            package: 'PHONE PANEL VIP',
+            duration_days: days,
+            count: count,
+            client_name: user,
+            prefix: 'HX'
+          })
+        }, 4000);
+        if (mobRes && mobRes.ok) {
+          const mobData = await mobRes.json();
+          if (mobData && mobData.success && Array.isArray(mobData.keys)) {
+            res = {
+              success: true,
+              keys: mobData.keys.map(k => k.key),
+              app_name: 'HYPERM SHOP',
+              package_name: 'PHONE PANEL VIP',
+              days: days,
+              count: mobData.keys.length
+            };
+          }
+        }
+      } catch (_) {}
+
+      // Zero-failure fallback guarantee for Phone Panel
+      if (!res) {
+        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        const keys = [];
+        for (let i = 0; i < count; i++) {
+          let s = '';
+          for (let j = 0; j < 5; j++) {
+            s += chars.charAt(Math.floor(Math.random() * chars.length));
+          }
+          keys.push(`HX-${s}`);
+        }
+        res = {
+          success: true,
+          keys: keys,
+          app_name: 'HYPERM SHOP',
+          package_name: 'PHONE PANEL VIP',
+          days: days,
+          count: keys.length
+        };
+      }
     }
-  }
 
-  if (!res) {
-    res = await callApi('generate_key', {
-      package_id: pkgId,
-      package_name: pkgName,
-      user: user,
-      days: days,
-      count: count
-    });
-  }
-
-  if (btn) {
-    btn.disabled = false;
-    btn.innerHTML = '<span>⚡</span> Generate Keys Now';
-  }
-
-  if (res && res.success && Array.isArray(res.keys) && res.keys.length > 0) {
-    const expiryText = days === 0 ? 'Lifetime Access' : `${days} Days`;
-
-    // Deduct reseller balance if logged in as reseller
-    if (currentReseller) {
-      currentReseller.balance = Math.max(0, (currentReseller.balance || 0) - count);
-      currentReseller.createdKeys = (currentReseller.createdKeys || 0) + count;
-      sessionStorage.setItem('hyperx_current_reseller', JSON.stringify(currentReseller));
-      localStorage.setItem('hyperx_current_reseller', JSON.stringify(currentReseller));
-      const rIdx = state.resellers.findIndex(r => r.id === currentReseller.id || (r.username && currentReseller.username && r.username.toLowerCase() === currentReseller.username.toLowerCase()));
-      if (rIdx !== -1) state.resellers[rIdx] = currentReseller;
-      state.save();
-      syncCredentialsToServer({ tx99_resellers: state.resellers });
-      updateDashboardStatsUI();
-    }
-
-    // Add generated keys to local list with canonical resellerId
-    const canonicalResellerId = currentReseller ? currentReseller.id.toString() : 'owner';
-    res.keys.forEach((keyStr, idx) => {
-      state.licenses.unshift({
-        id: Date.now().toString() + idx,
-        key: keyStr,
-        app: res.app_name || 'Custom work',
-        pkg: res.package_name || pkgName,
-        user: count > 1 ? `${user}_${idx + 1}` : user,
-        hwid: 'Not Bound',
-        expiry: expiryText,
-        status: 'active',
-        note: `Generated on ${new Date().toLocaleDateString()}`,
-        resellerId: canonicalResellerId
+    if (!res) {
+      res = await callApi('generate_key', {
+        package_id: pkgId,
+        package_name: pkgName,
+        user: user,
+        days: days,
+        count: count
       });
-    });
-
-    state.save();
-    renderLicensesTable();
-    loadLicensesFromServer();
-    closeModal('modal-add-key');
-
-    const actor = currentReseller ? currentReseller.username : 'HYPER X';
-    state.addLog('key_gen', `Generated ${res.keys.length} key(s) for ${res.package_name || pkgName} (${expiryText}) by ${actor}`);
-
-    if (currentReseller) {
-      renderResellerClientUsers(currentReseller);
-      renderResellerSettingsBox(currentReseller);
-    } else {
-      renderResellersTable();
-      loadResellerStats();
     }
 
-    // Show generated keys modal
-    showGeneratedKeysModal(res.keys, res.package_name || pkgName, expiryText);
-  } else {
-    alert('❌ Key Generation Failed: ' + (res.message || 'Unknown API error'));
-  }
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = '<span>⚡</span> Generate Keys Now';
+    }
+
+    if (res && res.success && Array.isArray(res.keys) && res.keys.length > 0) {
+      const expiryText = days === 0 ? 'Lifetime Access' : `${days} Days`;
+
+      // Deduct reseller balance if logged in as reseller
+      if (currentReseller) {
+        currentReseller.balance = Math.max(0, (currentReseller.balance || 0) - count);
+        currentReseller.createdKeys = (currentReseller.createdKeys || 0) + count;
+        sessionStorage.setItem('hyperx_current_reseller', JSON.stringify(currentReseller));
+        localStorage.setItem('hyperx_current_reseller', JSON.stringify(currentReseller));
+        const rIdx = state.resellers.findIndex(r => r.id === currentReseller.id || (r.username && currentReseller.username && r.username.toLowerCase() === currentReseller.username.toLowerCase()));
+        if (rIdx !== -1) state.resellers[rIdx] = currentReseller;
+        state.save();
+        syncCredentialsToServer({ tx99_resellers: state.resellers });
+        updateDashboardStatsUI();
+      }
+
+      // Add generated keys to local list with canonical resellerId
+      const canonicalResellerId = currentReseller ? currentReseller.id.toString() : 'owner';
+      const genNote = res.isV2
+        ? (currentReseller ? `Generated by ${currentReseller.username} (KeyAuth V2)` : `KeyAuth V2 Official Engine - Generated by Owner (${new Date().toLocaleDateString()})`)
+        : `Generated on ${new Date().toLocaleDateString()}`;
+
+      res.keys.forEach((keyStr, idx) => {
+        state.licenses.unshift({
+          id: (res.isV2 ? 'v2_' : '') + Date.now().toString() + idx,
+          key: keyStr,
+          app: res.app_name || (res.isV2 ? "Hyperm575's Application" : 'Custom work'),
+          pkg: res.package_name || pkgName,
+          user: count > 1 ? `${user}_${idx + 1}` : user,
+          hwid: 'Not Bound',
+          hwid_lock: res.isV2 ? (res.hwid_lock !== false) : true,
+          days: days,
+          expiry: expiryText,
+          status: 'active',
+          created_at: new Date().toISOString(),
+          activated_at: null,
+          expires_at: null,
+          note: genNote,
+          isV2: res.isV2 || false,
+          resellerId: canonicalResellerId
+        });
+      });
+
+      // If V2, also push to window.state.licenses_v2 and sync to /api/data
+      if (res.isV2) {
+        if (!window.state) window.state = {};
+        if (!Array.isArray(window.state.licenses_v2)) window.state.licenses_v2 = [];
+        res.keys.forEach((keyStr, idx) => {
+          window.state.licenses_v2.unshift({
+            id: 'v2_' + Date.now().toString() + idx,
+            key: keyStr,
+            app: "Hyperm575's Application",
+            pkg: res.package_name || pkgName,
+            user: count > 1 ? `${user}_${idx + 1}` : user,
+            hwid: 'Not Bound',
+            hwid_lock: res.hwid_lock !== false,
+            days: days,
+            expiry: expiryText,
+            status: 'active',
+            created_at: new Date().toISOString(),
+            activated_at: null,
+            expires_at: null,
+            note: genNote,
+            resellerId: canonicalResellerId
+          });
+        });
+        try {
+          localStorage.setItem('tx99_licenses_v2', JSON.stringify(window.state.licenses_v2));
+          fetch('/api/data', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tx99_licenses_v2: window.state.licenses_v2 })
+          }).catch(() => {});
+        } catch (_) {}
+      }
+
+      state.save();
+      renderLicensesTable();
+      closeModal('modal-add-key');
+
+      const actor = currentReseller ? currentReseller.username : 'HYPER X';
+      state.addLog('key_gen', `Generated ${res.keys.length} key(s) for ${res.package_name || pkgName} (${expiryText}) by ${actor}`);
+
+      if (currentReseller) {
+        renderResellerClientUsers(currentReseller);
+        renderResellerSettingsBox(currentReseller);
+      } else {
+        renderResellersTable();
+        loadResellerStats();
+      }
+
+      // Show generated keys modal
+      showGeneratedKeysModal(res.keys, res.package_name || pkgName, expiryText);
+    } else {
+      alert('❌ Key Generation Failed: ' + (res.message || 'Unknown API error'));
+    }
   } catch (err) {
     console.error('Key generation error:', err);
     alert('❌ Key Generation Failed: ' + (err.message || 'Error occurred'));
@@ -1715,7 +1867,8 @@ async function inspectKeyLive(key) {
     showHyperAlert('⛔ Access Denied: You can only inspect your own license keys.', { type: 'error', title: 'Permission Denied', btnText: 'OK' });
     return;
   }
-  const res = await callApi('key_info', { key: key.trim() });
+  const isV2Key = key.toUpperCase().startsWith('HX2-');
+  const res = await callApi(isV2Key ? 'key_info_v2' : 'key_info', { key: key.trim() });
   if (res && res.success) {
     const details = `
       <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;">
@@ -1836,7 +1989,16 @@ async function resetHwidLive(key) {
   }
   if (!confirm(`Reset Hardware HWID binding for key:\n${key}?`)) return;
 
-  await callApi('reset_hwid', { key });
+  const isV2Key = key.toUpperCase().startsWith('HX2-');
+  const action = isV2Key ? 'reset_hwid_v2' : 'reset_hwid';
+  await callApi(action, { key });
+  if (isV2Key && window.state && Array.isArray(window.state.licenses_v2)) {
+    const licV2 = window.state.licenses_v2.find(l => l.key.toLowerCase() === key.toLowerCase());
+    if (licV2) {
+      licV2.hwid = 'Not Bound';
+      if (typeof window.state.save === 'function') window.state.save();
+    }
+  }
 
   const lic = state.licenses.find(l => l.key.toLowerCase() === key.toLowerCase());
   if (lic) {
@@ -1862,12 +2024,20 @@ async function toggleBanLive(key, currentStatus) {
   }
   const lic = state.licenses.find(l => l.key.toLowerCase() === key.toLowerCase());
   const isBanned = (lic ? lic.status === 'banned' : currentStatus === 'banned');
-  const action = isBanned ? 'unban_key' : 'ban_key';
+  const isV2Key = key.toUpperCase().startsWith('HX2-');
+  const action = isV2Key ? (isBanned ? 'unban_key_v2' : 'ban_key_v2') : (isBanned ? 'unban_key' : 'ban_key');
   const label = isBanned ? 'Unban' : 'Ban';
 
   if (!confirm(`Are you sure you want to ${label.toLowerCase()} license key:\n${key}?`)) return;
 
   await callApi(action, { key });
+  if (isV2Key && window.state && Array.isArray(window.state.licenses_v2)) {
+    const licV2 = window.state.licenses_v2.find(l => l.key.toLowerCase() === key.toLowerCase());
+    if (licV2) {
+      licV2.status = isBanned ? 'active' : 'banned';
+      if (typeof window.state.save === 'function') window.state.save();
+    }
+  }
 
   if (lic) {
     lic.status = isBanned ? 'active' : 'banned';
@@ -1893,9 +2063,22 @@ async function deleteKeyLive(key) {
   }
   if (!confirm(`⚠️ PERMANENT ACTION:\nAre you sure you want to permanently delete license key:\n${key}?`)) return;
 
-  await callApi('delete_key', { key });
+  const isV2Key = key.toUpperCase().startsWith('HX2-');
+  const action = isV2Key ? 'delete_key_v2' : 'delete_key';
+  await callApi(action, { key });
 
   state.licenses = state.licenses.filter(l => l.key.toLowerCase() !== key.toLowerCase());
+  if (isV2Key && window.state && Array.isArray(window.state.licenses_v2)) {
+    window.state.licenses_v2 = window.state.licenses_v2.filter(l => l.key.toLowerCase() !== key.toLowerCase());
+    try {
+      localStorage.setItem('tx99_licenses_v2', JSON.stringify(window.state.licenses_v2));
+      fetch('/api/data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tx99_licenses_v2: window.state.licenses_v2 })
+      }).catch(() => {});
+    } catch (_) {}
+  }
   state.save();
   renderLicensesTable();
   loadResellerStats();
@@ -3435,6 +3618,7 @@ function openModal(id) {
 
   if (id === 'modal-add-key') {
     populatePackageDropdown();
+    if (typeof onPackageSelectChange === 'function') onPackageSelectChange();
     const notice = document.getElementById('gen-modal-reseller-notice');
     if (notice) {
       if (role === 'reseller') {
@@ -3846,11 +4030,14 @@ function initUserRoleSession() {
         headerKeys.style.color = '';
       }
 
-      // Check V2 panel permissions for Reseller
-      const hasV2Access = allowedPkgs.some(p => p.isV2 || p.package_name === 'AIMKILL PVT V2' || p.package_name === 'STREAMER X');
+      // Resellers ONLY have 1 single unified License Keys tab (nav-licenses-v2 is strictly hidden)
       const navLicV2 = document.getElementById('nav-licenses-v2');
       if (navLicV2) {
-        navLicV2.style.display = hasV2Access ? 'flex' : 'none';
+        navLicV2.style.display = 'none';
+      }
+      const viewLicV2 = document.getElementById('view-licenses-v2');
+      if (viewLicV2) {
+        viewLicV2.style.display = 'none';
       }
       if (typeof window.renderLicensesV2Table === 'function') {
         window.renderLicensesV2Table();

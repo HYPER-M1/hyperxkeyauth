@@ -896,6 +896,24 @@ module.exports = async (req, res) => {
         return (l.user && l.user.toLowerCase().startsWith(uLower + '_')) ||
                (l.note && l.note.toLowerCase().includes('by ' + uLower));
       });
+
+      // Unified view: Merge V2 keys belonging to this reseller
+      const licensesV2 = storeData.tx99_licenses_v2 || [];
+      const resellerV2 = licensesV2.filter(l => {
+        if (l.resellerId !== undefined && l.resellerId !== null) {
+          return l.resellerId.toString() === rid;
+        }
+        return (l.user && l.user.toLowerCase().startsWith(uLower + '_')) ||
+               (l.note && l.note.toLowerCase().includes('by ' + uLower));
+      });
+      resellerV2.forEach(v2Lic => {
+        if (!result.some(r => r.key && r.key.toLowerCase() === (v2Lic.key || '').toLowerCase())) {
+          result.push({
+            ...v2Lic,
+            isV2: true
+          });
+        }
+      });
     }
 
     // Server-Side Search Filter
@@ -936,11 +954,17 @@ module.exports = async (req, res) => {
   function checkKeyOwnership(targetKey) {
     if (!targetKey) return { allowed: false, reason: 'Key not specified' };
     const cleanKey = targetKey.trim().toLowerCase();
-    const lic = licenses.find(l => l.key && l.key.toLowerCase() === cleanKey);
+    let lic = licenses.find(l => l.key && l.key.toLowerCase() === cleanKey);
+    let isV2 = false;
+    if (!lic) {
+      const licensesV2 = storeData.tx99_licenses_v2 || [];
+      lic = licensesV2.find(l => l.key && l.key.toLowerCase() === cleanKey);
+      if (lic) isV2 = true;
+    }
     
     // Admin has access to all keys
     if (authUser.role === 'admin' || authUser.resellerId === 'owner') {
-      return { allowed: true, license: lic };
+      return { allowed: true, license: lic, isV2: isV2 };
     }
 
     // Reseller can ONLY access their own keys
@@ -1066,6 +1090,9 @@ module.exports = async (req, res) => {
 
     // Remove from store
     storeData.tx99_licenses = licenses.filter(l => l.key && l.key.toLowerCase() !== key.trim().toLowerCase());
+    if (check.isV2 || (storeData.tx99_licenses_v2 && storeData.tx99_licenses_v2.some(l => l.key && l.key.toLowerCase() === key.trim().toLowerCase()))) {
+      storeData.tx99_licenses_v2 = (storeData.tx99_licenses_v2 || []).filter(l => l.key && l.key.toLowerCase() !== key.trim().toLowerCase());
+    }
     await saveStoreData(storeData);
 
     try {
