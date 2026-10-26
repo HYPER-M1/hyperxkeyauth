@@ -41,10 +41,12 @@
       "createdKeys": 2,
       "status": "Active",
       "panels": [
+        "BASIC PANEL",
         "AIMKILL PVT V2"
       ],
       "totpSecret": "4GUSJOCV4Z4UU2W2",
-      "twofa_setup_done": true
+      "twofa_setup_done": true,
+      "totalQuota": 100
     }
   ],
   "tx99_licenses": [
