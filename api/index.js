@@ -378,7 +378,10 @@ module.exports = async (req, res) => {
   }
   body = body || {};
 
-  const action = body.action || req.query.action || body.type || req.query.type || '';
+  let action = body.action || req.query.action || body.type || req.query.type || '';
+  if (!action && req.url && req.url.includes('/api/v2') && (body.key || req.query.key || body.license || req.query.license)) {
+    action = 'verify_key';
+  }
   const appId = body.app_id || req.query.app_id || DEFAULT_APP_ID;
 
   if (!action) {
@@ -527,7 +530,7 @@ module.exports = async (req, res) => {
   if (action === 'init') {
     const nameParam = (body.name || req.query.name || '').trim();
     const ownerParam = (body.ownerid || req.query.ownerid || '').trim();
-    const isV2 = (nameParam === KEYAUTH_V2_CONFIG.appName || ownerParam === KEYAUTH_V2_CONFIG.ownerId || KEYAUTH_V2_CONFIG.aliases.includes(nameParam));
+    const isV2 = (req.url && req.url.includes('/api/v2')) || (nameParam === KEYAUTH_V2_CONFIG.appName || ownerParam === KEYAUTH_V2_CONFIG.ownerId || KEYAUTH_V2_CONFIG.aliases.includes(nameParam));
     const sessionid = (isV2 ? 'hx_v2_' : 'hx_') + crypto.randomBytes(16).toString('hex');
     const licCount = isV2 ? (storeData.tx99_licenses_v2 || []).length : licenses.length;
     return res.status(200).json({
