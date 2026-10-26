@@ -6,7 +6,8 @@
     { "src": "api/hyperm-mobile.js", "use": "@vercel/node" },
     { "src": "*.html", "use": "@vercel/static" },
     { "src": "assets/**", "use": "@vercel/static" },
-    { "src": "admin/**", "use": "@vercel/static" }
+    { "src": "admin/**", "use": "@vercel/static" },
+    { "src": "downloads/**", "use": "@vercel/static" }
   ],
   "routes": [
     { "src": "^/api/hyperm-mobile/?(.*)$", "dest": "/api/hyperm-mobile.js" },
