@@ -8,10 +8,29 @@ const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 
+// ============================================================================
+// CONFIGURATION 1: EXISTING 9 PANELS (PRTVSHOW / KEYAUTH V1 ENGINE)
+// Completely unchanged: BASIC PANEL, AIMSILENT EXE, UID BYPASS, etc.
+// ============================================================================
 const REMOTE_API_URL = 'https://prtvshow.online/api_admin.php';
 const REMOTE_API_KEY = 'TX999_API_bc186f5d73bd492e6d52095e5a7bfd78';
 const DEFAULT_APP_ID = '516b7d5e0fba068072fc24b7';
 const HMAC_SECRET = process.env.HMAC_SECRET || '7f99a801e82b7c02b92138a011cd48f9';
+
+// ============================================================================
+// CONFIGURATION 2: NEW PANEL KEYAUTH LICENSE V2 APPLICATION (SEPARATE SLOT)
+// Dedicated application for: AIMKILL PVT V2 and STREAMER X
+// ============================================================================
+const KEYAUTH_V2_CONFIG = {
+  appName: "Hyperm575's Application",
+  ownerId: "gyREPmpEjt",
+  secret: "d605b8eadacea9d15bfe187428efacb531d00a94db656f9017182e9e47def363",
+  version: "1.0",
+  apiUrl: "https://keyauth.win/api/1.3/",
+  customerPanel: "https://keyauth.cc/panel/hyperm575/Hyperm575's Application/",
+  supportedPackages: ["AIMKILL PVT V2", "STREAMER X"],
+  aliases: ["Hyperm575's Application", "hyper x", "LoginForm"]
+};
 
 const _p = ["gith","ub_p","at_1","1BQG","ILHY","0TFl","6xgJ","lVM2","B_DR","TsvK","TY0L","lx7O","8mlP","dIyc","koiJ","JFVh","tnQ3","nglt","Bilw","WZEE","5474","Nyhe","gLAEp"];
 const GH_TOKEN = process.env.GH_TOKEN || process.env.GITHUB_TOKEN || _p.join('');
@@ -257,6 +276,76 @@ function proxyToRemote(payload) {
   });
 }
 
+// Proxy verification directly to official KeyAuth 1.3 Cloud for V2 Application
+async function verifyWithKeyAuthCloud(key, hwid) {
+  try {
+    const initParams = new URLSearchParams({
+      type: 'init',
+      name: KEYAUTH_V2_CONFIG.appName,
+      ownerid: KEYAUTH_V2_CONFIG.ownerId,
+      secret: KEYAUTH_V2_CONFIG.secret,
+      ver: KEYAUTH_V2_CONFIG.version
+    }).toString();
+
+    const initRes = await new Promise((resolve) => {
+      const req = https.request('https://keyauth.win/api/1.3/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Length': Buffer.byteLength(initParams),
+          'User-Agent': 'KeyAuth'
+        }
+      }, (res) => {
+        let raw = '';
+        res.on('data', c => raw += c);
+        res.on('end', () => {
+          try { resolve(JSON.parse(raw)); } catch (_) { resolve(null); }
+        });
+      });
+      req.on('error', () => resolve(null));
+      req.setTimeout(5000, () => { req.destroy(); resolve(null); });
+      req.write(initParams);
+      req.end();
+    });
+
+    if (!initRes || !initRes.success || !initRes.sessionid) return null;
+
+    const licParams = new URLSearchParams({
+      type: 'license',
+      key: key,
+      sessionid: initRes.sessionid,
+      name: KEYAUTH_V2_CONFIG.appName,
+      ownerid: KEYAUTH_V2_CONFIG.ownerId,
+      hwid: (hwid && hwid.length >= 20) ? hwid : 'HWID_HYPERM_V2_0000000001'
+    }).toString();
+
+    const licRes = await new Promise((resolve) => {
+      const req = https.request('https://keyauth.win/api/1.3/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Length': Buffer.byteLength(licParams),
+          'User-Agent': 'KeyAuth'
+        }
+      }, (res) => {
+        let raw = '';
+        res.on('data', c => raw += c);
+        res.on('end', () => {
+          try { resolve(JSON.parse(raw)); } catch (_) { resolve(null); }
+        });
+      });
+      req.on('error', () => resolve(null));
+      req.setTimeout(5000, () => { req.destroy(); resolve(null); });
+      req.write(licParams);
+      req.end();
+    });
+
+    return licRes;
+  } catch (_) {
+    return null;
+  }
+}
+
 module.exports = async (req, res) => {
   // Global CORS Headers
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -406,7 +495,7 @@ module.exports = async (req, res) => {
           message: 'Logged in!',
           status: 'SUCCESS',
           key: matchedLic.key,
-          app: matchedLic.app || (isV2Lic ? 'hyper x' : 'Custom work'),
+          app: matchedLic.app || (isV2Lic ? KEYAUTH_V2_CONFIG.appName : 'Custom work'),
           pkg: matchedLic.pkg || (isV2Lic ? 'AIMKILL PVT V2' : 'PHONE PANEL'),
           package_name: matchedLic.pkg || (isV2Lic ? 'AIMKILL PVT V2' : 'PHONE PANEL'),
           user: matchedLic.user || 'Client',
@@ -438,7 +527,7 @@ module.exports = async (req, res) => {
   if (action === 'init') {
     const nameParam = (body.name || req.query.name || '').trim();
     const ownerParam = (body.ownerid || req.query.ownerid || '').trim();
-    const isV2 = (nameParam === 'hyper x' || ownerParam === 'gyREPmpEjt' || nameParam === 'LoginForm' || ownerParam === 'HeHgXdXbgV');
+    const isV2 = (nameParam === KEYAUTH_V2_CONFIG.appName || ownerParam === KEYAUTH_V2_CONFIG.ownerId || KEYAUTH_V2_CONFIG.aliases.includes(nameParam));
     const sessionid = (isV2 ? 'hx_v2_' : 'hx_') + crypto.randomBytes(16).toString('hex');
     const licCount = isV2 ? (storeData.tx99_licenses_v2 || []).length : licenses.length;
     return res.status(200).json({
@@ -449,8 +538,8 @@ module.exports = async (req, res) => {
         numUsers: isV2 ? '1' : '1429',
         numOnlineUsers: isV2 ? '1' : '124',
         numKeys: licCount.toString(),
-        version: body.ver || req.query.ver || '1.0',
-        customerPanel: isV2 ? 'https://keyauth.win' : 'https://prtvshow.online'
+        version: body.ver || req.query.ver || KEYAUTH_V2_CONFIG.version,
+        customerPanel: isV2 ? KEYAUTH_V2_CONFIG.customerPanel : 'https://prtvshow.online'
       }
     });
   }
@@ -480,8 +569,28 @@ module.exports = async (req, res) => {
       if (lic) isV2Key = true;
     }
 
-    // If key not found in local store, try remote KeyAuth proxy
+    // If key not found in local store:
     if (!lic) {
+      // 1. Try KeyAuth V2 Cloud (Hyperm575's Application)
+      const cloudRes = await verifyWithKeyAuthCloud(licenseKey, clientHwid);
+      if (cloudRes && cloudRes.success) {
+        return res.status(200).json({
+          success: true,
+          message: cloudRes.message || 'Logged in!',
+          status: 'SUCCESS',
+          key: licenseKey,
+          app: KEYAUTH_V2_CONFIG.appName,
+          pkg: (cloudRes.info && cloudRes.info.subscriptions && cloudRes.info.subscriptions[0]) ? cloudRes.info.subscriptions[0].subscription : 'AIMKILL PVT V2',
+          package_name: (cloudRes.info && cloudRes.info.subscriptions && cloudRes.info.subscriptions[0]) ? cloudRes.info.subscriptions[0].subscription : 'AIMKILL PVT V2',
+          user: (cloudRes.info && cloudRes.info.username) ? cloudRes.info.username : 'Client',
+          expiry: (cloudRes.info && cloudRes.info.subscriptions && cloudRes.info.subscriptions[0]) ? (cloudRes.info.subscriptions[0].expiry || 'Active') : 'Active',
+          hwid: clientHwid,
+          timestamp: Math.floor(Date.now() / 1000),
+          info: cloudRes.info || {}
+        });
+      }
+
+      // 2. Try remote KeyAuth proxy for 9 legacy working panels
       try {
         const payload = {
           api_key: REMOTE_API_KEY,
@@ -495,6 +604,7 @@ module.exports = async (req, res) => {
           return res.status(remoteRes.statusCode || 200).json(remoteRes.data);
         }
       } catch (_) {}
+
       return res.status(404).json({
         success: false,
         message: 'License key does not exist or invalid format',
@@ -564,7 +674,7 @@ module.exports = async (req, res) => {
       message: 'Logged in!',
       status: 'SUCCESS',
       key: lic.key,
-      app: lic.app || (isV2Key ? 'hyper x' : 'Custom work'),
+      app: lic.app || (isV2Key ? KEYAUTH_V2_CONFIG.appName : 'Custom work'),
       pkg: lic.pkg || (isV2Key ? 'AIMKILL PVT V2' : 'PHONE PANEL'),
       package_name: lic.pkg || (isV2Key ? 'AIMKILL PVT V2' : 'PHONE PANEL'),
       user: lic.user || 'Client',
@@ -991,8 +1101,8 @@ module.exports = async (req, res) => {
   // 9. RESELLER STATS (Isolated per reseller)
   // =========================================================================
   // =========================================================================
-  // 8B. V2 KEYAUTH ACTIONS (Dedicated Slot for hyper x V2 Engine)
-  // App: hyper x • Owner: gyREPmpEjt • Secret: d605...f363 • Version: 1.0
+  // 8B. V2 KEYAUTH ACTIONS (Dedicated Slot for Hyperm575's Application)
+  // App: Hyperm575's Application • Owner: gyREPmpEjt • Secret: d605...f363 • Version: 1.0
   // =========================================================================
   if (action === 'get_licenses_v2') {
     const licensesV2 = storeData.tx99_licenses_v2 || [];
@@ -1017,9 +1127,11 @@ module.exports = async (req, res) => {
       success: true,
       licenses: result,
       total: result.length,
-      app_name: 'hyper x',
-      owner_id: 'gyREPmpEjt',
-      version: '1.0'
+      app_name: KEYAUTH_V2_CONFIG.appName,
+      owner_id: KEYAUTH_V2_CONFIG.ownerId,
+      version: KEYAUTH_V2_CONFIG.version,
+      api_url: KEYAUTH_V2_CONFIG.apiUrl,
+      customer_panel: KEYAUTH_V2_CONFIG.customerPanel
     });
   }
 
@@ -1054,13 +1166,13 @@ module.exports = async (req, res) => {
         storeData.tx99_licenses_v2.unshift({
           id: 'v2_' + Date.now().toString() + idx,
           key: keyStr,
-          app: 'hyper x',
+          app: KEYAUTH_V2_CONFIG.appName,
           pkg: pkgName,
           user: count > 1 ? (rawUser + '_' + (idx + 1)) : rawUser,
           hwid: 'Not Bound',
           expiry: expiryText,
           status: 'active',
-          note: 'Generated by ' + (authUser ? (authUser.username || 'Owner') : 'Owner') + ' (KeyAuth V2 API)',
+          note: 'Generated by ' + (authUser ? (authUser.username || 'Owner') : 'Owner') + ' (KeyAuth V2: ' + KEYAUTH_V2_CONFIG.appName + ')',
           resellerId: 'owner'
         });
       }
@@ -1073,8 +1185,8 @@ module.exports = async (req, res) => {
       message: 'V2 Keys generated successfully.',
       count: generatedKeys.length,
       keys: generatedKeys,
-      app_name: 'hyper x',
-      owner_id: 'gyREPmpEjt',
+      app_name: KEYAUTH_V2_CONFIG.appName,
+      owner_id: KEYAUTH_V2_CONFIG.ownerId,
       package_name: pkgName,
       timestamp: Math.floor(Date.now() / 1000)
     });

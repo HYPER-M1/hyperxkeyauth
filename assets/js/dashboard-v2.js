@@ -1,23 +1,34 @@
 /**
- * HYPER X // LICENSE KEYS V2 ENGINE & CONTROLLER
- * Dedicated KeyAuth V2 Slot Integration
+ * HYPERM SHOP // LICENSE KEYS V2 ENGINE & CONTROLLER
+ * Dedicated KeyAuth License V2 Configuration & Slot Integration
  * 
- * KeyAuth Configuration:
- * - Application Name: hyper x
+ * Separate KeyAuth Configuration for V2 Panel (AIMKILL PVT V2 / STREAMER X):
+ * - Application Name: Hyperm575's Application
  * - Owner ID: gyREPmpEjt
  * - App Secret: d605b8eadacea9d15bfe187428efacb531d00a94db656f9017182e9e47def363
  * - Version: 1.0
+ * - API URL: https://keyauth.win/api/1.3/
  */
 
 (function () {
   'use strict';
+
+  // Dedicated KeyAuth V2 Configuration
+  const KEYAUTH_V2_CONFIG = {
+    appName: "Hyperm575's Application",
+    ownerId: "gyREPmpEjt",
+    secret: "d605b8eadacea9d15bfe187428efacb531d00a94db656f9017182e9e47def363",
+    version: "1.0",
+    apiUrl: "https://keyauth.win/api/1.3/",
+    supportedPackages: ["AIMKILL PVT V2", "STREAMER X"]
+  };
 
   // Seed default V2 licenses
   const SEED_LICENSES_V2 = [
     {
       id: 'v2_1792900000001',
       key: 'HX2-AIMK-9921-A7B8-44CD',
-      app: 'hyper x',
+      app: KEYAUTH_V2_CONFIG.appName,
       pkg: 'AIMKILL PVT V2',
       user: 'Root_Owner_V2',
       hwid: 'Not Bound',
@@ -29,7 +40,7 @@
     {
       id: 'v2_1792900000002',
       key: 'HX2-STRM-3312-C899-22FA',
-      app: 'hyper x',
+      app: KEYAUTH_V2_CONFIG.appName,
       pkg: 'STREAMER X',
       user: 'Streamer_Pro',
       hwid: 'Not Bound',
@@ -167,7 +178,7 @@
             </td>
             <td style="white-space:nowrap;">
               <span style="font-family:var(--font-mono);color:#34d399;display:block;font-weight:600;">${lic.pkg || 'AIMKILL PVT V2'}</span>
-              <span style="font-size:10.5px;color:var(--text-dim);">${lic.app || 'hyper x'}</span>
+              <span style="font-size:10.5px;color:var(--text-dim);">${lic.app || KEYAUTH_V2_CONFIG.appName}</span>
             </td>
             <td class="col-user col-mobile-hide" style="color:#cbd5e1;font-weight:600;white-space:nowrap;">${lic.user || 'Root Admin'}</td>
             <td class="col-hwid col-mobile-hide" style="font-family:var(--font-mono);font-size:11px;white-space:nowrap;color:${lic.hwid === 'Unbound' || lic.hwid === 'Not Bound' ? '#f59e0b' : '#8e95aa'};">${lic.hwid || 'Not Bound'}</td>
@@ -309,7 +320,7 @@
       window.state.licenses_v2.unshift({
         id: 'v2_' + Date.now().toString() + idx,
         key: keyStr,
-        app: 'hyper x',
+        app: KEYAUTH_V2_CONFIG.appName,
         pkg: pkgName,
         user: count > 1 ? `${user}_${idx + 1}` : user,
         hwid: 'Not Bound',
@@ -414,7 +425,7 @@
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-family:var(--font-mono);font-size:12px;">
           <div style="background:#090d16;padding:10px;border-radius:6px;border:1px solid #1a2235;">
             <span style="color:#64748b;display:block;font-size:10px;">ENGINE</span>
-            <span style="color:#10b981;font-weight:700;">KeyAuth V2 (hyper x)</span>
+            <span style="color:#10b981;font-weight:700;">KeyAuth V2 (${KEYAUTH_V2_CONFIG.appName})</span>
           </div>
           <div style="background:#090d16;padding:10px;border-radius:6px;border:1px solid #1a2235;">
             <span style="color:#64748b;display:block;font-size:10px;">OWNER ID</span>
