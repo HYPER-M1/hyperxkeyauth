@@ -1,0 +1,20 @@
+{
+  "panel_name": "HYPER X New Panel",
+  "keyauth_configuration": {
+    "app_name": "hyper x",
+    "owner_id": "gyREPmpEjt",
+    "app_secret": "d605b8eadacea9d15bfe187428efacb531d00a94db656f9017182e9e47def363",
+    "app_version": "1.0",
+    "api_endpoint": "https://keyauth.win/api/1.2/",
+    "status": "Active",
+    "created_at": "2026-10-26"
+  },
+  "validation": {
+    "owner_id_length": 10,
+    "owner_id_valid": true,
+    "app_secret_length": 64,
+    "app_secret_valid": true,
+    "version": "1.0"
+  },
+  "notes": "Separate independent KeyAuth configuration for the new panel. Existing 9 working panels remain completely untouched and isolated."
+}
