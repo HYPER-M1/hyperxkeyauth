@@ -178,10 +178,11 @@
       "pkg": "STREAMER X",
       "user": "Streamer_Pro",
       "hwid": "Not Bound",
-      "expiry": "30 Days",
+      "expiry": "2026-11-25",
       "status": "active",
       "note": "Generated via V2 API slot",
-      "resellerId": "owner"
+      "resellerId": "owner",
+      "activated_at": "2026-10-26T09:53:25.417Z"
     }
   ]
 }
