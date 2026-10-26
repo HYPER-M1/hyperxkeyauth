@@ -61,12 +61,22 @@ function githubApi(method, endpoint, body) {
   });
 }
 
+function cleanJsonParse(str) {
+  if (!str) return null;
+  try {
+    const clean = (typeof str === 'string' ? str : str.toString('utf8')).replace(/^\uFEFF/, '').trim();
+    return JSON.parse(clean);
+  } catch (_) {
+    return null;
+  }
+}
+
 function readStoreFile() {
   try {
     const localFilePath = path.join(process.cwd(), 'data.json');
     if (fs.existsSync(localFilePath)) {
       const raw = fs.readFileSync(localFilePath, 'utf8');
-      const parsed = JSON.parse(raw);
+      const parsed = cleanJsonParse(raw);
       if (parsed) return parsed;
     }
   } catch (_) {}
@@ -84,8 +94,9 @@ async function getStoreData() {
     try {
       const res = await githubApi('GET', `/repos/${GH_REPO}/contents/${GH_PATH}`);
       if (res.status === 200 && res.data && res.data.content) {
-        const decoded = Buffer.from(res.data.content, 'base64').toString('utf8');
-        const parsed = JSON.parse(decoded);
+        const cleanB64 = (res.data.content || '').replace(/\s+/g, '');
+        const decoded = Buffer.from(cleanB64, 'base64').toString('utf8');
+        const parsed = cleanJsonParse(decoded);
         if (parsed && (parsed.hyperx_admin_pass || parsed.tx99_resellers || parsed.tx99_licenses_v2)) {
           memoryDataCache = parsed;
           lastCacheTime = now;

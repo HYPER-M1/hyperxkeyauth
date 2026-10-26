@@ -83,6 +83,16 @@ function githubApi(method, endpoint, body) {
   });
 }
 
+function cleanJsonParse(str) {
+  if (!str) return null;
+  try {
+    const clean = (typeof str === 'string' ? str : str.toString('utf8')).replace(/^\uFEFF/, '').trim();
+    return JSON.parse(clean);
+  } catch (_) {
+    return null;
+  }
+}
+
 // Read latest data from GitHub or local file or default
 async function getLatestCredentials() {
   const now = Date.now();
@@ -95,8 +105,9 @@ async function getLatestCredentials() {
     try {
       const res = await githubApi('GET', `/repos/${GH_REPO}/contents/${GH_PATH}`);
       if (res.status === 200 && res.data && res.data.content) {
-        const decoded = Buffer.from(res.data.content, 'base64').toString('utf8');
-        const parsed = JSON.parse(decoded);
+        const cleanB64 = (res.data.content || '').replace(/\s+/g, '');
+        const decoded = Buffer.from(cleanB64, 'base64').toString('utf8');
+        const parsed = cleanJsonParse(decoded);
         if (parsed && (parsed.hyperx_admin_pass || parsed.tx99_resellers)) {
           memoryCache = parsed;
           lastCacheTime = now;
@@ -113,7 +124,7 @@ async function getLatestCredentials() {
     const localFilePath = path.join(process.cwd(), 'data.json');
     if (fs.existsSync(localFilePath)) {
       const content = fs.readFileSync(localFilePath, 'utf8');
-      const parsed = JSON.parse(content);
+      const parsed = cleanJsonParse(content);
       if (parsed) {
         memoryCache = parsed;
         lastCacheTime = now;
