@@ -324,6 +324,7 @@
         pkg: pkgName,
         user: count > 1 ? `${user}_${idx + 1}` : user,
         hwid: 'Not Bound',
+        days: days,
         expiry: expiryText,
         status: 'active',
         note: `Generated via KeyAuth V2 API (${new Date().toLocaleDateString()})`,

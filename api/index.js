@@ -238,6 +238,69 @@ function getAuthenticatedUser(req, body, storeData) {
   return null;
 }
 
+// Dynamic License Expiry & Timeleft Engine
+function calculateLicenseTimeleft(lic) {
+  if (!lic) {
+    return { days: 0, timeleft: "infinite", expiry: "Lifetime", isExpired: false };
+  }
+
+  let days = 0;
+  if (typeof lic.days === 'number') {
+    days = lic.days;
+  } else if (lic.days !== undefined && lic.days !== null && lic.days !== '') {
+    days = parseInt(lic.days, 10);
+    if (isNaN(days)) days = 0;
+  } else if (lic.expiry) {
+    const expStr = lic.expiry.toString().trim();
+    if (expStr.toLowerCase().includes('lifetime') || expStr === '0') {
+      days = 0;
+    } else {
+      const dMatch = expStr.match(/^(\d+)\s*Days?$/i) || expStr.match(/(\d+)\s*Days?/i);
+      if (dMatch) {
+        days = parseInt(dMatch[1], 10) || 0;
+      } else if (expStr.includes('-')) {
+        const target = new Date(expStr).getTime();
+        if (!isNaN(target)) {
+          const diffMs = target - Date.now();
+          days = Math.max(0, Math.ceil(diffMs / (86400 * 1000)));
+        }
+      }
+    }
+  }
+
+  const isLifetime = (days === 0) || (lic.expiry && lic.expiry.toString().toLowerCase().includes('lifetime'));
+  if (isLifetime) {
+    return {
+      days: 0,
+      timeleft: "infinite",
+      expiry: "Lifetime",
+      isExpired: false
+    };
+  }
+
+  const nowSec = Math.floor(Date.now() / 1000);
+  const totalSeconds = days * 86400;
+
+  if (!lic.activated_at_sec) {
+    if (lic.activated_at && !isNaN(new Date(lic.activated_at).getTime())) {
+      lic.activated_at_sec = Math.floor(new Date(lic.activated_at).getTime() / 1000);
+    } else {
+      lic.activated_at_sec = nowSec;
+    }
+  }
+
+  const elapsed = Math.max(0, nowSec - lic.activated_at_sec);
+  const remainingSeconds = Math.max(0, totalSeconds - elapsed);
+  const isExpired = remainingSeconds <= 0;
+
+  return {
+    days: days,
+    timeleft: remainingSeconds.toString(),
+    expiry: `${days} Days`,
+    isExpired: isExpired
+  };
+}
+
 // Remote API proxy helper
 function proxyToRemote(payload) {
   const postData = JSON.stringify(payload);
@@ -489,6 +552,17 @@ module.exports = async (req, res) => {
           });
         }
 
+        const licExpInfo = calculateLicenseTimeleft(matchedLic);
+        if (licExpInfo.isExpired) {
+          matchedLic.status = 'expired';
+          await saveStoreData(storeData);
+          return res.status(403).json({
+            success: false,
+            message: 'License key has expired',
+            status: 'EXPIRED'
+          });
+        }
+
         const timestamp = Math.floor(Date.now() / 1000);
         const payloadToSign = `${matchedLic.key}|${clientHwid}|${timestamp}`;
         const signature = crypto.createHmac('sha256', HMAC_SECRET).update(payloadToSign).digest('hex');
@@ -502,7 +576,7 @@ module.exports = async (req, res) => {
           pkg: matchedLic.pkg || (isV2Lic ? 'AIMKILL PVT V2' : 'PHONE PANEL'),
           package_name: matchedLic.pkg || (isV2Lic ? 'AIMKILL PVT V2' : 'PHONE PANEL'),
           user: matchedLic.user || 'Client',
-          expiry: matchedLic.expiry || 'Lifetime',
+          expiry: licExpInfo.expiry,
           hwid: matchedLic.hwid,
           timestamp: timestamp,
           hmac_sha256: signature,
@@ -511,8 +585,8 @@ module.exports = async (req, res) => {
             subscriptions: [{
               subscription: matchedLic.pkg || (isV2Lic ? 'AIMKILL PVT V2' : 'PHONE PANEL'),
               key: matchedLic.key,
-              expiry: matchedLic.expiry || 'Lifetime',
-              timeleft: 2592000
+              expiry: licExpInfo.expiry,
+              timeleft: licExpInfo.timeleft
             }],
             ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress || '127.0.0.1',
             hwid: matchedLic.hwid
@@ -667,6 +741,17 @@ module.exports = async (req, res) => {
       });
     }
 
+    const licExpInfo = calculateLicenseTimeleft(lic);
+    if (licExpInfo.isExpired) {
+      lic.status = 'expired';
+      await saveStoreData(storeData);
+      return res.status(403).json({
+        success: false,
+        message: 'License key has expired',
+        status: 'EXPIRED'
+      });
+    }
+
     // Cryptographic signature
     const timestamp = Math.floor(Date.now() / 1000);
     const payloadToSign = `${lic.key}|${clientHwid}|${timestamp}`;
@@ -681,7 +766,7 @@ module.exports = async (req, res) => {
       pkg: lic.pkg || (isV2Key ? 'AIMKILL PVT V2' : 'PHONE PANEL'),
       package_name: lic.pkg || (isV2Key ? 'AIMKILL PVT V2' : 'PHONE PANEL'),
       user: lic.user || 'Client',
-      expiry: lic.expiry || 'Lifetime',
+      expiry: licExpInfo.expiry,
       hwid: lic.hwid,
       timestamp: timestamp,
       hmac_sha256: signature,
@@ -690,8 +775,8 @@ module.exports = async (req, res) => {
         subscriptions: [{
           subscription: lic.pkg || (isV2Key ? 'AIMKILL PVT V2' : 'PHONE PANEL'),
           key: lic.key,
-          expiry: lic.expiry || 'Lifetime',
-          timeleft: 2592000
+          expiry: licExpInfo.expiry,
+          timeleft: licExpInfo.timeleft
         }],
         ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress || '127.0.0.1',
         hwid: lic.hwid
@@ -1173,8 +1258,10 @@ module.exports = async (req, res) => {
           pkg: pkgName,
           user: count > 1 ? (rawUser + '_' + (idx + 1)) : rawUser,
           hwid: 'Not Bound',
+          days: days,
           expiry: expiryText,
           status: 'active',
+          created_at: new Date().toISOString(),
           note: 'Generated by ' + (authUser ? (authUser.username || 'Owner') : 'Owner') + ' (KeyAuth V2: ' + KEYAUTH_V2_CONFIG.appName + ')',
           resellerId: 'owner'
         });
