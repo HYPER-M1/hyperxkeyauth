@@ -213,12 +213,12 @@
       "app": "Hyperm575's Application",
       "pkg": "AIMKILL PVT V2",
       "user": "Root_Owner_V2",
-      "hwid": "Not Bound",
+      "hwid": "TEST_DEVICE_HWID_12345",
       "expiry": "Lifetime Access",
       "status": "active",
       "note": "KeyAuth V2 Official Engine - Initial Master Key",
       "resellerId": "owner",
-      "activated_at": "2026-10-26T10:24:26.565Z"
+      "activated_at": "2026-10-26T10:57:30.820Z"
     },
     {
       "id": "v2_1792900000002",
