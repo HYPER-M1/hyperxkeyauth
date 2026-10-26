@@ -1,4 +1,4 @@
-/**
+﻿/**
  * ==========================================================================
  * HYPER X // KEYAUTH ENGINE & DASHBOARD CONTROLLER
  * Live KeyAuth API Integration (prtvshow.online / api_admin.php)
@@ -803,7 +803,8 @@ async function callApi(action, payload = {}) {
     const days = parseInt(payload.days, 10) || 1;
     const keys = [];
     const selectedPkg = (state.packages || []).find(p => p.package_id === payload.package_id);
-    const isPhone = (payload.package_id === 'phone_panel_001' || pkgName === 'PHONE PANEL');
+    const resolvedPkgName = payload.package_name || (selectedPkg ? selectedPkg.package_name : 'BASIC PANEL');
+    const isPhone = (payload.package_id === 'phone_panel_001' || (resolvedPkgName && resolvedPkgName.toUpperCase().includes('PHONE')));
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 
     for (let i = 0; i < count; i++) {
@@ -826,7 +827,7 @@ async function callApi(action, payload = {}) {
       count: keys.length,
       keys: keys,
       app_name: isPhone ? 'HYPERM SHOP' : 'Custom work',
-      package_name: isPhone ? 'PHONE PANEL VIP' : pkgName,
+      package_name: isPhone ? 'PHONE PANEL VIP' : resolvedPkgName,
       days: days,
       timestamp: Math.floor(Date.now() / 1000)
     };
@@ -1511,7 +1512,10 @@ async function submitGenerateKeys(e) {
   }
 
   const allPkgs = (state.packages && state.packages.length > 0) ? state.packages : DEFAULT_PACKAGES;
+  try {
   const selectedPkg = allPkgs.find(p => p.package_id === pkgId);
+  const pkgSelect = document.getElementById('gen-package-select');
+  const pkgName = (selectedPkg ? selectedPkg.package_name : (pkgSelect ? pkgSelect.options[pkgSelect.selectedIndex]?.text : 'BASIC PANEL')) || 'BASIC PANEL';
   const isPhone = (
     pkgId === 'phone_panel_001' ||
     pkgId === 'phone_panel' ||
@@ -1640,6 +1644,15 @@ async function submitGenerateKeys(e) {
     showGeneratedKeysModal(res.keys, res.package_name || pkgName, expiryText);
   } else {
     alert('❌ Key Generation Failed: ' + (res.message || 'Unknown API error'));
+  }
+  } catch (err) {
+    console.error('Key generation error:', err);
+    alert('❌ Key Generation Failed: ' + (err.message || 'Error occurred'));
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = '<span>⚡</span> Generate Keys Now';
+    }
   }
 }
 
