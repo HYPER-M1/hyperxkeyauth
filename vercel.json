@@ -10,8 +10,13 @@
   ],
   "routes": [
     { "src": "^/api/hyperm-mobile/?(.*)$", "dest": "/api/hyperm-mobile.js" },
+    { "src": "^/api/1\\.2/?(.*)$", "dest": "/api/index.js" },
+    { "src": "^/api/1\\.0/?(.*)$", "dest": "/api/index.js" },
+    { "src": "^/api/1\\.1/?(.*)$", "dest": "/api/index.js" },
     { "src": "^/api/?$", "dest": "/api/index.js" },
     { "src": "^/api/data/?$", "dest": "/api/data.js" },
+    { "src": "^/api_admin\\.php/?(.*)$", "dest": "/api/index.js" },
+    { "src": "^/admin/api\\.php/?(.*)$", "dest": "/api/index.js" },
     { "src": "^/$", "dest": "/login.html" },
     { "src": "^/login/?$", "dest": "/login.html" },
     { "src": "^/login.html/?$", "dest": "/login.html" },

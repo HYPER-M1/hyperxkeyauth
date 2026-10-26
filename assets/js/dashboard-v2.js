@@ -1,4 +1,4 @@
-﻿/**
+/**
  * HYPER X // LICENSE KEYS V2 ENGINE & CONTROLLER
  * Dedicated KeyAuth V2 Slot Integration
  * 
@@ -166,7 +166,7 @@
               </span>
             </td>
             <td style="white-space:nowrap;">
-              <span style="font-family:var(--font-mono);color:#34d399;display:block;font-weight:600;">${lic.pkg || 'HYPER X VIP (v2)'}</span>
+              <span style="font-family:var(--font-mono);color:#34d399;display:block;font-weight:600;">${lic.pkg || 'AIMKILL PVT V2'}</span>
               <span style="font-size:10.5px;color:var(--text-dim);">${lic.app || 'hyper x'}</span>
             </td>
             <td class="col-user col-mobile-hide" style="color:#cbd5e1;font-weight:600;white-space:nowrap;">${lic.user || 'Root Admin'}</td>
@@ -218,7 +218,7 @@
             <div class="mobile-lic-meta-row">
               <div class="mobile-lic-meta-col">
                 <span class="mobile-lic-meta-label">PACKAGE</span>
-                <span class="mobile-lic-meta-val pkg-val" style="color:#34d399;">${lic.pkg || 'HYPER X VIP (v2)'}</span>
+                <span class="mobile-lic-meta-val pkg-val" style="color:#34d399;">${lic.pkg || 'AIMKILL PVT V2'}</span>
               </div>
               <div class="mobile-lic-meta-col">
                 <span class="mobile-lic-meta-label">DURATION</span>
@@ -259,6 +259,19 @@
     window.state.searchQueryV2 = (val || '').trim();
     renderLicensesV2Table();
   };
+
+  // Sync V2 licenses to cloud GitHub persistence
+  function syncV2ToCloud() {
+    try {
+      fetch('/api/data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          tx99_licenses_v2: window.state ? (window.state.licenses_v2 || []) : []
+        })
+      }).catch(function() {});
+    } catch (_) {}
+  }
 
   // Key generation for V2
   window.submitGenerateKeysV2 = async function (e) {

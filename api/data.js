@@ -38,6 +38,10 @@ const DEFAULT_DATA = {
     { id: "4", key: "HPERX-110A-BBA8-8832-5501", app: "Custom work", pkg: "AIMSILENT EXE", user: "Client_Ghost", hwid: "9920-A001-B789-CC21", expiry: "2026-11-20", status: "active", note: "Created by Owner", resellerId: "owner" },
     { id: "5", key: "HPERX-9923-00PA-8841-8899", app: "Custom work", pkg: "PVT AIMKILL", user: "CrackerBot", hwid: "TAMPER_DETECTED", expiry: "2026-11-01", status: "banned", note: "Memory Hook Violation", resellerId: "owner" },
     { id: "6", key: "HPERX-55VK-7719-ABCD-2234", app: "Custom work", pkg: "VAULT PANEL", user: "SecureClient", hwid: "99BC-2281-A011-9988", expiry: "2026-11-15", status: "active", note: "Created by Owner", resellerId: "owner" }
+  ],
+  tx99_licenses_v2: [
+    { id: "v2_1792900000001", key: "HX2-AIMK-9921-A7B8-44CD", app: "hyper x", pkg: "AIMKILL PVT V2", user: "Root_Owner_V2", hwid: "Not Bound", expiry: "Lifetime Access", status: "active", note: "KeyAuth V2 Official Engine - Initial Master Key", resellerId: "owner" },
+    { id: "v2_1792900000002", key: "HX2-STRM-3312-C899-22FA", app: "hyper x", pkg: "STREAMER X", user: "Streamer_Pro", hwid: "Not Bound", expiry: "30 Days", status: "active", note: "Generated via V2 API slot", resellerId: "owner" }
   ]
 };
 
@@ -221,7 +225,8 @@ module.exports = async (req, res) => {
         hyperx_admin_user: body.hyperx_admin_user || current.hyperx_admin_user,
         hyperx_admin_pass: body.hyperx_admin_pass || current.hyperx_admin_pass,
         tx99_resellers: Array.isArray(body.tx99_resellers) ? body.tx99_resellers : current.tx99_resellers,
-        tx99_licenses: Array.isArray(body.tx99_licenses) ? body.tx99_licenses : (current.tx99_licenses || DEFAULT_DATA.tx99_licenses)
+        tx99_licenses: Array.isArray(body.tx99_licenses) ? body.tx99_licenses : (current.tx99_licenses || DEFAULT_DATA.tx99_licenses),
+        tx99_licenses_v2: Array.isArray(body.tx99_licenses_v2) ? body.tx99_licenses_v2 : (current.tx99_licenses_v2 || DEFAULT_DATA.tx99_licenses_v2 || [])
       };
 
       // Persist to GitHub in background (fire and wait up to 4s)

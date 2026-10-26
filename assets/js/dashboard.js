@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ==========================================================================
  * HYPER X // KEYAUTH ENGINE & DASHBOARD CONTROLLER
  * Live KeyAuth API Integration (prtvshow.online / api_admin.php)
@@ -764,7 +764,7 @@ async function callApi(action, payload = {}) {
   }
 
   // Protected actions (except generate_key which has fallback) must NEVER bypass to direct KeyAuth API without authorization
-  const protectedActions = ['get_licenses', 'query_keys', 'key_info', 'reset_hwid', 'ban_key', 'unban_key', 'delete_key'];
+  const protectedActions = ['get_licenses', 'query_keys', 'key_info', 'reset_hwid', 'ban_key', 'unban_key', 'delete_key', 'get_licenses_v2', 'key_info_v2', 'reset_hwid_v2', 'ban_key_v2', 'unban_key_v2', 'delete_key_v2', 'generate_key_v2'];
   if (protectedActions.includes(action)) {
     return { success: false, message: 'Server authorization required' };
   }
