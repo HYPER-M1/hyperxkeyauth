@@ -1,4 +1,4 @@
-/**
+﻿/**
  * HYPERM SHOP // LICENSE KEYS V2 ENGINE & CONTROLLER
  * Dedicated KeyAuth License V2 Configuration & Slot Integration
  * 
@@ -390,7 +390,8 @@
     const user = (document.getElementById('gen-v2-user-input')?.value || 'Client_V2').trim();
     const days = parseInt(document.getElementById('gen-v2-days-select')?.value, 10) || 0;
     const count = Math.min(50, Math.max(1, parseInt(document.getElementById('gen-v2-count-input')?.value, 10) || 1));
-    const hwidLock = document.getElementById('gen-v2-hwid-lock') ? document.getElementById('gen-v2-hwid-lock').checked : true;
+    const lockEl = document.getElementById('gen-v2-hwid-lock');
+    const hwidLock = lockEl ? (lockEl.tagName === 'SELECT' ? lockEl.value !== 'false' : lockEl.checked) : true;
     const pkgName = pkgSelect ? pkgSelect.options[pkgSelect.selectedIndex]?.text : 'AIMKILL PVT V2';
     const btn = document.getElementById('btn-submit-generate-v2');
 
