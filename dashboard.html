@@ -2262,11 +2262,17 @@
           </div>
 
           <div class="form-group-item" style="grid-column: span 2;">
-            <label class="form-label-title">Hardware ID (HWID) Lock</label>
-            <select id="gen-v2-hwid-lock" class="form-input-box">
-              <option value="true" selected>Enabled (Device Bound)</option>
-              <option value="false">Disabled (Multi-Device Allowed)</option>
-            </select>
+            <label class="form-label-title" style="margin-bottom: 8px;">Hardware ID (HWID) Lock</label>
+            <label style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 12px 14px; transition: all 0.2s ease;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 16px;">🔒</span>
+                <div>
+                  <span style="display: block; font-weight: 700; font-size: 13px; color: #fff;">Enable Device HWID Lock</span>
+                  <span style="display: block; font-size: 11px; color: var(--text-dim); margin-top: 2px;">Tick = Lock to 1 device (Recommended) | Untick = Multi-device allowed</span>
+                </div>
+              </div>
+              <input type="checkbox" id="gen-v2-hwid-lock" checked style="width: 20px; height: 20px; accent-color: #10b981; cursor: pointer;">
+            </label>
           </div>
         </div>
 
