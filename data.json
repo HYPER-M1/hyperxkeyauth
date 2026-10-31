@@ -47,6 +47,21 @@
       "totpSecret": "4GUSJOCV4Z4UU2W2",
       "twofa_setup_done": true,
       "totalQuota": 100
+    },
+    {
+      "panels": [
+        "all"
+      ],
+      "id": "1793100000000",
+      "username": "reseller_check",
+      "balance": 50,
+      "twofa_setup_done": true,
+      "password": "checkpass123",
+      "totalQuota": 50,
+      "createdKeys": 0,
+      "totpSecret": "4GUSJOCV4Z4UU2W2",
+      "status": "Active",
+      "email": "check@reseller.local"
     }
   ],
   "tx99_licenses": [
