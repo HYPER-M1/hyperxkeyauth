@@ -37,12 +37,11 @@
       "username": "test9",
       "password": "test123",
       "email": "test9@reseller.local",
-      "balance": 93,
-      "createdKeys": 7,
+      "balance": 94,
+      "createdKeys": 6,
       "status": "Active",
       "panels": [
         "BASIC PANEL",
-        "AIMSILENT EXE",
         "AIMKILL PVT V2"
       ],
       "totpSecret": "4GUSJOCV4Z4UU2W2",
