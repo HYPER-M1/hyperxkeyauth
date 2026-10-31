@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Vercel Serverless Function: POST /api
  * Master Proxy & Server-Side Access Control Engine for HYPER X KeyAuth
  */
@@ -545,6 +545,38 @@ module.exports = async (req, res) => {
         if (matchedLic) isV2Lic = true;
       }
 
+      // Check remote prtvshow.online API if not in local store
+      if (!matchedLic) {
+        try {
+          const payload = {
+            api_key: REMOTE_API_KEY,
+            app_id: appId || '9f087d585fbd666572fc24b7',
+            action: 'key_info',
+            key: possibleKey
+          };
+          const remoteRes = await proxyToRemote(payload);
+          if (remoteRes.data && remoteRes.data.success && remoteRes.data.key) {
+            const rData = remoteRes.data;
+            const isLifetime = (rData.expiry_date || '').toLowerCase().includes('lifetime') || rData.duration_days === 0;
+            const remainingDays = isLifetime ? 0 : (rData.duration_days || 30);
+            matchedLic = {
+              id: Date.now().toString(),
+              key: rData.key,
+              app: rData.app_name || 'Custom work',
+              pkg: rData.package_name || 'BASIC PANEL',
+              user: 'Client',
+              hwid: rData.hwid || 'Not Bound',
+              expiry: isLifetime ? 'Lifetime Access' : `${remainingDays} Days`,
+              days: remainingDays,
+              status: rData.status || 'active',
+              note: 'Imported from prtvshow.online API',
+              resellerId: 'owner'
+            };
+            storeData.tx99_licenses.unshift(matchedLic);
+          }
+        } catch (_) {}
+      }
+
       if (matchedLic) {
         if (matchedLic.status === 'banned') {
           return res.status(403).json({ success: false, message: 'License key is banned', status: 'BANNED' });
@@ -694,18 +726,80 @@ module.exports = async (req, res) => {
         });
       }
 
-      // 2. Try remote KeyAuth proxy for 9 legacy working panels
+      // 2. Try remote KeyAuth proxy for 9 legacy working panels via key_info
       try {
         const payload = {
           api_key: REMOTE_API_KEY,
-          app_id: appId,
-          action: 'verify_key',
-          key: licenseKey,
-          hwid: clientHwid
+          app_id: appId || '9f087d585fbd666572fc24b7',
+          action: 'key_info',
+          key: licenseKey
         };
         const remoteRes = await proxyToRemote(payload);
-        if (remoteRes.data && (remoteRes.data.success || remoteRes.data.status)) {
-          return res.status(remoteRes.statusCode || 200).json(remoteRes.data);
+        if (remoteRes.data && remoteRes.data.success && remoteRes.data.key) {
+          const rData = remoteRes.data;
+          if (rData.status === 'banned') {
+            return res.status(403).json({ success: false, message: 'License key is banned', status: 'BANNED' });
+          }
+          const isUnbound = !rData.hwid || rData.hwid === 'Not Bound' || rData.hwid === 'Unbound' || rData.hwid === 'DEFAULT_TEST_HWID';
+          if (!isUnbound && clientHwid && clientHwid !== 'DEFAULT_TEST_HWID' && rData.hwid !== clientHwid) {
+            return res.status(403).json({
+              success: false,
+              message: 'Hardware ID mismatch. Contact admin to reset HWID.',
+              status: 'HWID_MISMATCH'
+            });
+          }
+
+          const expiryStr = (rData.expiry_date || '').trim();
+          const isLifetime = expiryStr.toLowerCase().includes('lifetime') || expiryStr === '0' || rData.duration_days === 0;
+          const remainingDays = isLifetime ? 9999 : (rData.duration_days || 30);
+          const boundHwid = (clientHwid && clientHwid !== 'DEFAULT_TEST_HWID') ? clientHwid : (rData.hwid || 'DEFAULT_TEST_HWID');
+
+          const newLicEntry = {
+            id: Date.now().toString(),
+            key: rData.key,
+            app: rData.app_name || 'Custom work',
+            pkg: rData.package_name || 'BASIC PANEL',
+            user: 'Client',
+            hwid: boundHwid,
+            expiry: isLifetime ? 'Lifetime Access' : `${remainingDays} Days`,
+            days: isLifetime ? 0 : remainingDays,
+            status: 'active',
+            activated_at: new Date().toISOString(),
+            note: 'Validated via prtvshow.online API',
+            resellerId: 'owner'
+          };
+          storeData.tx99_licenses.unshift(newLicEntry);
+          await saveStoreData(storeData);
+
+          const timestamp = Math.floor(Date.now() / 1000);
+          const payloadToSign = `${rData.key}|${boundHwid}|${timestamp}`;
+          const signature = crypto.createHmac('sha256', HMAC_SECRET).update(payloadToSign).digest('hex');
+
+          return res.status(200).json({
+            success: true,
+            message: 'Logged in!',
+            status: 'SUCCESS',
+            key: rData.key,
+            app: rData.app_name || 'Custom work',
+            pkg: rData.package_name || 'BASIC PANEL',
+            package_name: rData.package_name || 'BASIC PANEL',
+            user: 'Client',
+            expiry: newLicEntry.expiry,
+            hwid: boundHwid,
+            timestamp: timestamp,
+            hmac_sha256: signature,
+            info: {
+              username: 'Client',
+              subscriptions: [{
+                subscription: rData.package_name || 'BASIC PANEL',
+                key: rData.key,
+                expiry: newLicEntry.expiry,
+                timeleft: isLifetime ? 'infinite' : (remainingDays * 86400).toString()
+              }],
+              ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress || '127.0.0.1',
+              hwid: boundHwid
+            }
+          });
         }
       } catch (_) {}
 
@@ -1189,12 +1283,12 @@ module.exports = async (req, res) => {
         console.error('Remote key generation error from prtvshow.online:', err.message);
       }
 
-      // Fallback generation only if prtvshow.online is completely unreachable
+      // Never generate fake keys for real prtvshow.online packages
       if (generatedKeys.length === 0) {
-        for (let i = 0; i < count; i++) {
-          const seg = () => Math.random().toString(36).substring(2, 6).toUpperCase();
-          generatedKeys.push(`HPERX-${seg()}-${seg()}-${seg()}-${seg()}`);
-        }
+        return res.status(502).json({
+          success: false,
+          message: 'Failed to generate key on prtvshow.online API engine. Please verify the remote application status.'
+        });
       }
     }
 
@@ -1245,7 +1339,7 @@ module.exports = async (req, res) => {
         key: keyStr,
         app: appName,
         pkg: pkgName,
-        user: count > 1 ? `${userPrefix}${rawUser}_${idx + 1}` : `${userPrefix}${rawUser}`,
+        user: count > 1 ? (rawUser.startsWith(userPrefix) ? `${rawUser}_${idx + 1}` : `${userPrefix}${rawUser}_${idx + 1}`) : (rawUser.startsWith(userPrefix) ? rawUser : `${userPrefix}${rawUser}`),
         hwid: 'Not Bound',
         expiry: expiryText,
         status: 'active',

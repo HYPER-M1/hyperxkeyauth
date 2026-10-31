@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * PRTV SHOW // HYPER X - REST API & KEYAUTH VERIFICATION ENGINE
  * Endpoints for Client Loaders, License Auth, HWID Binding, Telemetry & Reseller Access Control
@@ -797,6 +797,82 @@ switch ($action) {
                     ]
                 ]);
             } else {
+                // Check remote prtvshow.online key_info
+                $remotePayload = [
+                    'api_key' => REMOTE_API_KEY,
+                    'app_id'  => REMOTE_APP_ID,
+                    'action'  => 'key_info',
+                    'key'     => $licenseKey
+                ];
+                $ch = curl_init(REMOTE_API_URL);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($remotePayload));
+                curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+                curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                $remoteResp = curl_exec($ch);
+                curl_close($ch);
+
+                if ($remoteResp !== false) {
+                    $rData = json_decode($remoteResp, true);
+                    if ($rData && !empty($rData['success']) && !empty($rData['key'])) {
+                        if (($rData['status'] ?? '') === 'banned') {
+                            json_response(['success' => false, 'message' => 'License banned', 'status' => 'BANNED'], 403);
+                        }
+                        $rCurrentHwid = trim($rData['hwid'] ?? '');
+                        $isUnbound = (empty($rCurrentHwid) || $rCurrentHwid === 'Not Bound' || $rCurrentHwid === 'Unbound');
+                        if (!$isUnbound && $clientHwid !== 'DEFAULT_TEST_HWID' && $rCurrentHwid !== $clientHwid) {
+                            json_response(['success' => false, 'message' => 'Hardware ID mismatch. Contact admin to reset HWID.', 'status' => 'HWID_MISMATCH'], 403);
+                        }
+                        $boundHwid = ($clientHwid !== 'DEFAULT_TEST_HWID') ? $clientHwid : ($rCurrentHwid ?: 'DEFAULT_TEST_HWID');
+                        
+                        // Cache in data.json
+                        if (!isset($store['tx99_licenses']) || !is_array($store['tx99_licenses'])) {
+                            $store['tx99_licenses'] = [];
+                        }
+                        $store['tx99_licenses'][] = [
+                            'id'         => (string)time(),
+                            'key'        => $rData['key'],
+                            'app'        => $rData['app_name'] ?? 'Custom work',
+                            'pkg'        => $rData['package_name'] ?? 'BASIC PANEL',
+                            'user'       => 'Client',
+                            'hwid'       => $boundHwid,
+                            'expiry'     => $rData['expiry_date'] ?? 'Lifetime',
+                            'status'     => 'active',
+                            'note'       => 'Imported from prtvshow.online API',
+                            'resellerId' => 'owner'
+                        ];
+                        save_store_data($store);
+
+                        json_response([
+                            'success'     => true,
+                            'message'     => 'Logged in!',
+                            'status'      => 'SUCCESS',
+                            'key'         => $rData['key'],
+                            'app'         => $rData['app_name'] ?? 'Custom work',
+                            'pkg'         => $rData['package_name'] ?? 'BASIC PANEL',
+                            'package_name'=> $rData['package_name'] ?? 'BASIC PANEL',
+                            'user'        => 'Client',
+                            'expiry'      => $rData['expiry_date'] ?? 'Lifetime',
+                            'hwid'        => $boundHwid,
+                            'timestamp'   => $timestamp,
+                            'hmac_sha256' => $signature,
+                            'info'        => [
+                                'username'      => 'Client',
+                                'subscriptions' => [[
+                                    'subscription' => $rData['package_name'] ?? 'BASIC PANEL',
+                                    'key'          => $rData['key'],
+                                    'expiry'       => $rData['expiry_date'] ?? 'Lifetime',
+                                    'timeleft'     => 2592000
+                                ]],
+                                'ip'            => $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1',
+                                'hwid'          => $boundHwid
+                            ]
+                        ]);
+                    }
+                }
+
                 json_response(['success' => false, 'message' => 'Invalid license format or expired key', 'status' => 'INVALID_KEY'], 404);
             }
         }

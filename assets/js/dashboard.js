@@ -1,4 +1,4 @@
-/**
+﻿/**
  * ==========================================================================
  * HYPER X // KEYAUTH ENGINE & DASHBOARD CONTROLLER
  * Live KeyAuth API Integration (prtvshow.online / api_admin.php)
@@ -779,11 +779,13 @@ async function callApi(action, payload = {}) {
   // Tier 1: Try Primary Serverless Proxy (/api on Vercel or api.php) if reachable
   if (window.location.protocol !== 'file:') {
     try {
+      const isKeyAction = (action === 'generate_key' || action === 'generate_key_v2' || action === 'get_licenses' || action === 'get_licenses_v2');
+      const timeoutMs = isKeyAction ? 25000 : 7000;
       const res = await fetchWithTimeout(API_URL, {
         method: 'POST',
         headers: headers,
         body: JSON.stringify(finalPayload)
-      }, 4000);
+      }, timeoutMs);
 
       if (res.ok) {
         const data = await res.json();
@@ -850,43 +852,7 @@ async function callApi(action, payload = {}) {
     console.warn(`Direct KeyAuth API call failed for "${action}":`, err2.message);
   }
 
-  // Tier 3: Zero-Failure Fallback for Key Generation
-  if (action === 'generate_key') {
-    const count = parseInt(payload.count, 10) || 1;
-    const days = parseInt(payload.days, 10) || 1;
-    const keys = [];
-    const selectedPkg = (state.packages || []).find(p => p.package_id === payload.package_id);
-    const resolvedPkgName = payload.package_name || (selectedPkg ? selectedPkg.package_name : 'BASIC PANEL');
-    const isPhone = (payload.package_id === 'phone_panel_001' || (resolvedPkgName && resolvedPkgName.toUpperCase().includes('PHONE')));
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-
-    for (let i = 0; i < count; i++) {
-      if (isPhone) {
-        // Short mobile key strictly under 10 characters (8 chars: HX-XXXXX)
-        let s = '';
-        for (let j = 0; j < 5; j++) {
-          s += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        keys.push(`HX-${s}`);
-      } else {
-        const seg = () => Math.random().toString(36).substring(2, 6).toUpperCase();
-        keys.push(`HPERX-${seg()}-${seg()}-${seg()}-${seg()}`);
-      }
-    }
-
-    return {
-      success: true,
-      message: 'Keys generated successfully.',
-      count: keys.length,
-      keys: keys,
-      app_name: isPhone ? 'HYPERM SHOP' : 'Custom work',
-      package_name: isPhone ? 'PHONE PANEL VIP' : resolvedPkgName,
-      days: days,
-      timestamp: Math.floor(Date.now() / 1000)
-    };
-  }
-
-  return { success: false, message: 'Unable to reach KeyAuth API. Please check internet connection.' };
+  return { success: false, message: 'Unable to reach KeyAuth API engine. Please check internet connection and try again.' };
 }
 
 // Expose callApi to global window scope for modular extensions (e.g. V2 engine)
@@ -1648,7 +1614,7 @@ async function submitGenerateKeys(e) {
         alert(`❌ Insufficient Key Credits!\nYou only have ${currentReseller.balance} keys remaining in your balance, but you requested ${count}.`);
         return;
       }
-      user = `${currentReseller.username}_${user}`;
+      if (!user.startsWith(currentReseller.username + "_")) { user = `${currentReseller.username}_${user}`; }
     }
   }
 
@@ -1683,87 +1649,25 @@ async function submitGenerateKeys(e) {
       // KeyAuth V2 Official Engine Generation
       const lockEl = document.getElementById('gen-hwid-lock');
       const hwidLock = lockEl ? (lockEl.tagName === 'SELECT' ? lockEl.value !== 'false' : lockEl.checked) : true;
-      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-      const generatedKeys = [];
-      for (let i = 0; i < count; i++) {
-        const seg = () => {
-          let s = '';
-          for (let j = 0; j < 4; j++) {
-            s += chars.charAt(Math.floor(Math.random() * chars.length));
-          }
-          return s;
-        };
-        generatedKeys.push(`HX2-${seg()}-${seg()}-${seg()}-${seg()}`);
-      }
-
-      res = {
-        success: true,
-        keys: generatedKeys,
-        app_name: "Hyperm575's Application",
+      res = await callApi('generate_key_v2', {
         package_name: pkgName,
+        user: user,
         days: days,
         count: count,
-        isV2: true,
         hwid_lock: hwidLock
-      };
-
-      // Call API generate_key_v2 in background
-      try {
-        callApi('generate_key_v2', {
-          package_name: pkgName,
-          user: user,
-          days: days,
-          count: count,
-          hwid_lock: hwidLock,
-          keys: generatedKeys
-        }).catch(() => {});
-      } catch (_) {}
-    } else if (isPhone) {
-      // Short mobile keys strictly under 10 chars (HX-XXXXX)
-      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-      const generatedKeys = [];
-      for (let i = 0; i < count; i++) {
-        let s = '';
-        for (let j = 0; j < 5; j++) {
-          s += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        generatedKeys.push(`HX-${s}`);
+      });
+      if (res && res.success) {
+        res.isV2 = true;
+        res.hwid_lock = hwidLock;
       }
-
-      res = {
-        success: true,
-        keys: generatedKeys,
-        app_name: 'HYPERM SHOP',
+    } else if (isPhone) {
+      res = await callApi('generate_key', {
+        package_id: pkgId,
         package_name: 'PHONE PANEL VIP',
+        user: user,
         days: days,
-        count: count,
-        isV2: false
-      };
-
-      // Non-blocking background sync for Phone Panel
-      try {
-        callApi('generate_key', {
-          package_id: pkgId,
-          package_name: 'PHONE PANEL VIP',
-          user: user,
-          days: days,
-          count: count,
-          keys: generatedKeys
-        }).catch(() => {});
-        fetchWithTimeout('/api/hyperm-mobile', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            action: 'create_key',
-            admin_secret: '7f99a801e82b7c02b92138a011cd48f9',
-            package: 'PHONE PANEL VIP',
-            duration_days: days,
-            count: count,
-            client_name: user,
-            prefix: 'HX'
-          })
-        }, 3000).catch(() => {});
-      } catch (_) {}
+        count: count
+      });
     } else {
       // Standard V1 Packages: Generate directly via official prtvshow.online KeyAuth API
       res = await callApi('generate_key', {
@@ -1778,6 +1682,12 @@ async function submitGenerateKeys(e) {
     if (btn) {
       btn.disabled = false;
       btn.innerHTML = '<span>⚡</span> Generate Keys Now';
+    }
+
+    if (!res || !res.success || !Array.isArray(res.keys) || res.keys.length === 0) {
+      const errMsg = (res && res.message) ? res.message : 'Key generation failed. Please check internet connection and retry.';
+      alert('Failed: ' + errMsg);
+      return;
     }
 
     if (res && res.success && Array.isArray(res.keys) && res.keys.length > 0) {

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Vercel Serverless Function: GET/POST /api/data
  * 
  * Persistent Cloud Credentials Engine with GitHub Backing & In-Memory Caching:
@@ -211,7 +211,8 @@ module.exports = async (req, res) => {
         const safeData = {
           hyperx_admin_user: data.hyperx_admin_user,
           tx99_resellers: (data.tx99_resellers || []).filter(r => r.id === rid),
-          tx99_licenses: (data.tx99_licenses || DEFAULT_DATA.tx99_licenses || []).filter(l => l.resellerId === rid)
+          tx99_licenses: (data.tx99_licenses || DEFAULT_DATA.tx99_licenses || []).filter(l => l.resellerId === rid),
+          tx99_licenses_v2: (data.tx99_licenses_v2 || []).filter(l => l.resellerId === rid)
         };
         return res.status(200).json(safeData);
       }
