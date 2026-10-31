@@ -47,6 +47,21 @@
       "totpSecret": "4GUSJOCV4Z4UU2W2",
       "twofa_setup_done": true,
       "totalQuota": 100
+    },
+    {
+      "id": "1793458150821",
+      "username": "Dictators",
+      "password": "Dictators69",
+      "email": "dictators@reseller.local",
+      "balance": 100,
+      "totalQuota": 100,
+      "createdKeys": 0,
+      "status": "Active",
+      "panels": [
+        "AIMSILENT EXE"
+      ],
+      "totpSecret": "ROWSI3EUUC2ZZFFT",
+      "twofa_setup_done": false
     }
   ],
   "tx99_licenses": [
