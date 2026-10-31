@@ -11,9 +11,7 @@
       "totalQuota": 999,
       "createdKeys": 3,
       "status": "Active",
-      "panels": [
-        "all"
-      ],
+      "panels": "all",
       "totpSecret": "Z5N73VUTBHFC7MJF",
       "twofa_setup_done": true
     },
@@ -25,9 +23,7 @@
       "balance": 100,
       "createdKeys": 4,
       "status": "Active",
-      "panels": [
-        "all"
-      ],
+      "panels": "all",
       "totpSecret": "DBMW7BYRMYHAPRQS",
       "twofa_setup_done": true,
       "totalQuota": 104
@@ -40,10 +36,7 @@
       "balance": 92,
       "createdKeys": 8,
       "status": "Active",
-      "panels": [
-        "BASIC PANEL",
-        "AIMKILL PVT V2"
-      ],
+      "panels": "BASIC PANEL AIMKILL PVT V2",
       "totpSecret": "4GUSJOCV4Z4UU2W2",
       "twofa_setup_done": true,
       "totalQuota": 100
@@ -57,11 +50,22 @@
       "totalQuota": 100,
       "createdKeys": 6,
       "status": "Active",
-      "panels": [
-        "AIMSILENT EXE"
-      ],
+      "panels": "AIMSILENT EXE",
       "totpSecret": "ROWSI3EUUC2ZZFFT",
       "twofa_setup_done": true
+    },
+    {
+      "panels": "BASIC PANEL AIMKILL PVT V2",
+      "id": "1793469999001",
+      "username": "reseller_auto99",
+      "balance": 50,
+      "twofa_setup_done": true,
+      "password": "auto99pass",
+      "totalQuota": 50,
+      "createdKeys": 0,
+      "totpSecret": "JBSWY3DPEHPK3PXP",
+      "status": "Active",
+      "email": "auto99@test.local"
     }
   ],
   "tx99_licenses": [
