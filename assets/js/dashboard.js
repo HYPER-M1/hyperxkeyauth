@@ -1765,41 +1765,14 @@ async function submitGenerateKeys(e) {
         }, 3000).catch(() => {});
       } catch (_) {}
     } else {
-      // Standard V1 Packages (HPERX-XXXX-XXXX-XXXX-XXXX)
-      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-      const generatedKeys = [];
-      for (let i = 0; i < count; i++) {
-        const seg = () => {
-          let s = '';
-          for (let j = 0; j < 4; j++) {
-            s += chars.charAt(Math.floor(Math.random() * chars.length));
-          }
-          return s;
-        };
-        generatedKeys.push(`HPERX-${seg()}-${seg()}-${seg()}-${seg()}`);
-      }
-
-      res = {
-        success: true,
-        keys: generatedKeys,
-        app_name: 'Custom work',
+      // Standard V1 Packages: Generate directly via official prtvshow.online KeyAuth API
+      res = await callApi('generate_key', {
+        package_id: pkgId,
         package_name: pkgName,
+        user: user,
         days: days,
-        count: count,
-        isV2: false
-      };
-
-      // Call API generate_key in background (non-blocking)
-      try {
-        callApi('generate_key', {
-          package_id: pkgId,
-          package_name: pkgName,
-          user: user,
-          days: days,
-          count: count,
-          keys: generatedKeys
-        }).catch(() => {});
-      } catch (_) {}
+        count: count
+      });
     }
 
     if (btn) {

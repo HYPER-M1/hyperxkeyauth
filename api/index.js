@@ -14,7 +14,7 @@ const path = require('path');
 // ============================================================================
 const REMOTE_API_URL = 'https://prtvshow.online/api_admin.php';
 const REMOTE_API_KEY = 'TX999_API_bc186f5d73bd492e6d52095e5a7bfd78';
-const DEFAULT_APP_ID = '516b7d5e0fba068072fc24b7';
+const DEFAULT_APP_ID = '9f087d585fbd666572fc24b7';
 const HMAC_SECRET = process.env.HMAC_SECRET || '7f99a801e82b7c02b92138a011cd48f9';
 
 // ============================================================================
@@ -342,7 +342,7 @@ function proxyToRemote(payload) {
     });
 
     request.on('error', reject);
-    request.setTimeout(2000, () => {
+    request.setTimeout(12000, () => {
       request.destroy();
       reject(new Error('Remote API timeout'));
     });
@@ -1140,13 +1140,7 @@ module.exports = async (req, res) => {
       (body.package_name && body.package_name.toUpperCase().includes('PHONE'))
     );
 
-    if (Array.isArray(body.keys) && body.keys.length > 0) {
-      generatedKeys = body.keys;
-      if (isPhonePanel) {
-        appName = 'HYPERM SHOP';
-        pkgName = 'PHONE PANEL VIP';
-      }
-    } else if (isPhonePanel) {
+    if (isPhonePanel) {
       appName = 'HYPERM SHOP';
       pkgName = 'PHONE PANEL VIP';
       generatedKeys = [];
@@ -1159,25 +1153,43 @@ module.exports = async (req, res) => {
         generatedKeys.push(`HX-${s}`);
       }
     } else {
-      // Try remote generation for PC/standard packages
+      // Map package name to prtvshow package_id if not a direct 24-char hex ID
+      const packageIdMap = {
+        'BASIC PANEL': 'e52c1515c53453b85d0d4e87',
+        'AIMSILENT EXE': 'affc8da8fd5ace99981ab877',
+        'UID BYPASS': 'cb921031dc43197e8ccb6828',
+        'EXTERNAL PANEL': '3d1c6c948b4715fbd2fada2d',
+        'PVT AIMKILL': 'd4f0ce93349f236711344cb5',
+        'VAULT PANEL': '154d1edaddd7203fbfd847f4',
+        'LIB BYPASS': 'db3b90e8134ec738b94a9b05',
+        'FPS BOOSTER': '2411bc9db9f9a66c6e876ad2'
+      };
+      const cleanPkgName = (pkgName || '').trim().toUpperCase();
+      const targetPkgId = (body.package_id && body.package_id.length > 15 && !body.package_id.startsWith('pkg_'))
+        ? body.package_id
+        : (packageIdMap[cleanPkgName] || packageIdMap[pkgName] || 'e52c1515c53453b85d0d4e87');
+
+      // REAL KeyAuth generation via prtvshow.online API
       try {
         const payload = {
           api_key: REMOTE_API_KEY,
-          app_id: appId,
+          app_id: appId || '9f087d585fbd666572fc24b7',
           action: 'generate_key',
-          package_id: body.package_id,
+          package_id: targetPkgId,
           days: days,
           count: count
         };
         const remoteRes = await proxyToRemote(payload);
-        if (remoteRes.data && remoteRes.data.success && Array.isArray(remoteRes.data.keys)) {
+        if (remoteRes.data && remoteRes.data.success && Array.isArray(remoteRes.data.keys) && remoteRes.data.keys.length > 0) {
           generatedKeys = remoteRes.data.keys;
           if (remoteRes.data.app_name) appName = remoteRes.data.app_name;
           if (remoteRes.data.package_name) pkgName = remoteRes.data.package_name;
         }
-      } catch (_) {}
+      } catch (err) {
+        console.error('Remote key generation error from prtvshow.online:', err.message);
+      }
 
-      // Fallback generation if remote unavailable
+      // Fallback generation only if prtvshow.online is completely unreachable
       if (generatedKeys.length === 0) {
         for (let i = 0; i < count; i++) {
           const seg = () => Math.random().toString(36).substring(2, 6).toUpperCase();
