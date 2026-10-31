@@ -48,17 +48,15 @@ const SEED_LOGS = [
 ];
 
 const SEED_RESELLERS = [
-  { id: '17909518904974', username: 'beta123', password: 'beta1230', email: 'beta123@gmail.com', balance: 999, totalQuota: 1000, createdKeys: 1, status: 'Active', panels: ['all'], totpSecret: 'YLOG2E3ANGTE4B23', twofa_setup_done: true },
-  { id: '1791108883957', username: 'madhukar', password: 'madhukarbeta', email: 'madhukar@reseller.local', balance: 998, totalQuota: 999, createdKeys: 1, status: 'Active', panels: ['all'], totpSecret: 'Z5N73VUTBHFC7MJF', twofa_setup_done: true },
-  { id: '1791196941383', username: 'test1', password: 'test123', email: 'test1@reseller.local', balance: 99, totalQuota: 100, createdKeys: 1, status: 'Active', panels: ['all'], totpSecret: '5XMSIKNTE4AXVENX', twofa_setup_done: true },
-  { id: '1791201547205', username: '1', password: '1234', email: '1@reseller.local', balance: 100, totalQuota: 100, createdKeys: 0, status: 'Active', panels: ['all'], totpSecret: 'Q5UHSPLEHD7Z27QM', twofa_setup_done: true },
-  { id: '1790951896372', username: 'MADHUKARBETA', password: 'reseller4@123', email: 'madhukarsarkar004@gmail.com', balance: 260, totalQuota: 260, createdKeys: 0, status: 'Active', panels: ['all'], totpSecret: 'JBSWY3DPEHPK3PXP', twofa_setup_done: true }
+  { id: '1791108883957', username: 'madhukar', password: 'madhukarbeta', email: 'madhukar@reseller.local', balance: 996, totalQuota: 999, createdKeys: 3, status: 'Active', panels: ['all'], totpSecret: 'Z5N73VUTBHFC7MJF', twofa_setup_done: true },
+  { id: '1791295247097', username: 'Mrindia', password: 'Mrindia1', email: 'mrindia@reseller.local', balance: 100, totalQuota: 104, createdKeys: 4, status: 'Active', panels: ['all'], totpSecret: 'DBMW7BYRMYHAPRQS', twofa_setup_done: true },
+  { id: '1793030819288', username: 'test9', password: 'test123', email: 'test9@reseller.local', balance: 94, totalQuota: 100, createdKeys: 6, status: 'Active', panels: ['BASIC PANEL', 'AIMKILL PVT V2'], totpSecret: '4GUSJOCV4Z4UU2W2', twofa_setup_done: true }
 ];
 
 const SEED_TRANSFERS = [
-  { id: 'TX-891042', from: 'HYPER X', to: 'beta123', amount: 999, note: 'Initial Quota Allocation', time: '2026-10-01 10:15', timestamp: 1759313700000, status: 'Completed' },
-  { id: 'TX-740219', from: 'HYPER X', to: 'madhukar', amount: 998, note: 'Initial Quota Allocation', time: '2026-10-01 11:30', timestamp: 1759318200000, status: 'Completed' },
-  { id: 'TX-612984', from: 'HYPER X', to: 'MADHUKARBETA', amount: 260, note: 'Initial Quota Allocation', time: '2026-10-02 14:05', timestamp: 1759413900000, status: 'Completed' }
+  { id: 'TX-891042', from: 'HYPER X', to: 'test9', amount: 100, note: 'Initial Quota Allocation', time: '2026-10-26 10:15', timestamp: 1793030819288, status: 'Completed' },
+  { id: 'TX-740219', from: 'HYPER X', to: 'madhukar', amount: 999, note: 'Initial Quota Allocation', time: '2026-10-01 11:30', timestamp: 1759318200000, status: 'Completed' },
+  { id: 'TX-612984', from: 'HYPER X', to: 'Mrindia', amount: 104, note: 'Initial Quota Allocation', time: '2026-10-02 14:05', timestamp: 1759413900000, status: 'Completed' }
 ];
 
 class AppState {
@@ -76,8 +74,8 @@ class AppState {
     initial = initial.map(l => {
       if (l.resellerId) return l;
       if (l.user && l.user.toLowerCase().startsWith('madhukar_')) return { ...l, resellerId: '1791108883957' };
-      if (l.user && l.user.toLowerCase().startsWith('beta123_')) return { ...l, resellerId: '17909518904974' };
-      if (l.user && l.user.toLowerCase().startsWith('test1_')) return { ...l, resellerId: '1791196941383' };
+      if (l.user && l.user.toLowerCase().startsWith('test9_')) return { ...l, resellerId: '1793030819288' };
+      if (l.user && l.user.toLowerCase().startsWith('mrindia_')) return { ...l, resellerId: '1791295247097' };
       return { ...l, resellerId: 'owner' };
     });
 
@@ -100,29 +98,24 @@ class AppState {
     } catch (_) {}
     const bannedDummyNames = ['hyper x (root owner)', 'alphadistro', 'viperkeys'];
 
-    let hadDummyOrDeleted = false;
     let storedResellers = null;
     try {
       const storedRaw = JSON.parse(localStorage.getItem('tx99_resellers'));
-      if (Array.isArray(storedRaw)) {
+      if (Array.isArray(storedRaw) && storedRaw.length > 0) {
         storedResellers = storedRaw.filter(r => {
           if (!r || (!r.id && !r.username)) return false;
           const u = (r.username || '').toLowerCase().trim();
           const drop = bannedDummyNames.includes(u) || deletedIds.includes(r.id) || deletedIds.includes(u);
-          if (drop) hadDummyOrDeleted = true;
           return !drop;
         });
       }
     } catch (_) {}
 
-    if (!Array.isArray(storedResellers)) {
+    if (!Array.isArray(storedResellers) || storedResellers.length === 0) {
       storedResellers = SEED_RESELLERS.filter(r => !deletedIds.includes(r.id) && !deletedIds.includes(r.username.toLowerCase()));
-      hadDummyOrDeleted = true;
     }
     localStorage.setItem('tx99_resellers', JSON.stringify(storedResellers));
-    if (hadDummyOrDeleted) {
-      setTimeout(() => syncCredentialsToServer({ tx99_resellers: storedResellers }), 500);
-    }
+
     this.resellers = storedResellers.map((r, idx) => {
       if (!r.password) r.password = 'reseller' + (idx + 1) + '@123';
       if (!r.panels || !Array.isArray(r.panels) || r.panels.length === 0) r.panels = ['all'];
@@ -517,13 +510,71 @@ async function syncCredentialsToServer(updates = {}) {
     };
     if (adminPass) payload.hyperx_admin_pass = adminPass;
 
-    fetch('/api/data', {
+    const res = await fetch('/api/data', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
-    }).catch(() => {});
-  } catch (_) {}
+    });
+    if (res.ok) {
+      return await res.json();
+    }
+  } catch (err) {
+    console.error('syncCredentialsToServer error:', err);
+  }
 }
+
+async function loadResellersFromServer() {
+  const role = getUserRole();
+  if (role === 'reseller') return;
+
+  try {
+    const res = await fetch('/api/data', { cache: 'no-store' });
+    if (res.ok) {
+      const data = await res.json();
+      if (data && Array.isArray(data.tx99_resellers)) {
+        let deletedIds = [];
+        try { deletedIds = JSON.parse(localStorage.getItem('tx99_deleted_resellers')) || []; } catch(_) {}
+        const banned = ['hyper x (root owner)', 'alphadistro', 'viperkeys'];
+
+        const validServerResellers = data.tx99_resellers.filter(sr => {
+          if (!sr || (!sr.id && !sr.username)) return false;
+          const u = (sr.username || '').toLowerCase().trim();
+          return !banned.includes(u) && !deletedIds.includes(sr.id) && !deletedIds.includes(u);
+        });
+
+        if (validServerResellers.length > 0) {
+          const map = new Map();
+          validServerResellers.forEach(r => map.set(r.id.toString(), r));
+
+          // Also keep any local reseller that hasn't synced or was just added
+          if (Array.isArray(state.resellers)) {
+            state.resellers.forEach(r => {
+              if (r && r.id && !map.has(r.id.toString()) && !deletedIds.includes(r.id.toString())) {
+                const u = (r.username || '').toLowerCase().trim();
+                if (!banned.includes(u) && !deletedIds.includes(u)) {
+                  map.set(r.id.toString(), r);
+                }
+              }
+            });
+          }
+
+          state.resellers = Array.from(map.values()).map((r, idx) => {
+            if (!r.password) r.password = 'reseller' + (idx + 1) + '@123';
+            if (!r.panels || !Array.isArray(r.panels) || r.panels.length === 0) r.panels = ['all'];
+            r.balance = parseInt(r.balance, 10) || 0;
+            return r;
+          });
+
+          state.save();
+          renderResellersTable();
+        }
+      }
+    }
+  } catch (err) {
+    console.warn('loadResellersFromServer error:', err);
+  }
+}
+window.loadResellersFromServer = loadResellersFromServer;
 
 function submitChangeAdminCredentials(e) {
   if (e) e.preventDefault();
@@ -1262,6 +1313,7 @@ function switchTab(tabId) {
     renderTransfersView();
   } else if (tabId === 'resellers') {
     renderResellersTable();
+    loadResellersFromServer();
   } else if (tabId === 'apps') {
     renderApplicationsTable();
   } else if (tabId === 'logs') {
@@ -2879,7 +2931,7 @@ function renderResellersTable() {
   }
 }
 
-function submitAddReseller(e) {
+async function submitAddReseller(e) {
   if (e) e.preventDefault();
   const username = document.getElementById('reseller-name').value.trim();
   const password = document.getElementById('reseller-pass').value.trim();
@@ -2892,6 +2944,13 @@ function submitAddReseller(e) {
   }
   if (!password || password.length < 4) {
     alert('Reseller Password must be at least 4 characters long!');
+    return;
+  }
+
+  // Duplicate check
+  const exists = state.resellers.some(r => r.username && r.username.toLowerCase() === username.toLowerCase());
+  if (exists) {
+    alert(`⚠️ A reseller with username "${username}" already exists! Please choose a different name.`);
     return;
   }
 
@@ -2912,6 +2971,7 @@ function submitAddReseller(e) {
     password,
     email,
     balance: quota,
+    totalQuota: quota,
     createdKeys: 0,
     status: 'Active',
     panels: panelsToSave,
@@ -2926,13 +2986,12 @@ function submitAddReseller(e) {
 
   try {
     let deletedIds = JSON.parse(localStorage.getItem('tx99_deleted_resellers')) || [];
-    deletedIds = deletedIds.filter(x => x !== username.toLowerCase());
+    deletedIds = deletedIds.filter(x => x !== username.toLowerCase() && x !== newReseller.id);
     localStorage.setItem('tx99_deleted_resellers', JSON.stringify(deletedIds));
   } catch (_) {}
 
   state.resellers.push(newReseller);
   state.save();
-  syncCredentialsToServer({ tx99_resellers: state.resellers });
   renderResellersTable();
   closeModal('modal-add-reseller');
 
@@ -2940,6 +2999,9 @@ function submitAddReseller(e) {
   document.getElementById('reseller-name').value = '';
   document.getElementById('reseller-pass').value = '';
   document.getElementById('reseller-quota').value = '100';
+
+  // Persist directly to server
+  await syncCredentialsToServer({ tx99_resellers: state.resellers });
 
   const panelNamesStr = panelsToSave.includes('all') ? 'All Available Panels' : panelsToSave.join(', ');
   alert(`✓ Reseller Account Successfully Created!\n\nUsername: ${username}\nPassword: ${password}\nCredits: ${quota} Keys\nPanels Access: ${panelNamesStr}`);
@@ -2963,7 +3025,7 @@ function openEditResellerModal(id) {
   openModal('modal-edit-reseller');
 }
 
-function submitEditReseller(e) {
+async function submitEditReseller(e) {
   if (e) e.preventDefault();
   const id = document.getElementById('edit-reseller-id').value;
   const r = state.resellers.find(item => item.id === id);
@@ -3003,9 +3065,9 @@ function submitEditReseller(e) {
   r.panels = panelsToSave;
 
   state.save();
-  syncCredentialsToServer({ tx99_resellers: state.resellers });
   renderResellersTable();
   closeModal('modal-edit-reseller');
+  await syncCredentialsToServer({ tx99_resellers: state.resellers });
   alert(`✓ Reseller "${username}" updated successfully!`);
 }
 
@@ -3026,7 +3088,7 @@ function resetReseller2FASetup() {
   alert('✓ 2FA setup reset. Reseller will be prompted to scan QR code on next login.');
 }
 
-function quickAddResellerCredits(id) {
+async function quickAddResellerCredits(id) {
   const r = state.resellers.find(item => item.id === id);
   if (!r) return;
 
@@ -3042,12 +3104,12 @@ function quickAddResellerCredits(id) {
   r.balance += addAmount;
   r.totalQuota = (r.totalQuota || (r.balance - addAmount)) + addAmount;
   state.save();
-  syncCredentialsToServer({ tx99_resellers: state.resellers });
   renderResellersTable();
+  await syncCredentialsToServer({ tx99_resellers: state.resellers });
   alert(`✓ Added ${addAmount} keys to ${r.username}. New Balance: ${r.balance} Keys (Total Quota: ${r.totalQuota} Keys)`);
 }
 
-function toggleResellerStatus(id) {
+async function toggleResellerStatus(id) {
   const r = state.resellers.find(item => item.id === id);
   if (!r) return;
 
@@ -3056,11 +3118,11 @@ function toggleResellerStatus(id) {
 
   r.status = newStatus;
   state.save();
-  syncCredentialsToServer({ tx99_resellers: state.resellers });
   renderResellersTable();
+  await syncCredentialsToServer({ tx99_resellers: state.resellers });
 }
 
-function deleteReseller(id) {
+async function deleteReseller(id) {
   const r = state.resellers.find(item => item.id === id);
   if (!r) return;
 
@@ -3082,11 +3144,12 @@ function deleteReseller(id) {
   state.resellers = state.resellers.filter(item => item.id !== id && (r.username ? item.username.toLowerCase().trim() !== r.username.toLowerCase().trim() : true));
   state.save();
 
-  // 3. Sync to server
-  syncCredentialsToServer({ tx99_resellers: state.resellers });
-
-  // 4. Update UI
+  // 3. Update UI
   renderResellersTable();
+
+  // 4. Sync to server
+  await syncCredentialsToServer({ tx99_resellers: state.resellers });
+
   showHyperAlert(`The reseller account "${r.username}" has been permanently removed.`, {
     type: 'success',
     title: 'Reseller Deleted',
@@ -4222,11 +4285,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   startRealtimeSimulation();
 
-  // Load real API data in background concurrently (including server-authorized licenses)
+  // Load real API data in background concurrently (including server-authorized licenses & cloud resellers)
   Promise.allSettled([
     loadAdminPackages(),
     loadLicensesFromServer(),
-    role !== 'reseller' ? loadResellerStats() : Promise.resolve()
+    role !== 'reseller' ? loadResellerStats() : Promise.resolve(),
+    role !== 'reseller' ? loadResellersFromServer() : Promise.resolve()
   ]);
 });
 

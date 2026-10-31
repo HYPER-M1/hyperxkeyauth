@@ -437,6 +437,9 @@ if (in_array($action, $protectedActions, true)) {
             $store['tx99_licenses_v2'] = [];
         }
 
+        $hwidLock = !isset($body['hwid_lock']) || $body['hwid_lock'] !== false;
+        $uidBypass = !isset($body['uid_bypass']) || $body['uid_bypass'] !== false;
+
         foreach ($generatedKeys as $idx => $k) {
             array_unshift($store['tx99_licenses_v2'], [
                 'id'         => 'v2_' . time() . rand(100, 999) . $idx,
@@ -445,6 +448,8 @@ if (in_array($action, $protectedActions, true)) {
                 'pkg'        => $pkgName,
                 'user'       => $count > 1 ? "{$rawUser}_" . ($idx + 1) : $rawUser,
                 'hwid'       => 'Not Bound',
+                'hwid_lock'  => $hwidLock,
+                'uid_bypass' => $uidBypass,
                 'expiry'     => $expiryText,
                 'status'     => 'active',
                 'note'       => 'Generated via KeyAuth V2 API',

@@ -153,22 +153,19 @@ async function saveStoreData(data) {
     fs.writeFileSync(localFilePath, JSON.stringify(data, null, 2), 'utf8');
   } catch (_) {}
 
-  // Sync to GitHub in background (non-blocking) so all API actions respond instantly (<20ms)
   if (GH_TOKEN) {
-    (async () => {
-      try {
-        const getRes = await githubApi('GET', `/repos/${GH_REPO}/contents/${GH_PATH}`);
-        const sha = (getRes.status === 200 && getRes.data) ? getRes.data.sha : null;
-        const base64Content = Buffer.from(JSON.stringify(data, null, 2)).toString('base64');
-        const putPayload = {
-          message: 'chore(auth): sync license state & hwid across devices',
-          content: base64Content,
-          branch: 'main'
-        };
-        if (sha) putPayload.sha = sha;
-        await githubApi('PUT', `/repos/${GH_REPO}/contents/${GH_PATH}`, putPayload);
-      } catch (_) {}
-    })().catch(() => {});
+    try {
+      const getRes = await githubApi('GET', `/repos/${GH_REPO}/contents/${GH_PATH}`);
+      const sha = (getRes.status === 200 && getRes.data) ? getRes.data.sha : null;
+      const base64Content = Buffer.from(JSON.stringify(data, null, 2)).toString('base64');
+      const putPayload = {
+        message: 'chore(auth): sync license state & hwid across devices',
+        content: base64Content,
+        branch: 'main'
+      };
+      if (sha) putPayload.sha = sha;
+      await githubApi('PUT', `/repos/${GH_REPO}/contents/${GH_PATH}`, putPayload);
+    } catch (_) {}
   }
 }
 

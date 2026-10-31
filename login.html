@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -2324,9 +2324,9 @@
         let deletedIds = [];
         try { deletedIds = JSON.parse(localStorage.getItem('tx99_deleted_resellers')) || []; } catch(_) {}
         const defaultReal = [
-          { id: '17909518904974', username: 'beta123', password: 'beta1230', email: 'beta123@gmail.com', balance: 999, createdKeys: 1, status: 'Active', panels: ['all'], totpSecret: 'YLOG2E3ANGTE4B23', twofa_setup_done: true },
-          { id: '1791108883957', username: 'madhukar', password: 'madhukarbeta', email: 'madhukar@reseller.local', balance: 998, createdKeys: 1, status: 'Active', panels: ['all'], totpSecret: 'Z5N73VUTBHFC7MJF', twofa_setup_done: true },
-          { id: '1790951896372', username: 'MADHUKARBETA', password: 'reseller4@123', email: 'madhukarsarkar004@gmail.com', balance: 260, createdKeys: 0, status: 'Active', panels: ['all'], totpSecret: 'JBSWY3DPEHPK3PXP', twofa_setup_done: true }
+          { id: '1791108883957', username: 'madhukar', password: 'madhukarbeta', email: 'madhukar@reseller.local', balance: 996, createdKeys: 3, status: 'Active', panels: ['all'], totpSecret: 'Z5N73VUTBHFC7MJF', twofa_setup_done: true, totalQuota: 999 },
+          { id: '1791295247097', username: 'Mrindia', password: 'Mrindia1', email: 'mrindia@reseller.local', balance: 100, createdKeys: 4, status: 'Active', panels: ['all'], totpSecret: 'DBMW7BYRMYHAPRQS', twofa_setup_done: true, totalQuota: 104 },
+          { id: '1793030819288', username: 'test9', password: 'test123', email: 'test9@reseller.local', balance: 94, createdKeys: 6, status: 'Active', panels: ['BASIC PANEL', 'AIMKILL PVT V2'], totpSecret: '4GUSJOCV4Z4UU2W2', twofa_setup_done: true, totalQuota: 100 }
         ];
         storedResellers = defaultReal.filter(r => !deletedIds.includes(r.id) && !deletedIds.includes(r.username.toLowerCase()));
         localStorage.setItem('tx99_resellers', JSON.stringify(storedResellers));
