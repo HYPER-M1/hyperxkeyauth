@@ -53,9 +53,9 @@
       "username": "Dictators",
       "password": "Dictators69",
       "email": "dictators@reseller.local",
-      "balance": 99,
+      "balance": 98,
       "totalQuota": 100,
-      "createdKeys": 1,
+      "createdKeys": 2,
       "status": "Active",
       "panels": [
         "AIMSILENT EXE"
