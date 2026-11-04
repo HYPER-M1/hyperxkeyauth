@@ -1316,25 +1316,42 @@ function closeMobileSidebar() {
 // 3. LICENSE KEYS ENGINE (REAL API)
 // ==========================================================================
 function formatLicenseCreated(lic) {
-  if (lic.created && typeof lic.created === 'string') {
-    if (/[A-Za-z]{3}\s+\d+,\s+\d{4}/.test(lic.created)) return lic.created;
-    const d = new Date(lic.created);
-    if (!isNaN(d.getTime())) {
+  if (!lic) return 'Just now';
+
+  // 1. Check explicit created_at or created
+  const rawDate = lic.created || lic.created_at || lic.date;
+  if (rawDate) {
+    if (typeof rawDate === 'string' && /[A-Za-z]{3}\s+\d+,\s+\d{4}/.test(rawDate)) {
+      return rawDate;
+    }
+    const d = new Date(rawDate);
+    if (!isNaN(d.getTime()) && d.getFullYear() >= 2024 && d.getFullYear() <= 2030) {
       return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) + ' ' +
              d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
     }
   }
+
+  // 2. Fallback to id timestamp (slice to 13 digits to prevent 14-digit concatenated index bug causing year 2538)
   if (lic.id) {
-    const num = parseInt(lic.id, 10);
-    if (num > 1000000000) {
-      const d = new Date(num);
-      if (!isNaN(d.getTime())) {
+    const digitsOnly = String(lic.id).replace(/\D/g, '');
+    if (digitsOnly.length >= 13) {
+      const ts = parseInt(digitsOnly.slice(0, 13), 10);
+      const d = new Date(ts);
+      if (!isNaN(d.getTime()) && d.getFullYear() >= 2024 && d.getFullYear() <= 2030) {
+        return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) + ' ' +
+               d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+      }
+    } else if (digitsOnly.length === 10) {
+      const ts = parseInt(digitsOnly, 10) * 1000;
+      const d = new Date(ts);
+      if (!isNaN(d.getTime()) && d.getFullYear() >= 2024 && d.getFullYear() <= 2030) {
         return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) + ' ' +
                d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
       }
     }
   }
-  return 'Jul 18, 2026 10:24';
+
+  return 'Nov 4, 2026 15:42';
 }
 
 function closeAllKeyPopovers() {
@@ -2222,7 +2239,7 @@ function formatLogBadge(action) {
   } else if (a.includes('transfer') || a.includes('quota') || a.includes('credit')) {
     return `<span class="badge-pill-status" style="background:rgba(56,189,248,0.15);border:1px solid rgba(56,189,248,0.4);color:#60a5fa;font-weight:700;">${action}</span>`;
   } else if (a.includes('hwid') || a.includes('reset')) {
-    return `<span class="badge-pill-status" style="background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.28);color:#f59e0b;font-weight:600;">${action}</span>`;
+    return `<span class="badge-pill-status" style="background:rgba(234,179,8,0.15);border:1px solid rgba(234,179,8,0.4);color:#eab308;font-weight:700;">${action}</span>`;
   }
   return `<span class="badge-pill-status" style="background:rgba(148,163,184,0.15);border:1px solid rgba(148,163,184,0.3);color:#a3a9b8;font-weight:700;">${action}</span>`;
 }
@@ -2505,7 +2522,7 @@ function renderFullLogsTable() {
       <tr>
         <td style="white-space:nowrap;">${formatLogBadge(log.action)}</td>
         <td style="color:#fff;font-weight:500;">${log.detail}</td>
-        <td class="col-log-ip col-mobile-hide" style="font-family:var(--font-mono);color:var(--accent-blue);font-size:11.5px;white-space:nowrap;">${log.ip || '127.0.0.1'}</td>
+        <td class="col-log-ip col-mobile-hide" style="font-family:var(--font-mono);color:#06b6d4;font-size:11.5px;white-space:nowrap;">${log.ip || '127.0.0.1'}</td>
         <td style="font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);white-space:nowrap;">${log.time}</td>
       </tr>
     `).join('');
@@ -2601,7 +2618,7 @@ function populateResellerPanelsCheckboxes(mode, selectedPanels = []) {
 
   container.innerHTML = pkgs.map((pkg, idx) => {
     const isChecked = isAll || selectedPanels.includes(pkg.package_name) || selectedPanels.includes(pkg.package_id);
-    const v2Badge = pkg.isV2 ? '<span style="background:rgba(76,195,138,0.12);color:#4cc38a;font-size:10px;font-weight:600;padding:1px 6px;border-radius:4px;margin-left:6px;border:1px solid rgba(76,195,138,0.28);letter-spacing:0.04em;">V2</span>' : '';
+    const v2Badge = pkg.isV2 ? '<span style="background:rgba(16,185,129,0.18);color:#34d399;font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;margin-left:6px;border:1px solid rgba(16,185,129,0.4);letter-spacing:0.04em;">V2</span>' : '';
     return `
       <label class="panel-checkbox-item ${isChecked ? 'checked' : ''}" id="panel-box-${mode}-${idx}">
         <input type="checkbox" name="reseller-panel-${mode}" value="${pkg.package_name}" ${isChecked ? 'checked' : ''} onchange="onPanelCheckboxChange(this, 'panel-box-${mode}-${idx}')">
@@ -2667,8 +2684,8 @@ function toggleResellerPassVisibility(id, pass) {
   if (!valSpan) return;
   if (valSpan.textContent === '••••••••') {
     valSpan.textContent = pass;
-    valSpan.style.color = 'var(--text-main)';
-    valSpan.style.fontWeight = '600';
+    valSpan.style.color = '#a855f7';
+    valSpan.style.fontWeight = '700';
   } else {
     valSpan.textContent = '••••••••';
     valSpan.style.color = '';
@@ -2792,7 +2809,11 @@ function renderResellersTable() {
   // ── Mobile Cards ──
   if (mobileList) {
     const AVATAR_COLORS = [
-      { bg: 'var(--bg-raised)', border: 'var(--border-color)', color: 'var(--text-main)' },
+      { bg: 'rgba(229, 72, 77, 0.12)', border: 'rgba(239,68,68,0.4)', color: '#e5484d' },
+      { bg: 'rgba(168,85,247,0.15)', border: 'rgba(168,85,247,0.35)', color: '#a855f7' },
+      { bg: 'rgba(16,185,129,0.15)', border: 'rgba(16,185,129,0.35)', color: '#4cc38a' },
+      { bg: 'rgba(59,130,246,0.15)', border: 'rgba(59,130,246,0.35)', color: '#3b82f6' },
+      { bg: 'rgba(245,158,11,0.15)', border: 'rgba(245,158,11,0.35)', color: '#f59e0b' },
     ];
 
     mobileList.innerHTML = state.resellers.map((r, idx) => {
@@ -3900,7 +3921,7 @@ function renderResellerClientUsers(res) {
     const isAct = lic.status === 'active';
     const statusBadge = isAct
       ? '<span class="badge-pill-status badge-auth-success">Active</span>'
-      : (lic.status === 'banned' ? '<span class="badge-pill-status badge-auth-fail">Banned</span>' : '<span class="badge-pill-status" style="background:rgba(255,255,255,0.06);border:1px solid var(--border-color);color:var(--text-dim);">Expired</span>');
+      : (lic.status === 'banned' ? '<span class="badge-pill-status badge-auth-fail">Banned</span>' : '<span class="badge-pill-status" style="background:#334155;color:#a3a9b8;">Expired</span>');
     const hwidBadge = lic.hwid && lic.hwid !== 'Not Bound' && lic.hwid !== 'Unbound'
       ? `<span style="font-family:var(--font-mono);font-size:11px;color:#4cc38a;">${lic.hwid}</span>`
       : `<span style="font-family:var(--font-mono);font-size:11px;color:#f59e0b;">Unbound</span>`;
