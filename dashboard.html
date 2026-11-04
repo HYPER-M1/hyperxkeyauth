@@ -30,72 +30,45 @@
       overflow: hidden !important;
       opacity: 0 !important;
     }
-    /* Ultra-Premium Sidebar Brand Header */
+
+    /* Clean Brand Header */
     .brand-header-premium {
-      height: 68px !important;
+      height: 60px !important;
       padding: 0 16px !important;
       display: flex !important;
       align-items: center !important;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.07) !important;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, transparent 100%) !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+      background: #07080d !important;
     }
     .brand-link-wrap {
       text-decoration: none !important;
       display: flex !important;
       align-items: center !important;
-      gap: 12px !important;
+      gap: 10px !important;
       width: 100% !important;
     }
     .brand-badge-premium {
       position: relative !important;
-      width: 42px !important;
-      height: 42px !important;
-      border-radius: 12px !important;
-      background: linear-gradient(145deg, rgba(38, 16, 26, 0.95) 0%, rgba(18, 20, 30, 0.96) 50%, rgba(9, 11, 16, 0.98) 100%) !important;
-      border: 1px solid rgba(239, 68, 68, 0.38) !important;
+      width: 32px !important;
+      height: 32px !important;
+      border-radius: 8px !important;
+      background: #11141c !important;
+      border: 1px solid rgba(255, 255, 255, 0.08) !important;
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), 0 0 18px rgba(239, 68, 68, 0.22), inset 0 1px 1px rgba(255, 255, 255, 0.25), inset 0 -1px 2px rgba(0, 0, 0, 0.5) !important;
       flex-shrink: 0 !important;
       overflow: hidden !important;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      transition: border-color 140ms ease !important;
     }
     .brand-link-wrap:hover .brand-badge-premium {
-      transform: translateY(-1px) scale(1.03) !important;
-      border-color: rgba(239, 68, 68, 0.6) !important;
-      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.7), 0 0 25px rgba(239, 68, 68, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.35) !important;
-    }
-    .badge-specular-light {
-      position: absolute !important;
-      top: 0 !important;
-      left: 0 !important;
-      right: 0 !important;
-      height: 1px !important;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent) !important;
-      pointer-events: none !important;
-    }
-    .badge-ambient-glow {
-      position: absolute !important;
-      width: 28px !important;
-      height: 28px !important;
-      border-radius: 50% !important;
-      background: radial-gradient(circle, rgba(239, 68, 68, 0.55) 0%, transparent 70%) !important;
-      filter: blur(5px) !important;
-      pointer-events: none !important;
+      border-color: rgba(239, 68, 68, 0.4) !important;
     }
     .badge-logo-img {
-      height: 24px !important;
+      height: 18px !important;
       width: auto !important;
       object-fit: contain !important;
-      filter: drop-shadow(0 2px 8px rgba(239, 68, 68, 0.7)) !important;
-      position: relative !important;
-      z-index: 2 !important;
       display: block !important;
-      transition: transform 0.3s ease !important;
-    }
-    .brand-link-wrap:hover .badge-logo-img {
-      transform: scale(1.05) !important;
     }
     .brand-text-column {
       display: flex !important;
@@ -106,13 +79,13 @@
     .brand-title-line {
       display: flex !important;
       align-items: center !important;
-      gap: 7px !important;
+      gap: 6px !important;
     }
     .brand-name-text {
-      font-size: 15px !important;
-      font-weight: 900 !important;
-      letter-spacing: 1px !important;
-      color: #ffffff !important;
+      font-size: 14px !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.04em !important;
+      color: #ededed !important;
       font-family: var(--font-sans) !important;
       line-height: 1.2 !important;
       display: inline-flex !important;
@@ -120,105 +93,53 @@
     }
     .brand-x-accent {
       color: #ef4444 !important;
-      text-shadow: 0 0 12px rgba(239, 68, 68, 0.85) !important;
-      margin-left: 1.5px !important;
+      margin-left: 1px !important;
     }
-    /* Luxury Radar Beacon Dot (No Text) */
     .status-beacon-wrap {
-      position: relative !important;
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
-      width: 13px !important;
-      height: 13px !important;
-      margin-left: 3px !important;
-      flex-shrink: 0 !important;
-    }
-    .beacon-radar-ring {
-      position: absolute !important;
-      width: 100% !important;
-      height: 100% !important;
-      border-radius: 50% !important;
-      background: rgba(34, 197, 94, 0.45) !important;
-      animation: beaconRadar 2.2s cubic-bezier(0, 0, 0.2, 1) infinite !important;
-      pointer-events: none !important;
-    }
-    .beacon-soft-aura {
-      position: absolute !important;
-      width: 8px !important;
-      height: 8px !important;
-      border-radius: 50% !important;
-      background: #22c55e !important;
-      filter: blur(2px) !important;
-      opacity: 0.8 !important;
-      pointer-events: none !important;
+      margin-left: 2px !important;
     }
     .beacon-core-dot {
-      position: relative !important;
-      width: 6.5px !important;
-      height: 6.5px !important;
+      width: 6px !important;
+      height: 6px !important;
       border-radius: 50% !important;
-      background: #22c55e !important;
-      box-shadow: 0 0 8px #22c55e, 0 0 14px rgba(34, 197, 94, 0.75) !important;
+      background: #4cc38a !important;
       display: inline-block !important;
-    }
-    @keyframes beaconRadar {
-      0% {
-        transform: scale(0.6);
-        opacity: 0.95;
-      }
-      70%, 100% {
-        transform: scale(2.4);
-        opacity: 0;
-      }
     }
     .brand-sub-line {
       display: flex !important;
       align-items: center !important;
-      gap: 5px !important;
-      margin-top: 2.5px !important;
+      gap: 4px !important;
+      margin-top: 2px !important;
     }
     .brand-version-code {
-      font-size: 9.5px !important;
-      color: #64748b !important;
+      font-size: 11px !important;
+      color: #7a8296 !important;
       font-family: var(--font-mono) !important;
-      font-weight: 600 !important;
-      letter-spacing: 0.5px !important;
-    }
-    .brand-sub-sep {
-      font-size: 8px !important;
-      color: #334155 !important;
-    }
-    .brand-sub-status {
-      font-size: 8.5px !important;
-      color: #10b981 !important;
-      font-family: var(--font-mono) !important;
-      font-weight: 700 !important;
-      letter-spacing: 0.6px !important;
+      font-weight: 400 !important;
     }
 
-    /* Ultra-Clean Modern Logout Button */
+    /* Logout Button */
     .btn-profile-logout {
       width: 32px !important;
       height: 32px !important;
-      border-radius: 8px !important;
+      border-radius: 6px !important;
       background: rgba(255, 255, 255, 0.04) !important;
       border: 1px solid rgba(255, 255, 255, 0.08) !important;
-      color: #94a3b8 !important;
+      color: #a3a9b8 !important;
       cursor: pointer !important;
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25) !important;
+      transition: all 140ms ease !important;
       flex-shrink: 0 !important;
     }
     .btn-profile-logout:hover {
-      background: rgba(239, 68, 68, 0.16) !important;
-      border-color: rgba(239, 68, 68, 0.45) !important;
+      background: rgba(239, 68, 68, 0.12) !important;
+      border-color: rgba(239, 68, 68, 0.3) !important;
       color: #ef4444 !important;
-      box-shadow: 0 0 14px rgba(239, 68, 68, 0.35) !important;
-      transform: translateY(-1px) !important;
     }
     .btn-profile-logout svg {
       display: block !important;
@@ -266,26 +187,16 @@
          1. SIDEBAR (HYPER X)
          ============================================================ -->
     <aside class="sidebar" id="sidebar">
-      <!-- Brand Header (Ultra-Premium Cyber Luxury) -->
+      <!-- Brand Header -->
       <div class="sidebar-brand brand-header-premium">
         <a href="dashboard.html" class="brand-link-wrap">
-          <!-- Premium Cyber Badge -->
           <div class="brand-badge-premium">
-            <!-- Specular Top Rim Highlight -->
-            <div class="badge-specular-light"></div>
-            <!-- Ambient Internal Crimson Core Glow -->
-            <div class="badge-ambient-glow"></div>
-            <!-- Metallic HX Emblem -->
             <img src="assets/images/hx_card_logo_clean.png" alt="HYPER X" class="badge-logo-img">
           </div>
-          <!-- Brand Identity Typography -->
           <div class="brand-text-column">
             <div class="brand-title-line">
               <span class="brand-name-text">HYPER<span class="brand-x-accent">X</span></span>
-              <!-- Luxury Radar-Pulsing Green Live Dot (Clean, No Text) -->
               <span class="status-beacon-wrap" title="Status: Online &amp; Active">
-                <span class="beacon-radar-ring"></span>
-                <span class="beacon-soft-aura"></span>
                 <span class="beacon-core-dot"></span>
               </span>
             </div>
@@ -298,49 +209,47 @@
 
       <!-- Menu Navigation -->
       <nav class="sidebar-menu">
-        <span class="menu-category-label">MAIN</span>
+        <span class="menu-category-label">Navigation</span>
 
         <button class="sidebar-nav-link active" id="nav-dashboard" onclick="switchTab('dashboard')">
-          <span class="nav-icon">📊</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
           <span>Dashboard</span>
         </button>
 
         <button class="sidebar-nav-link" id="nav-apps" onclick="switchTab('apps')">
-          <span class="nav-icon">📦</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
           <span id="nav-apps-text">Applications</span>
         </button>
 
         <button class="sidebar-nav-link" id="nav-licenses" onclick="switchTab('licenses')">
-          <span class="nav-icon">🔑</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><path d="m21 2-2 2m-1.5 1.5L14 9l-1.5-1.5-2 2 1.5 1.5L9 14l-5 5H2v-2l5-5 3-3-1.5-1.5 2-2 1.5 1.5 3.5-3.5a5 5 0 1 1 7 7Z"></path></svg>
           <span>License Keys</span>
-          <span class="nav-count-badge" id="nav-key-count" style="display:none;">LIVE</span>
+          <span class="nav-count-badge" id="nav-key-count" style="display:none;">v1</span>
         </button>
 
         <button class="sidebar-nav-link" id="nav-licenses-v2" onclick="switchTab('licenses-v2')">
-          <span class="nav-icon">🛡️</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
           <span>License Keys v2</span>
-          <span class="nav-count-badge" id="nav-key-count-v2" style="background:#10b981;color:#fff;">V2</span>
+          <span class="nav-count-badge" id="nav-key-count-v2">v2</span>
         </button>
 
-
         <button class="sidebar-nav-link" id="nav-logs" onclick="switchTab('logs')">
-          <span class="nav-icon">📋</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
           <span>Logs</span>
         </button>
 
-
         <button class="sidebar-nav-link" id="nav-exegenerator" onclick="switchTab('exegenerator')">
-          <span class="nav-icon">⚡</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
           <span>EXE Generator</span>
         </button>
 
         <button class="sidebar-nav-link admin-only-feature" id="nav-resellers" onclick="switchTab('resellers')">
-          <span class="nav-icon">👥</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
           <span>Resellers</span>
         </button>
 
         <button class="sidebar-nav-link" id="nav-settings" onclick="handleSettingsNavClick()">
-          <span class="nav-icon">⚙️</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
           <span>Settings</span>
         </button>
       </nav>
@@ -377,37 +286,33 @@
 
         <div class="navbar-right">
           <!-- Keys Stat -->
-          <div class="header-pill-stat" title="Total Keys Quota" style="display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.03);padding:4px 10px;border-radius:6px;border:1px solid rgba(255,255,255,0.06);font-size:11.5px;">
-            <span style="font-size:13px;color:#f59e0b;">🔑</span>
-            <span style="color:#94a3b8;font-size:12px;font-weight:600;">Keys:</span>
-            <span class="stat-keys-tag" id="header-keys-stat" style="color:#ffffff;font-weight:700;">122 / 9999</span>
+          <div class="header-pill-stat" title="Total Keys Quota" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.03);padding:4px 10px;border-radius:6px;border:1px solid rgba(255,255,255,0.06);font-size:12px;">
+            <span style="color:#7a8296;font-size:12px;">Keys:</span>
+            <span class="stat-keys-tag" id="header-keys-stat" style="color:#ededed;font-family:var(--font-mono);font-weight:500;">122 / 9999</span>
           </div>
-
 
           <!-- Notification Bell Wrap -->
           <div style="position:relative;">
             <button class="header-icon-btn" id="header-bell-btn" onclick="toggleNotificationDropdown()" title="Notifications" style="position:relative;">
-              🔔
-              <span id="bell-unread-dot" style="display:none;position:absolute;top:2px;right:2px;width:9px;height:9px;border-radius:50%;background:#ef4444;box-shadow:0 0 8px #ef4444;border:2px solid #06070a;"></span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+              </svg>
+              <span id="bell-unread-dot" style="display:none;position:absolute;top:2px;right:2px;width:6px;height:6px;border-radius:50%;background:#ef4444;"></span>
             </button>
 
             <!-- Notification Dropdown Menu -->
-            <div id="notification-dropdown" style="display:none;position:absolute;right:0;top:42px;width:340px;background:#0d1019;border:1px solid #1f2638;border-radius:8px;box-shadow:0 10px 35px rgba(0,0,0,0.7);z-index:9999;padding:12px;font-family:var(--font-sans);">
-              <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:8px;border-bottom:1px solid #191f2e;margin-bottom:10px;">
-                <span style="font-size:12px;font-weight:700;color:#fff;display:flex;align-items:center;gap:6px;">
-                  <span>🔔</span> System Notifications
-                </span>
-                <span id="notif-count-badge" style="font-size:10px;background:rgba(239,68,68,0.2);color:#ef4444;padding:1px 6px;border-radius:4px;font-weight:700;">LIVE</span>
+            <div id="notification-dropdown" style="display:none;position:absolute;right:0;top:42px;width:320px;background:#11141c;border:1px solid rgba(255,255,255,0.08);border-radius:8px;box-shadow:0 8px 30px rgba(0,0,0,0.6);z-index:9999;padding:12px;font-family:var(--font-sans);">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:10px;">
+                <span style="font-size:12px;font-weight:500;color:#ededed;">Notifications</span>
+                <span id="notif-count-badge" style="font-size:10px;font-family:var(--font-mono);color:#7a8296;">Active</span>
               </div>
-              <div id="notif-items-list" style="max-height:240px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;">
-                <!-- Populated dynamically -->
-              </div>
+              <div id="notif-items-list" style="max-height:240px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;"></div>
             </div>
           </div>
 
           <!-- Admin User Badge -->
-          <div class="header-pill-admin" id="header-admin-btn" style="background:#0284c7;color:#fff;padding:4px 12px;border-radius:6px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
-            <span id="header-admin-icon">🛡️</span>
+          <div class="header-pill-admin" id="header-admin-btn" style="background:#1a1e28;color:#ededed;border:1px solid rgba(255,255,255,0.08);padding:4px 10px;border-radius:6px;font-size:12px;font-weight:500;display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
             <span id="header-admin-name">Owner</span>
           </div>
         </div>
@@ -417,27 +322,30 @@
       <main class="content-area">
 
         <!-- Reseller Live Update Alert Banner -->
-        <div id="reseller-update-banner" style="display:none;margin-bottom:18px;background:linear-gradient(90deg, rgba(239,68,68,0.18) 0%, rgba(220,38,38,0.08) 100%);border:1px solid rgba(239,68,68,0.45);border-radius:8px;padding:12px 18px;align-items:center;justify-content:space-between;box-shadow:0 0 25px rgba(239,68,68,0.2);">
+        <div id="reseller-update-banner" style="display:none;margin-bottom:16px;background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.25);border-radius:8px;padding:12px 16px;align-items:center;justify-content:space-between;">
           <div style="display:flex;align-items:center;gap:12px;">
-            <div style="width:36px;height:36px;border-radius:8px;background:rgba(239,68,68,0.25);border:1px solid #ef4444;display:flex;align-items:center;justify-content:center;color:#ef4444;font-size:18px;flex-shrink:0;">
-              ⚡
+            <div style="width:32px;height:32px;border-radius:6px;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);display:flex;align-items:center;justify-content:center;color:#ef4444;flex-shrink:0;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
             </div>
             <div>
               <div style="display:flex;align-items:center;gap:8px;">
-                <span style="color:#ffffff;font-size:13px;font-weight:800;letter-spacing:0.3px;" id="banner-update-title">NEW CLIENT UPDATE RELEASED!</span>
-                <span style="background:#ef4444;color:#fff;font-size:9.5px;padding:2px 6px;border-radius:3px;font-weight:800;">NEW BUILD</span>
+                <span style="color:#ededed;font-size:13px;font-weight:500;" id="banner-update-title">Client update available</span>
+                <span style="background:rgba(239,68,68,0.15);color:#ef4444;font-size:10px;padding:1px 6px;border-radius:4px;font-family:var(--font-mono);">Build v1.12</span>
               </div>
-              <p style="color:#cbd5e1;font-size:11.5px;margin-top:2px;" id="banner-update-desc">
-                Admin has deployed an updated Master Core binary. Please download or rebuild your branded client.
+              <p style="color:#a3a9b8;font-size:12px;margin-top:2px;" id="banner-update-desc">
+                Updated Master Core binary is ready for distribution.
               </p>
             </div>
           </div>
           <div style="display:flex;align-items:center;gap:10px;">
-            <button type="button" class="btn-exe-primary" style="width:auto;padding:7px 15px;font-size:11.5px;display:inline-flex;align-items:center;gap:6px;" onclick="downloadLatestUpdateAndDismiss()">
-              <span>⬇</span>
-              <span>Download Update</span>
+            <button type="button" class="btn-exe-primary" style="width:auto;padding:6px 14px;font-size:12px;display:inline-flex;align-items:center;gap:6px;" onclick="downloadLatestUpdateAndDismiss()">
+              <span>Download</span>
             </button>
-            <button type="button" onclick="dismissUpdateBanner()" style="background:transparent;border:none;color:#64748b;font-size:16px;cursor:pointer;padding:4px 8px;" title="Dismiss Notification">
+            <button type="button" onclick="dismissUpdateBanner()" style="background:transparent;border:none;color:#7a8296;font-size:14px;cursor:pointer;padding:4px 6px;" title="Dismiss">
               ✕
             </button>
           </div>
@@ -459,17 +367,17 @@
                 <span id="dash-welcome-role-badge" style="display:none;"></span>
                 <span id="dash-welcome-role-text" style="display:none;"></span>
                 <h2 class="dash-welcome-title">
-                  Welcome back, <span id="dash-welcome-username" class="profile-name">HYPER X</span>
+                  License Operations — <span id="dash-welcome-username" class="profile-name">HYPER X</span>
                 </h2>
                 <p class="dash-welcome-subtitle" id="dash-welcome-role-desc">
-                  HMAC-SHA256 enforced • All systems operational
+                  HMAC-SHA256 signature enforced • Telemetry active
                 </p>
               </div>
             </div>
 
             <div class="dash-welcome-right">
               <div id="dash-welcome-quota-box" class="dash-welcome-quota-badge" style="display:none;">
-                <span id="dash-welcome-quota-label">⚡ Available Credit:</span> <strong id="dash-welcome-quota-num">9,922</strong> Keys
+                <span id="dash-welcome-quota-label">Available credit:</span> <strong id="dash-welcome-quota-num">9,922</strong> keys
               </div>
             </div>
           </div>
@@ -537,49 +445,68 @@
             <!-- 1. Package Inventory -->
             <div class="stat-card-neo" onclick="switchTab('apps')" style="cursor:pointer;" title="View Package Inventory">
               <div class="stat-neo-left">
-                <div class="stat-neo-icon">📦</div>
+                <div class="stat-neo-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                  </svg>
+                </div>
                 <div class="stat-neo-col">
-                  <span class="stat-neo-label" id="stat-apps-label">Package Inventory</span>
+                  <span class="stat-neo-label" id="stat-apps-label">Package inventory</span>
                   <span class="stat-neo-value" id="stat-apps-count">11</span>
                 </div>
               </div>
-              <span class="stat-neo-badge badge-cyan" id="stat-apps-badge">11 PANELS</span>
+              <span class="stat-neo-badge" id="stat-apps-badge">11 panels</span>
             </div>
 
             <!-- 2. Active keys -->
             <div class="stat-card-neo" onclick="switchTab('licenses')" style="cursor:pointer;" title="View License Keys">
               <div class="stat-neo-left">
-                <div class="stat-neo-icon">🔑</div>
+                <div class="stat-neo-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m21 2-2 2m-1.5 1.5L14 9l-1.5-1.5-2 2 1.5 1.5L9 14l-5 5H2v-2l5-5 3-3-1.5-1.5 2-2 1.5 1.5 3.5-3.5a5 5 0 1 1 7 7Z"></path>
+                  </svg>
+                </div>
                 <div class="stat-neo-col">
                   <span class="stat-neo-label">Active keys</span>
                   <span class="stat-neo-value" id="stat-active-keys">43</span>
                 </div>
               </div>
-              <span class="stat-neo-badge badge-green">LIVE</span>
+              <span class="stat-neo-badge">active</span>
             </div>
 
             <!-- 3. Remaining quota / Credits -->
             <div class="stat-card-neo" title="Available Credits">
               <div class="stat-neo-left">
-                <div class="stat-neo-icon">💳</div>
+                <div class="stat-neo-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+                    <line x1="2" y1="10" x2="22" y2="10"></line>
+                  </svg>
+                </div>
                 <div class="stat-neo-col">
                   <span class="stat-neo-label">Available credit</span>
                   <span class="stat-neo-value" id="stat-remaining-quota">9,922</span>
                 </div>
               </div>
-              <span class="stat-neo-badge badge-cyan">CREDITS</span>
+              <span class="stat-neo-badge">balance</span>
             </div>
 
             <!-- 4. Blocked devices / Banned Keys -->
             <div class="stat-card-neo" onclick="switchTab('licenses')" style="cursor:pointer;" title="Security & Status">
               <div class="stat-neo-left">
-                <div class="stat-neo-icon">🛡️</div>
+                <div class="stat-neo-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                  </svg>
+                </div>
                 <div class="stat-neo-col">
                   <span class="stat-neo-label" id="stat-banned-title">Banned keys</span>
                   <span class="stat-neo-value" id="stat-banned-keys">0</span>
                 </div>
               </div>
-              <span class="stat-neo-badge badge-red">PROTECTED</span>
+              <span class="stat-neo-badge">monitored</span>
             </div>
           </div>
 
@@ -597,20 +524,20 @@
           <div class="quick-key-card" style="margin-bottom:20px;">
             <div class="card-top-header" style="margin-bottom:8px;">
               <div>
-                <div class="card-micro-tag" style="color:#ff3b47;">FAST OPERATIONS</div>
-                <h3 class="card-main-title"><span class="red-bar-accent"></span>Quick License Key Manager</h3>
+                <div class="card-micro-tag">Operations</div>
+                <h3 class="card-main-title">Quick License Key Manager</h3>
               </div>
-              <span class="badge-pill-status badge-active-green" style="font-size:11px;">⚡ Instant Live Actions</span>
+              <span class="badge-pill-status" style="font-size:11px;font-family:var(--font-mono);color:#7a8296;">API connected</span>
             </div>
-            <p style="font-size:12px;color:#94a3b8;margin-bottom:12px;">Instant key diagnostics, HWID unbind, ban/unban, or deletion directly via live API.</p>
+            <p style="font-size:12px;color:#a3a9b8;margin-bottom:12px;">Instant key diagnostics, HWID unbind, ban/unban, or deletion directly via live API.</p>
             <div class="quick-tools-row">
-              <input type="text" id="quick-key-input" class="cyber-input" placeholder="Enter or paste license key (e.g. HPERX-8F92-41AC-90B2-110A)..." style="flex:1;min-width:240px;height:38px;padding:8px 14px;background:#06070a;border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#fff;font-family:var(--font-mono);font-size:12px;" />
+              <input type="text" id="quick-key-input" class="cyber-input" placeholder="Paste license key (e.g. HPERX-8F92-41AC-90B2-110A)..." style="flex:1;min-width:240px;height:38px;padding:8px 14px;background:#1a1e28;border:1px solid rgba(255,255,255,0.08);border-radius:6px;color:#ededed;font-family:var(--font-mono);font-size:12px;" />
               <div class="quick-tools-actions" style="display:flex;gap:8px;flex-wrap:wrap;">
-                <button type="button" class="btn-action-primary" onclick="runQuickKeyAction('inspect')" style="background:rgba(2,132,199,0.22);border:1px solid #0284c7;color:#38bdf8;padding:8px 14px;border-radius:6px;font-weight:700;font-size:12px;cursor:pointer;">🔍 Inspect</button>
-                <button type="button" class="btn-action-primary" onclick="runQuickKeyAction('reset_hwid')" style="background:rgba(6,182,212,0.22);border:1px solid #06b6d4;color:#00f0ff;padding:8px 14px;border-radius:6px;font-weight:700;font-size:12px;cursor:pointer;">🔄 Reset HWID</button>
-                <button type="button" class="btn-action-primary" onclick="runQuickKeyAction('ban')" style="background:rgba(229,24,31,0.22);border:1px solid #e5181f;color:#ff3b47;padding:8px 14px;border-radius:6px;font-weight:700;font-size:12px;cursor:pointer;">🚫 Ban</button>
-                <button type="button" class="btn-action-primary" onclick="runQuickKeyAction('unban')" style="background:rgba(16,185,129,0.22);border:1px solid #10b981;color:#34d399;padding:8px 14px;border-radius:6px;font-weight:700;font-size:12px;cursor:pointer;">✅ Unban</button>
-                <button type="button" class="btn-action-primary" onclick="runQuickKeyAction('delete')" style="background:rgba(107,15,20,0.3);border:1px solid #6b0f14;color:#f87171;padding:8px 14px;border-radius:6px;font-weight:700;font-size:12px;cursor:pointer;">🗑️ Delete</button>
+                <button type="button" class="btn-action-primary" onclick="runQuickKeyAction('inspect')" style="background:#1a1e28;border:1px solid rgba(255,255,255,0.08);color:#ededed;padding:8px 14px;border-radius:6px;font-weight:500;font-size:12px;cursor:pointer;">Inspect</button>
+                <button type="button" class="btn-action-primary" onclick="runQuickKeyAction('reset_hwid')" style="background:#1a1e28;border:1px solid rgba(255,255,255,0.08);color:#ededed;padding:8px 14px;border-radius:6px;font-weight:500;font-size:12px;cursor:pointer;">Reset HWID</button>
+                <button type="button" class="btn-action-primary" onclick="runQuickKeyAction('ban')" style="background:rgba(229,72,77,0.12);border:1px solid rgba(229,72,77,0.3);color:#e5484d;padding:8px 14px;border-radius:6px;font-weight:500;font-size:12px;cursor:pointer;">Ban</button>
+                <button type="button" class="btn-action-primary" onclick="runQuickKeyAction('unban')" style="background:rgba(76,195,138,0.12);border:1px solid rgba(76,195,138,0.3);color:#4cc38a;padding:8px 14px;border-radius:6px;font-weight:500;font-size:12px;cursor:pointer;">Unban</button>
+                <button type="button" class="btn-action-primary" onclick="runQuickKeyAction('delete')" style="background:rgba(229,72,77,0.12);border:1px solid rgba(229,72,77,0.3);color:#e5484d;padding:8px 14px;border-radius:6px;font-weight:500;font-size:12px;cursor:pointer;">Delete</button>
               </div>
             </div>
             <div id="quick-key-result" class="quick-result-card" style="display:none;"></div>
@@ -622,20 +549,20 @@
             <div class="overview-chart-box">
               <div class="card-top-header">
                 <div>
-                  <div class="card-micro-tag">REGISTERED APPS</div>
-                  <h3 class="card-main-title"><span class="red-bar-accent"></span><span id="dashboard-packages-title">Application Packages (8 Total)</span></h3>
+                  <div class="card-micro-tag">Registered packages</div>
+                  <h3 class="card-main-title"><span id="dashboard-packages-title">Application Packages (8 Total)</span></h3>
                 </div>
-                <a href="javascript:void(0)" onclick="switchTab('apps')" class="card-action-link" style="color:#ff3b47;font-weight:700;font-size:12px;text-decoration:none;">View All Packages &gt;</a>
+                <a href="javascript:void(0)" onclick="switchTab('apps')" class="card-action-link" style="color:var(--accent-red);font-weight:600;font-size:12px;text-decoration:none;">View all &rarr;</a>
               </div>
 
               <div class="table-scroll-wrap" style="max-height:280px;overflow-y:auto;">
                 <table class="neo-activity-table cyber-panel-table">
                   <thead>
                     <tr>
-                      <th>PACKAGE NAME</th>
-                      <th>APP</th>
-                      <th>STATUS</th>
-                      <th style="text-align:right;">ACTION</th>
+                      <th>Package</th>
+                      <th>App</th>
+                      <th>Status</th>
+                      <th style="text-align:right;">Action</th>
                     </tr>
                   </thead>
                   <tbody id="dashboard-packages-summary-tbody">
@@ -649,19 +576,19 @@
             <div class="overview-health-box">
               <div class="card-top-header">
                 <div>
-                  <div class="card-micro-tag">SECURITY &amp; AUDIT</div>
-                  <h3 class="card-main-title"><span class="red-bar-accent"></span>Live Activity Stream</h3>
+                  <div class="card-micro-tag">Audit activity</div>
+                  <h3 class="card-main-title">Live activity stream</h3>
                 </div>
-                <a href="javascript:void(0)" onclick="switchTab('logs')" class="card-action-link" style="color:#ff3b47;font-weight:700;font-size:12px;text-decoration:none;">Full Audit Logs &gt;</a>
+                <a href="javascript:void(0)" onclick="switchTab('logs')" class="card-action-link" style="color:var(--accent-red);font-weight:600;font-size:12px;text-decoration:none;">Full logs &rarr;</a>
               </div>
 
               <div class="table-scroll-wrap" style="max-height:280px;overflow-y:auto;">
                 <table class="neo-activity-table cyber-panel-table">
                   <thead>
                     <tr>
-                      <th style="width:115px;">EVENT</th>
-                      <th>DETAIL</th>
-                      <th style="width:75px;text-align:right;">TIME</th>
+                      <th style="width:115px;">Event</th>
+                      <th>Detail</th>
+                      <th style="width:75px;text-align:right;">Time</th>
                     </tr>
                   </thead>
                   <tbody id="dashboard-activity-tbody">
@@ -676,22 +603,22 @@
           <div class="overview-activity-box" style="margin-bottom:20px;">
             <div class="card-top-header">
               <div>
-                <div class="card-micro-tag">KEY MANAGEMENT</div>
-                <h3 class="card-main-title"><span class="red-bar-accent"></span>Recent Generated License Keys</h3>
+                <div class="card-micro-tag">Key registry</div>
+                <h3 class="card-main-title">Recent generated keys</h3>
               </div>
-              <a href="javascript:void(0)" onclick="switchTab('licenses')" class="card-action-link" style="color:#ff3b47;font-weight:700;font-size:12px;text-decoration:none;">Manage All Keys &gt;</a>
+              <a href="javascript:void(0)" onclick="switchTab('licenses')" class="card-action-link" style="color:var(--accent-red);font-weight:600;font-size:12px;text-decoration:none;">Manage all &rarr;</a>
             </div>
 
             <div class="table-scroll-wrap">
               <table class="neo-activity-table cyber-panel-table">
                 <thead>
                   <tr>
-                    <th>LICENSE KEY</th>
-                    <th>CLIENT USER</th>
-                    <th>PANEL / PACKAGE</th>
-                    <th>HWID STATUS</th>
-                    <th>STATUS</th>
-                    <th style="text-align:right;">ACTIONS</th>
+                    <th>License key</th>
+                    <th>Client user</th>
+                    <th>Package</th>
+                    <th>HWID status</th>
+                    <th>Status</th>
+                    <th style="text-align:right;">Actions</th>
                   </tr>
                 </thead>
                 <tbody id="dashboard-recent-licenses-tbody">
@@ -705,21 +632,20 @@
           <div class="dashboard-card-box" id="dashboard-reseller-users-box" style="margin-top:20px;display:none;">
             <div class="card-title-bar">
               <span class="card-title-text">
-                <span>👥</span>
-                <span id="reseller-client-users-title">Your Generated Client Users &amp; Licenses</span>
+                <span id="reseller-client-users-title">Generated client users &amp; licenses</span>
               </span>
-              <a href="javascript:void(0)" onclick="switchTab('licenses')" class="card-action-link">View In Licenses Tab →</a>
+              <a href="javascript:void(0)" onclick="switchTab('licenses')" class="card-action-link">View in licenses &rarr;</a>
             </div>
 
             <table class="cyber-panel-table" style="font-size:12.5px;">
               <thead>
                 <tr>
-                  <th>CLIENT USER</th>
-                  <th>LICENSE KEY</th>
-                  <th>PANEL / PACKAGE</th>
-                  <th class="col-hwid col-mobile-hide">HWID STATUS</th>
-                  <th>EXPIRY</th>
-                  <th>STATUS</th>
+                  <th>Client user</th>
+                  <th>License key</th>
+                  <th>Package</th>
+                  <th class="col-hwid col-mobile-hide">HWID status</th>
+                  <th>Expiry</th>
+                  <th>Status</th>
                 </tr>
               </thead>
               <tbody id="reseller-client-users-tbody">
@@ -732,64 +658,62 @@
           <div class="dashboard-card-box" id="dashboard-reseller-settings-box" style="margin-top:20px;display:none;">
             <div class="card-title-bar">
               <span class="card-title-text">
-                <span>⚙️</span>
-                <span>Reseller Account Security &amp; Password Settings</span>
+                <span>Reseller account security</span>
               </span>
-              <span class="badge-pill-status badge-active-green">🔒 Self-Service Active</span>
+              <span class="badge-pill-status badge-active-green">Active</span>
             </div>
 
             <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:20px;margin-top:16px;">
               <!-- Left: Account Details Summary -->
-              <div style="background:rgba(15,23,42,0.6);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:18px;">
-                <h4 style="color:#00f0ff;font-size:13px;margin-bottom:14px;display:flex;align-items:center;gap:6px;">
-                  <span>👤</span> Reseller Profile Overview
+              <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:6px;padding:18px;">
+                <h4 style="color:#fff;font-size:13px;margin-bottom:14px;font-weight:600;">
+                  Reseller profile overview
                 </h4>
                 <div style="display:flex;flex-direction:column;gap:12px;font-size:12.5px;">
-                  <div style="display:flex;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.06);padding-bottom:8px;">
-                    <span style="color:var(--text-dim);">Reseller Username:</span>
+                  <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border-color);padding-bottom:8px;">
+                    <span style="color:var(--text-dim);">Reseller username</span>
                     <strong style="color:#fff;" id="reseller-settings-uname">--</strong>
                   </div>
-                  <div style="display:flex;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.06);padding-bottom:8px;">
-                    <span style="color:var(--text-dim);">Portal Role:</span>
-                    <span class="badge-pill-status" style="background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.4);color:#fbbf24;">Reseller Account</span>
+                  <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border-color);padding-bottom:8px;">
+                    <span style="color:var(--text-dim);">Portal role</span>
+                    <span class="badge-pill-status" style="background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);color:#fbbf24;">Reseller</span>
                   </div>
-                  <div style="display:flex;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.06);padding-bottom:8px;">
-                    <span style="color:var(--text-dim);">Available Balance:</span>
-                    <strong style="color:#00f0ff;font-family:var(--font-mono);font-size:13px;" id="reseller-settings-balance">-- Keys</strong>
+                  <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border-color);padding-bottom:8px;">
+                    <span style="color:var(--text-dim);">Available balance</span>
+                    <strong style="color:#fff;font-family:var(--font-mono);font-size:13px;" id="reseller-settings-balance">-- Keys</strong>
                   </div>
-                  <div style="display:flex;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.06);padding-bottom:8px;">
-                    <span style="color:var(--text-dim);">Assigned Packages:</span>
-                    <strong style="color:#38bdf8;" id="reseller-settings-panels">--</strong>
+                  <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border-color);padding-bottom:8px;">
+                    <span style="color:var(--text-dim);">Assigned packages</span>
+                    <strong style="color:var(--text-main);" id="reseller-settings-panels">--</strong>
                   </div>
                   <div style="display:flex;justify-content:space-between;">
-                    <span style="color:var(--text-dim);">Account Status:</span>
+                    <span style="color:var(--text-dim);">Account status</span>
                     <span class="badge-pill-status badge-active-green" id="reseller-settings-status">Active</span>
                   </div>
                 </div>
               </div>
 
               <!-- Right: Change Password Form -->
-              <div style="background:rgba(15,23,42,0.6);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:18px;">
-                <h4 style="color:#fff;font-size:13px;margin-bottom:14px;display:flex;align-items:center;gap:6px;">
-                  <span>🔑</span> Change Reseller Password
+              <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:6px;padding:18px;">
+                <h4 style="color:#fff;font-size:13px;margin-bottom:14px;font-weight:600;">
+                  Change password
                 </h4>
                 <form id="form-reseller-dash-password" onsubmit="submitChangeResellerPassword(event, 'dash')">
                   <div class="form-group-item" style="margin-bottom:10px;">
-                    <label class="form-label-title" style="font-size:11.5px;">Current Password</label>
+                    <label class="form-label-title" style="font-size:11.5px;">Current password</label>
                     <input type="password" id="reseller-dash-oldpass" class="form-input-box" placeholder="Enter current password" required style="padding:8px 12px;font-size:12px;">
                   </div>
                   <div class="form-group-item" style="margin-bottom:10px;">
-                    <label class="form-label-title" style="font-size:11.5px;">New Password</label>
+                    <label class="form-label-title" style="font-size:11.5px;">New password</label>
                     <input type="password" id="reseller-dash-newpass" class="form-input-box" placeholder="Enter new password (min 4 characters)" required minlength="4" style="padding:8px 12px;font-size:12px;">
                   </div>
                   <div class="form-group-item" style="margin-bottom:12px;">
-                    <label class="form-label-title" style="font-size:11.5px;">Confirm New Password</label>
+                    <label class="form-label-title" style="font-size:11.5px;">Confirm new password</label>
                     <input type="password" id="reseller-dash-confirmpass" class="form-input-box" placeholder="Confirm new password" required minlength="4" style="padding:8px 12px;font-size:12px;">
                   </div>
                   <div id="reseller-dash-pass-msg" style="display:none;margin-bottom:10px;font-size:12px;padding:8px 10px;border-radius:6px;"></div>
-                  <button type="submit" class="btn-action-primary" style="width:100%;padding:9px;font-size:12.5px;display:flex;align-items:center;justify-content:center;gap:6px;">
-                    <span>🔒</span>
-                    <span>Update Password Now</span>
+                  <button type="submit" class="btn-action-primary" style="width:100%;padding:9px;font-size:12.5px;display:flex;align-items:center;justify-content:center;">
+                    <span>Update password</span>
                   </button>
                 </form>
               </div>
@@ -808,23 +732,22 @@
               <p class="view-sub-text" id="view-licenses-sub">Generate cryptographically verified keys, lock to device HWID, and control access remotely via API.</p>
             </div>
             <button class="btn-action-primary btn-gen-key-red" onclick="openModal('modal-add-key')">
-              <span class="btn-bolt-glyph">⚡</span>
-              <span class="btn-gen-label">+ Generate Real Key(s)</span>
+              <span class="btn-gen-label">+ Generate Keys</span>
             </button>
           </div>
 
           <!-- Quick Key Remote Tools Bar -->
           <div class="quick-key-card">
-            <span class="quick-key-title" style="font-weight:700;font-size:13px;color:#fff;display:block;margin-bottom:8px;">🛠️ Quick Remote Key Tool:</span>
+            <span class="quick-key-title" style="font-weight:500;font-size:13px;color:#ededed;display:block;margin-bottom:8px;">Remote Key Operations</span>
             <div class="quick-tools-row">
-              <input type="text" id="quick-key-input" class="form-input-box" placeholder="Paste or type any License Key here (e.g. HPERX-XXXX-XXXX...)">
-              <button class="btn-action-secondary btn-quick-inspect" onclick="runQuickKeyAction('inspect')">🔍 Inspect</button>
+              <input type="text" id="quick-key-input" class="form-input-box" placeholder="Paste license key (e.g. HPERX-XXXX-XXXX...)">
+              <button class="btn-action-secondary btn-quick-inspect" onclick="runQuickKeyAction('inspect')">Inspect</button>
             </div>
             <div class="quick-tools-actions">
-              <button class="btn-action-secondary" style="color:#38bdf8;" onclick="runQuickKeyAction('reset_hwid')">🔄 Reset HWID</button>
-              <button id="quick-tool-ban" class="btn-action-secondary" style="color:#f59e0b;" onclick="runQuickKeyAction('ban')">🚫 Ban</button>
-              <button id="quick-tool-unban" class="btn-action-secondary" style="color:#10b981;" onclick="runQuickKeyAction('unban')">✅ Unban</button>
-              <button id="quick-tool-delete" class="btn-action-secondary" style="color:#ef4444;" onclick="runQuickKeyAction('delete')">🗑️ Delete</button>
+              <button class="btn-action-secondary" onclick="runQuickKeyAction('reset_hwid')">Reset HWID</button>
+              <button id="quick-tool-ban" class="btn-action-secondary" onclick="runQuickKeyAction('ban')">Ban</button>
+              <button id="quick-tool-unban" class="btn-action-secondary" onclick="runQuickKeyAction('unban')">Unban</button>
+              <button id="quick-tool-delete" class="btn-action-secondary" onclick="runQuickKeyAction('delete')">Delete</button>
             </div>
             <div id="quick-key-result" style="display:none;"></div>
           </div>
@@ -872,28 +795,27 @@
             <div class="lic-header-intro">
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
                 <h2 class="view-heading-title" id="view-licenses-v2-title">KeyAuth License Keys v2</h2>
-                <span style="background:rgba(16,185,129,0.18);color:#10b981;border:1px solid rgba(16,185,129,0.4);font-size:10px;padding:2px 8px;border-radius:4px;font-weight:700;letter-spacing:0.5px;">HYPER X ENGINE</span>
+                <span style="background:rgba(76,195,138,0.12);color:#4cc38a;border:1px solid rgba(76,195,138,0.25);font-size:10px;padding:2px 8px;border-radius:4px;font-family:var(--font-mono);">HYPER X ENGINE</span>
               </div>
               <p class="view-sub-text" id="view-licenses-v2-sub" style="display:none;"></p>
             </div>
-            <button class="btn-action-primary btn-gen-key-red" style="background:linear-gradient(135deg,#059669,#10b981);border-color:#10b981;box-shadow:0 0 15px rgba(16,185,129,0.3);" onclick="openModal('modal-add-key-v2')">
-              <span class="btn-bolt-glyph">⚡</span>
-              <span class="btn-gen-label">+ Generate Key(s) v2</span>
+            <button class="btn-action-primary btn-gen-key-red" onclick="openModal('modal-add-key-v2')">
+              <span class="btn-gen-label">+ Generate Keys v2</span>
             </button>
           </div>
 
           <!-- Quick Key Remote Tools Bar for V2 -->
-          <div class="quick-key-card" style="border-color:rgba(16,185,129,0.25);">
-            <span class="quick-key-title" style="font-weight:700;font-size:13px;color:#fff;display:block;margin-bottom:8px;">🛠️ Quick Remote Key Tool (V2):</span>
+          <div class="quick-key-card">
+            <span class="quick-key-title" style="font-weight:500;font-size:13px;color:#ededed;display:block;margin-bottom:8px;">Remote Key Operations (V2)</span>
             <div class="quick-tools-row">
-              <input type="text" id="quick-key-input-v2" class="form-input-box" placeholder="Paste or type any V2 License Key here (e.g. HX2-VIP-XXXX-XXXX...)">
-              <button class="btn-action-secondary btn-quick-inspect" onclick="runQuickKeyActionV2('inspect')">🔍 Inspect</button>
+              <input type="text" id="quick-key-input-v2" class="form-input-box" placeholder="Paste V2 license key (e.g. HX2-VIP-XXXX-XXXX...)">
+              <button class="btn-action-secondary btn-quick-inspect" onclick="runQuickKeyActionV2('inspect')">Inspect</button>
             </div>
             <div class="quick-tools-actions">
-              <button class="btn-action-secondary" style="color:#38bdf8;" onclick="runQuickKeyActionV2('reset_hwid')">🔄 Reset HWID</button>
-              <button id="quick-tool-ban-v2" class="btn-action-secondary" style="color:#f59e0b;" onclick="runQuickKeyActionV2('ban')">🚫 Ban</button>
-              <button id="quick-tool-unban-v2" class="btn-action-secondary" style="color:#10b981;" onclick="runQuickKeyActionV2('unban')">✅ Unban</button>
-              <button id="quick-tool-delete-v2" class="btn-action-secondary" style="color:#ef4444;" onclick="runQuickKeyActionV2('delete')">🗑️ Delete</button>
+              <button class="btn-action-secondary" onclick="runQuickKeyActionV2('reset_hwid')">Reset HWID</button>
+              <button id="quick-tool-ban-v2" class="btn-action-secondary" onclick="runQuickKeyActionV2('ban')">Ban</button>
+              <button id="quick-tool-unban-v2" class="btn-action-secondary" onclick="runQuickKeyActionV2('unban')">Unban</button>
+              <button id="quick-tool-delete-v2" class="btn-action-secondary" onclick="runQuickKeyActionV2('delete')">Delete</button>
             </div>
             <div id="quick-key-result-v2" style="display:none;"></div>
           </div>
@@ -939,12 +861,16 @@
         <section class="tab-view" id="view-logs">
           <div class="view-header-strip logs-view-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
             <div class="logs-header-intro">
-              <h2 class="view-heading-title" id="view-logs-title" style="font-size:16px;font-weight:800;color:#fff;margin-bottom:4px;">Authentication &amp; Security Logs</h2>
-              <p class="view-sub-text" id="view-logs-sub" style="font-size:11.5px;color:#64748b;margin:0;">Captured authentication attempts and API proxy transactions.</p>
+              <h2 class="view-heading-title" id="view-logs-title" style="font-size:16px;font-weight:600;color:#fff;margin-bottom:4px;">Authentication &amp; security logs</h2>
+              <p class="view-sub-text" id="view-logs-sub" style="font-size:11.5px;color:var(--text-dim);margin:0;">Captured authentication attempts and API proxy transactions.</p>
             </div>
-            <button class="btn-action-primary btn-export-logs-red" onclick="exportLogsToCsv()" style="background:rgba(239,68,68,0.18);border:1px solid rgba(239,68,68,0.5);color:#fff;font-weight:700;font-size:12px;padding:7px 14px;border-radius:7px;display:flex;align-items:center;gap:6px;cursor:pointer;">
-              <span>📩</span>
-              <span>Export Logs</span>
+            <button class="btn-action-primary btn-export-logs-red" onclick="exportLogsToCsv()" style="background:#1a1e28;border:1px solid rgba(255,255,255,0.08);color:#ededed;font-weight:500;font-size:12px;padding:7px 14px;border-radius:6px;display:flex;align-items:center;gap:6px;cursor:pointer;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>Export CSV</span>
             </button>
           </div>
 
@@ -952,10 +878,10 @@
             <table class="cyber-panel-table" style="font-size:12.5px;">
               <thead>
                 <tr>
-                  <th style="width:120px;">ACTION</th>
-                  <th>DETAIL</th>
-                  <th class="col-log-ip col-mobile-hide" style="width:140px;">IP ADDRESS</th>
-                  <th style="width:100px;">TIME</th>
+                  <th style="width:120px;">Action</th>
+                  <th>Detail</th>
+                  <th class="col-log-ip col-mobile-hide" style="width:140px;">IP address</th>
+                  <th style="width:100px;">Time</th>
                 </tr>
               </thead>
               <tbody id="full-logs-tbody">
@@ -1281,9 +1207,9 @@
         <section class="tab-view" id="view-apps">
           <div class="view-header-strip apps-view-header" style="margin-bottom:14px;">
             <div class="apps-header-intro">
-              <h2 class="view-heading-title" id="view-apps-title" style="font-size:16px;font-weight:800;color:#fff;margin-bottom:4px;">Application &amp; Packages Registry</h2>
-              <p class="view-sub-text" id="view-apps-sub" style="font-size:11.5px;color:#64748b;margin:0;">
-                Directly linked to App ID: <span style="color:#00f0ff;font-family:var(--font-mono);font-weight:700;" id="view-apps-appid">9f087d585fbd666572fc24b7</span> <span style="color:var(--text-dim);">(Custom work)</span>
+              <h2 class="view-heading-title" id="view-apps-title" style="font-size:16px;font-weight:600;color:#fff;margin-bottom:4px;">Application &amp; packages registry</h2>
+              <p class="view-sub-text" id="view-apps-sub" style="font-size:11.5px;color:var(--text-dim);margin:0;">
+                Directly linked to App ID: <span style="color:#ededed;font-family:var(--font-mono);font-weight:500;" id="view-apps-appid">9f087d585fbd666572fc24b7</span> <span style="color:var(--text-dim);">(Custom work)</span>
               </p>
             </div>
           </div>
@@ -1293,10 +1219,10 @@
               <thead>
                 <tr>
                   <th style="width:60px;">#</th>
-                  <th>PANEL / PACKAGE NAME</th>
-                  <th class="col-pkg-id col-mobile-hide">PACKAGE ID</th>
-                  <th>TARGET APP</th>
-                  <th style="width:120px;">STATUS</th>
+                  <th>Package</th>
+                  <th class="col-pkg-id col-mobile-hide">Package ID</th>
+                  <th>Target app</th>
+                  <th style="width:120px;">Status</th>
                 </tr>
               </thead>
               <tbody id="packages-tbody">
@@ -1594,49 +1520,75 @@
           <!-- Reseller View Header -->
           <div class="view-header-strip reseller-view-header" style="margin-bottom:14px;">
             <div class="reseller-header-intro">
-              <h2 class="view-heading-title" id="view-resellers-title" style="font-size:16px;font-weight:800;color:#fff;margin-bottom:4px;">Reseller Management &amp; Distribution</h2>
-              <p class="view-sub-text" id="view-resellers-sub" style="font-size:11.5px;color:#64748b;margin:0;">Authorize reseller accounts, grant key generation quotas, and assign panel access permissions.</p>
+              <h2 class="view-heading-title" id="view-resellers-title" style="font-size:16px;font-weight:600;color:#fff;margin-bottom:4px;">Reseller management &amp; distribution</h2>
+              <p class="view-sub-text" id="view-resellers-sub" style="font-size:11.5px;color:var(--text-dim);margin:0;">Authorize reseller accounts, grant key quotas, and assign panel access permissions.</p>
             </div>
             <div style="display:flex;gap:10px;flex-wrap:wrap;flex-shrink:0;">
-              <button class="btn-action-secondary" onclick="openModal('modal-transfer-credit')" style="color:#f59e0b;border-color:rgba(245,158,11,0.4);">
-                <span>💸</span>
-                <span>Transfer Credits</span>
+              <button class="btn-action-secondary" onclick="openModal('modal-transfer-credit')" style="background:#1a1e28;border:1px solid rgba(255,255,255,0.08);color:#ededed;font-weight:500;padding:8px 14px;border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:6px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="7" y1="17" x2="17" y2="7"></line>
+                  <polyline points="7 7 17 7 17 17"></polyline>
+                </svg>
+                <span>Transfer credits</span>
               </button>
-              <button class="btn-action-primary" onclick="openModal('modal-add-reseller')">
-                <span>👥</span>
-                <span>+ Add Reseller</span>
+              <button class="btn-action-primary" onclick="openModal('modal-add-reseller')" style="background:var(--accent-red);border:1px solid var(--accent-red);color:#fff;font-weight:500;padding:8px 14px;border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:6px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                <span>Add reseller</span>
               </button>
             </div>
           </div>
 
           <!-- Reseller Stats Summary Strip -->
           <div class="stats-cards-strip-7" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 20px;">
-            <div class="stat-card-item accent-red">
-              <div class="stat-icon-box" style="color:#ef4444;">👥</div>
+            <div class="stat-card-item">
+              <div class="stat-icon-box" style="color:var(--text-muted);background:rgba(255,255,255,0.04);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+              </div>
               <div class="stat-info-col">
                 <span class="stat-number-val" id="reseller-stat-total">0</span>
-                <span class="stat-title-label">TOTAL RESELLERS</span>
+                <span class="stat-title-label">Total resellers</span>
               </div>
             </div>
-            <div class="stat-card-item accent-green">
-              <div class="stat-icon-box" style="color:#10b981;">✅</div>
+            <div class="stat-card-item">
+              <div class="stat-icon-box" style="color:var(--text-muted);background:rgba(255,255,255,0.04);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </div>
               <div class="stat-info-col">
                 <span class="stat-number-val" id="reseller-stat-active">0</span>
-                <span class="stat-title-label">ACTIVE ACCOUNTS</span>
+                <span class="stat-title-label">Active accounts</span>
               </div>
             </div>
-            <div class="stat-card-item accent-yellow">
-              <div class="stat-icon-box" style="color:#f59e0b;">💳</div>
+            <div class="stat-card-item">
+              <div class="stat-icon-box" style="color:var(--text-muted);background:rgba(255,255,255,0.04);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                  <line x1="1" y1="10" x2="23" y2="10"></line>
+                </svg>
+              </div>
               <div class="stat-info-col">
                 <span class="stat-number-val" id="reseller-stat-credits">0</span>
-                <span class="stat-title-label">TOTAL CREDITS IN CIRCULA</span>
+                <span class="stat-title-label">Credits in circulation</span>
               </div>
             </div>
-            <div class="stat-card-item accent-red">
-              <div class="stat-icon-box" style="color:#ef4444;">🔑</div>
+            <div class="stat-card-item">
+              <div class="stat-icon-box" style="color:var(--text-muted);background:rgba(255,255,255,0.04);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 2l-2 2m-1-1l-2 2m2 4l-4 4-2-2-4 4 6 6 8-8V2z"></path>
+                </svg>
+              </div>
               <div class="stat-info-col">
                 <span class="stat-number-val" id="reseller-stat-keys">0</span>
-                <span class="stat-title-label">TOTAL KEYS CREATED</span>
+                <span class="stat-title-label">Total keys created</span>
               </div>
             </div>
           </div>
@@ -1646,13 +1598,13 @@
             <table class="cyber-panel-table" style="font-size:12.5px;">
               <thead>
                 <tr>
-                  <th style="min-width:140px;">RESELLER</th>
-                  <th class="col-reseller-pwd col-mobile-hide" style="min-width:130px;">LOGIN PASSWORD</th>
-                  <th style="min-width:120px;">CREDIT BALANCE</th>
-                  <th style="min-width:160px;">ALLOWED PANELS / PACKAGES</th>
-                  <th class="col-reseller-keys col-mobile-hide" style="width:100px;">KEYS GEN</th>
-                  <th style="width:90px;">STATUS</th>
-                  <th style="min-width:130px;">ACTIONS</th>
+                  <th style="min-width:140px;">Reseller</th>
+                  <th class="col-reseller-pwd col-mobile-hide" style="min-width:130px;">Login password</th>
+                  <th style="min-width:120px;">Credit balance</th>
+                  <th style="min-width:160px;">Allowed packages</th>
+                  <th class="col-reseller-keys col-mobile-hide" style="width:100px;">Keys created</th>
+                  <th style="width:90px;">Status</th>
+                  <th style="min-width:130px;">Actions</th>
                 </tr>
               </thead>
               <tbody id="resellers-tbody">
@@ -1671,8 +1623,8 @@
                 <div class="mobile-reseller-meta-row">
                   <div class="mobile-reseller-pass-wrap">
                     <span class="mobile-reseller-pass-dots">••••••••</span>
-                    <button class="mobile-reseller-icon-btn" title="Reveal">👁️</button>
-                    <button class="mobile-reseller-icon-btn" title="Copy">📋</button>
+                    <button class="mobile-reseller-icon-btn" title="Reveal">Show</button>
+                    <button class="mobile-reseller-icon-btn" title="Copy">Copy</button>
                   </div>
                   <div class="mobile-reseller-credits">
                     <span class="mobile-reseller-credits-val">999</span>
@@ -1690,8 +1642,8 @@
                 <div class="mobile-reseller-meta-row">
                   <div class="mobile-reseller-pass-wrap">
                     <span class="mobile-reseller-pass-dots">••••••••</span>
-                    <button class="mobile-reseller-icon-btn" title="Reveal">👁️</button>
-                    <button class="mobile-reseller-icon-btn" title="Copy">📋</button>
+                    <button class="mobile-reseller-icon-btn" title="Reveal">Show</button>
+                    <button class="mobile-reseller-icon-btn" title="Copy">Copy</button>
                   </div>
                   <div class="mobile-reseller-credits">
                     <span class="mobile-reseller-credits-val">250</span>
@@ -1709,8 +1661,8 @@
                 <div class="mobile-reseller-meta-row">
                   <div class="mobile-reseller-pass-wrap">
                     <span class="mobile-reseller-pass-dots">••••••••</span>
-                    <button class="mobile-reseller-icon-btn" title="Reveal">👁️</button>
-                    <button class="mobile-reseller-icon-btn" title="Copy">📋</button>
+                    <button class="mobile-reseller-icon-btn" title="Reveal">Show</button>
+                    <button class="mobile-reseller-icon-btn" title="Copy">Copy</button>
                   </div>
                   <div class="mobile-reseller-credits">
                     <span class="mobile-reseller-credits-val">500</span>
@@ -1728,8 +1680,8 @@
                 <div class="mobile-reseller-meta-row">
                   <div class="mobile-reseller-pass-wrap">
                     <span class="mobile-reseller-pass-dots">••••••••</span>
-                    <button class="mobile-reseller-icon-btn" title="Reveal">👁️</button>
-                    <button class="mobile-reseller-icon-btn" title="Copy">📋</button>
+                    <button class="mobile-reseller-icon-btn" title="Reveal">Show</button>
+                    <button class="mobile-reseller-icon-btn" title="Copy">Copy</button>
                   </div>
                   <div class="mobile-reseller-credits">
                     <span class="mobile-reseller-credits-val">999</span>
@@ -1747,8 +1699,8 @@
                 <div class="mobile-reseller-meta-row">
                   <div class="mobile-reseller-pass-wrap">
                     <span class="mobile-reseller-pass-dots">••••••••</span>
-                    <button class="mobile-reseller-icon-btn" title="Reveal">👁️</button>
-                    <button class="mobile-reseller-icon-btn" title="Copy">📋</button>
+                    <button class="mobile-reseller-icon-btn" title="Reveal">Show</button>
+                    <button class="mobile-reseller-icon-btn" title="Copy">Copy</button>
                   </div>
                   <div class="mobile-reseller-credits">
                     <span class="mobile-reseller-credits-val">200</span>
@@ -1766,8 +1718,8 @@
                 <div class="mobile-reseller-meta-row">
                   <div class="mobile-reseller-pass-wrap">
                     <span class="mobile-reseller-pass-dots">••••••••</span>
-                    <button class="mobile-reseller-icon-btn" title="Reveal">👁️</button>
-                    <button class="mobile-reseller-icon-btn" title="Copy">📋</button>
+                    <button class="mobile-reseller-icon-btn" title="Reveal">Show</button>
+                    <button class="mobile-reseller-icon-btn" title="Copy">Copy</button>
                   </div>
                   <div class="mobile-reseller-credits">
                     <span class="mobile-reseller-credits-val">150</span>
@@ -1785,40 +1737,65 @@
              ============================================================ -->
         <section class="tab-view" id="view-transfers">
           <div class="view-header-strip">
-            <button class="btn-action-primary" onclick="openModal('modal-transfer-credit')">
-              <span>💸</span>
-              <span>+ Quick Transfer</span>
+            <button class="btn-action-primary" onclick="openModal('modal-transfer-credit')" style="background:var(--accent-red);border:1px solid var(--accent-red);color:#fff;font-weight:500;padding:8px 14px;border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:6px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="7" y1="17" x2="17" y2="7"></line>
+                <polyline points="7 7 17 7 17 17"></polyline>
+              </svg>
+              <span>Transfer credits</span>
             </button>
           </div>
 
           <!-- Transfer Metric Cards -->
           <div class="stats-cards-strip-7" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 20px;">
-            <div class="stat-card-item accent-blue">
-              <div class="stat-icon-box" style="color:#00f0ff;">💳</div>
+            <div class="stat-card-item">
+              <div class="stat-icon-box" style="color:var(--text-muted);background:rgba(255,255,255,0.04);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                  <line x1="1" y1="10" x2="23" y2="10"></line>
+                </svg>
+              </div>
               <div class="stat-info-col">
                 <span class="stat-number-val" id="transfer-stat-balance">0</span>
-                <span class="stat-title-label">YOUR AVAILABLE CREDITS</span>
+                <span class="stat-title-label">Available credits</span>
               </div>
             </div>
-            <div class="stat-card-item accent-red">
-              <div class="stat-icon-box" style="color:#ef4444;">📤</div>
+            <div class="stat-card-item">
+              <div class="stat-icon-box" style="color:var(--text-muted);background:rgba(255,255,255,0.04);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="22" y1="2" x2="11" y2="13"></line>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+              </div>
               <div class="stat-info-col">
                 <span class="stat-number-val" id="transfer-stat-sent">0</span>
-                <span class="stat-title-label">TOTAL CREDITS SENT</span>
+                <span class="stat-title-label">Total sent</span>
               </div>
             </div>
-            <div class="stat-card-item accent-green">
-              <div class="stat-icon-box" style="color:#10b981;">📥</div>
+            <div class="stat-card-item">
+              <div class="stat-icon-box" style="color:var(--text-muted);background:rgba(255,255,255,0.04);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 11 12 14 22 4"></polyline>
+                  <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                </svg>
+              </div>
               <div class="stat-info-col">
                 <span class="stat-number-val" id="transfer-stat-received">0</span>
-                <span class="stat-title-label">TOTAL CREDITS RECEIVED</span>
+                <span class="stat-title-label">Total received</span>
               </div>
             </div>
-            <div class="stat-card-item accent-yellow">
-              <div class="stat-icon-box" style="color:#f59e0b;">👥</div>
+            <div class="stat-card-item">
+              <div class="stat-icon-box" style="color:var(--text-muted);background:rgba(255,255,255,0.04);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+              </div>
               <div class="stat-info-col">
                 <span class="stat-number-val" id="transfer-stat-resellers-count">0</span>
-                <span class="stat-title-label">NETWORK RESELLERS</span>
+                <span class="stat-title-label">Network resellers</span>
               </div>
             </div>
           </div>
@@ -1829,28 +1806,27 @@
             <div class="dashboard-card-box">
               <div class="card-title-bar">
                 <span class="card-title-text">
-                  <span>💸</span>
-                  <span>Direct Credit Transfer</span>
+                  <span>Direct credit transfer</span>
                 </span>
-                <span class="badge-pill-status badge-active-green">P2P INSTANT</span>
+                <span class="badge-pill-status badge-active-green">Instant</span>
               </div>
 
               <form onsubmit="submitQuickTransfer(event)" style="padding-top:14px;">
                 <!-- Sender Info Banner -->
-                <div id="transfer-sender-badge" style="background:#090c14;border:1px solid #1e293b;border-radius:6px;padding:10px 14px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;">
+                <div id="transfer-sender-badge" style="background:var(--bg-body);border:1px solid var(--border-color);border-radius:6px;padding:10px 14px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;">
                   <div>
-                    <span style="color:var(--text-dim);font-size:11px;display:block;">TRANSFER FROM:</span>
+                    <span style="color:var(--text-dim);font-size:11px;display:block;">Transfer from</span>
                     <strong id="transfer-sender-name" style="color:#fff;font-size:13px;">HYPER X (Owner)</strong>
                   </div>
                   <div style="text-align:right;">
-                    <span style="color:var(--text-dim);font-size:11px;display:block;">AVAILABLE BALANCE:</span>
-                    <strong id="transfer-sender-avail" style="color:#00f0ff;font-size:13px;font-family:var(--font-mono);">9,922 Keys</strong>
+                    <span style="color:var(--text-dim);font-size:11px;display:block;">Available balance</span>
+                    <strong id="transfer-sender-avail" style="color:#ededed;font-size:13px;font-family:var(--font-mono);">9,922 Keys</strong>
                   </div>
                 </div>
 
                 <!-- Recipient Reseller Dropdown -->
                 <div class="form-group-item">
-                  <label class="form-label-title">Select Target Reseller</label>
+                  <label class="form-label-title">Select target reseller</label>
                   <select id="transfer-target-select" class="form-input-box" required onchange="updateTransferCalcPreview()">
                     <!-- Populated dynamically -->
                   </select>
@@ -1859,7 +1835,7 @@
                 <!-- Transfer Amount -->
                 <div class="form-group-item">
                   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-                    <label class="form-label-title" style="margin-bottom:0;">Credits Amount to Transfer</label>
+                    <label class="form-label-title" style="margin-bottom:0;">Credits amount to transfer</label>
                     <div style="display:flex;gap:4px;">
                       <button type="button" class="btn-sm-action" onclick="setTransferAmountQuick(10)">+10</button>
                       <button type="button" class="btn-sm-action" onclick="setTransferAmountQuick(50)">+50</button>
@@ -1872,19 +1848,18 @@
 
                 <!-- Note / Description -->
                 <div class="form-group-item">
-                  <label class="form-label-title">Transfer Note / Memo (Optional)</label>
-                  <input type="text" id="transfer-note-input" class="form-input-box" placeholder="e.g. Weekly credit top-up / Paid via UPI">
+                  <label class="form-label-title">Transfer note (optional)</label>
+                  <input type="text" id="transfer-note-input" class="form-input-box" placeholder="e.g. Credit allocation">
                 </div>
 
                 <!-- Balance Preview Strip -->
-                <div id="transfer-calc-preview" style="background:rgba(0,240,255,0.05);border:1px solid rgba(0,240,255,0.2);border-radius:6px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:#cbd5e1;display:flex;justify-content:space-between;">
-                  <span>New Balance After Transfer:</span>
-                  <strong id="transfer-remaining-preview" style="color:#00f0ff;font-family:var(--font-mono);">-- Keys</strong>
+                <div id="transfer-calc-preview" style="background:rgba(255,255,255,0.02);border:1px solid var(--border-color);border-radius:6px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:var(--text-muted);display:flex;justify-content:space-between;">
+                  <span>New balance after transfer:</span>
+                  <strong id="transfer-remaining-preview" style="color:#fff;font-family:var(--font-mono);">-- Keys</strong>
                 </div>
 
                 <button type="submit" class="btn-action-primary" style="width:100%;justify-content:center;padding:10px;">
-                  <span>⚡</span>
-                  <span>Confirm &amp; Transfer Credits Now</span>
+                  <span>Confirm transfer</span>
                 </button>
               </form>
             </div>
@@ -1893,12 +1868,11 @@
             <div class="dashboard-card-box">
               <div class="card-title-bar">
                 <span class="card-title-text">
-                  <span>👥</span>
-                  <span>Reseller Directory</span>
+                  <span>Reseller directory</span>
                 </span>
-                <span style="font-size:11px;color:var(--text-dim);font-family:var(--font-mono);">1-CLICK SELECT</span>
+                <span style="font-size:11px;color:var(--text-dim);font-family:var(--font-mono);">Click to select</span>
               </div>
-              <p style="font-size:12px;color:var(--text-muted);margin:8px 0 14px;">Click any reseller to instantly select them for credit transfer:</p>
+              <p style="font-size:12px;color:var(--text-muted);margin:8px 0 14px;">Select a reseller to initiate a credit transfer:</p>
 
               <div id="transfer-resellers-quick-list" style="display:flex;flex-direction:column;gap:8px;max-height:360px;overflow-y:auto;padding-right:4px;">
                 <!-- Populated dynamically -->
@@ -1910,8 +1884,7 @@
           <div class="dashboard-card-box" style="margin-top:10px;">
             <div class="card-title-bar">
               <span class="card-title-text">
-                <span>📜</span>
-                <span>Transfer Transaction History &amp; Audit Log</span>
+                <span>Transfer transaction history</span>
               </span>
               <div style="display:flex;gap:6px;">
                 <button type="button" class="btn-sm-action transfer-filter-btn active" id="filter-btn-all" onclick="filterTransfersHistory('all')">All</button>
@@ -1924,13 +1897,13 @@
               <table class="cyber-panel-table" style="font-size:12.5px;">
                 <thead>
                   <tr>
-                    <th class="col-tx-id col-mobile-hide" style="width:110px;">TX ID</th>
-                    <th style="min-width:130px;">SENDER (FROM)</th>
-                    <th style="min-width:130px;">RECIPIENT (TO)</th>
-                    <th style="width:120px;">CREDITS</th>
-                    <th class="col-tx-memo col-mobile-hide">MEMO / NOTE</th>
-                    <th style="width:130px;">TIMESTAMP</th>
-                    <th style="width:90px;">STATUS</th>
+                    <th class="col-tx-id col-mobile-hide" style="width:110px;">Transaction ID</th>
+                    <th style="min-width:130px;">Sender</th>
+                    <th style="min-width:130px;">Recipient</th>
+                    <th style="width:120px;">Credits</th>
+                    <th class="col-tx-memo col-mobile-hide">Memo</th>
+                    <th style="width:130px;">Timestamp</th>
+                    <th style="width:90px;">Status</th>
                   </tr>
                 </thead>
                 <tbody id="transfers-history-tbody">
@@ -1954,56 +1927,63 @@
               <div>
                 <div class="exe-card-header">
                   <div class="exe-card-title-group">
-                    <div class="exe-card-icon-wrap" style="background:rgba(234,88,12,0.18);border:1px solid rgba(234,88,12,0.45);color:#ea580c;">
-                      📦
+                    <div class="exe-card-icon-wrap" style="background:rgba(255,255,255,0.04);border:1px solid var(--border-color);color:var(--text-muted);">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                        <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                      </svg>
                     </div>
                     <div>
                       <div class="exe-card-title-text">Master Core ZIP</div>
-                      <div style="font-size:10px;color:#64748b;letter-spacing:0.4px;">CENTRAL KERNEL BUILD</div>
+                      <div style="font-size:10.5px;color:var(--text-dim);">Central kernel build</div>
                     </div>
                   </div>
                   <div style="display:flex;align-items:center;gap:6px;">
-                    <span class="exe-badge-amber" id="card2-update-alert-badge" style="display:none;background:rgba(239,68,68,0.2);border:1px solid #ef4444;color:#ef4444;font-size:10px;padding:3px 8px;border-radius:4px;font-weight:700;">● NEW UPDATE</span>
-                    <span class="exe-badge-green" id="master-core-size-badge" style="font-size:10.5px;padding:3px 9px;">1.98 MB</span>
+                    <span class="exe-badge-amber" id="card2-update-alert-badge" style="display:none;background:rgba(239,68,68,0.15);border:1px solid #ef4444;color:#ef4444;font-size:10px;padding:2px 6px;border-radius:4px;font-weight:600;">Update available</span>
+                    <span class="exe-badge-green" id="master-core-size-badge" style="font-size:10.5px;padding:3px 8px;font-family:var(--font-mono);">1.98 MB</span>
                   </div>
                 </div>
 
                 <!-- Console Inset Box -->
                 <div class="exe-console-box">
-                  <div class="exe-console-label">Compiled Source Core</div>
+                  <div class="exe-console-label">Compiled source core</div>
                   <div class="exe-console-val">
-                    <span style="color:#22c55e;font-size:10px;">●</span>
+                    <span style="color:#4cc38a;font-size:10px;">●</span>
                     <span id="master-core-filename">KERNEL-CSHARP.exe</span>
-                    <span style="font-size:10px;color:#00f0ff;background:rgba(0,240,255,0.1);padding:2px 6px;border-radius:4px;border:1px solid rgba(0,240,255,0.25);font-family:var(--font-sans);font-weight:600;">x64 Native PE</span>
+                    <span style="font-size:10px;color:var(--text-muted);background:rgba(255,255,255,0.05);padding:2px 6px;border-radius:4px;border:1px solid var(--border-color);font-family:var(--font-mono);">x64 PE</span>
                   </div>
                 </div>
 
                 <!-- 2x2 Metric Tiles -->
                 <div class="exe-metric-grid">
                   <div class="exe-metric-tile">
-                    <div class="m-lbl">Last Deployed</div>
+                    <div class="m-lbl">Last deployed</div>
                     <div class="m-val" id="master-core-updated-time">11 Oct, 20:40</div>
                   </div>
                   <div class="exe-metric-tile">
-                    <div class="m-lbl">Reseller Sync</div>
-                    <div class="m-val green" id="master-core-sync-label">Instant Push Active</div>
+                    <div class="m-lbl">Reseller sync</div>
+                    <div class="m-val green" id="master-core-sync-label">Instant push active</div>
                   </div>
                   <div class="exe-metric-tile">
-                    <div class="m-lbl">Security Layer</div>
-                    <div class="m-val" style="color:#38bdf8;">HMAC-SHA256 Active</div>
+                    <div class="m-lbl">Security layer</div>
+                    <div class="m-val" style="color:var(--text-main);">HMAC-SHA256 active</div>
                   </div>
                   <div class="exe-metric-tile">
-                    <div class="m-lbl">Target Platform</div>
-                    <div class="m-val" style="color:#a78bfa;">Win 10/11 x64</div>
+                    <div class="m-lbl">Target platform</div>
+                    <div class="m-val" style="color:var(--text-muted);">Win 10/11 x64</div>
                   </div>
                 </div>
 
                 <!-- Security Verification Notice -->
-                <div style="background:rgba(234,88,12,0.06);border:1px solid rgba(234,88,12,0.22);border-radius:8px;padding:10px 14px;font-size:11px;color:#cbd5e1;display:flex;align-items:center;gap:10px;margin-bottom:6px;">
-                  <span style="font-size:16px;">🔒</span>
+                <div style="background:var(--bg-body);border:1px solid var(--border-color);border-radius:6px;padding:10px 14px;font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-dim);flex-shrink:0;">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                  </svg>
                   <div>
-                    <span style="font-weight:700;color:#fff;">Cryptographic Integrity:</span>
-                    <span style="color:#94a3b8;margin-left:4px;">Master binary HMAC-SHA256 signature verified by KeyAuth Engine.</span>
+                    <span style="font-weight:600;color:#fff;">Cryptographic integrity:</span>
+                    <span style="color:var(--text-dim);margin-left:4px;">Master binary HMAC-SHA256 signature verified.</span>
                   </div>
                 </div>
               </div>
@@ -2018,24 +1998,29 @@
                   ondragover="event.preventDefault();this.classList.add('dz-hover')"
                   ondragleave="this.classList.remove('dz-hover')"
                   ondrop="handleAdminDropZone(event)"
-                  style="border:2px dashed rgba(2,132,199,0.5);border-radius:12px;padding:18px 16px;text-align:center;cursor:pointer;background:rgba(2,132,199,0.05);transition:all 0.2s;">
-                  <div style="font-size:26px;margin-bottom:6px;">📤</div>
-                  <div style="font-size:13px;font-weight:700;color:#38bdf8;margin-bottom:3px;">Drop .zip / .exe here</div>
-                  <div style="font-size:11px;color:#64748b;">or click to browse files</div>
+                  style="border:1px dashed var(--border-color);border-radius:6px;padding:18px 16px;text-align:center;cursor:pointer;background:rgba(255,255,255,0.02);transition:all 0.2s;">
+                  <div style="font-size:18px;margin-bottom:4px;color:var(--text-dim);">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="16 16 12 12 8 16"></polyline>
+                      <line x1="12" y1="12" x2="12" y2="21"></line>
+                      <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path>
+                    </svg>
+                  </div>
+                  <div style="font-size:12.5px;font-weight:500;color:#ededed;margin-bottom:2px;">Drop .zip / .exe here</div>
+                  <div style="font-size:11px;color:var(--text-dim);">or click to browse files</div>
                 </div>
 
                 <!-- Progress / Status -->
-                <div id="admin-upload-progress" style="display:none;font-size:11px;color:#00f0ff;text-align:center;font-family:var(--font-mono);margin-top:8px;padding:6px 10px;background:rgba(0,240,255,0.05);border-radius:6px;border:1px solid rgba(0,240,255,0.15);"></div>
+                <div id="admin-upload-progress" style="display:none;font-size:11px;color:var(--text-main);text-align:center;font-family:var(--font-mono);margin-top:8px;padding:6px 10px;background:rgba(255,255,255,0.04);border-radius:6px;border:1px solid var(--border-color);"></div>
 
                 <!-- Last Uploaded Info -->
-                <div id="admin-last-upload-info" style="display:none;margin-top:8px;font-size:10px;color:#64748b;text-align:center;"></div>
+                <div id="admin-last-upload-info" style="display:none;margin-top:8px;font-size:10px;color:var(--text-dim);text-align:center;"></div>
               </div>
 
               <div style="margin-top:10px;display:flex;flex-direction:column;gap:8px;">
                 <!-- Download / Status Button -->
                 <button type="button" class="btn-exe-green-active" id="btn-master-core-action" style="cursor:default;pointer-events:none;opacity:0.85;">
-                  <span>✔</span>
-                  <span>HMAC Protected Master Active</span>
+                  <span>Protected master active</span>
                 </button>
               </div>
             </div>
@@ -2045,66 +2030,69 @@
               <div>
                 <div class="exe-card-header">
                   <div class="exe-card-title-group">
-                    <div class="exe-card-icon-wrap" style="background:rgba(168,85,247,0.18);border:1px solid rgba(168,85,247,0.45);color:#c084fc;">
-                      👤
+                    <div class="exe-card-icon-wrap" style="background:rgba(255,255,255,0.04);border:1px solid var(--border-color);color:var(--text-muted);">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                      </svg>
                     </div>
                     <div>
                       <div class="exe-card-title-text">My Branded Client</div>
-                      <div style="font-size:10px;color:#64748b;letter-spacing:0.4px;">EXCLUSIVE CUSTOM CLIENT</div>
+                      <div style="font-size:10.5px;color:var(--text-dim);">Customized client build</div>
                     </div>
                   </div>
                   <div style="display:flex;gap:5px;">
-                    <span class="exe-badge-green">Up to Date</span>
-                    <span class="exe-badge-green">Quota Free</span>
+                    <span class="exe-badge-green">Up to date</span>
+                    <span class="exe-badge-green">Quota free</span>
                   </div>
                 </div>
 
                 <!-- Brand Identity Box -->
                 <div class="exe-console-box" style="display:flex;align-items:center;justify-content:space-between;">
                   <div>
-                    <div class="exe-console-label">Client Brand Identity</div>
-                    <div style="font-size:18px;font-weight:900;color:#ffffff;letter-spacing:0.5px;margin-top:2px;" id="client-brand-display-name">HYPER X</div>
+                    <div class="exe-console-label">Client brand identity</div>
+                    <div style="font-size:16px;font-weight:600;color:#ffffff;letter-spacing:0.5px;margin-top:2px;" id="client-brand-display-name">HYPER X</div>
                   </div>
                   <div style="text-align:right;">
-                    <span style="font-size:10px;color:#cbd5e1;font-family:var(--font-mono);background:#101422;padding:3px 8px;border-radius:4px;border:1px solid #1c2236;display:inline-block;">Auto-Lock HWID</span>
-                    <div style="font-size:9.5px;color:#22c55e;font-weight:700;margin-top:4px;">● Full Lifetime Access</div>
+                    <span style="font-size:10px;color:var(--text-muted);font-family:var(--font-mono);background:var(--bg-body);padding:3px 8px;border-radius:4px;border:1px solid var(--border-color);display:inline-block;">Auto-lock HWID</span>
+                    <div style="font-size:9.5px;color:#4cc38a;font-weight:600;margin-top:4px;">Lifetime access</div>
                   </div>
                 </div>
 
                 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-                  <div style="display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#cbd5e1;">
-                    <span style="color:#f59e0b;">🛠️</span>
-                    <span>Assigned Modules & Bypass Layers (8 Active)</span>
+                  <div style="display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--text-muted);">
+                    <span>Assigned modules (8 Active)</span>
                   </div>
-                  <span class="exe-badge-green" style="font-size:9.5px;padding:2px 6px;">● All Unlocked</span>
+                  <span class="exe-badge-green" style="font-size:9.5px;padding:2px 6px;">Unlocked</span>
                 </div>
 
                 <!-- 8 Panels Grid Chips - 4x2 Layout -->
                 <div class="exe-panels-chip-grid">
-                  <div class="exe-panel-chip">⚙️ Basic Panel</div>
-                  <div class="exe-panel-chip">🎯 PVT AIMKILL</div>
-                  <div class="exe-panel-chip">🎯 AimSilent</div>
-                  <div class="exe-panel-chip">🔐 Vault Panel</div>
-                  <div class="exe-panel-chip">🛡️ UID Bypass</div>
-                  <div class="exe-panel-chip">🛡️ LIB Bypass</div>
-                  <div class="exe-panel-chip">💻 External Panel</div>
-                  <div class="exe-panel-chip">🚀 FPS BOOSTER</div>
+                  <div class="exe-panel-chip">Basic Panel</div>
+                  <div class="exe-panel-chip">PVT AIMKILL</div>
+                  <div class="exe-panel-chip">AimSilent</div>
+                  <div class="exe-panel-chip">Vault Panel</div>
+                  <div class="exe-panel-chip">UID Bypass</div>
+                  <div class="exe-panel-chip">LIB Bypass</div>
+                  <div class="exe-panel-chip">External Panel</div>
+                  <div class="exe-panel-chip">FPS BOOSTER</div>
                 </div>
 
                 <!-- Hardware Lock Notice -->
-                <div style="background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.22);border-radius:8px;padding:10px 14px;font-size:11px;color:#cbd5e1;display:flex;align-items:center;gap:10px;margin-top:6px;">
-                  <span style="font-size:16px;">🛡️</span>
+                <div style="background:var(--bg-body);border:1px solid var(--border-color);border-radius:6px;padding:10px 14px;font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:10px;margin-top:6px;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-dim);flex-shrink:0;">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                  </svg>
                   <div>
-                    <span style="font-weight:700;color:#fff;">Hardware Signature Active:</span>
-                    <span style="color:#94a3b8;margin-left:4px;">Unique memory-injected client mapped to your active license.</span>
+                    <span style="font-weight:600;color:#fff;">Hardware signature active:</span>
+                    <span style="color:var(--text-dim);margin-left:4px;">Unique memory-injected client mapped to your active license.</span>
                   </div>
                 </div>
               </div>
 
               <div style="margin-top:16px;">
                 <button type="button" class="btn-exe-primary" onclick="redownloadClientAuto()">
-                  <span>⚡</span>
-                  <span>Re-download Client (Auto Free)</span>
+                  <span>Re-download client</span>
                 </button>
               </div>
             </div>
@@ -2115,13 +2103,16 @@
           <div class="exe-history-card">
             <div class="exe-history-header">
               <div class="exe-history-title">
-                <span style="color:#ef4444;font-size:16px;">📑</span>
-                <span>Saved Client Presets History</span>
+                <span>Saved client presets</span>
               </div>
               <div class="exe-history-actions">
                 <button type="button" class="btn-exe-bulk" onclick="bulkDownloadAllPresets()">
-                  <span>📦</span>
-                  <span id="exe-bulk-btn-text">Bulk Download All (1)</span>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                  </svg>
+                  <span id="exe-bulk-btn-text">Bulk download all (1)</span>
                 </button>
                 <span class="badge-exe-saved" id="exe-saved-badge">1 Saved</span>
               </div>
@@ -2131,10 +2122,10 @@
               <table class="exe-table">
                 <thead>
                   <tr>
-                    <th style="width:160px;">BRAND TITLE</th>
-                    <th>INCLUDED PANELS</th>
-                    <th style="width:130px;">STATUS</th>
-                    <th style="width:140px;">ACTION</th>
+                    <th style="width:160px;">Brand</th>
+                    <th>Included packages</th>
+                    <th style="width:130px;">Status</th>
+                    <th style="width:140px;">Action</th>
                   </tr>
                 </thead>
                 <tbody id="exe-presets-tbody">
@@ -2146,8 +2137,6 @@
 
         </section>
 
-
-
       </main>
     </div>
   </div>
@@ -2158,7 +2147,7 @@
   <div class="modal-layer" id="modal-add-key">
     <div class="modal-box-card">
       <div class="modal-header-strip">
-        <span class="modal-title-text">🔑 Generate KeyAuth License Keys</span>
+        <span class="modal-title-text">Generate KeyAuth license keys</span>
         <button onclick="closeModal('modal-add-key')" style="background:transparent;border:none;color:#94a3b8;cursor:pointer;font-size:16px;">✕</button>
       </div>
 
@@ -2167,7 +2156,7 @@
           <div id="gen-modal-reseller-notice" style="display:none !important;"></div>
 
           <div class="form-group-item">
-            <label class="form-label-title">Target Package</label>
+            <label class="form-label-title">Target package</label>
             <select id="gen-package-select" class="form-input-box" onchange="onPackageSelectChange()" required>
               <option value="e52c1515c53453b85d0d4e87">BASIC PANEL</option>
               <option value="affc8da8fd5ace99981ab877">AIMSILENT EXE</option>
@@ -2182,12 +2171,12 @@
           </div>
 
           <div class="form-group-item">
-            <label class="form-label-title">Assigned User / Client Name</label>
-            <input type="text" id="gen-user-input" class="form-input-box" placeholder="e.g. VIP_Member" value="Client">
+            <label class="form-label-title">Assigned user / client name</label>
+            <input type="text" id="gen-user-input" class="form-input-box" placeholder="e.g. Client" value="Client">
           </div>
 
           <div class="form-group-item">
-            <label class="form-label-title">Validity Duration</label>
+            <label class="form-label-title">Validity duration</label>
             <select id="gen-days-select" class="form-input-box">
               <option value="0">Lifetime Access (0 Days)</option>
               <option value="1">1 Day Trial</option>
@@ -2202,28 +2191,31 @@
           </div>
 
           <div class="form-group-item">
-            <label class="form-label-title">Number of Keys to Generate (Max 50)</label>
+            <label class="form-label-title">Number of keys to generate (Max 50)</label>
             <input type="number" id="gen-count-input" class="form-input-box" min="1" max="50" value="1">
           </div>
 
           <div class="form-group-item" id="gen-hwid-lock-container" style="display: none; grid-column: span 2;">
-            <label class="form-label-title" style="margin-bottom: 8px;">Hardware ID (HWID) Lock</label>
-            <label style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 12px 14px; transition: all 0.2s ease;">
+            <label class="form-label-title" style="margin-bottom: 8px;">Hardware ID (HWID) lock</label>
+            <label style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 6px; padding: 12px 14px; transition: all 0.2s ease;">
               <div style="display: flex; align-items: center; gap: 10px;">
-                <span style="font-size: 16px;">&#x1F512;</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-dim);">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
                 <div>
-                  <span style="display: block; font-weight: 700; font-size: 13px; color: #fff;">Enable Device HWID Lock</span>
-                  <span style="display: block; font-size: 11px; color: var(--text-dim); margin-top: 2px;">Tick = Lock to 1 device (Recommended) | Untick = Multi-device allowed</span>
+                  <span style="display: block; font-weight: 600; font-size: 13px; color: #fff;">Enable device HWID lock</span>
+                  <span style="display: block; font-size: 11px; color: var(--text-dim); margin-top: 2px;">Checked = Lock to 1 device | Unchecked = Multi-device</span>
                 </div>
               </div>
-              <input type="checkbox" id="gen-hwid-lock" checked style="width: 20px; height: 20px; accent-color: #10b981; cursor: pointer;">
+              <input type="checkbox" id="gen-hwid-lock" checked style="width: 18px; height: 18px; accent-color: var(--accent-red); cursor: pointer;">
             </label>
           </div>
         </div>
 
         <div class="modal-footer-strip">
           <button type="button" class="btn-action-secondary" onclick="closeModal('modal-add-key')">Cancel</button>
-          <button type="submit" class="btn-action-primary" id="btn-submit-generate">Generate Keys Now ⚡</button>
+          <button type="submit" class="btn-action-primary" id="btn-submit-generate">Generate keys</button>
         </div>
       </form>
     </div>
@@ -2235,7 +2227,7 @@
   <div class="modal-layer" id="modal-add-key-v2">
     <div class="modal-box-card">
       <div class="modal-header-strip">
-        <span class="modal-title-text">🛡️ Generate KeyAuth License Keys (V2 Engine)</span>
+        <span class="modal-title-text">Generate KeyAuth license keys (V2)</span>
         <button onclick="closeModal('modal-add-key-v2')" style="background:transparent;border:none;color:#94a3b8;cursor:pointer;font-size:16px;">✕</button>
       </div>
 
@@ -2243,7 +2235,7 @@
         <div class="modal-body-content">
           <div id="gen-v2-modal-reseller-notice" style="display:none !important;"></div>
           <div class="form-group-item">
-            <label class="form-label-title">Target Package (V2)</label>
+            <label class="form-label-title">Target package (V2)</label>
             <select id="gen-v2-package-select" class="form-input-box" required>
               <option value="pkg_v2_aimkill_pvt" selected>AIMKILL PVT V2</option>
               <option value="pkg_v2_streamer_x">STREAMER X</option>
@@ -2251,12 +2243,12 @@
           </div>
 
           <div class="form-group-item">
-            <label class="form-label-title">Assigned User / Client Name</label>
-            <input type="text" id="gen-v2-user-input" class="form-input-box" placeholder="e.g. V2_Client_01" value="Client_V2">
+            <label class="form-label-title">Assigned user / client name</label>
+            <input type="text" id="gen-v2-user-input" class="form-input-box" placeholder="e.g. Client_V2" value="Client_V2">
           </div>
 
           <div class="form-group-item">
-            <label class="form-label-title">Validity Duration</label>
+            <label class="form-label-title">Validity duration</label>
             <select id="gen-v2-days-select" class="form-input-box">
               <option value="0">Lifetime Access (0 Days)</option>
               <option value="1">1 Day Trial</option>
@@ -2271,29 +2263,35 @@
           </div>
 
           <div class="form-group-item">
-            <label class="form-label-title">Number of Keys to Generate (Max 50)</label>
+            <label class="form-label-title">Number of keys to generate (Max 50)</label>
             <input type="number" id="gen-v2-count-input" class="form-input-box" min="1" max="50" value="1">
           </div>
 
           <div class="form-group-item" style="grid-column: span 2;">
-            <label class="form-label-title" style="margin-bottom: 8px;">Hardware ID (HWID) Lock</label>
-            <label style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 12px 14px; transition: all 0.2s ease;">
+            <label class="form-label-title" style="margin-bottom: 8px;">Hardware ID (HWID) lock</label>
+            <label style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 6px; padding: 12px 14px; transition: all 0.2s ease;">
               <div style="display: flex; align-items: center; gap: 10px;">
-                <span style="font-size: 16px;">🔒</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-dim);">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
                 <div>
-                  <span style="display: block; font-weight: 700; font-size: 13px; color: #fff;">Enable Device HWID Lock</span>
-                  <span style="display: block; font-size: 11px; color: var(--text-dim); margin-top: 2px;">Tick = Lock to 1 device (Recommended) | Untick = Multi-device allowed</span>
+                  <span style="display: block; font-weight: 600; font-size: 13px; color: #fff;">Enable device HWID lock</span>
+                  <span style="display: block; font-size: 11px; color: var(--text-dim); margin-top: 2px;">Checked = Lock to 1 device | Unchecked = Multi-device</span>
                 </div>
               </div>
-              <input type="checkbox" id="gen-v2-hwid-lock" checked style="width: 20px; height: 20px; accent-color: #10b981; cursor: pointer;">
+              <input type="checkbox" id="gen-v2-hwid-lock" checked style="width: 18px; height: 18px; accent-color: var(--accent-red); cursor: pointer;">
             </label>
           </div>
         </div>
 
         <div class="modal-footer-strip">
           <button type="button" class="btn-action-secondary" onclick="closeModal('modal-add-key-v2')">Cancel</button>
-          <button type="submit" class="btn-action-primary" id="btn-submit-generate-v2" style="background:linear-gradient(135deg,#059669,#10b981);border-color:#10b981;">Generate V2 Keys Now ⚡</button>
+          <button type="submit" class="btn-action-primary" id="btn-submit-generate-v2">Generate V2 keys</button>
         </div>
+      </form>
+    </div>
+  </div>
       </form>
     </div>
   </div>
@@ -2304,20 +2302,20 @@
   <div class="modal-layer" id="modal-generated-keys">
     <div class="modal-box-card" style="max-width:540px;">
       <div class="modal-header-strip">
-        <span class="modal-title-text" id="generated-keys-title">🔑 Keys Generated Successfully</span>
+        <span class="modal-title-text" id="generated-keys-title">License keys generated</span>
         <button onclick="closeModal('modal-generated-keys')" style="background:transparent;border:none;color:#94a3b8;cursor:pointer;font-size:16px;">✕</button>
       </div>
 
       <div class="modal-body-content">
-        <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">Your new cryptographically registered keys are ready for delivery:</p>
+        <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">Your registered keys are ready for deployment:</p>
         <div id="generated-keys-list" style="max-height:220px;overflow-y:auto;">
           <!-- Populated by JS -->
         </div>
       </div>
 
       <div class="modal-footer-strip">
-        <button type="button" class="btn-action-secondary" onclick="downloadGeneratedKeysTxt()">📥 Download .TXT</button>
-        <button type="button" class="btn-action-primary" onclick="copyAllGeneratedKeys()">📋 Copy All</button>
+        <button type="button" class="btn-action-secondary" onclick="downloadGeneratedKeysTxt()">Download .txt</button>
+        <button type="button" class="btn-action-primary" onclick="copyAllGeneratedKeys()">Copy all</button>
         <button type="button" class="btn-action-secondary" onclick="closeModal('modal-generated-keys')">Done</button>
       </div>
     </div>
@@ -2329,7 +2327,7 @@
   <div class="modal-layer" id="modal-key-inspector">
     <div class="modal-box-card" style="max-width:480px;">
       <div class="modal-header-strip">
-        <span class="modal-title-text">🔍 KeyAuth License Details</span>
+        <span class="modal-title-text">License key details</span>
         <button onclick="closeModal('modal-key-inspector')" style="background:transparent;border:none;color:#94a3b8;cursor:pointer;font-size:16px;">✕</button>
       </div>
 
@@ -2338,9 +2336,9 @@
       </div>
 
       <div class="modal-footer-strip" style="display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;">
-        <button type="button" class="btn-action-secondary" onclick="resetHwidLive(window.currentInspectedKey)">🔄 Reset HWID</button>
-        <button type="button" class="btn-action-secondary" style="color:#f59e0b;" onclick="toggleBanLive(window.currentInspectedKey);closeModal('modal-key-inspector');">🚫 Ban / Unban</button>
-        <button type="button" class="btn-action-secondary" style="color:#ef4444;" onclick="deleteKeyLive(window.currentInspectedKey);closeModal('modal-key-inspector');">🗑️ Delete</button>
+        <button type="button" class="btn-action-secondary" onclick="resetHwidLive(window.currentInspectedKey)">Reset HWID</button>
+        <button type="button" class="btn-action-secondary" style="color:#f59e0b;" onclick="toggleBanLive(window.currentInspectedKey);closeModal('modal-key-inspector');">Ban / Unban</button>
+        <button type="button" class="btn-action-secondary" style="color:#ef4444;" onclick="deleteKeyLive(window.currentInspectedKey);closeModal('modal-key-inspector');">Delete</button>
         <button type="button" class="btn-action-primary" onclick="closeModal('modal-key-inspector')">Close</button>
       </div>
     </div>
@@ -2352,7 +2350,7 @@
   <div class="modal-layer admin-only-feature" id="modal-add-reseller">
     <div class="modal-box-card" style="max-width:540px;">
       <div class="modal-header-strip">
-        <span class="modal-title-text">👥 Create Reseller Account</span>
+        <span class="modal-title-text">Create reseller account</span>
         <button onclick="closeModal('modal-add-reseller')" style="background:transparent;border:none;color:#94a3b8;cursor:pointer;font-size:16px;">✕</button>
       </div>
 
@@ -2360,15 +2358,15 @@
         <div class="modal-body-content" style="max-height:calc(82vh - 120px);overflow-y:auto;padding-right:6px;">
           <!-- Reseller Username -->
           <div class="form-group-item">
-            <label class="form-label-title">Reseller Username</label>
+            <label class="form-label-title">Reseller username</label>
             <input type="text" id="reseller-name" class="form-input-box" placeholder="e.g. DeltaSales" required autocomplete="off">
           </div>
 
           <!-- Reseller Password -->
           <div class="form-group-item">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-              <label class="form-label-title" style="margin-bottom:0;">Reseller Login Password</label>
-              <button type="button" class="btn-sm-action" onclick="generateRandomResellerPass('reseller-pass')">🎲 Gen Random Pass</button>
+              <label class="form-label-title" style="margin-bottom:0;">Reseller login password</label>
+              <button type="button" class="btn-sm-action" onclick="generateRandomResellerPass('reseller-pass')">Generate random</button>
             </div>
             <input type="text" id="reseller-pass" class="form-input-box" placeholder="e.g. DeltaPass#2026" required minlength="4">
           </div>
@@ -2376,7 +2374,7 @@
           <!-- Credit / Key Creation Quota -->
           <div class="form-group-item">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-              <label class="form-label-title" style="margin-bottom:0;">Credits / Key Quota Balance</label>
+              <label class="form-label-title" style="margin-bottom:0;">Credits quota balance</label>
               <div style="display:flex;gap:4px;">
                 <button type="button" class="btn-sm-action" onclick="setResellerQuotaQuick('reseller-quota', 50)">+50</button>
                 <button type="button" class="btn-sm-action" onclick="setResellerQuotaQuick('reseller-quota', 100)">+100</button>
@@ -2388,31 +2386,31 @@
 
           <!-- Reseller Email (Optional) -->
           <div class="form-group-item">
-            <label class="form-label-title">Contact Email (Optional)</label>
+            <label class="form-label-title">Contact email (optional)</label>
             <input type="email" id="reseller-email" class="form-input-box" placeholder="sales@deltaseller.com">
           </div>
 
           <!-- 2FA TOTP Secret (Google Authenticator) -->
-          <div class="form-group-item" style="background:rgba(0,240,255,0.04);border:1px solid rgba(0,240,255,0.18);border-radius:8px;padding:12px;">
+          <div class="form-group-item" style="background:rgba(255,255,255,0.02);border:1px solid var(--border-color);border-radius:6px;padding:12px;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-              <label class="form-label-title" style="margin-bottom:0;color:#00f0ff;">🔐 Google Authenticator Secret</label>
-              <button type="button" class="btn-sm-action" onclick="generateNewTOTPSecret('reseller-totp-secret')">🎲 Generate</button>
+              <label class="form-label-title" style="margin-bottom:0;">Google Authenticator secret</label>
+              <button type="button" class="btn-sm-action" onclick="generateNewTOTPSecret('reseller-totp-secret')">Generate</button>
             </div>
-            <input type="text" id="reseller-totp-secret" class="form-input-box" placeholder="Auto-generated on first login" style="font-family:monospace;letter-spacing:1.5px;" autocomplete="off">
+            <input type="text" id="reseller-totp-secret" class="form-input-box" placeholder="Auto-generated on first login" style="font-family:var(--font-mono);letter-spacing:1.5px;" autocomplete="off">
             <small style="color:var(--text-dim);font-size:10.5px;display:block;margin-top:4px;">
               The reseller will scan a QR code using Google Authenticator on first login. Leave blank to auto-generate.
             </small>
           </div>
 
-          <!-- Panel / Package Access Permissions ("kon kon sa pannel ka access dena hai") -->
+          <!-- Panel / Package Access Permissions -->
           <div class="form-group-item">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-              <label class="form-label-title" style="margin-bottom:0;color:#00f0ff;">
-                <span>📦 Panel / Package Access ("Kon-Kon sa Panel"):</span>
+              <label class="form-label-title" style="margin-bottom:0;">
+                <span>Package access:</span>
               </label>
               <div style="display:flex;gap:6px;">
-                <button type="button" class="btn-sm-action" onclick="toggleAllResellerPanels('add', true)">Select All</button>
-                <button type="button" class="btn-sm-action" onclick="toggleAllResellerPanels('add', false)">Deselect All</button>
+                <button type="button" class="btn-sm-action" onclick="toggleAllResellerPanels('add', true)">Select all</button>
+                <button type="button" class="btn-sm-action" onclick="toggleAllResellerPanels('add', false)">Deselect all</button>
               </div>
             </div>
             <div class="panels-select-grid" id="reseller-panels-checkboxes-add">
@@ -2426,7 +2424,7 @@
 
         <div class="modal-footer-strip">
           <button type="button" class="btn-action-secondary" onclick="closeModal('modal-add-reseller')">Cancel</button>
-          <button type="submit" class="btn-action-primary">✓ Create Reseller Account</button>
+          <button type="submit" class="btn-action-primary">Create reseller account</button>
         </div>
       </form>
     </div>
@@ -2438,7 +2436,7 @@
   <div class="modal-layer admin-only-feature" id="modal-edit-reseller">
     <div class="modal-box-card" style="max-width:540px;">
       <div class="modal-header-strip">
-        <span class="modal-title-text">✏️ Edit Reseller Permissions &amp; Credits</span>
+        <span class="modal-title-text">Edit reseller permissions &amp; credits</span>
         <button onclick="closeModal('modal-edit-reseller')" style="background:transparent;border:none;color:#94a3b8;cursor:pointer;font-size:16px;">✕</button>
       </div>
 
@@ -2447,38 +2445,38 @@
         <div class="modal-body-content" style="max-height:calc(82vh - 120px);overflow-y:auto;padding-right:6px;">
           <!-- Reseller Username -->
           <div class="form-group-item">
-            <label class="form-label-title">Reseller Username</label>
+            <label class="form-label-title">Reseller username</label>
             <input type="text" id="edit-reseller-name" class="form-input-box" required>
           </div>
 
           <!-- Reseller Password -->
           <div class="form-group-item">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-              <label class="form-label-title" style="margin-bottom:0;">Reseller Login Password</label>
-              <button type="button" class="btn-sm-action" onclick="generateRandomResellerPass('edit-reseller-pass')">🎲 Gen Random Pass</button>
+              <label class="form-label-title" style="margin-bottom:0;">Reseller login password</label>
+              <button type="button" class="btn-sm-action" onclick="generateRandomResellerPass('edit-reseller-pass')">Generate random</button>
             </div>
             <input type="text" id="edit-reseller-pass" class="form-input-box" required minlength="4">
           </div>
 
           <!-- 2FA TOTP Secret (Google Authenticator) -->
-          <div class="form-group-item" style="background:rgba(0,240,255,0.04);border:1px solid rgba(0,240,255,0.18);border-radius:8px;padding:12px;">
+          <div class="form-group-item" style="background:rgba(255,255,255,0.02);border:1px solid var(--border-color);border-radius:6px;padding:12px;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-              <label class="form-label-title" style="margin-bottom:0;color:#00f0ff;">🔐 Google Authenticator Secret</label>
+              <label class="form-label-title" style="margin-bottom:0;">Google Authenticator secret</label>
               <div style="display:flex;gap:4px;">
-                <button type="button" class="btn-sm-action" onclick="generateNewTOTPSecret('edit-reseller-totp-secret')">🎲 Regenerate</button>
-                <button type="button" class="btn-sm-action" style="color:#ef4444;" onclick="resetReseller2FASetup()">🔄 Reset 2FA</button>
+                <button type="button" class="btn-sm-action" onclick="generateNewTOTPSecret('edit-reseller-totp-secret')">Regenerate</button>
+                <button type="button" class="btn-sm-action" style="color:var(--accent-red);" onclick="resetReseller2FASetup()">Reset 2FA</button>
               </div>
             </div>
-            <input type="text" id="edit-reseller-totp-secret" class="form-input-box" style="font-family:monospace;letter-spacing:1.5px;" autocomplete="off">
+            <input type="text" id="edit-reseller-totp-secret" class="form-input-box" style="font-family:var(--font-mono);letter-spacing:1.5px;" autocomplete="off">
             <small style="color:var(--text-dim);font-size:10.5px;display:block;margin-top:4px;">
-              "Reset 2FA" forces the reseller to re-scan QR on next login.
+              Resetting 2FA forces the reseller to re-scan QR on next login.
             </small>
           </div>
 
           <!-- Credit Balance -->
           <div class="form-group-item">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-              <label class="form-label-title" style="margin-bottom:0;">Credit Balance (Keys)</label>
+              <label class="form-label-title" style="margin-bottom:0;">Credit balance (keys)</label>
               <div style="display:flex;gap:4px;">
                 <button type="button" class="btn-sm-action" onclick="addCreditToEditInput(50)">+50</button>
                 <button type="button" class="btn-sm-action" onclick="addCreditToEditInput(100)">+100</button>
@@ -2490,7 +2488,7 @@
 
           <!-- Account Status -->
           <div class="form-group-item">
-            <label class="form-label-title">Account Status</label>
+            <label class="form-label-title">Account status</label>
             <select id="edit-reseller-status" class="form-input-box">
               <option value="Active">Active</option>
               <option value="Suspended">Suspended</option>
@@ -2500,12 +2498,12 @@
           <!-- Panel / Package Access Permissions -->
           <div class="form-group-item">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-              <label class="form-label-title" style="margin-bottom:0;color:#00f0ff;">
-                <span>📦 Panel / Package Access:</span>
+              <label class="form-label-title" style="margin-bottom:0;">
+                <span>Package access:</span>
               </label>
               <div style="display:flex;gap:6px;">
-                <button type="button" class="btn-sm-action" onclick="toggleAllResellerPanels('edit', true)">Select All</button>
-                <button type="button" class="btn-sm-action" onclick="toggleAllResellerPanels('edit', false)">Deselect All</button>
+                <button type="button" class="btn-sm-action" onclick="toggleAllResellerPanels('edit', true)">Select all</button>
+                <button type="button" class="btn-sm-action" onclick="toggleAllResellerPanels('edit', false)">Deselect all</button>
               </div>
             </div>
             <div class="panels-select-grid" id="reseller-panels-checkboxes-edit">
@@ -2516,8 +2514,11 @@
 
         <div class="modal-footer-strip">
           <button type="button" class="btn-action-secondary" onclick="closeModal('modal-edit-reseller')">Cancel</button>
-          <button type="submit" class="btn-action-primary">💾 Save Reseller Changes</button>
+          <button type="submit" class="btn-action-primary">Save changes</button>
         </div>
+      </form>
+    </div>
+  </div>
       </form>
     </div>
   </div>
@@ -2528,33 +2529,33 @@
   <div class="modal-layer admin-only-feature" id="modal-change-admin">
     <div class="modal-box-card" style="max-width:480px;">
       <div class="modal-header-strip">
-        <span class="modal-title-text">⚙️ Settings &amp; Admin Credentials</span>
+        <span class="modal-title-text">Admin credentials &amp; settings</span>
         <button onclick="closeModal('modal-change-admin')" style="background:transparent;border:none;color:#94a3b8;cursor:pointer;font-size:16px;">✕</button>
       </div>
 
       <form onsubmit="submitChangeAdminCredentials(event)">
         <div class="modal-body-content">
           <p style="font-size:12.5px;color:var(--text-muted);margin-bottom:14px;line-height:1.5;">
-            Configure your updated <strong>Admin Username</strong> and <strong>Master Password</strong> below:
+            Configure your updated admin credentials below:
           </p>
 
           <div class="form-group-item">
-            <label class="form-label-title">Admin Username / Identifier</label>
-            <input type="text" id="cfg-admin-username" class="form-input-box" placeholder="e.g. HYPER X or admin" required style="color:#00f0ff;">
+            <label class="form-label-title">Admin username / identifier</label>
+            <input type="text" id="cfg-admin-username" class="form-input-box" placeholder="e.g. HYPER X or admin" required style="color:#ededed;">
           </div>
 
           <div class="form-group-item">
-            <label class="form-label-title">Current Password</label>
-            <input type="password" id="cfg-admin-oldpass" class="form-input-box" placeholder="Enter current password (default: admin123)" required>
+            <label class="form-label-title">Current password</label>
+            <input type="password" id="cfg-admin-oldpass" class="form-input-box" placeholder="Enter current password" required>
           </div>
 
           <div class="form-group-item">
-            <label class="form-label-title">New Password</label>
+            <label class="form-label-title">New password</label>
             <input type="password" id="cfg-admin-newpass" class="form-input-box" placeholder="Enter new password (min 4 characters)" required minlength="4">
           </div>
 
           <div class="form-group-item">
-            <label class="form-label-title">Confirm New Password</label>
+            <label class="form-label-title">Confirm new password</label>
             <input type="password" id="cfg-admin-confirmpass" class="form-input-box" placeholder="Confirm new password" required minlength="4">
           </div>
 
@@ -2562,10 +2563,10 @@
         </div>
 
         <div class="modal-footer-strip" style="justify-content:space-between;">
-          <button type="button" class="btn-action-secondary" onclick="resetDefaultAdminCredentials()" style="color:#f59e0b;">↺ Reset Default</button>
+          <button type="button" class="btn-action-secondary" onclick="resetDefaultAdminCredentials()" style="color:#f59e0b;">Reset default</button>
           <div style="display:flex;gap:8px;">
             <button type="button" class="btn-action-secondary" onclick="closeModal('modal-change-admin')">Cancel</button>
-            <button type="submit" class="btn-action-primary" id="btn-save-admin-creds">Save Settings ⚙️</button>
+            <button type="submit" class="btn-action-primary" id="btn-save-admin-creds">Save settings</button>
           </div>
         </div>
       </form>
@@ -2578,27 +2579,27 @@
   <div class="modal-layer" id="modal-transfer-credit">
     <div class="modal-box-card" style="max-width:480px;">
       <div class="modal-header-strip">
-        <span class="modal-title-text">💸 Transfer Credits to Reseller</span>
+        <span class="modal-title-text">Transfer credits to reseller</span>
         <button onclick="closeModal('modal-transfer-credit')" style="background:transparent;border:none;color:#94a3b8;cursor:pointer;font-size:16px;">✕</button>
       </div>
 
       <form onsubmit="submitModalTransferCredits(event)">
         <div class="modal-body-content">
           <!-- Sender details -->
-          <div style="background:#090c14;border:1px solid #1e293b;border-radius:6px;padding:10px 14px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;">
+          <div style="background:var(--bg-body);border:1px solid var(--border-color);border-radius:6px;padding:10px 14px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;">
             <div>
-              <span style="color:var(--text-dim);font-size:10.5px;display:block;">SENDER:</span>
+              <span style="color:var(--text-dim);font-size:10.5px;display:block;">Sender:</span>
               <strong id="modal-transfer-sender-name" style="color:#fff;font-size:12.5px;">HYPER X</strong>
             </div>
             <div style="text-align:right;">
-              <span style="color:var(--text-dim);font-size:10.5px;display:block;">AVAILABLE BALANCE:</span>
-              <strong id="modal-transfer-sender-avail" style="color:#00f0ff;font-size:12.5px;font-family:var(--font-mono);">9,922 Keys</strong>
+              <span style="color:var(--text-dim);font-size:10.5px;display:block;">Available balance:</span>
+              <strong id="modal-transfer-sender-avail" style="color:#ededed;font-size:12.5px;font-family:var(--font-mono);">9,922 Keys</strong>
             </div>
           </div>
 
           <!-- Target Reseller Dropdown -->
           <div class="form-group-item">
-            <label class="form-label-title">Select Target Reseller</label>
+            <label class="form-label-title">Select target reseller</label>
             <select id="modal-transfer-target-select" class="form-input-box" required onchange="updateModalTransferCalcPreview()">
               <!-- Populated dynamically -->
             </select>
@@ -2607,7 +2608,7 @@
           <!-- Amount -->
           <div class="form-group-item">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-              <label class="form-label-title" style="margin-bottom:0;">Credits Amount</label>
+              <label class="form-label-title" style="margin-bottom:0;">Credits amount</label>
               <div style="display:flex;gap:4px;">
                 <button type="button" class="btn-sm-action" onclick="setModalTransferAmountQuick(10)">+10</button>
                 <button type="button" class="btn-sm-action" onclick="setModalTransferAmountQuick(50)">+50</button>
@@ -2620,20 +2621,20 @@
 
           <!-- Note -->
           <div class="form-group-item">
-            <label class="form-label-title">Transfer Note / Memo (Optional)</label>
-            <input type="text" id="modal-transfer-note-input" class="form-input-box" placeholder="e.g. Weekly Credit Top-up">
+            <label class="form-label-title">Transfer note / memo (optional)</label>
+            <input type="text" id="modal-transfer-note-input" class="form-input-box" placeholder="e.g. Credit allocation">
           </div>
 
           <!-- Calculation Preview -->
-          <div id="modal-transfer-calc-preview" style="background:rgba(0,240,255,0.05);border:1px solid rgba(0,240,255,0.2);border-radius:6px;padding:8px 12px;font-size:11.5px;color:#cbd5e1;display:flex;justify-content:space-between;">
-            <span>Remaining Balance:</span>
-            <strong id="modal-transfer-remaining-preview" style="color:#00f0ff;font-family:var(--font-mono);">-- Keys</strong>
+          <div id="modal-transfer-calc-preview" style="background:rgba(255,255,255,0.02);border:1px solid var(--border-color);border-radius:6px;padding:8px 12px;font-size:11.5px;color:var(--text-muted);display:flex;justify-content:space-between;">
+            <span>Remaining balance:</span>
+            <strong id="modal-transfer-remaining-preview" style="color:#fff;font-family:var(--font-mono);">-- Keys</strong>
           </div>
         </div>
 
         <div class="modal-footer-strip">
           <button type="button" class="btn-action-secondary" onclick="closeModal('modal-transfer-credit')">Cancel</button>
-          <button type="submit" class="btn-action-primary">⚡ Send Credits Now</button>
+          <button type="submit" class="btn-action-primary">Send credits</button>
         </div>
       </form>
     </div>
@@ -2645,29 +2646,29 @@
   <div class="modal-layer" id="modal-change-reseller-password">
     <div class="modal-box-card" style="max-width:460px;">
       <div class="modal-header-strip">
-        <span class="modal-title-text">⚙️ Reseller Settings &amp; Password</span>
+        <span class="modal-title-text">Reseller settings &amp; password</span>
         <button onclick="closeModal('modal-change-reseller-password')" style="background:transparent;border:none;color:#94a3b8;cursor:pointer;font-size:16px;">✕</button>
       </div>
 
       <form onsubmit="submitChangeResellerPassword(event, 'modal')">
         <div class="modal-body-content">
-          <div style="background:rgba(0,240,255,0.06);border:1px solid rgba(0,240,255,0.2);border-radius:8px;padding:12px;margin-bottom:14px;font-size:12px;">
-            <div style="color:#00f0ff;font-weight:700;margin-bottom:4px;">👤 Logged in as: <span id="reseller-modal-uname">Reseller</span></div>
+          <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border-color);border-radius:6px;padding:12px;margin-bottom:14px;font-size:12px;">
+            <div style="color:#fff;font-weight:600;margin-bottom:4px;">Logged in as: <span id="reseller-modal-uname">Reseller</span></div>
             <div style="color:var(--text-dim);">Update your account password below. You will use your new password on subsequent logins.</div>
           </div>
 
           <div class="form-group-item">
-            <label class="form-label-title">Current Password</label>
+            <label class="form-label-title">Current password</label>
             <input type="password" id="reseller-modal-oldpass" class="form-input-box" placeholder="Enter current password" required>
           </div>
 
           <div class="form-group-item">
-            <label class="form-label-title">New Password</label>
+            <label class="form-label-title">New password</label>
             <input type="password" id="reseller-modal-newpass" class="form-input-box" placeholder="Enter new password (min 4 characters)" required minlength="4">
           </div>
 
           <div class="form-group-item">
-            <label class="form-label-title">Confirm New Password</label>
+            <label class="form-label-title">Confirm new password</label>
             <input type="password" id="reseller-modal-confirmpass" class="form-input-box" placeholder="Confirm new password" required minlength="4">
           </div>
 
@@ -2677,8 +2678,7 @@
         <div class="modal-footer-strip" style="justify-content:flex-end;gap:8px;">
           <button type="button" class="btn-action-secondary" onclick="closeModal('modal-change-reseller-password')">Cancel</button>
           <button type="submit" class="btn-action-primary" style="display:flex;align-items:center;gap:6px;">
-            <span>🔒</span>
-            <span>Save Password</span>
+            <span>Save password</span>
           </button>
         </div>
       </form>
@@ -2686,7 +2686,7 @@
   </div>
 
   <!-- ============================================================
-       PREMIUM CYBERPUNK HYPERX SYSTEM DIALOG & ALERT MODAL
+       PREMIUM SYSTEM DIALOG & ALERT MODAL
        ============================================================ -->
   <div class="hyper-dialog-overlay" id="hyper-dialog-overlay">
     <div class="hyper-dialog-card" id="hyper-dialog-card">
@@ -2703,8 +2703,7 @@
         <div class="hyper-dialog-info-card" id="hyper-dialog-info-card" style="display:none;">
           <div id="hyper-dialog-kv-list"></div>
           <button type="button" class="hyper-dialog-copy-btn" id="hyper-dialog-copy-btn" onclick="copyHyperDialogCreds()">
-            <span>📋</span>
-            <span id="hyper-dialog-copy-text">Copy Credentials</span>
+            <span id="hyper-dialog-copy-text">Copy credentials</span>
           </button>
         </div>
         <div class="hyper-dialog-actions" id="hyper-dialog-actions">

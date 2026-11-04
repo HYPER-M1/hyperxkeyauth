@@ -3,27 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HYPERX // Authorization System Online – KeyAuth Portal</title>
+  <title>HYPER X — Software Licensing Gateway</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-base: #06070a;
-      --card-bg: #0c0e13;
-      --card-border: rgba(255, 255, 255, 0.08);
-      --input-bg: #111419;
-      --input-border: #1c212a;
-      --red-primary: #e5181f;
-      --red-hover: #f01e25;
-      --red-glow: rgba(229, 24, 31, 0.42);
-      --red-accent: #ea2b35;
-      --text-white: #ffffff;
-      --text-gray: #8c93a0;
-      --text-placeholder: #5a6474;
-      --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --bg-base: #07080d;
+      --card-bg: #11141c;
+      --card-raised: #1a1e28;
+      --border-hairline: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.16);
+      --accent-crimson: #ef4444;
+      --accent-hover: #dc2626;
+      --text-primary: #ededed;
+      --text-secondary: #a3a9b8;
+      --text-muted: #7a8296;
+      --positive: #4cc38a;
+      --negative: #e5484d;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
+      --radius-sm: 6px;
+      --radius-md: 8px;
+      --radius-lg: 16px;
     }
 
     * {
@@ -33,311 +36,234 @@
     }
 
     body {
-      background-color: #07080c;
-      background-image: 
-        radial-gradient(ellipse at 60% 50%, rgba(4, 5, 7, 0.22) 0%, rgba(4, 5, 7, 0.68) 100%),
-        url('assets/images/hero_bg_cyber.png');
-      background-repeat: no-repeat;
-      background-position: center center;
-      background-attachment: fixed;
-      background-size: cover;
-      color: var(--text-white);
-      font-family: var(--font-family);
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      line-height: 1.5;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       position: relative;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
-      image-rendering: -webkit-optimize-contrast;
     }
 
-    /* Ambient Interactive Particle Canvas */
-    #hero-particles-canvas {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    /* Top Floating Header (Logo Only, No Taskbar strip) */
+    /* Top Navigation Bar */
     .top-header {
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 100;
+      width: 100%;
+      height: 64px;
+      padding: 0 40px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 24px 48px;
-      width: 100%;
-      background: transparent;
-      border-bottom: none;
-      box-shadow: none;
+      border-bottom: 1px solid var(--border-hairline);
+      background: rgba(7, 8, 13, 0.85);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
     }
 
     .nav-brand-logo {
       display: inline-flex;
       align-items: center;
+      gap: 10px;
       text-decoration: none;
-      transition: transform 0.25s ease, opacity 0.2s;
-    }
-
-    .nav-brand-logo:hover {
-      opacity: 0.95;
-      transform: scale(1.03);
+      color: var(--text-primary);
     }
 
     .nav-logo-img {
-      height: 34px;
+      height: 28px;
       width: auto;
       display: block;
-      mix-blend-mode: screen;
-      filter: drop-shadow(0 0 14px rgba(229, 24, 31, 0.45));
-      transition: filter 0.3s ease;
     }
 
-    .nav-brand-logo:hover .nav-logo-img {
-      filter: drop-shadow(0 0 22px rgba(229, 24, 31, 0.8));
-    }
-
-    /* Top Right: Discord Community Button */
     .top-discord-btn {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 8px 16px;
-      background: rgba(88, 101, 242, 0.15);
-      border: 1px solid rgba(88, 101, 242, 0.4);
-      border-radius: 9px;
-      color: #9ba4f8;
+      padding: 0 14px;
+      height: 36px;
+      background: var(--card-raised);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-md);
+      color: var(--text-secondary);
       text-decoration: none;
       font-size: 13px;
-      font-weight: 700;
-      font-family: var(--font-family);
-      letter-spacing: 0.04em;
-      transition: all 0.22s ease;
-      box-shadow: 0 0 16px rgba(88, 101, 242, 0.18);
+      font-weight: 500;
+      transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
     }
 
     .top-discord-btn:hover {
-      background: rgba(88, 101, 242, 0.3);
-      border-color: rgba(88, 101, 242, 0.75);
-      color: #ffffff;
-      box-shadow: 0 0 24px rgba(88, 101, 242, 0.45);
-      transform: translateY(-1.5px);
+      background: #232836;
+      border-color: var(--border-hover);
+      color: var(--text-primary);
     }
 
-    .top-discord-btn svg {
-      color: #5865F2;
-      transition: transform 0.2s ease, filter 0.2s ease;
-    }
-
-    .top-discord-btn:hover svg {
-      filter: drop-shadow(0 0 8px rgba(88, 101, 242, 0.9));
-      transform: scale(1.08);
-    }
-
-    /* Central Login Viewport */
-    .login-container {
-      position: relative;
-      z-index: 10;
+    /* Hero Section (Asymmetric Split Layout) */
+    .hero-main-area {
       flex: 1;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 10px 20px 40px;
-      perspective: 1000px;
-    }
-
-    /* Ambient backdrop glow behind the login card */
-    .hero-right {
-      position: relative;
-    }
-
-    .card-ambient-backdrop {
-      position: absolute;
-      width: 420px;
-      height: 420px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(234, 43, 53, 0.16) 0%, rgba(234, 43, 53, 0.04) 48%, transparent 70%);
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-      z-index: 0;
-      filter: blur(55px);
-      opacity: 0.8;
-    }
-
-    /* Exact Login Card Box - Ultra-Premium Cyber Spec */
-    .login-card {
+      padding: 48px 40px;
+      max-width: 1200px;
+      margin: 0 auto;
       width: 100%;
-      max-width: 388px;
-      background: rgba(10, 12, 18, 0.94);
-      backdrop-filter: blur(28px) saturate(180%);
-      -webkit-backdrop-filter: blur(28px) saturate(180%);
-      border: 1px solid rgba(255, 255, 255, 0.09);
-      border-radius: 22px;
-      padding: 34px 28px 26px;
-      box-shadow: 
-        0 25px 70px rgba(0, 0, 0, 0.95), 
-        0 0 50px rgba(234, 43, 53, 0.12),
-        inset 0 1px 0 rgba(255, 255, 255, 0.12),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.5);
-      position: relative;
-      z-index: 2;
-      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
-      overflow: hidden;
     }
 
-    /* Laser Scanning Accent Rim at Card Top */
-    .login-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent 0%, rgba(234, 43, 53, 0.35) 20%, #ea2b35 50%, rgba(234, 43, 53, 0.35) 80%, transparent 100%);
-      box-shadow: 0 0 14px rgba(234, 43, 53, 0.85);
-      z-index: 3;
-    }
-
-
-
-    /* Card Header Logo & Title */
-    .card-logo-wrap {
-      text-align: center;
+    .hero-wrapper {
       display: flex;
-      flex-direction: column;
       align-items: center;
-      margin-bottom: 22px;
+      justify-content: space-between;
+      gap: 64px;
+      width: 100%;
     }
 
-    .card-center-logo {
-      width: 78px;
-      height: auto;
-      margin-bottom: 10px;
-      display: block;
-      mix-blend-mode: screen;
-      filter: drop-shadow(0 0 16px rgba(229, 24, 31, 0.45));
-      transition: transform 0.3s ease;
+    /* Left: Product Information */
+    .hero-left {
+      flex: 1;
+      max-width: 520px;
+    }
+
+    .hero-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-hairline);
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    .hero-status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--positive);
+    }
+
+    .hero-main-title {
+      font-size: 44px;
+      font-weight: 500;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+
+    .hero-main-title .brand-x {
+      color: var(--accent-crimson);
+      font-weight: 600;
+    }
+
+    .hero-sub-title {
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+
+    .hero-description {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 32px;
+      max-width: 440px;
+    }
+
+    .hero-meta-strip {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-hairline);
+    }
+
+    .meta-item {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    /* Right: Card Viewport */
+    .hero-right {
+      width: 400px;
+      flex-shrink: 0;
+    }
+
+    .login-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    .card-header-group {
+      margin-bottom: 24px;
     }
 
     .card-main-title {
-      font-size: 16px;
-      font-weight: 800;
-      letter-spacing: 0.28em;
-      color: #ffffff;
-      text-transform: uppercase;
-      margin-bottom: 5px;
-      background: linear-gradient(180deg, #ffffff 40%, #cbd5e1 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 4px;
     }
 
     .card-subtitle {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: #64748b;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.4;
     }
 
-    /* Form Fields & Labels */
+    /* Form Fields */
     .form-group-item {
-      margin-bottom: 15px;
+      margin-bottom: 16px;
     }
 
     .field-label-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 7px;
+      margin-bottom: 6px;
     }
 
     .field-mono-label {
-      font-family: var(--font-mono);
-      font-size: 10.5px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      color: #94a3b8;
-      text-transform: uppercase;
-      margin-bottom: 0;
-    }
-
-    .field-security-indicator {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      font-family: var(--font-mono);
-      font-size: 9px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      color: #475569;
-      text-transform: uppercase;
-      transition: color 0.25s ease;
-    }
-
-    .field-security-indicator .field-dot {
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: #475569;
-      transition: background 0.25s ease, box-shadow 0.25s ease;
-    }
-
-    .form-group-item:focus-within .field-security-indicator {
-      color: #ea2b35;
-    }
-
-    .form-group-item:focus-within .field-security-indicator .field-dot {
-      background: #ea2b35;
-      box-shadow: 0 0 8px #ea2b35;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
     }
 
     .input-field-wrapper {
       position: relative;
       display: flex;
       align-items: center;
-      background: #080a10;
-      border: 1px solid rgba(255, 255, 255, 0.09);
-      border-radius: 10px;
-      height: 48px;
-      padding: 0 16px;
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+      background: var(--card-raised);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-md);
+      height: 40px;
+      padding: 0 12px;
+      transition: border-color 140ms ease, background-color 140ms ease;
     }
 
-    .input-field-wrapper:hover {
-      border-color: rgba(255, 255, 255, 0.18);
-      background: #0a0d14;
-    }
-
-    .input-field-wrapper.active-field,
     .input-field-wrapper:focus-within {
-      border-color: #ea2b35;
-      box-shadow: 0 0 0 1px rgba(234, 43, 53, 0.4), 0 0 24px rgba(234, 43, 53, 0.22), inset 0 1px 2px rgba(0, 0, 0, 0.4);
-      background: #0c0f17;
+      border-color: rgba(239, 68, 68, 0.5);
+      background: #1d222e;
     }
 
     .input-field-icon {
+      color: var(--text-muted);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #64748b;
       flex-shrink: 0;
-      transition: all 0.25s ease;
-    }
-
-    .input-field-wrapper:focus-within .input-field-icon {
-      color: #ea2b35;
-      filter: drop-shadow(0 0 6px rgba(234, 43, 53, 0.65));
     }
 
     .text-input {
@@ -345,17 +271,15 @@
       background: transparent;
       border: none;
       outline: none;
-      color: #ffffff;
-      font-family: var(--font-mono);
-      font-size: 13.5px;
-      font-weight: 500;
-      letter-spacing: 0.03em;
-      margin-left: 12px;
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      margin-left: 10px;
     }
 
     .text-input::placeholder {
-      color: #475569;
-      font-weight: 400;
+      color: var(--text-muted);
+      opacity: 0.7;
     }
 
     .btn-toggle-eye {
@@ -366,1514 +290,350 @@
       align-items: center;
       justify-content: center;
       padding: 4px;
-      margin-left: 8px;
-      color: #64748b;
-      opacity: 0.85;
-      transition: all 0.2s ease;
+      color: var(--text-muted);
+      transition: color 140ms ease;
     }
 
     .btn-toggle-eye:hover {
-      color: #cbd5e1;
-      opacity: 1;
-      transform: scale(1.12);
+      color: var(--text-primary);
     }
 
-    /* Remember Credentials & HMAC Security Row */
+    /* Remember Credentials Row */
     .form-options-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-top: 14px;
-      margin-bottom: 20px;
+      margin: 16px 0 20px;
     }
 
     .remember-check-wrap {
       display: inline-flex;
       align-items: center;
-      gap: 9px;
+      gap: 8px;
       font-size: 12px;
-      color: #94a3b8;
+      color: var(--text-secondary);
       cursor: pointer;
       user-select: none;
-      font-weight: 500;
-      transition: color 0.15s ease;
-    }
-
-    .remember-check-wrap:hover {
-      color: #ffffff;
     }
 
     .remember-check-wrap input[type="checkbox"] {
-      appearance: none;
-      width: 16px;
-      height: 16px;
-      background: #080a10;
-      border: 1px solid #333d4e;
-      border-radius: 4px;
+      width: 15px;
+      height: 15px;
+      accent-color: var(--accent-crimson);
       cursor: pointer;
-      display: grid;
-      place-content: center;
-      transition: all 0.2s ease;
-    }
-
-    .remember-check-wrap input[type="checkbox"]:checked {
-      background: #ea2b35;
-      border-color: #ea2b35;
-      box-shadow: 0 0 10px rgba(234, 43, 53, 0.5);
-    }
-
-    .remember-check-wrap input[type="checkbox"]:checked::before {
-      content: "";
-      width: 8px;
-      height: 4.5px;
-      border-left: 2px solid #ffffff;
-      border-bottom: 2px solid #ffffff;
-      transform: rotate(-45deg) translate(0.5px, -0.5px);
     }
 
     .security-badge-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
       font-family: var(--font-mono);
-      font-size: 10.5px;
-      font-weight: 600;
-      color: #64748b;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      user-select: none;
-      transition: color 0.2s ease;
+      font-size: 11px;
+      color: var(--text-muted);
     }
 
-    .security-badge-tag:hover {
-      color: #cbd5e1;
-    }
-
-    .security-lock-svg {
-      color: #ea2b35;
-      filter: drop-shadow(0 0 5px rgba(234, 43, 53, 0.6));
-    }
-
-    /* Primary Sign In Button */
+    /* Primary Submit Button */
     .btn-red-login {
       width: 100%;
-      height: 48px;
-      background: linear-gradient(180deg, #ea2b35 0%, #c5141d 100%);
-      border: 1px solid rgba(255, 100, 110, 0.35);
-      border-radius: 10px;
+      height: 40px;
+      background: var(--accent-crimson);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-md);
       color: #ffffff;
-      font-family: var(--font-mono);
+      font-family: var(--font-sans);
       font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
+      font-weight: 500;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      box-shadow: 0 6px 24px rgba(234, 43, 53, 0.48), inset 0 1px 0 rgba(255, 255, 255, 0.28);
-      position: relative;
-      overflow: hidden;
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .btn-red-login .btn-bolt-icon {
-      color: #facc15;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      filter: drop-shadow(0 0 6px rgba(250, 204, 21, 0.7));
-    }
-
-    .btn-arrow-icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .btn-red-login:hover .btn-arrow-icon {
-      transform: translateX(4px);
+      gap: 8px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      transition: background-color 140ms ease, transform 100ms ease;
     }
 
     .btn-red-login:hover {
-      background: linear-gradient(180deg, #f0333d 0%, #d8141b 100%);
-      box-shadow: 0 8px 32px rgba(234, 43, 53, 0.72), inset 0 1px 0 rgba(255, 255, 255, 0.45);
-      transform: translateY(-2px);
+      background: var(--accent-hover);
     }
 
     .btn-red-login:active {
-      transform: translateY(1px) scale(0.99);
-      box-shadow: 0 3px 12px rgba(234, 43, 53, 0.45);
+      transform: scale(0.98);
     }
 
-    /* Security Notice Footer */
-    .security-footer-divider {
-      width: 100%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-      margin: 22px 0 14px;
-    }
-
-    .security-footer-wrap {
-      display: flex;
-      align-items: flex-start;
-      gap: 9px;
-      justify-content: center;
-      padding: 0 4px;
-    }
-
-    .security-beacon-dot {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: #10b981;
-      box-shadow: 0 0 6px #10b981;
-      flex-shrink: 0;
-      margin-top: 4.5px;
-    }
-
-    .security-footer-notice {
-      font-size: 11px;
-      color: #64748b;
-      text-align: left;
-      line-height: 1.5;
-      margin: 0;
-      font-weight: 400;
-      letter-spacing: 0.01em;
+    .btn-red-login:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
     }
 
     /* Error Message Alert */
     .error-alert-box {
       display: none;
-      background: rgba(229, 24, 31, 0.15);
-      border: 1px solid rgba(229, 24, 31, 0.45);
+      background: rgba(229, 72, 77, 0.1);
+      border: 1px solid rgba(229, 72, 77, 0.3);
       color: #fca5a5;
-      padding: 8px 12px;
-      border-radius: 6px;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
       font-size: 12px;
-      margin-bottom: 12px;
-      line-height: 1.4;
-      text-align: center;
-    }
-
-    /* Modern Floating Glass Toast System */
-    .toast-container {
-      position: fixed;
-      top: 24px;
-      right: 28px;
-      z-index: 1000;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      pointer-events: none;
-    }
-
-    .hero-toast-item {
-      pointer-events: auto;
-      background: rgba(15, 18, 24, 0.92);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-left: 3px solid var(--red-primary);
-      border-radius: 10px;
-      padding: 12px 18px;
-      min-width: 280px;
-      max-width: 360px;
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(229, 24, 31, 0.15);
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      opacity: 0;
-      transform: translateX(40px) scale(0.95);
-      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .hero-toast-item.active {
-      opacity: 1;
-      transform: translateX(0) scale(1);
-    }
-
-    .toast-icon {
-      font-size: 16px;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-
-    .toast-content {
-      flex: 1;
-    }
-
-    .toast-title {
-      font-size: 12.5px;
-      font-weight: 700;
-      color: #ffffff;
-      margin-bottom: 3px;
-    }
-
-    .toast-msg {
-      font-size: 11.5px;
-      color: #94a3b8;
+      margin-bottom: 16px;
       line-height: 1.4;
     }
 
-    /* ══════════════════════════════════════════════════
-       FULL-WIDTH HERO LAYOUT
-       ══════════════════════════════════════════════════ */
-
-    /* Override body so it's a row split */
-    body {
-      flex-direction: column;
-    }
-
-    /* Nav links */
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 36px;
-    }
-
-    .nav-link-item {
-      font-size: 13px;
-      font-weight: 600;
-      color: #94a3b8;
-      text-decoration: none;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      position: relative;
-      transition: color 0.2s ease;
-    }
-
-    .nav-link-item:hover,
-    .nav-link-item.active {
-      color: #ffffff;
-    }
-
-    .nav-link-item.active::after {
-      content: '';
-      position: absolute;
-      bottom: -4px;
-      left: 0; right: 0;
-      height: 2px;
-      background: var(--red-primary);
-      border-radius: 2px;
-      box-shadow: 0 0 8px rgba(229, 24, 31, 0.7);
-    }
-
-    /* Hero Main Container */
-    .hero-main-area {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-    }
-
-    /* Hero wrapper — full height split */
-    .hero-wrapper {
-      position: relative;
-      z-index: 10;
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 40px;
-      padding: 40px 60px 60px;
-      max-width: 1280px;
-      width: 100%;
-      margin: 0 auto;
-    }
-
-    /* Left hero text section */
-    .hero-left {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      max-width: 540px;
-      position: relative;
-    }
-
-    /* ── Ultra-Premium Cyber Hero Branding (Clean Static Match for Image 2) ── */
-    .hero-status-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 16px;
-      margin-bottom: 8px;
-    }
-
-    .status-accent-bar {
-      width: 2px;
-      height: 48px;
-      background: #ea2b35;
-      box-shadow: 0 0 10px rgba(234, 43, 53, 0.5);
-      flex-shrink: 0;
-    }
-
-    .status-text-wrap {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding-top: 3px;
-    }
-
-    .status-pulse-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #ea2b35;
-      box-shadow: 0 0 8px #ea2b35;
-      flex-shrink: 0;
-    }
-
-    .status-text {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      color: #94a3b8;
-      text-transform: uppercase;
-    }
-
-    .hero-main-title {
-      font-size: 68px;
-      font-weight: 900;
-      line-height: 1.0;
-      letter-spacing: -0.02em;
-      margin: 8px 0 16px 0;
-      color: #ffffff;
-      text-transform: uppercase;
-      filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.8));
-    }
-
-    .hero-main-title .brand-x {
-      color: #ea2b35;
-      display: inline-block;
-      text-shadow: 0 0 24px rgba(234, 43, 53, 0.65), 0 0 50px rgba(234, 43, 53, 0.35);
-    }
-
-    .hero-sub-title-wrap {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 24px;
-    }
-
-    .hero-sub-bar {
-      width: 2px;
-      height: 18px;
-      background: #ea2b35;
-      box-shadow: 0 0 8px rgba(234, 43, 53, 0.6);
-      display: inline-block;
-    }
-
-    .hero-sub-title {
-      font-family: var(--font-mono);
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: 0.32em;
-      color: #cbd5e1;
-      text-transform: uppercase;
-    }
-
-    .hero-description {
-      font-size: 14.5px;
-      color: #8e95aa;
-      line-height: 1.65;
-      max-width: 440px;
-      margin-bottom: 36px;
-      font-weight: 500;
-    }
-
-    .hero-meta-divider {
-      width: 100%;
-      max-width: 460px;
-      height: 1px;
-      background: rgba(255, 255, 255, 0.08);
-      margin-bottom: 14px;
-    }
-
-    .hero-meta-strip {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      max-width: 460px;
-    }
-
-    .meta-item {
-      font-family: var(--font-mono);
-      font-size: 10.5px;
-      font-weight: 700;
-      letter-spacing: 0.16em;
-      color: #5a627a;
-      text-transform: uppercase;
-    }
-
-    /* Right login panel wrapper */
-    .hero-right {
-      flex-shrink: 0;
-      width: 388px;
-    }
-
-    /* Override login-container when inside hero */
-    .hero-right .login-container {
-      padding: 0;
-    }
-
-    /* Social login divider */
-    .social-divider {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin: 20px 0 16px;
-    }
-
-    .social-divider::before,
-    .social-divider::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: rgba(255, 255, 255, 0.07);
-    }
-
-    .social-divider-text {
-      font-size: 10.5px;
-      color: #334155;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-    }
-
-    /* Social buttons row (Icon-only clean circular buttons) */
-    .social-btns-row {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-    }
-
-    .btn-social {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-      border: 1px solid transparent;
-      position: relative;
-      overflow: hidden;
-      flex-shrink: 0;
-    }
-
-    .btn-social::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
-      opacity: 0;
-      transition: opacity 0.2s ease;
-    }
-
-    .btn-social:hover::before { opacity: 1; }
-
-    .btn-telegram {
-      background: rgba(0, 136, 204, 0.12);
-      border-color: rgba(0, 136, 204, 0.35);
-      color: #0088cc;
-    }
-
-    .btn-telegram:hover {
-      background: rgba(0, 136, 204, 0.28);
-      border-color: #0088cc;
-      transform: translateY(-2.5px) scale(1.08);
-      box-shadow: 0 6px 20px rgba(0, 136, 204, 0.45);
-    }
-
-    .btn-discord {
-      background: rgba(88, 101, 242, 0.12);
-      border-color: rgba(88, 101, 242, 0.35);
-      color: #5865F2;
-    }
-
-    .btn-discord:hover {
-      background: rgba(88, 101, 242, 0.28);
-      border-color: #5865F2;
-      transform: translateY(-2.5px) scale(1.08);
-      box-shadow: 0 6px 20px rgba(88, 101, 242, 0.45);
-    }
-
-    .btn-social-icon-circle {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .btn-telegram .btn-social-icon-circle {
-      background: #0088cc;
-      color: #ffffff;
-      box-shadow: 0 0 10px rgba(0, 136, 204, 0.45);
-    }
-
-    .btn-discord .btn-social-icon-circle {
-      background: transparent;
-      color: #5865F2;
-    }
-
-    .btn-social-label {
-      text-align: left;
-    }
-
-    .btn-social-label strong {
-      display: block;
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: 0.05em;
-    }
-
-    .btn-social-label small {
-      display: block;
-      font-size: 10px;
-      font-weight: 500;
-      opacity: 0.7;
-      margin-top: 1px;
-    }
-
-    /* Responsive: Tablets */
-    @media (max-width: 900px) and (min-width: 769px) {
-      .hero-wrapper {
-        flex-direction: column;
-        align-items: center;
-        padding: 30px 24px 50px;
-        gap: 30px;
-      }
-      .hero-left {
-        max-width: 100%;
-        text-align: left;
-        align-items: flex-start;
-      }
-      .hero-main-title { font-size: 46px; margin: 4px 0 14px 0; }
-      .hero-sub-title  { font-size: 15px; }
-      .hero-description { font-size: 13.5px; margin-bottom: 24px; }
-      .hero-meta-divider, .hero-meta-strip { max-width: 100%; }
-      .hero-right { width: 100%; max-width: 420px; }
-      .nav-links { display: none; }
-    }
-
-
-
-
-    /* ══════════════════════════════════════════════════════
-       PREMIUM 2FA INTERFACE STYLES
-       ══════════════════════════════════════════════════════ */
-
-    /* Animated gradient border for 2FA form */
-    @property --border-angle {
-      syntax: '<angle>';
-      inherits: true;
-      initial-value: 0deg;
-    }
-
-    #hyperx-2fa-form {
-      position: relative;
-    }
-
-    .twofa-header {
+    /* 2FA Container */
+    .twofa-header-group {
       text-align: center;
-      margin-bottom: 22px;
-    }
-
-    /* Premium icon badge with rotating gradient ring */
-    .twofa-icon-badge {
-      width: 64px;
-      height: 64px;
-      margin: 0 auto 14px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 40% 35%, rgba(234,43,53,0.22), rgba(13,17,23,0.95));
-      border: 1.5px solid rgba(234, 43, 53, 0.55);
-      box-shadow:
-        0 0 0 6px rgba(234, 43, 53, 0.06),
-        0 0 32px rgba(234, 43, 53, 0.35),
-        inset 0 1px 0 rgba(255,255,255,0.08);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 26px;
-      backdrop-filter: blur(8px);
+      margin-bottom: 20px;
     }
 
     .twofa-title {
-      font-size: 13px;
-      font-weight: 800;
-      color: #ffffff;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      margin-bottom: 7px;
-      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 6px;
     }
 
     .twofa-subtitle {
       font-size: 12px;
-      color: #64748b;
-      line-height: 1.65;
-      letter-spacing: 0.2px;
-    }
-
-    /* Premium step divider */
-    .twofa-step-divider {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin: 18px 0;
-    }
-    .twofa-step-divider::before,
-    .twofa-step-divider::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
-    }
-    .twofa-step-label {
-      font-size: 10px;
-      color: #475569;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      font-weight: 600;
-    }
-
-    /* Premium OTP digit boxes */
-    .otp-digits-wrapper {
-      display: flex;
-      justify-content: center;
-      gap: 7px;
-      margin: 20px 0 18px;
-    }
-
-    .otp-digit-input {
-      width: 42px;
-      height: 52px;
-      text-align: center;
-      font-size: 20px;
-      font-weight: 800;
-      font-family: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
-      color: #ffffff;
-      background: rgba(15, 20, 30, 0.9);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-bottom: 2px solid rgba(255, 255, 255, 0.18);
-      border-radius: 12px;
-      outline: none;
-      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: inset 0 2px 8px rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.04);
-      caret-color: #ea2b35;
-    }
-
-    .otp-digit-input:focus {
-      border-color: rgba(234, 43, 53, 0.6);
-      border-bottom-color: #ea2b35;
-      background: rgba(234, 43, 53, 0.07);
-      box-shadow:
-        inset 0 2px 8px rgba(0,0,0,0.4),
-        0 0 0 3px rgba(234, 43, 53, 0.15),
-        0 4px 16px rgba(234, 43, 53, 0.25);
-      transform: translateY(-2px) scale(1.06);
-      color: #ffffff;
-    }
-
-    .otp-digit-input:not(:placeholder-shown):not(:focus) {
-      border-color: rgba(0, 240, 255, 0.35);
-      border-bottom-color: #00f0ff;
-      color: #00f0ff;
-      background: rgba(0, 240, 255, 0.05);
-    }
-
-    /* Premium QR wrapper */
-    .twofa-qr-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin: 18px 0;
+      color: var(--text-muted);
+      line-height: 1.5;
     }
 
     .twofa-qr-frame {
-      position: relative;
-      padding: 14px;
-      background: #ffffff;
-      border-radius: 16px;
-      box-shadow:
-        0 0 0 1px rgba(0,0,0,0.12),
-        0 8px 32px rgba(0,0,0,0.5),
-        0 0 48px rgba(16, 185, 129, 0.25);
-    }
-
-    .twofa-qr-frame::before {
-      content: '';
-      position: absolute;
-      inset: -2px;
-      border-radius: 18px;
-      background: linear-gradient(135deg, rgba(16,185,129,0.6), rgba(0,240,255,0.4), rgba(16,185,129,0.2));
-      z-index: -1;
-      opacity: 0.6;
-    }
-
-    /* Premium secret key display */
-    .twofa-secret-card {
-      margin-top: 14px;
-      background: rgba(13, 17, 23, 0.9);
-      border: 1px solid rgba(0, 240, 255, 0.15);
-      border-radius: 12px;
-      padding: 12px 16px;
-      text-align: center;
-      backdrop-filter: blur(8px);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .twofa-secret-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(0,240,255,0.4), transparent);
-    }
-
-    .twofa-secret-label {
-      font-size: 9.5px;
-      color: #475569;
-      text-transform: uppercase;
-      letter-spacing: 1.8px;
-      font-weight: 700;
-      margin-bottom: 5px;
-    }
-
-    .twofa-secret-value {
-      font-family: 'JetBrains Mono', 'SF Mono', monospace;
-      color: #00f0ff;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 3px;
-      text-shadow: 0 0 12px rgba(0, 240, 255, 0.5);
-    }
-
-    /* Premium instructions box */
-    .twofa-instructions-box {
-      margin-top: 12px;
-      padding: 12px 14px;
-      background: linear-gradient(135deg, rgba(16,185,129,0.06), rgba(0,240,255,0.04));
-      border: 1px solid rgba(16, 185, 129, 0.2);
-      border-radius: 10px;
-      font-size: 11.5px;
-      color: #64748b;
-      text-align: center;
-      line-height: 1.65;
-      position: relative;
-    }
-
-    .twofa-instructions-box::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(16,185,129,0.4), transparent);
-    }
-
-    /* Premium live code box */
-    .twofa-live-box {
-      background: linear-gradient(135deg, rgba(10,14,22,0.95), rgba(13,20,35,0.95));
-      border: 1px solid rgba(0, 240, 255, 0.15);
-      border-radius: 14px;
-      padding: 16px 18px;
+      display: flex;
+      justify-content: center;
       margin-bottom: 16px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-      backdrop-filter: blur(8px);
     }
 
-    .twofa-live-box::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(0,240,255,0.5), transparent);
+    .twofa-qr-frame img {
+      width: 160px;
+      height: 160px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-hairline);
+      background: #ffffff;
+      padding: 6px;
     }
 
-    .twofa-live-box::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 20%; right: 20%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(0,240,255,0.2), transparent);
-    }
-
-    .twofa-live-label {
-      font-size: 9px;
-      color: #334155;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-
-    .twofa-live-code {
-      font-family: 'JetBrains Mono', 'SF Mono', monospace;
-      font-size: 30px;
-      font-weight: 800;
-      color: #00f0ff;
-      letter-spacing: 8px;
-      text-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
-      line-height: 1;
-    }
-
-    .twofa-countdown-wrap {
-      margin-top: 10px;
+    .twofa-manual-key-box {
+      background: var(--card-raised);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-md);
+      padding: 8px 12px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 10px;
+      justify-content: space-between;
+      margin-bottom: 16px;
     }
 
-    .twofa-countdown-track {
-      width: 110px;
-      height: 3px;
-      background: rgba(255,255,255,0.07);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-
-    .twofa-countdown-fill {
-      height: 100%;
-      border-radius: 4px;
-      transition: width 1s linear, background 0.5s ease;
-    }
-
-    .twofa-countdown-text {
-      font-family: monospace;
-      font-size: 11.5px;
-      color: #334155;
-      font-weight: 700;
-      min-width: 26px;
-    }
-
-    /* Premium green scan button */
-    .btn-scan-done {
-      width: 100%;
-      padding: 13px 20px;
-      background: linear-gradient(135deg, #059669, #10b981, #34d399);
-      background-size: 200% 100%;
-      border: none;
-      border-radius: 12px;
-      color: #fff;
-      font-size: 12.5px;
-      font-weight: 800;
-      letter-spacing: 1.2px;
-      text-transform: uppercase;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4), inset 0 1px 0 rgba(255,255,255,0.15);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .btn-scan-done::before {
-      content: '';
-      position: absolute;
-      top: 0; left: -100%;
-      width: 100%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-      transition: left 0.5s ease;
-    }
-
-    .btn-scan-done:hover::before { left: 100%; }
-    .btn-scan-done:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 28px rgba(16, 185, 129, 0.55), inset 0 1px 0 rgba(255,255,255,0.2);
-      background-position: right center;
-    }
-    .btn-scan-done:active { transform: translateY(0); }
-
-    /* Premium back button */
-    .btn-back-login {
-      width: 100%;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      color: #475569;
-      border-radius: 12px;
-      padding: 11px;
+    .twofa-key-mono {
+      font-family: var(--font-mono);
       font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 8px;
-      transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      letter-spacing: 0.3px;
+      color: var(--text-primary);
+      letter-spacing: 0.08em;
     }
 
-    .btn-back-login:hover {
-      color: #94a3b8;
-      border-color: rgba(255, 255, 255, 0.14);
-      background: rgba(255, 255, 255, 0.05);
-      transform: translateY(-1px);
-    }
-
-    .shake-anim { outline: 1px solid rgba(234, 43, 53, 0.7); }
-
-    /* Modern 2FA Unified Input & Buttons (Image 2 Design) */
     .twofa-unified-input {
       width: 100%;
-      height: 56px;
-      background: #0a0d14;
-      border: 1.5px solid #ea2b35;
-      border-radius: 10px;
-      color: #ffffff;
-      font-family: 'JetBrains Mono', 'SF Mono', monospace;
-      font-size: 25px;
-      font-weight: 700;
+      height: 48px;
+      background: var(--card-raised);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      font-size: 20px;
       text-align: center;
-      letter-spacing: 12px;
-      padding-left: 12px;
-      box-shadow: 0 0 18px rgba(234, 43, 53, 0.35), inset 0 0 8px rgba(234, 43, 53, 0.08);
+      letter-spacing: 0.25em;
       outline: none;
-      box-sizing: border-box;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-      caret-color: #ffffff;
+      margin-bottom: 16px;
+      transition: border-color 140ms ease;
     }
 
     .twofa-unified-input:focus {
-      border-color: #ff3845;
-      box-shadow: 0 0 26px rgba(234, 43, 53, 0.55), inset 0 0 12px rgba(234, 43, 53, 0.12);
-    }
-
-    .twofa-unified-input::placeholder {
-      color: #384358;
-      letter-spacing: 12px;
-      opacity: 1;
+      border-color: rgba(239, 68, 68, 0.5);
     }
 
     .btn-twofa-continue {
       width: 100%;
-      height: 50px;
-      background: #ea2b35;
-      border: none;
-      border-radius: 10px;
+      height: 40px;
+      background: var(--accent-crimson);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-md);
       color: #ffffff;
-      font-size: 15px;
-      font-weight: 700;
+      font-size: 13px;
+      font-weight: 500;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 22px rgba(234, 43, 53, 0.45);
-      transition: all 0.2s ease;
-      font-family: inherit;
+      margin-bottom: 12px;
+      transition: background-color 140ms ease;
     }
 
     .btn-twofa-continue:hover {
-      background: #ff3845;
-      box-shadow: 0 0 28px rgba(234, 43, 53, 0.65);
-      transform: translateY(-1px);
-    }
-
-    .btn-twofa-continue:active {
-      transform: translateY(0);
+      background: var(--accent-hover);
     }
 
     .btn-twofa-cancel {
       background: transparent;
       border: none;
-      color: #717f96;
-      font-size: 13.5px;
-      font-weight: 500;
+      color: var(--text-muted);
+      font-size: 12px;
       cursor: pointer;
-      padding: 6px 12px;
-      transition: color 0.2s ease;
-      font-family: inherit;
+      transition: color 140ms ease;
     }
 
     .btn-twofa-cancel:hover {
-      color: #ffffff;
+      color: var(--text-primary);
     }
 
+    /* Footer Security Notice */
+    .security-footer-wrap {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-hairline);
+    }
 
-    /* ══════════════════════════════════════════════════════
-       ULTRA-SLEEK PROFESSIONAL MOBILE RESPONSIVE STYLES
-       ══════════════════════════════════════════════════════ */
-    @media (max-width: 768px) {
-      body {
-        min-height: 100vh !important;
-        min-height: 100dvh !important;
-        display: flex !important;
-        flex-direction: column !important;
-        background-color: #06070a !important;
-        background-image: 
-          radial-gradient(ellipse at 50% 30%, rgba(4, 5, 7, 0.45) 0%, rgba(4, 5, 7, 0.85) 100%),
-          url('assets/images/hero_bg_cyber.png') !important;
-        background-repeat: no-repeat !important;
-        background-position: center top !important;
-        background-attachment: scroll !important;
-        background-size: cover !important;
-      }
+    .security-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--positive);
+      margin-top: 5px;
+      flex-shrink: 0;
+    }
 
-      #hero-particles-canvas {
-        display: block !important;
-        position: fixed !important;
-        inset: 0 !important;
-        width: 100% !important;
-        height: 100% !important;
-        pointer-events: none !important;
-        z-index: 1 !important;
-      }
+    .security-footer-notice {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
 
-      /* Top Header */
+    /* Toast Notification System */
+    .toast-container {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+    }
+
+    .hero-toast-item {
+      pointer-events: auto;
+      background: var(--card-bg);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      min-width: 260px;
+      max-width: 340px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+      opacity: 0;
+      transform: translateY(-8px);
+      transition: opacity 160ms ease, transform 160ms ease;
+    }
+
+    .hero-toast-item.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .toast-title {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+
+    .toast-msg {
+      font-size: 11px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
       .top-header {
-        position: relative !important;
-        top: auto !important;
-        left: auto !important;
-        z-index: 50 !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-        padding: 12px 18px 0 18px !important;
-        width: 100% !important;
-        flex-shrink: 0 !important;
-        background: transparent !important;
+        padding: 0 20px;
       }
-
-      .nav-brand-logo {
-        display: inline-flex !important;
-        align-items: center !important;
-      }
-
-      .nav-logo-img {
-        height: 26px !important;
-        width: auto !important;
-      }
-
-      .top-discord-btn {
-        display: inline-flex !important;
-        align-items: center !important;
-        padding: 5px 12px !important;
-        font-size: 11.5px !important;
-        font-weight: 700 !important;
-        gap: 6px !important;
-        border-radius: 7px !important;
-        height: 32px !important;
-      }
-
-      .top-discord-btn svg {
-        width: 15px !important;
-        height: 12px !important;
-      }
-
-      /* Hero Main Area */
       .hero-main-area {
-        flex: 1 1 auto !important;
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: flex-start !important;
-        width: 100% !important;
-        min-height: 0 !important;
-        padding: 20px 0 28px 0 !important;
+        padding: 32px 20px;
       }
-
       .hero-wrapper {
-        flex: 0 0 auto !important;
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: flex-start !important;
-        padding: 0 14px !important;
-        gap: 0 !important;
-        width: 100% !important;
-        max-width: 385px !important;
-        margin: 0 auto !important;
+        flex-direction: column;
+        gap: 36px;
       }
-
-      /* Ultra-Premium Cyber Hero Branding on mobile (Image 2 Match) */
       .hero-left {
-        flex: 0 0 auto !important;
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: flex-start !important;
-        text-align: left !important;
-        margin-top: 6px !important;
-        margin-bottom: 26px !important;
-        padding: 0 4px !important;
-        max-width: 100% !important;
-        width: 100% !important;
+        max-width: 100%;
+        text-align: center;
       }
-
-      .hero-status-row {
-        gap: 12px !important;
-        margin-bottom: 6px !important;
-      }
-
-      .status-accent-bar {
-        height: 34px !important;
-      }
-
-      .status-text {
-        font-size: 9.5px !important;
-        letter-spacing: 0.14em !important;
-      }
-
-      .hero-main-title {
-        font-size: 40px !important;
-        font-weight: 900 !important;
-        line-height: 1.0 !important;
-        letter-spacing: -0.01em !important;
-        margin: 4px 0 10px 0 !important;
-        color: #ffffff !important;
-      }
-
-      .hero-main-title .brand-x {
-        color: #ea2b35 !important;
-      }
-
-      .hero-sub-title-wrap {
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: flex-start !important;
-        gap: 8px !important;
-        margin-bottom: 14px !important;
-      }
-
-      .hero-sub-bar {
-        height: 14px !important;
-        display: inline-block !important;
-      }
-
-      .hero-sub-title {
-        font-size: 14px !important;
-        letter-spacing: 0.25em !important;
-        color: #cbd5e1 !important;
-      }
-
       .hero-description {
-        display: block !important;
-        font-size: 12.5px !important;
-        line-height: 1.55 !important;
-        color: #8e95aa !important;
-        margin-bottom: 18px !important;
-        max-width: 100% !important;
+        margin: 0 auto 24px;
       }
-
-      .hero-meta-divider {
-        display: block !important;
-        margin-bottom: 10px !important;
-        max-width: 100% !important;
-      }
-
       .hero-meta-strip {
-        display: flex !important;
-        max-width: 100% !important;
+        justify-content: center;
       }
-
-      .meta-item {
-        font-size: 9.5px !important;
-      }
-
       .hero-right {
-        width: 100% !important;
-        max-width: 375px !important;
-        margin: 0 auto !important;
-      }
-
-      /* Slightly larger, sleek login card */
-      .login-card {
-        padding: 26px 20px 22px !important;
-        border-radius: 18px !important;
-        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.75), 0 0 25px rgba(230, 24, 46, 0.14) !important;
-      }
-
-      .card-logo-wrap {
-        margin-bottom: 14px !important;
-      }
-
-      .card-center-logo {
-        width: 64px !important;
-        margin-bottom: 8px !important;
-      }
-
-      .card-main-title {
-        font-size: 15.5px !important;
-        letter-spacing: 0.22em !important;
-        margin-bottom: 4px !important;
-      }
-
-      .card-subtitle {
-        font-size: 12px !important;
-      }
-
-      .form-group-item {
-        margin-bottom: 13px !important;
-      }
-
-      .field-mono-label {
-        font-size: 9.5px !important;
-        letter-spacing: 0.1em !important;
-        margin-bottom: 5px !important;
-      }
-
-      .input-field-wrapper {
-        height: 44px !important;
-        padding: 0 14px !important;
-        border-radius: 9px !important;
-      }
-
-      .input-field-icon svg {
-        width: 15px !important;
-        height: 15px !important;
-      }
-
-      .text-input {
-        font-size: 13.5px !important;
-      }
-
-      .btn-toggle-eye svg {
-        width: 15px !important;
-        height: 15px !important;
-      }
-
-      .form-options-row {
-        margin-top: 10px !important;
-        margin-bottom: 14px !important;
-      }
-
-      .remember-check-wrap {
-        font-size: 12px !important;
-        gap: 7px !important;
-      }
-
-      .remember-check-wrap input[type="checkbox"] {
-        width: 15px !important;
-        height: 15px !important;
-      }
-
-      .security-badge-tag {
-        font-size: 10px !important;
-        gap: 5px !important;
-      }
-
-      .security-lock-icon {
-        font-size: 11px !important;
-      }
-
-      .btn-red-login {
-        height: 44px !important;
-        font-size: 13px !important;
-        letter-spacing: 0.12em !important;
-        border-radius: 9px !important;
-        margin-top: 2px !important;
-      }
-
-      .security-footer-divider {
-        margin: 12px 0 8px !important;
-      }
-
-      .security-footer-notice {
-        font-size: 10px !important;
-        line-height: 1.35 !important;
-      }
-
-      /* Compact 2FA Card Styling */
-      .twofa-brand-badge {
-        padding: 3px 10px !important;
-        font-size: 9px !important;
-        margin-bottom: 10px !important;
-      }
-
-      .twofa-title {
-        font-size: 15px !important;
-        margin-bottom: 6px !important;
-      }
-
-      .twofa-desc {
-        font-size: 11.5px !important;
-        line-height: 1.4 !important;
-        margin-bottom: 14px !important;
-      }
-
-      .twofa-unified-input {
-        height: 44px !important;
-        font-size: 20px !important;
-        letter-spacing: 8px !important;
-        padding-left: 8px !important;
-        border-radius: 8px !important;
-        margin-bottom: 14px !important;
-      }
-
-      .btn-twofa-continue {
-        height: 40px !important;
-        font-size: 12px !important;
-        border-radius: 8px !important;
-        letter-spacing: 0.1em !important;
-      }
-
-      .twofa-secret-box {
-        padding: 10px !important;
-        border-radius: 8px !important;
-        margin-bottom: 12px !important;
-      }
-
-      .twofa-badge-code {
-        font-size: 12px !important;
-        letter-spacing: 2px !important;
-      }
-
-      #twofa-setup-step div[style*="176px"],
-      #twofa-setup-step div[style*="196px"] {
-        width: 130px !important;
-        height: 130px !important;
-      }
-
-      #twofa-qr-img {
-        width: 114px !important;
-        height: 114px !important;
-      }
-
-      .btn-twofa-cancel {
-        margin-top: 10px !important;
-        font-size: 11px !important;
-      }
-
-      .toast-container {
-        right: 14px;
-        left: 14px;
-        top: 14px;
-      }
-    }
-
-    @media (max-width: 380px) {
-      .hero-right {
-        max-width: 320px !important;
-      }
-
-      .login-card {
-        padding: 18px 14px 14px !important;
-      }
-
-      .card-center-logo {
-        width: 50px !important;
-      }
-
-      .card-main-title {
-        font-size: 13px !important;
-      }
-
-      .input-field-wrapper {
-        height: 38px !important;
-      }
-
-      .btn-red-login {
-        height: 38px !important;
-        font-size: 11.5px !important;
-      }
-
-      .twofa-unified-input {
-        height: 40px !important;
-        font-size: 18px !important;
-        letter-spacing: 6px !important;
+        width: 100%;
+        max-width: 400px;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Interactive Floating Crimson Particle Canvas -->
-  <canvas id="hero-particles-canvas"></canvas>
-
-  <!-- Top Header (Logo Left, Discord Right) -->
+  <!-- Top Navigation Header -->
   <header class="top-header">
-    <a href="login.html" class="nav-brand-logo" title="HYPERX">
-      <img src="assets/images/hx_nav_logo.png" alt="HX" class="nav-logo-img">
+    <a href="login.html" class="nav-brand-logo" title="HYPER X">
+      <img src="assets/images/hx_nav_logo.png" alt="HYPER X" class="nav-logo-img">
     </a>
-    <a href="https://discord.gg/neGxQey4GF" target="_blank" rel="noopener noreferrer" class="top-discord-btn" title="Join Discord Community">
-      <svg width="20" height="15" viewBox="0 0 127.14 96.36" fill="currentColor">
+    <a href="https://discord.gg/neGxQey4GF" target="_blank" rel="noopener noreferrer" class="top-discord-btn" title="Community Gateway">
+      <svg width="18" height="14" viewBox="0 0 127.14 96.36" fill="currentColor">
         <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.86,53,48.83,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/>
       </svg>
       <span>Discord</span>
     </a>
   </header>
 
-  <!-- Full-Width Hero Section Container -->
+  <!-- Hero Content Area -->
   <main class="hero-main-area">
     <div class="hero-wrapper">
 
-      <!-- ── LEFT: Hero Showcase & Branding (Image 2 Match) ── -->
+      <!-- Left Column: Context & Overview -->
       <div class="hero-left">
-        <div class="hero-status-row">
-          <div class="status-accent-bar"></div>
-          <div class="status-text-wrap">
-            <span class="status-pulse-dot"></span>
-            <span class="status-text">AUTHORIZATION SYSTEM ONLINE</span>
-          </div>
+        <div class="hero-status-pill">
+          <span class="hero-status-dot"></span>
+          <span>Authentication Gateway Active</span>
         </div>
 
         <h1 class="hero-main-title">HYPER<span class="brand-x">X</span></h1>
-
-        <div class="hero-sub-title-wrap">
-          <span class="hero-sub-bar"></span>
-          <span class="hero-sub-title">KEYAUTH</span>
-        </div>
+        <h2 class="hero-sub-title">Software Licensing &amp; Telemetry Gateway</h2>
 
         <p class="hero-description">
-          Secure access for authorized partners.<br>
-          Built for speed. Engineered for control.
+          Cryptographically locked key provisioning, hardware binding, and automated reseller quota control for authorized clients.
         </p>
 
-        <div class="hero-meta-divider"></div>
-
         <div class="hero-meta-strip">
-          <span class="meta-item">256-BIT ENCRYPTION</span>
-          <span class="meta-item">GLOBAL NODE 01</span>
+          <span class="meta-item">HMAC-SHA256 ENFORCED</span>
+          <span class="meta-item">API V1 / V2 SYNCHRONIZED</span>
         </div>
       </div>
 
-      <!-- ── RIGHT: Login Card ── -->
+      <!-- Right Column: Authentication Card -->
       <div class="hero-right">
-        <!-- Ambient Breathing Backdrop Glow -->
-        <div class="card-ambient-backdrop"></div>
-
         <div class="login-card">
-          <!-- Logo, Title & Subtitle -->
-          <div class="card-logo-wrap">
-            <img src="assets/images/hx_card_logo.png" alt="HYPERX" class="card-center-logo">
-            <h1 class="card-main-title">HYPERX</h1>
-            <p class="card-subtitle">AUTHENTICATION ACCESS</p>
+          <div class="card-header-group">
+            <h2 class="card-main-title">Sign In</h2>
+            <p class="card-subtitle">Enter administrator or authorized reseller credentials to continue.</p>
           </div>
 
           <!-- Authentication Form -->
           <form id="hyperx-auth-form" onsubmit="handleLogin(event)">
-            <!-- Error Alert -->
             <div id="login-error-msg" class="error-alert-box"></div>
 
-            <!-- Admin / Reseller Identifier -->
             <div class="form-group-item">
               <div class="field-label-row">
-                <label class="field-mono-label" for="email">ADMIN / RESELLER ID</label>
-                <span class="field-security-indicator">
-                  <span class="field-dot"></span> SECURE
-                </span>
+                <label class="field-mono-label" for="email">Account Identifier</label>
               </div>
-              <div class="input-field-wrapper active-field">
+              <div class="input-field-wrapper">
                 <span class="input-field-icon">
-                  <!-- User SVG Icon -->
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                     <circle cx="12" cy="7" r="4"></circle>
                   </svg>
@@ -1883,25 +643,19 @@
                   id="email" 
                   class="text-input" 
                   placeholder="Username or Email" 
-                  value="" 
                   required 
                   autocomplete="username"
                 >
               </div>
             </div>
 
-            <!-- Password -->
             <div class="form-group-item">
               <div class="field-label-row">
-                <label class="field-mono-label" for="password">ACCESS KEY / PASSWORD</label>
-                <span class="field-security-indicator">
-                  <span class="field-dot"></span> ENCRYPTED
-                </span>
+                <label class="field-mono-label" for="password">Password</label>
               </div>
               <div class="input-field-wrapper">
-                <span class="input-field-icon key-icon">
-                  <!-- Padlock SVG Icon -->
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <span class="input-field-icon">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                     <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                   </svg>
@@ -1911,13 +665,12 @@
                   id="password" 
                   class="text-input" 
                   placeholder="Enter Password" 
-                  value="" 
                   required 
                   autocomplete="current-password"
                 >
                 <button type="button" class="btn-toggle-eye" id="btn-toggle-password" onclick="togglePasswordVisibility()" title="Toggle visibility" aria-label="Toggle password visibility">
                   <span id="eye-icon">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                       <circle cx="12" cy="12" r="3"></circle>
                     </svg>
@@ -1926,242 +679,93 @@
               </div>
             </div>
 
-            <!-- Remember Credentials & HMAC Security Row -->
             <div class="form-options-row">
               <label class="remember-check-wrap">
                 <input type="checkbox" id="remember_me" checked>
-                <span>Remember Credentials</span>
+                <span>Remember credentials</span>
               </label>
-              <div class="security-badge-tag">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="security-lock-svg">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                </svg>
-                <span class="security-badge-text">HMAC-SHA256</span>
-              </div>
+              <span class="security-badge-tag">HMAC-SHA256</span>
             </div>
 
-            <!-- Sign In Button -->
             <button type="submit" class="btn-red-login" id="btn-submit-login">
-              <span class="btn-bolt-icon">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-                </svg>
-              </span>
-              <span>SIGN IN TO DASHBOARD</span>
-              <svg class="btn-arrow-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg>
+              <span>Sign In</span>
             </button>
 
-            <!-- Protected Environment Footer -->
-            <div class="security-footer-divider"></div>
             <div class="security-footer-wrap">
-              <span class="security-beacon-dot"></span>
+              <span class="security-dot"></span>
               <p class="security-footer-notice">
-                Protected Root Environment. Unauthorized login attempts are automatically monitored, throttled, and IP logged.
+                Protected system. Authentication events and proxy signatures are logged and monitored.
               </p>
             </div>
           </form>
 
-      <!-- Reseller Google Authenticator 2FA Form -->
-      <form id="hyperx-2fa-form" style="display: none;" onsubmit="handle2FASubmit(event)">
+          <!-- 2FA Authentication Flow -->
+          <form id="hyperx-2fa-form" style="display: none;" onsubmit="handle2FASubmit(event)">
+            <div id="twofa-error-msg" class="error-alert-box"></div>
 
-        <!-- Error Alert -->
-        <div id="twofa-error-msg" class="error-alert-box" style="margin-bottom: 14px; border-radius:10px; font-size:12px;"></div>
-
-        <!-- ── STEP 1: First Time QR Setup (Design matched to Image 2) ── -->
-        <div id="twofa-setup-step" style="display:none;">
-
-          <!-- Header -->
-          <div style="text-align: center; margin-bottom: 22px;">
-            <h2 style="font-size: 19px; font-weight: 800; letter-spacing: 0.04em; color: #ffffff; text-transform: uppercase; margin: 0 0 8px 0; font-family: 'Space Grotesk', system-ui, sans-serif;">
-              SETUP <span style="color: #ea2b35;">AUTHENTICATOR</span>
-            </h2>
-            <p style="font-size: 12.5px; color: #94a3b8; line-height: 1.5; margin: 0;">
-              Scan the QR code with your<br>
-              <strong style="color: #ffffff; font-weight: 700;">Google Authenticator</strong> app.
-            </p>
-          </div>
-
-          <!-- Red Glowing QR Code Frame -->
-          <div style="display: flex; justify-content: center; margin-bottom: 22px;">
-            <div style="position: relative; width: 196px; height: 196px; padding: 10px; background: #0a0d13; border: 1.5px solid rgba(234, 43, 53, 0.75); border-radius: 18px; box-shadow: 0 0 28px rgba(234, 43, 53, 0.35), inset 0 0 14px rgba(234, 43, 53, 0.12); display: flex; align-items: center; justify-content: center; box-sizing: border-box;">
-              <img id="twofa-qr-img" src="" alt="QR Code" width="176" height="176" style="display: block; width: 100%; height: 100%; border-radius: 10px; background: #ffffff; object-fit: contain;">
-            </div>
-          </div>
-
-          <!-- Manual Entry Key Section -->
-          <div style="margin-bottom: 18px;">
-            <div style="font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: #64748b; text-transform: uppercase; margin-bottom: 7px; padding-left: 2px;">
-              MANUAL ENTRY KEY
-            </div>
-            <div style="display: flex; align-items: center; background: #090c12; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 3px 4px 3px 14px; box-sizing: border-box;">
-              <div id="twofa-secret-display" style="flex: 1; font-family: 'JetBrains Mono', 'SF Mono', monospace; font-size: 13.5px; font-weight: 600; color: #ffffff; letter-spacing: 0.16em; user-select: all; overflow-x: auto; white-space: nowrap; padding: 8px 0;">
-                ABCD EFGH IJKL MNOP
+            <!-- Step 1: QR Setup -->
+            <div id="twofa-setup-step" style="display:none;">
+              <div class="twofa-header-group">
+                <h3 class="twofa-title">Setup Two-Factor Authentication</h3>
+                <p class="twofa-subtitle">Scan the QR code with Google Authenticator or enter the key manually.</p>
               </div>
-              <button type="button" id="btn-copy-totp-secret" onclick="copyTOTPSecret()" title="Copy Key" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.07); color: #94a3b8; border-radius: 7px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; flex-shrink: 0; margin-left: 6px;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                </svg>
-              </button>
+
+              <div class="twofa-qr-frame">
+                <img id="twofa-qr-img" src="" alt="2FA QR Code">
+              </div>
+
+              <div class="twofa-manual-key-box">
+                <span class="twofa-key-mono" id="twofa-secret-display">---- ---- ---- ----</span>
+                <button type="button" id="btn-copy-totp-secret" onclick="copyTOTPSecret()" title="Copy Key" style="background:transparent;border:none;color:var(--text-secondary);cursor:pointer;padding:4px;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                </button>
+              </div>
+
+              <button type="button" class="btn-twofa-continue" onclick="showTOTPVerifyStep()">Continue to Verification</button>
+              <div style="text-align: center;">
+                <button type="button" class="btn-twofa-cancel" onclick="cancel2FA()">Back to Sign In</button>
+              </div>
             </div>
-          </div>
 
-          <!-- Continue to Verification Button -->
-          <button type="button" class="btn-twofa-continue" onclick="showTOTPVerifyStep()" style="margin-bottom: 14px;">
-            Continue to Verification &rarr;
-          </button>
+            <!-- Step 2: Verification Code -->
+            <div id="twofa-verify-step" style="display:none;">
+              <div class="twofa-header-group">
+                <h3 class="twofa-title">Two-Factor Verification</h3>
+                <p class="twofa-subtitle">Enter the 6-digit code currently displayed in Google Authenticator.</p>
+              </div>
 
-          <!-- Cancel / Back to Login Button -->
-          <div style="text-align: center;">
-            <button type="button" class="btn-twofa-cancel" onclick="cancel2FA()">
-              ← Back to Login
-            </button>
-          </div>
-        </div>
+              <input 
+                type="text" 
+                inputmode="numeric" 
+                pattern="[0-9]*" 
+                maxlength="6" 
+                id="twofa-single-code" 
+                class="twofa-unified-input"
+                autocomplete="one-time-code" 
+                placeholder="000000"
+                spellcheck="false"
+                autocorrect="off"
+              >
 
-        <!-- ── STEP 2: TOTP Verify Screen (Matched to Image 2) ── -->
-        <div id="twofa-verify-step" style="display:none;">
-
-          <!-- Title with Lock Icon -->
-          <div style="text-align: center; margin-bottom: 10px;">
-            <div style="display: inline-flex; align-items: center; justify-content: center; gap: 9px;">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ea2b35" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(234, 43, 53, 0.7));">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-              </svg>
-              <h2 style="font-size: 22px; font-weight: 700; color: #ffffff; margin: 0; font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif; letter-spacing: -0.01em;">Two-Factor Security</h2>
+              <button type="submit" id="btn-submit-2fa" class="btn-twofa-continue">Verify &amp; Continue</button>
+              <div style="text-align: center;">
+                <button type="button" class="btn-twofa-cancel" onclick="cancel2FA()">Cancel Sign In</button>
+              </div>
             </div>
-          </div>
+          </form>
 
-          <!-- Subtitle -->
-          <p style="font-size: 13.5px; color: #94a3b8; line-height: 1.5; text-align: center; margin: 0 auto 24px; max-width: 330px;">
-            Enter the 6-digit verification code generated by your Google Authenticator app to access your account.
-          </p>
-
-          <!-- Single Unified OTP Input -->
-          <div style="margin-bottom: 22px;">
-            <input 
-              type="text" 
-              inputmode="numeric" 
-              pattern="[0-9]*" 
-              maxlength="6" 
-              id="twofa-single-code" 
-              class="twofa-unified-input"
-              autocomplete="one-time-code" 
-              placeholder="000000"
-              spellcheck="false"
-              autocorrect="off"
-            >
-          </div>
-
-          <!-- Verify & Continue Button -->
-          <button type="submit" id="btn-submit-2fa" class="btn-twofa-continue">
-            Verify &amp; Continue
-          </button>
-
-          <!-- Cancel Sign In -->
-          <div style="text-align: center; margin-top: 18px;">
-            <button type="button" class="btn-twofa-cancel" onclick="cancel2FA()">
-              ← Cancel Sign In
-            </button>
-          </div>
-
-        </div>
-
-      </form>
         </div>
       </div>
+
     </div>
   </main>
 
   <script>
-    // 1. Floating Crimson Ember Particle Engine (Smooth 60 FPS, Adaptive Mobile & Desktop)
-    (function initHeroParticles() {
-      const canvas = document.getElementById('hero-particles-canvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      let width, height;
-      let particles = [];
-      let mouse = { x: -1000, y: -1000 };
-
-      function resize() {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-      }
-      window.addEventListener('resize', resize);
-      resize();
-
-      window.addEventListener('mousemove', (e) => {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
-      });
-
-      window.addEventListener('touchmove', (e) => {
-        if (e.touches && e.touches[0]) {
-          mouse.x = e.touches[0].clientX;
-          mouse.y = e.touches[0].clientY;
-        }
-      }, { passive: true });
-
-      const count = window.innerWidth < 768 ? 16 : 38;
-      for (let i = 0; i < count; i++) {
-        particles.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          size: Math.random() * 2.2 + 0.8,
-          speedY: Math.random() * 0.5 + 0.2,
-          speedX: (Math.random() - 0.5) * 0.3,
-          opacity: Math.random() * 0.55 + 0.25,
-          baseOpacity: Math.random() * 0.55 + 0.25,
-          pulse: Math.random() * Math.PI * 2,
-          color: Math.random() > 0.35 ? '229, 24, 31' : '255, 77, 109'
-        });
-      }
-
-      function render() {
-        ctx.clearRect(0, 0, width, height);
-
-        for (let p of particles) {
-          p.y -= p.speedY;
-          p.x += p.speedX;
-          p.pulse += 0.025;
-
-          // Mouse gentle interactive deflection
-          const dx = mouse.x - p.x;
-          const dy = mouse.y - p.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 100) {
-            const angle = Math.atan2(dy, dx);
-            p.x -= Math.cos(angle) * 1.2;
-            p.y -= Math.sin(angle) * 1.2;
-          }
-
-          // Cycle particles
-          if (p.y < -10) {
-            p.y = height + 10;
-            p.x = Math.random() * width;
-          }
-          if (p.x < -10) p.x = width + 10;
-          if (p.x > width + 10) p.x = -10;
-
-          const alpha = p.baseOpacity * (0.65 + 0.35 * Math.sin(p.pulse));
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${p.color}, ${alpha})`;
-          ctx.shadowBlur = 8;
-          ctx.shadowColor = `rgba(${p.color}, 0.65)`;
-          ctx.fill();
-        }
-
-        requestAnimationFrame(render);
-      }
-
-      render();
-    })();
-
-    // 2. Toast Notifications
-    function showToast(title, message, icon = '🛡️') {
+    // Toast Notification System
+    function showToast(title, message) {
       let toastContainer = document.getElementById('hero-toast-container');
       if (!toastContainer) {
         toastContainer = document.createElement('div');
@@ -2173,11 +777,8 @@
       const toast = document.createElement('div');
       toast.className = 'hero-toast-item';
       toast.innerHTML = `
-        <div class="toast-icon">${icon}</div>
-        <div class="toast-content">
-          <div class="toast-title">${title}</div>
-          <div class="toast-msg">${message}</div>
-        </div>
+        <div class="toast-title">${title}</div>
+        <div class="toast-msg">${message}</div>
       `;
       toastContainer.appendChild(toast);
 
@@ -2185,8 +786,8 @@
 
       setTimeout(() => {
         toast.classList.remove('active');
-        setTimeout(() => toast.remove(), 400);
-      }, 4200);
+        setTimeout(() => toast.remove(), 200);
+      }, 3500);
     }
 
     // Toggle Password Visibility
@@ -2200,8 +801,8 @@
 
       if (eyeIcon) {
         eyeIcon.innerHTML = isPass 
-          ? `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`
-          : `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+          ? `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`
+          : `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
       }
     }
 
@@ -2233,18 +834,17 @@
 
       if (btn) {
         btn.disabled = true;
-        btn.innerHTML = '<span class="btn-bolt-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></span><span>AUTHENTICATING...</span>';
+        btn.innerHTML = '<span>Authenticating...</span>';
       }
 
       function resetBtn() {
         if (btn) {
           btn.disabled = false;
-          btn.innerHTML = '<span class="btn-bolt-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></span><span>SIGN IN TO DASHBOARD</span><svg class="btn-arrow-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>';
+          btn.innerHTML = '<span>Sign In</span>';
         }
       }
 
       try {
-        // 1. Load local credentials first for instant 0ms authentication
         let localAdminUser = localStorage.getItem('hyperx_admin_user') || 'HYPER X';
         let localAdminPass = localStorage.getItem('hyperx_admin_pass') || 'hyperm2000';
         let storedResellers = [];
@@ -2259,248 +859,227 @@
           (r.email && r.email.toLowerCase() === userVal)
         ) && r.password === passVal);
 
-      let serverData = null;
-      // Only do a blocking network fetch if credentials are NOT already recognized locally
-      if (!localAdminMatch && !localResellerMatch) {
-        try {
-          const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
-          const timeoutId = controller ? setTimeout(() => controller.abort(), 2500) : null;
-          const resp = await fetch('/api/data', { cache: 'no-store', signal: controller ? controller.signal : undefined });
-          if (timeoutId) clearTimeout(timeoutId);
-          if (resp && resp.ok) {
-            serverData = await resp.json();
-          }
-        } catch (_) { /* offline or timeout */ }
+        let serverData = null;
+        if (!localAdminMatch && !localResellerMatch) {
+          try {
+            const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+            const timeoutId = controller ? setTimeout(() => controller.abort(), 2500) : null;
+            const resp = await fetch('/api/data', { cache: 'no-store', signal: controller ? controller.signal : undefined });
+            if (timeoutId) clearTimeout(timeoutId);
+            if (resp && resp.ok) {
+              serverData = await resp.json();
+            }
+          } catch (_) {}
 
-        // Update local storage with cloud truth from server
-        if (serverData) {
-          if (serverData.hyperx_admin_user) {
-            localStorage.setItem('hyperx_admin_user', serverData.hyperx_admin_user);
-            localAdminUser = serverData.hyperx_admin_user;
-          }
-          if (serverData.hyperx_admin_pass) {
-            localStorage.setItem('hyperx_admin_pass', serverData.hyperx_admin_pass);
-            localAdminPass = serverData.hyperx_admin_pass;
-          }
-          if (Array.isArray(serverData.tx99_resellers)) {
-            let deletedIds = [];
-            try { deletedIds = JSON.parse(localStorage.getItem('tx99_deleted_resellers')) || []; } catch(_) {}
-            const banned = ['hyper x (root owner)', 'alphadistro', 'viperkeys'];
-            storedResellers = serverData.tx99_resellers.filter(sr => {
-              if (!sr || (!sr.id && !sr.username)) return false;
-              const u = (sr.username || '').toLowerCase().trim();
-              if (banned.includes(u) || deletedIds.includes(sr.id) || deletedIds.includes(u)) return false;
-              return true;
-            });
-            localStorage.setItem('tx99_resellers', JSON.stringify(storedResellers));
-          }
-          if (Array.isArray(serverData.tx99_licenses_v2)) {
-            localStorage.setItem('tx99_licenses_v2', JSON.stringify(serverData.tx99_licenses_v2));
-          }
-        }
-      } else {
-        // Fast background sync without delaying user
-        fetch('/api/data', { cache: 'no-store' }).then(r => r.json()).then(sd => {
-          if (sd && Array.isArray(sd.tx99_resellers)) {
-            let deletedIds = [];
-            try { deletedIds = JSON.parse(localStorage.getItem('tx99_deleted_resellers')) || []; } catch(_) {}
-            const banned = ['hyper x (root owner)', 'alphadistro', 'viperkeys'];
-            const cleanList = sd.tx99_resellers.filter(sr => {
-              if (!sr || (!sr.id && !sr.username)) return false;
-              const u = (sr.username || '').toLowerCase().trim();
-              if (banned.includes(u) || deletedIds.includes(sr.id) || deletedIds.includes(u)) return false;
-              return true;
-            });
-            localStorage.setItem('tx99_resellers', JSON.stringify(cleanList));
-          }
-          if (Array.isArray(sd.tx99_licenses_v2)) {
-            localStorage.setItem('tx99_licenses_v2', JSON.stringify(sd.tx99_licenses_v2));
-          }
-        }).catch(() => {});
-      }
-
-      // Offline seed fallback containing real accounts if still empty
-      if (!storedResellers || !Array.isArray(storedResellers) || storedResellers.length === 0) {
-        let deletedIds = [];
-        try { deletedIds = JSON.parse(localStorage.getItem('tx99_deleted_resellers')) || []; } catch(_) {}
-        const defaultReal = [
-          { id: '1791108883957', username: 'madhukar', password: 'madhukarbeta', email: 'madhukar@reseller.local', balance: 996, createdKeys: 3, status: 'Active', panels: ['all'], totpSecret: 'Z5N73VUTBHFC7MJF', twofa_setup_done: true, totalQuota: 999 },
-          { id: '1791295247097', username: 'Mrindia', password: 'Mrindia1', email: 'mrindia@reseller.local', balance: 100, createdKeys: 4, status: 'Active', panels: ['all'], totpSecret: 'DBMW7BYRMYHAPRQS', twofa_setup_done: true, totalQuota: 104 },
-          { id: '1793030819288', username: 'test9', password: 'test123', email: 'test9@reseller.local', balance: 94, createdKeys: 6, status: 'Active', panels: ['BASIC PANEL', 'AIMKILL PVT V2'], totpSecret: '4GUSJOCV4Z4UU2W2', twofa_setup_done: true, totalQuota: 100 }
-        ];
-        storedResellers = defaultReal.filter(r => !deletedIds.includes(r.id) && !deletedIds.includes(r.username.toLowerCase()));
-        localStorage.setItem('tx99_resellers', JSON.stringify(storedResellers));
-      }
-
-      // Check Root Admin Credentials
-      const creds = getAdminCredentials();
-      const adminUser = creds.user || (serverData && serverData.hyperx_admin_user) || 'HYPER X';
-      const adminMatch = (enteredUser.toLowerCase() === adminUser.toLowerCase()) ||
-        (enteredUser.toLowerCase() === 'hyperm575@gmail.com') ||
-        (adminUser === 'HYPER X' && (enteredUser.toLowerCase() === 'admin' || enteredUser.toLowerCase() === 'admin@prtvshow.online'));
-
-      if (adminMatch) {
-        const passMatch = (enteredPass === creds.pass) || 
-                          (serverData && enteredPass === serverData.hyperx_admin_pass) ||
-                          (localAdminPass && enteredPass === localAdminPass);
-
-        if (!passMatch) {
-          resetBtn();
-          if (errBox) {
-            errBox.style.display = 'block';
-            errBox.innerHTML = 'Incorrect password! Please check your credentials.';
-          }
-          return;
-        }
-
-        if (btn) {
-          btn.style.opacity = '0.9';
-          btn.innerHTML = '<span class="btn-bolt-icon">⚡</span><span>ACCESS GRANTED!</span>';
-        }
-        const rememberCheckbox = document.getElementById('remember_me');
-        if (rememberCheckbox && rememberCheckbox.checked) {
-          localStorage.setItem('hyperx_saved_login_user', enteredUser);
-          localStorage.setItem('hyperx_saved_login_pass', enteredPass);
-        } else {
-          localStorage.removeItem('hyperx_saved_login_user');
-          localStorage.removeItem('hyperx_saved_login_pass');
-        }
-
-        sessionStorage.setItem('hyperx_logged_in', 'true');
-        sessionStorage.setItem('hyperx_user_role', 'admin');
-        sessionStorage.removeItem('hyperx_current_reseller');
-        localStorage.setItem('hyperx_logged_in', 'true');
-        localStorage.setItem('hyperx_user_role', 'admin');
-        localStorage.removeItem('hyperx_current_reseller');
-
-        // Request and await server-signed session token
-        try {
-          const apiEndpoint = window.location.pathname.includes('/admin/') ? 'api.php' : '/api';
-          const authResp = await fetch(apiEndpoint, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ action: 'session_auth', username: enteredUser, password: enteredPass })
-          });
-          if (authResp.ok) {
-            const authRes = await authResp.json();
-            if (authRes && authRes.token) {
-              sessionStorage.setItem('hyperx_auth_token', authRes.token);
-              localStorage.setItem('hyperx_auth_token', authRes.token);
+          if (serverData) {
+            if (serverData.hyperx_admin_user) {
+              localStorage.setItem('hyperx_admin_user', serverData.hyperx_admin_user);
+              localAdminUser = serverData.hyperx_admin_user;
+            }
+            if (serverData.hyperx_admin_pass) {
+              localStorage.setItem('hyperx_admin_pass', serverData.hyperx_admin_pass);
+              localAdminPass = serverData.hyperx_admin_pass;
+            }
+            if (Array.isArray(serverData.tx99_resellers)) {
+              let deletedIds = [];
+              try { deletedIds = JSON.parse(localStorage.getItem('tx99_deleted_resellers')) || []; } catch(_) {}
+              const banned = ['hyper x (root owner)', 'alphadistro', 'viperkeys'];
+              storedResellers = serverData.tx99_resellers.filter(sr => {
+                if (!sr || (!sr.id && !sr.username)) return false;
+                const u = (sr.username || '').toLowerCase().trim();
+                return !banned.includes(u) && !deletedIds.includes(sr.id) && !deletedIds.includes(u);
+              });
+              localStorage.setItem('tx99_resellers', JSON.stringify(storedResellers));
+            }
+            if (Array.isArray(serverData.tx99_licenses_v2)) {
+              localStorage.setItem('tx99_licenses_v2', JSON.stringify(serverData.tx99_licenses_v2));
             }
           }
-        } catch (_) {}
-
-        window.location.href = 'dashboard.html';
-        return;
-      }
-
-      // Check Reseller Accounts
-      const matchedReseller = storedResellers.find(r => 
-        (r.username && r.username.toLowerCase() === enteredUser.toLowerCase()) || 
-        (r.email && r.email.toLowerCase() === enteredUser.toLowerCase())
-      );
-
-      if (matchedReseller) {
-        const serverR = (serverData && Array.isArray(serverData.tx99_resellers)) ? serverData.tx99_resellers.find(sr => 
-          (sr.username && sr.username.toLowerCase() === enteredUser.toLowerCase()) ||
-          (sr.id === matchedReseller.id)
-        ) : null;
-
-        // Merge latest cloud state so password, 2FA secret, and setup status from server are authoritative
-        if (serverR) {
-          Object.assign(matchedReseller, serverR);
-        }
-
-        const passMatch = (enteredPass === matchedReseller.password) ||
-                          (serverR && enteredPass === serverR.password);
-
-        if (!passMatch) {
-          resetBtn();
-          if (errBox) {
-            errBox.style.display = 'block';
-            errBox.innerHTML = 'Incorrect password! Please check your credentials.';
-          }
-          return;
-        }
-
-        if (matchedReseller.status === 'Suspended') {
-          resetBtn();
-          if (errBox) {
-            errBox.style.display = 'block';
-            errBox.innerHTML = 'Account Suspended! Please contact your administrator.';
-          }
-          return;
-        }
-
-        // Reseller Password Verified → Prompt Google Authenticator 2FA
-        resetBtn();
-        const rememberCheckbox = document.getElementById('remember_me');
-        pendingResellerAuth = {
-          reseller: matchedReseller,
-          enteredPass: enteredPass,
-          remember: (rememberCheckbox && rememberCheckbox.checked)
-        };
-
-        const authForm = document.getElementById('hyperx-auth-form');
-        const twofaForm = document.getElementById('hyperx-2fa-form');
-        const twofaErr = document.getElementById('twofa-error-msg');
-        if (twofaErr) twofaErr.style.display = 'none';
-
-        // Ensure reseller has persistent TOTP secret
-        if (!matchedReseller.totpSecret) {
-          matchedReseller.totpSecret = generateTOTPSecret();
-          storedResellers = storedResellers.map(r => r.id === matchedReseller.id ? matchedReseller : r);
-          localStorage.setItem('tx99_resellers', JSON.stringify(storedResellers));
-          fetch('/api/data', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ tx99_resellers: storedResellers })
+        } else {
+          fetch('/api/data', { cache: 'no-store' }).then(r => r.json()).then(sd => {
+            if (sd && Array.isArray(sd.tx99_resellers)) {
+              let deletedIds = [];
+              try { deletedIds = JSON.parse(localStorage.getItem('tx99_deleted_resellers')) || []; } catch(_) {}
+              const banned = ['hyper x (root owner)', 'alphadistro', 'viperkeys'];
+              const cleanList = sd.tx99_resellers.filter(sr => {
+                if (!sr || (!sr.id && !sr.username)) return false;
+                const u = (sr.username || '').toLowerCase().trim();
+                return !banned.includes(u) && !deletedIds.includes(sr.id) && !deletedIds.includes(u);
+              });
+              localStorage.setItem('tx99_resellers', JSON.stringify(cleanList));
+            }
+            if (Array.isArray(sd.tx99_licenses_v2)) {
+              localStorage.setItem('tx99_licenses_v2', JSON.stringify(sd.tx99_licenses_v2));
+            }
           }).catch(() => {});
         }
 
-        const setupDoneKey = 'hyperx_2fa_setup_done_' + matchedReseller.id;
-        // 2FA verification step is only used when the user has actually completed setup:
-        // Either explicitly flagged in data.json (twofa_setup_done === true)
-        // Or marked on this device (localStorage has setupDoneKey === 'true')
-        const isSetupDone = (matchedReseller.twofa_setup_done === true) || 
-                            (localStorage.getItem(setupDoneKey) === 'true');
-
-        if (authForm) authForm.style.display = 'none';
-        if (twofaForm) twofaForm.style.display = 'block';
-
-        if (!isSetupDone) {
-          showTOTPSetupStep();
-        } else {
-          showTOTPVerifyStep();
+        if (!storedResellers || !Array.isArray(storedResellers) || storedResellers.length === 0) {
+          let deletedIds = [];
+          try { deletedIds = JSON.parse(localStorage.getItem('tx99_deleted_resellers')) || []; } catch(_) {}
+          const defaultReal = [
+            { id: '1791108883957', username: 'madhukar', password: 'madhukarbeta', email: 'madhukar@reseller.local', balance: 996, createdKeys: 3, status: 'Active', panels: ['all'], totpSecret: 'Z5N73VUTBHFC7MJF', twofa_setup_done: true, totalQuota: 999 },
+            { id: '1791295247097', username: 'Mrindia', password: 'Mrindia1', email: 'mrindia@reseller.local', balance: 100, createdKeys: 4, status: 'Active', panels: ['all'], totpSecret: 'DBMW7BYRMYHAPRQS', twofa_setup_done: true, totalQuota: 104 },
+            { id: '1793030819288', username: 'test9', password: 'test123', email: 'test9@reseller.local', balance: 94, createdKeys: 6, status: 'Active', panels: ['BASIC PANEL', 'AIMKILL PVT V2'], totpSecret: '4GUSJOCV4Z4UU2W2', twofa_setup_done: true, totalQuota: 100 }
+          ];
+          storedResellers = defaultReal.filter(r => !deletedIds.includes(r.id) && !deletedIds.includes(r.username.toLowerCase()));
+          localStorage.setItem('tx99_resellers', JSON.stringify(storedResellers));
         }
 
-        showToast('Google Authenticator', `2FA verification required for ${matchedReseller.username}.`, '🛡️');
-        return;
-      }
+        const creds = getAdminCredentials();
+        const adminUser = creds.user || (serverData && serverData.hyperx_admin_user) || 'HYPER X';
+        const adminMatch = (enteredUser.toLowerCase() === adminUser.toLowerCase()) ||
+          (enteredUser.toLowerCase() === 'hyperm575@gmail.com') ||
+          (adminUser === 'HYPER X' && (enteredUser.toLowerCase() === 'admin' || enteredUser.toLowerCase() === 'admin@prtvshow.online'));
 
-      // Invalid Credentials
-      resetBtn();
-      if (errBox) {
-        errBox.style.display = 'block';
-        errBox.innerHTML = 'Invalid username or password. Please try again.';
-      }
-    } catch (err) {
-      console.error('Login process error:', err);
-      resetBtn();
-      if (errBox) {
-        errBox.style.display = 'block';
-        errBox.innerHTML = 'An unexpected error occurred. Please try again.';
+        if (adminMatch) {
+          const passMatch = (enteredPass === creds.pass) || 
+                            (serverData && enteredPass === serverData.hyperx_admin_pass) ||
+                            (localAdminPass && enteredPass === localAdminPass);
+
+          if (!passMatch) {
+            resetBtn();
+            if (errBox) {
+              errBox.style.display = 'block';
+              errBox.innerHTML = 'Incorrect password. Please verify your credentials.';
+            }
+            return;
+          }
+
+          if (btn) {
+            btn.innerHTML = '<span>Access Verified</span>';
+          }
+          const rememberCheckbox = document.getElementById('remember_me');
+          if (rememberCheckbox && rememberCheckbox.checked) {
+            localStorage.setItem('hyperx_saved_login_user', enteredUser);
+            localStorage.setItem('hyperx_saved_login_pass', enteredPass);
+          } else {
+            localStorage.removeItem('hyperx_saved_login_user');
+            localStorage.removeItem('hyperx_saved_login_pass');
+          }
+
+          sessionStorage.setItem('hyperx_logged_in', 'true');
+          sessionStorage.setItem('hyperx_user_role', 'admin');
+          sessionStorage.removeItem('hyperx_current_reseller');
+          localStorage.setItem('hyperx_logged_in', 'true');
+          localStorage.setItem('hyperx_user_role', 'admin');
+          localStorage.removeItem('hyperx_current_reseller');
+
+          try {
+            const apiEndpoint = window.location.pathname.includes('/admin/') ? 'api.php' : '/api';
+            const authResp = await fetch(apiEndpoint, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ action: 'session_auth', username: enteredUser, password: enteredPass })
+            });
+            if (authResp.ok) {
+              const authRes = await authResp.json();
+              if (authRes && authRes.token) {
+                sessionStorage.setItem('hyperx_auth_token', authRes.token);
+                localStorage.setItem('hyperx_auth_token', authRes.token);
+              }
+            }
+          } catch (_) {}
+
+          window.location.href = 'dashboard.html';
+          return;
+        }
+
+        const matchedReseller = storedResellers.find(r => 
+          (r.username && r.username.toLowerCase() === enteredUser.toLowerCase()) || 
+          (r.email && r.email.toLowerCase() === enteredUser.toLowerCase())
+        );
+
+        if (matchedReseller) {
+          const serverR = (serverData && Array.isArray(serverData.tx99_resellers)) ? serverData.tx99_resellers.find(sr => 
+            (sr.username && sr.username.toLowerCase() === enteredUser.toLowerCase()) ||
+            (sr.id === matchedReseller.id)
+          ) : null;
+
+          if (serverR) {
+            Object.assign(matchedReseller, serverR);
+          }
+
+          const passMatch = (enteredPass === matchedReseller.password) ||
+                            (serverR && enteredPass === serverR.password);
+
+          if (!passMatch) {
+            resetBtn();
+            if (errBox) {
+              errBox.style.display = 'block';
+              errBox.innerHTML = 'Incorrect password. Please verify your credentials.';
+            }
+            return;
+          }
+
+          if (matchedReseller.status === 'Suspended') {
+            resetBtn();
+            if (errBox) {
+              errBox.style.display = 'block';
+              errBox.innerHTML = 'Account suspended. Contact administrator.';
+            }
+            return;
+          }
+
+          resetBtn();
+          const rememberCheckbox = document.getElementById('remember_me');
+          pendingResellerAuth = {
+            reseller: matchedReseller,
+            enteredPass: enteredPass,
+            remember: (rememberCheckbox && rememberCheckbox.checked)
+          };
+
+          const authForm = document.getElementById('hyperx-auth-form');
+          const twofaForm = document.getElementById('hyperx-2fa-form');
+          const twofaErr = document.getElementById('twofa-error-msg');
+          if (twofaErr) twofaErr.style.display = 'none';
+
+          if (!matchedReseller.totpSecret) {
+            matchedReseller.totpSecret = generateTOTPSecret();
+            storedResellers = storedResellers.map(r => r.id === matchedReseller.id ? matchedReseller : r);
+            localStorage.setItem('tx99_resellers', JSON.stringify(storedResellers));
+            fetch('/api/data', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ tx99_resellers: storedResellers })
+            }).catch(() => {});
+          }
+
+          const setupDoneKey = 'hyperx_2fa_setup_done_' + matchedReseller.id;
+          const isSetupDone = (matchedReseller.twofa_setup_done === true) || 
+                              (localStorage.getItem(setupDoneKey) === 'true');
+
+          if (authForm) authForm.style.display = 'none';
+          if (twofaForm) twofaForm.style.display = 'block';
+
+          if (!isSetupDone) {
+            showTOTPSetupStep();
+          } else {
+            showTOTPVerifyStep();
+          }
+
+          showToast('Two-Factor Verification', `Verification required for ${matchedReseller.username}.`);
+          return;
+        }
+
+        resetBtn();
+        if (errBox) {
+          errBox.style.display = 'block';
+          errBox.innerHTML = 'Invalid username or password. Please try again.';
+        }
+      } catch (err) {
+        console.error('Login error:', err);
+        resetBtn();
+        if (errBox) {
+          errBox.style.display = 'block';
+          errBox.innerHTML = 'An unexpected error occurred. Please try again.';
+        }
       }
     }
-  }
 
-    // ══════════════════════════════════════════════════
-    // TOTP ENGINE (RFC 6238 / Google Authenticator)
-    // ══════════════════════════════════════════════════
+    // RFC 6238 TOTP Engine
     let pendingResellerAuth = null;
-    let totpCountdownTimer = null;
 
-    // Base32 decode (standard RFC 4648 base32)
     function base32Decode(encoded) {
       const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
       encoded = encoded.toUpperCase().replace(/=+$/, '');
@@ -2518,16 +1097,8 @@
       return new Uint8Array(output);
     }
 
-    // HMAC-SHA1 using SubtleCrypto (async) → we use sync XOR-based fallback for speed
-    // Lightweight pure-JS HMAC-SHA1
     function SHA1(msg) {
       function rotl(n, s) { return (n << s) | (n >>> (32 - s)); }
-      function toWords(arr) {
-        const w = [];
-        for (let i = 0; i < arr.length * 8; i += 8)
-          w[i >> 5] |= (arr[i / 8] & 0xFF) << (24 - i % 32);
-        return w;
-      }
       let h0=0x67452301,h1=0xEFCDAB89,h2=0x98BADCFE,h3=0x10325476,h4=0xC3D2E1F0;
       const msgLen = msg.length * 8;
       msg.push(0x80);
@@ -2565,42 +1136,6 @@
       const ipad = k.map(b => b ^ 0x36);
       const opad = k.map(b => b ^ 0x5C);
       return SHA1([...opad, ...SHA1([...ipad, ...Array.from(msg)])]);
-    }
-
-    function generateTOTP(secret, timeStep) {
-      const key = base32Decode(secret.replace(/\s/g, ''));
-      const t = Math.floor(timeStep / 30);
-      const msg = new Uint8Array(8);
-      for (let i = 7; i >= 0; i--) { msg[i] = t & 0xFF; t = Math.floor(t / 256); } // eslint-disable-line
-      // Fix: properly pack 64-bit counter
-      const counter = new Uint8Array(8);
-      let tc = Math.floor(Date.now() / 1000 / 30);
-      for (let i = 7; i >= 0; i--) { counter[i] = tc & 0xFF; tc = Math.floor(tc / 256); }
-      const hash = hmacSHA1(key, counter);
-      const offset = hash[hash.length - 1] & 0x0F;
-      const code = ((hash[offset] & 0x7F) << 24 |
-                    (hash[offset+1] & 0xFF) << 16 |
-                    (hash[offset+2] & 0xFF) << 8 |
-                    (hash[offset+3] & 0xFF)) % 1000000;
-      return String(code).padStart(6, '0');
-    }
-
-    function getCurrentTOTP(secret) {
-      try {
-        const key = base32Decode(secret.replace(/\s/g, ''));
-        let tc = Math.floor(Date.now() / 1000 / 30);
-        const counter = new Uint8Array(8);
-        for (let i = 7; i >= 0; i--) { counter[i] = tc & 0xFF; tc = Math.floor(tc / 256); }
-        const hash = hmacSHA1(key, counter);
-        const offset = hash[hash.length - 1] & 0x0F;
-        const code = ((hash[offset] & 0x7F) << 24 |
-                      (hash[offset+1] & 0xFF) << 16 |
-                      (hash[offset+2] & 0xFF) << 8 |
-                      (hash[offset+3] & 0xFF)) % 1000000;
-        return String(code).padStart(6, '0');
-      } catch (e) {
-        return '000000';
-      }
     }
 
     function generateTOTPSecret() {
@@ -2652,7 +1187,6 @@
       if (verifyDiv) verifyDiv.style.display = 'block';
       if (twofaErr) twofaErr.style.display = 'none';
 
-      // Clear unified single OTP input and focus
       const singleInput = document.getElementById('twofa-single-code');
       if (singleInput) {
         singleInput.value = '';
@@ -2675,13 +1209,12 @@
       if (enteredCode.length !== 6) {
         if (twofaErr) {
           twofaErr.style.display = 'block';
-          twofaErr.innerHTML = 'Please enter all 6 digits from your Google Authenticator app.';
+          twofaErr.innerHTML = 'Please enter all 6 digits from Google Authenticator.';
         }
         if (singleInput) singleInput.focus();
         return;
       }
 
-      // Validate against TOTP (support clock drift up to +/-2 windows)
       const rawSecret = (pendingResellerAuth && pendingResellerAuth.reseller && pendingResellerAuth.reseller.totpSecret) ? pendingResellerAuth.reseller.totpSecret : 'JBSWY3DPEHPK3PXP';
       const secret = rawSecret.replace(/\s/g, '').toUpperCase();
       const now = Math.floor(Date.now() / 1000);
@@ -2703,24 +1236,19 @@
       if (!valid) {
         if (twofaErr) {
           twofaErr.style.display = 'block';
-          twofaErr.innerHTML = '❌ Invalid code! Enter the 6-digit code currently shown in Google Authenticator.';
+          twofaErr.innerHTML = 'Invalid code. Enter the 6-digit code currently shown in Google Authenticator.';
         }
         if (singleInput) {
-          singleInput.classList.remove('shake-anim');
-          void singleInput.offsetWidth;
-          singleInput.classList.add('shake-anim');
           singleInput.value = '';
           singleInput.focus();
         }
         return;
       }
 
-      // Mark setup as done — localStorage (this device) + server (all devices)
       const setupDoneKey2 = 'hyperx_2fa_setup_done_' + pendingResellerAuth.reseller.id;
       localStorage.setItem(setupDoneKey2, 'true');
       pendingResellerAuth.reseller.twofa_setup_done = true;
 
-      // Update in localStorage and cloud server
       try {
         let localR = JSON.parse(localStorage.getItem('tx99_resellers')) || [];
         localR = localR.map(r => (r.id === pendingResellerAuth.reseller.id || (r.username && r.username.toLowerCase() === pendingResellerAuth.reseller.username.toLowerCase())) ? { ...r, twofa_setup_done: true, totpSecret: pendingResellerAuth.reseller.totpSecret } : r);
@@ -2732,13 +1260,12 @@
         }).catch(() => {});
       } catch (_) {}
 
-      if (totpCountdownTimer) clearInterval(totpCountdownTimer);
       if (twofaErr) twofaErr.style.display = 'none';
       const btn2fa = document.getElementById('btn-submit-2fa');
       if (btn2fa) {
-        btn2fa.style.background = '#10b981';
+        btn2fa.style.background = '#4cc38a';
         btn2fa.disabled = true;
-        btn2fa.innerHTML = '<span>✓</span> <span>VERIFIED! ENTERING DASHBOARD...</span>';
+        btn2fa.innerHTML = '<span>Verified</span>';
       }
 
       if (pendingResellerAuth.remember) {
@@ -2756,7 +1283,6 @@
       localStorage.setItem('hyperx_user_role', 'reseller');
       localStorage.setItem('hyperx_current_reseller', JSON.stringify(pendingResellerAuth.reseller));
 
-      // Request and await server-signed session token for reseller
       try {
         const apiEndpoint = window.location.pathname.includes('/admin/') ? 'api.php' : '/api';
         const authResp = await fetch(apiEndpoint, {
@@ -2773,7 +1299,6 @@
         }
       } catch (_) {}
 
-      // Persist twofa_setup_done to server so other phones skip QR setup
       try {
         const syncPromise = (async () => {
           const syncResp = await fetch('/api/data', { cache: 'no-store' });
@@ -2795,17 +1320,15 @@
           }
         })();
 
-        // Wait up to 2 seconds for cloud sync to finish, then redirect
         const timeoutPromise = new Promise(resolve => setTimeout(resolve, 2000));
         await Promise.race([syncPromise, timeoutPromise]);
-      } catch (syncErr) { /* non-critical */ }
+      } catch (_) {}
 
       window.location.href = 'dashboard.html';
     }
 
     function cancel2FA() {
       pendingResellerAuth = null;
-      if (totpCountdownTimer) clearInterval(totpCountdownTimer);
       const authForm = document.getElementById('hyperx-auth-form');
       const twofaForm = document.getElementById('hyperx-2fa-form');
       const twofaErr = document.getElementById('twofa-error-msg');
@@ -2822,14 +1345,7 @@
       if (!textToCopy) return;
 
       const onCopySuccess = () => {
-        const btn = document.getElementById('btn-copy-totp-secret');
-        if (btn) {
-          btn.innerHTML = '<span style="color:#10b981;font-weight:700;">✓</span>';
-          setTimeout(() => {
-            btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
-          }, 1800);
-        }
-        showToast('Secret Copied', '2FA manual key copied to clipboard!', '📋');
+        showToast('Secret Copied', '2FA manual key copied to clipboard.');
       };
 
       if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -2877,44 +1393,6 @@
       }
     }
 
-    function focusLoginForm() {
-      const emailInput = document.getElementById('email');
-      if (emailInput) {
-        emailInput.focus();
-        emailInput.select();
-      }
-      showToast('HYPERX Portal', 'Enter your Administrator or Reseller credentials below to sign in.', '⚡');
-    }
-
-    function showFeaturesToast() {
-      showToast('HYPERX Features', 'Hardware ID Spoofer • Kernel-Level Bypass • Instant Key Generator • 24/7 Uptime', '⚡');
-    }
-
-    function showDocsToast() {
-      showToast('Developer Documentation', 'REST API v2.4 • Webhook Integration • SDK Guides & C++ Sample Headers', '📚');
-    }
-
-    function loginWithDiscord() {
-      showToast('Discord Gateway', 'Connecting to HYPERX Authentication Bot. Use Fill Admin or Fill Reseller to test portal access.', '🎮');
-    }
-
-    function showForgotPasswordModal() {
-      showToast('Password Recovery', 'Please contact Root Administrator (HYPER X) on Telegram/Discord to reset credentials.', '🔐');
-    }
-
-    function showRegisterModal() {
-      showToast('Account Registration', 'HYPERX is private. Contact Administrator to request reseller credentials.', '📝');
-    }
-
-    function showStatusToast() {
-      showToast('System Status: OPERATIONAL', 'KeyAuth API: Online (24ms) • SSL: HMAC-SHA256 • All Systems Active', '✅');
-    }
-
-    function showSupportToast() {
-      showToast('HYPERX Support Desk', 'For assistance or quota requests, contact HYPER X official support channel.', '💬');
-    }
-
-    // Autofill saved credentials if user saved them; otherwise show clean placeholders
     document.addEventListener('DOMContentLoaded', () => {
       setupOTPInputs();
       const email = document.getElementById('email');
@@ -2926,7 +1404,6 @@
 
       if (savedUser) {
         const creds = getAdminCredentials();
-        // If saved user is root admin
         if (
           savedUser.toLowerCase() === creds.user.toLowerCase() || 
           savedUser.toLowerCase() === 'hyperm575@gmail.com' || 
@@ -2935,7 +1412,6 @@
           if (email) email.value = creds.user;
           if (pass) pass.value = creds.pass;
         } else {
-          // If saved user is a reseller, fetch their latest saved password
           try {
             const storedResellers = JSON.parse(localStorage.getItem('tx99_resellers')) || [];
             const rMatch = storedResellers.find(r => 
@@ -2955,13 +1431,9 @@
           }
         }
         if (rememberCheckbox) rememberCheckbox.checked = true;
-      } else {
-        if (email) email.value = '';
-        if (pass) pass.value = '';
       }
     });
 
-    // Background prefetch so login across any device/phone is 100% instant
     if (typeof window !== 'undefined') {
       window.addEventListener('load', () => {
         setTimeout(() => {

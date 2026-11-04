@@ -1,4 +1,4 @@
-﻿/**
+/**
  * HYPERM SHOP // LICENSE KEYS V2 ENGINE & CONTROLLER
  * Dedicated KeyAuth License V2 Configuration & Slot Integration
  * 
@@ -306,8 +306,8 @@
         let hwidDisplay = '';
         if (!isLockOn) {
           hwidDisplay = `
-            <span class="badge" style="background:rgba(239,68,68,0.12);color:#f87171;border:1px solid rgba(239,68,68,0.3);padding:3px 8px;border-radius:6px;font-size:11px;display:inline-flex;align-items:center;gap:4px;" title="HWID Lock is OFF. Multiple devices allowed.">
-              <span>🔓 Lock OFF</span>
+            <span class="badge" style="background:rgba(239,68,68,0.12);color:#ef4444;border:1px solid rgba(239,68,68,0.3);padding:3px 8px;border-radius:4px;font-size:11px;display:inline-flex;align-items:center;gap:4px;" title="HWID Lock is disabled. Multiple devices allowed.">
+              <span>Lock disabled</span>
               ${isHwidBound ? `<span style="color:#94a3b8;font-size:10px;">(${lic.hwid.substring(0, 8)}...)</span>` : ''}
             </span>
           `;
@@ -315,43 +315,54 @@
           const shortHwid = lic.hwid.length > 16 ? lic.hwid.substring(0, 14) + '...' : lic.hwid;
           hwidDisplay = `
             <div style="display:inline-flex;align-items:center;gap:5px;">
-              <span class="badge" style="background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(16,185,129,0.3);padding:3px 8px;border-radius:6px;font-size:11px;font-family:var(--font-mono);cursor:pointer;" onclick="inspectKeyV2Live('${lic.key}')" title="Bound Device: ${lic.hwid} (Click to inspect)">
-                📱 ${shortHwid}
+              <span class="badge" style="background:rgba(76,195,138,0.12);color:#4cc38a;border:1px solid rgba(76,195,138,0.3);padding:3px 8px;border-radius:4px;font-size:11px;font-family:var(--font-mono);cursor:pointer;" onclick="inspectKeyV2Live('${lic.key}')" title="Bound Device: ${lic.hwid} (Click to inspect)">
+                ${shortHwid}
               </span>
-              <button type="button" onclick="copyText('${lic.hwid}')" class="btn-copy-inline" title="Copy Device HWID">📋</button>
+              <button type="button" onclick="copyText('${lic.hwid}')" class="btn-copy-inline" title="Copy Device HWID">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              </button>
             </div>
           `;
         } else {
           hwidDisplay = `
-            <span class="badge" style="background:rgba(245,158,11,0.15);color:#fbbf24;border:1px solid rgba(245,158,11,0.3);padding:3px 8px;border-radius:6px;font-size:11px;display:inline-flex;align-items:center;gap:4px;" title="Awaiting first login on Android APK">
-              <span>⚠️ Not Bound</span>
+            <span class="badge" style="background:rgba(245,158,11,0.12);color:#fbbf24;border:1px solid rgba(245,158,11,0.3);padding:3px 8px;border-radius:4px;font-size:11px;display:inline-flex;align-items:center;gap:4px;" title="Awaiting first login">
+              <span>Not bound</span>
             </span>
           `;
         }
 
         const actionButtons = `
           <div style="display:flex;gap:5px;align-items:center;justify-content:center;white-space:nowrap;">
-            <button type="button" onclick="inspectKeyV2Live('${lic.key}')" class="btn-row-action" title="Inspect Key & Full Device HWID">🔍</button>
-            <button type="button" onclick="resetHwidV2Live('${lic.key}')" class="btn-row-action" title="Reset Bound HWID">🔄</button>
-            <button type="button" onclick="toggleBanV2Live('${lic.key}', '${lic.status}')" class="btn-row-action" style="${isBanned ? 'color:#10b981;border-color:rgba(16,185,129,0.35);' : 'color:#f59e0b;border-color:rgba(245,158,11,0.35);'}" title="${isBanned ? 'Unban Key' : 'Ban Key'}">${isBanned ? '🔓' : '🚫'}</button>
-            <button type="button" onclick="deleteKeyV2Live('${lic.key}')" class="btn-row-action" style="color:#ef4444;border-color:rgba(239,68,68,0.35);" title="Delete Key">🗑️</button>
+            <button type="button" onclick="inspectKeyV2Live('${lic.key}')" class="btn-row-action" title="Inspect Key & Full Device HWID">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </button>
+            <button type="button" onclick="resetHwidV2Live('${lic.key}')" class="btn-row-action" title="Reset Bound HWID">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+            </button>
+            <button type="button" onclick="toggleBanV2Live('${lic.key}', '${lic.status}')" class="btn-row-action" style="${isBanned ? 'color:#4cc38a;border-color:rgba(76,195,138,0.3);' : 'color:#f59e0b;border-color:rgba(245,158,11,0.3);'}" title="${isBanned ? 'Unban Key' : 'Ban Key'}">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
+            </button>
+            <button type="button" onclick="deleteKeyV2Live('${lic.key}')" class="btn-row-action" style="color:#ef4444;border-color:rgba(239,68,68,0.3);" title="Delete Key">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            </button>
           </div>
         `;
 
         return `
           <tr>
-            <td class="col-license-key" style="font-family:var(--font-mono);font-weight:700;color:#fff;white-space:nowrap;">
-              <span style="display:inline-flex;align-items:center;gap:4px;white-space:nowrap;">
-                <span style="color:#10b981;">🛡️</span>
+            <td class="col-license-key" style="font-family:var(--font-mono);font-weight:600;color:#fff;white-space:nowrap;">
+              <span style="display:inline-flex;align-items:center;gap:6px;white-space:nowrap;">
                 <span style="letter-spacing:0.02em;">${lic.key}</span>
-                <button onclick="copyText('${lic.key}')" class="btn-copy-inline" title="Copy Key">📋</button>
+                <button onclick="copyText('${lic.key}')" class="btn-copy-inline" title="Copy Key">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                </button>
               </span>
             </td>
             <td style="white-space:nowrap;">
-              <span style="font-family:var(--font-mono);color:#34d399;display:block;font-weight:600;">${lic.pkg || 'AIMKILL PVT V2'}</span>
+              <span style="font-family:var(--font-mono);color:var(--text-main);display:block;font-weight:500;">${lic.pkg || 'AIMKILL PVT V2'}</span>
               <span style="font-size:10.5px;color:var(--text-dim);">${lic.app || KEYAUTH_V2_CONFIG.appName}</span>
             </td>
-            <td class="col-user col-mobile-hide" style="color:#cbd5e1;font-weight:600;white-space:nowrap;">${lic.user || 'Client_V2'}</td>
+            <td class="col-user col-mobile-hide" style="color:#cbd5e1;font-weight:500;white-space:nowrap;">${lic.user || 'Client_V2'}</td>
             <td class="col-hwid col-mobile-hide" style="white-space:nowrap;">${hwidDisplay}</td>
             <td style="font-family:var(--font-mono);font-size:11px;color:#e2e8f0;white-space:nowrap;">${lic.expiry || 'Lifetime Access'}</td>
             <td style="white-space:nowrap;">${statusBadge}</td>
@@ -398,7 +409,9 @@
             </div>
             <div class="mobile-lic-key-row">
               <span class="mobile-lic-key-val">${lic.key}</span>
-              <button class="mobile-lic-copy-btn" onclick="copyText('${lic.key}')" title="Copy Key">📋</button>
+              <button class="mobile-lic-copy-btn" onclick="copyText('${lic.key}')" title="Copy Key">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              </button>
             </div>
             <div class="mobile-lic-meta-grid">
               <div class="mobile-lic-meta-item">
@@ -411,7 +424,7 @@
               </div>
               <div class="mobile-lic-meta-item">
                 <span class="meta-label">HWID Lock</span>
-                <span class="meta-val" style="color:${isLockOn ? '#10b981' : '#f87171'};font-weight:700;">${isLockOn ? '🔒 ON' : '🔓 OFF'}</span>
+                <span class="meta-val" style="color:${isLockOn ? '#4cc38a' : '#ef4444'};font-weight:600;">${isLockOn ? 'Enabled' : 'Disabled'}</span>
               </div>
               <div class="mobile-lic-meta-item">
                 <span class="meta-label">Duration</span>
@@ -419,10 +432,10 @@
               </div>
             </div>
             <div class="mobile-lic-actions">
-              <button class="mobile-btn-action" onclick="inspectKeyV2Live('${lic.key}')" title="Inspect">🔍 Inspect</button>
-              <button class="mobile-btn-action" onclick="resetHwidV2Live('${lic.key}')" title="Reset HWID">🔄 HWID</button>
-              <button class="mobile-btn-action ${isBanned ? 'btn-unban' : 'btn-ban'}" onclick="toggleBanV2Live('${lic.key}', '${lic.status}')" title="${isBanned ? 'Unban' : 'Ban'}">${isBanned ? '🔓 Unban' : '🚫 Ban'}</button>
-              <button class="mobile-btn-action btn-del" onclick="deleteKeyV2Live('${lic.key}')" title="Delete">🗑️ Del</button>
+              <button class="mobile-btn-action" onclick="inspectKeyV2Live('${lic.key}')" title="Inspect">Inspect</button>
+              <button class="mobile-btn-action" onclick="resetHwidV2Live('${lic.key}')" title="Reset HWID">HWID</button>
+              <button class="mobile-btn-action ${isBanned ? 'btn-unban' : 'btn-ban'}" onclick="toggleBanV2Live('${lic.key}', '${lic.status}')" title="${isBanned ? 'Unban' : 'Ban'}">${isBanned ? 'Unban' : 'Ban'}</button>
+              <button class="mobile-btn-action btn-del" onclick="deleteKeyV2Live('${lic.key}')" title="Delete">Delete</button>
             </div>
           </div>
         `;
@@ -473,12 +486,12 @@
     if (role === 'reseller') {
       currentReseller = typeof window.getCurrentReseller === 'function' ? window.getCurrentReseller() : null;
       if (!currentReseller) {
-        alert('⚠️ Reseller session error. Please log in again.');
+        alert('Reseller session error. Please log in again.');
         return;
       }
 
       if (count > currentReseller.balance) {
-        alert(`⚠️ Insufficient Key Credits!\nYou only have ${currentReseller.balance} keys remaining in your balance, but you requested ${count}.`);
+        alert(`Insufficient Key Credits!\nYou only have ${currentReseller.balance} keys remaining in your balance, but you requested ${count}.`);
         return;
       }
 
@@ -486,7 +499,7 @@
         const allowedPkgs = window.getResellerAllowedPackages();
         const hasPermission = allowedPkgs.some(p => p.package_name === pkgName || p.package_id === pkgSelect?.value);
         if (!hasPermission) {
-          alert(`⚠️ Access Denied: Your reseller account does not have permission for panel "${pkgName}".`);
+          alert(`Access Denied: Your reseller account does not have permission for panel "${pkgName}".`);
           return;
         }
       }
@@ -498,7 +511,7 @@
 
     if (btn) {
       btn.disabled = true;
-      btn.innerHTML = '<span>⏳</span> Generating V2 Keys...';
+      btn.innerHTML = '<span>Generating V2 Keys...</span>';
     }
 
     const generatedKeys = [];
@@ -579,17 +592,17 @@
 
     if (btn) {
       btn.disabled = false;
-      btn.innerHTML = 'Generate V2 Keys Now ⚡';
+      btn.innerHTML = 'Generate V2 Keys Now';
     }
 
     // Show generated keys modal
     window.lastGeneratedKeys = generatedKeys;
     const listEl = document.getElementById('generated-keys-list');
     if (listEl) {
-      listEl.innerHTML = generatedKeys.map(k => `<div class="key-pill-display" onclick="copyText('${k}')">${k} 📋</div>`).join('');
+      listEl.innerHTML = generatedKeys.map(k => `<div class="key-pill-display" onclick="copyText('${k}')">${k}</div>`).join('');
     }
     const modalGenTitle = document.getElementById('generated-keys-title');
-    if (modalGenTitle) modalGenTitle.textContent = `🔑 ${count} V2 Key(s) Generated Successfully`;
+    if (modalGenTitle) modalGenTitle.textContent = `${count} V2 Key(s) Generated Successfully`;
     if (typeof window.openModal === 'function') {
       window.openModal('modal-generated-keys');
     }
@@ -601,7 +614,7 @@
     }
 
     if (typeof window.showToast === 'function') {
-      window.showToast('KeyAuth V2 Generated', `${count} V2 Key(s) generated [HWID Lock: ${hwidLock ? 'ON' : 'OFF'}]`, '✅');
+      window.showToast('KeyAuth V2 Generated', `${count} V2 Key(s) generated [HWID Lock: ${hwidLock ? 'ON' : 'OFF'}]`);
     }
 
     // Permanent cloud persistence
@@ -624,7 +637,7 @@
 
   // Toggle HWID Lock (ON / OFF) for V2 Key
   window.toggleHwidLockV2Live = async function (key) {
-    if (!canAccessKeyV2(key)) { alert('⚠️ Access Denied: You can only manage your own V2 license keys.'); return; }
+    if (!canAccessKeyV2(key)) { alert('Access Denied: You can only manage your own V2 license keys.'); return; }
     if (!window.state || !Array.isArray(window.state.licenses_v2)) return;
     const lic = window.state.licenses_v2.find(l => l.key.toLowerCase() === key.toLowerCase());
     if (lic) {
@@ -635,7 +648,7 @@
 
       const newStatus = lic.hwid_lock ? 'ENABLED (Locked to Device)' : 'DISABLED (Bypass ON)';
       if (typeof window.showToast === 'function') {
-        window.showToast('HWID Lock ' + (lic.hwid_lock ? 'ON' : 'OFF'), `HWID Lock is now ${newStatus} for "${key}".`, lic.hwid_lock ? '🔒' : '🔓');
+        window.showToast('HWID Lock ' + (lic.hwid_lock ? 'ON' : 'OFF'), `HWID Lock is now ${newStatus} for "${key}".`);
       }
       if (window.state && typeof window.state.addLog === 'function') {
         window.state.addLog('TOGGLE_HWID_LOCK_V2', `Set HWID Lock to ${lic.hwid_lock ? 'ON' : 'OFF'} for ${key}`);
@@ -656,7 +669,7 @@
 
     if (!key) {
       if (typeof window.showToast === 'function') {
-        window.showToast('Key Required', 'Please enter a valid V2 License Key first.', '⚠️');
+        window.showToast('Key Required', 'Please enter a valid V2 License Key first.');
       }
       return;
     }
@@ -678,12 +691,12 @@
 
   // Inspect Key Details for V2 (Shows Full Device HWID + Lock Switch)
   window.inspectKeyV2Live = function (key) {
-    if (!canAccessKeyV2(key)) { alert('⚠️ Access Denied: You can only inspect your own V2 license keys.'); return; }
+    if (!canAccessKeyV2(key)) { alert('Access Denied: You can only inspect your own V2 license keys.'); return; }
     if (!window.state || !Array.isArray(window.state.licenses_v2)) return;
     const lic = window.state.licenses_v2.find(l => l.key.toLowerCase() === key.toLowerCase());
     if (!lic) {
       if (typeof window.showToast === 'function') {
-        window.showToast('Key Not Found', `No V2 license found matching "${key}".`, '⚠️');
+        window.showToast('Key Not Found', `No V2 license found matching "${key}".`);
       }
       return;
     }
@@ -699,7 +712,7 @@
           <div style="grid-column:span 2;background:#090d16;padding:12px;border-radius:8px;border:1px solid #1a2235;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
               <span style="color:#64748b;font-size:10px;font-weight:700;">KEYAUTH V2 LICENSE KEY</span>
-              <button onclick="copyText('${lic.key}')" class="btn-copy-inline" style="background:rgba(16,185,129,0.15);border:1px solid #10b981;color:#10b981;padding:2px 8px;border-radius:4px;font-size:11px;">📋 Copy Key</button>
+              <button onclick="copyText('${lic.key}')" class="btn-copy-inline" style="background:rgba(16,185,129,0.15);border:1px solid #10b981;color:#10b981;padding:2px 8px;border-radius:4px;font-size:11px;">Copy Key</button>
             </div>
             <span style="font-family:var(--font-mono);font-size:14px;color:#10b981;font-weight:700;">${lic.key}</span>
           </div>
@@ -708,10 +721,10 @@
           <div style="grid-column:span 2;background:#090d16;padding:12px;border-radius:8px;border:1px solid ${isBound ? 'rgba(16,185,129,0.3)' : '#1a2235'};">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
               <span style="color:#64748b;font-size:10px;font-weight:700;">BOUND DEVICE HARDWARE ID (HWID)</span>
-              ${isBound ? `<button onclick="copyText('${lic.hwid}')" style="background:rgba(56,189,248,0.15);border:1px solid #38bdf8;color:#38bdf8;border-radius:4px;padding:2px 8px;font-size:11px;cursor:pointer;">📋 Copy Device HWID</button>` : ''}
+              ${isBound ? `<button onclick="copyText('${lic.hwid}')" style="background:rgba(56,189,248,0.15);border:1px solid #38bdf8;color:#38bdf8;border-radius:4px;padding:2px 8px;font-size:11px;cursor:pointer;">Copy Device HWID</button>` : ''}
             </div>
             <span style="font-family:var(--font-mono);font-size:12px;color:${isBound ? '#38bdf8' : '#f59e0b'};word-break:break-all;font-weight:600;">
-              ${isBound ? lic.hwid : '⚠️ Not Bound (Device has not logged in yet)'}
+              ${isBound ? lic.hwid : 'Not Bound (Device has not logged in yet)'}
             </span>
           </div>
 
@@ -720,11 +733,11 @@
             <div>
               <span style="color:#64748b;display:block;font-size:10px;font-weight:700;">HWID LOCK STATUS</span>
               <span style="color:${isLockOn ? '#10b981' : '#f87171'};font-weight:700;font-size:13px;">
-                ${isLockOn ? '🔒 LOCKED (Strict 1-Device Binding)' : '🔓 UNLOCKED (Multiple Devices Allowed)'}
+                ${isLockOn ? 'LOCKED (Strict 1-Device Binding)' : 'UNLOCKED (Multiple Devices Allowed)'}
               </span>
             </div>
             <button type="button" onclick="toggleHwidLockV2Live('${lic.key}');inspectKeyV2Live('${lic.key}');" style="padding:6px 14px;font-size:11.5px;font-weight:700;border-radius:6px;cursor:pointer;background:${isLockOn ? 'rgba(239,68,68,0.15)' : 'rgba(16,185,129,0.15)'};border:1px solid ${isLockOn ? '#ef4444' : '#10b981'};color:${isLockOn ? '#ef4444' : '#10b981'};">
-              ${isLockOn ? '🔓 Turn Lock OFF' : '🔒 Turn Lock ON'}
+              ${isLockOn ? 'Turn Lock OFF' : 'Turn Lock ON'}
             </button>
           </div>
 
@@ -758,7 +771,7 @@
 
   // Reset HWID for V2
   window.resetHwidV2Live = function (key) {
-    if (!canAccessKeyV2(key)) { alert('⚠️ Access Denied: You can only reset your own V2 license keys.'); return; }
+    if (!canAccessKeyV2(key)) { alert('Access Denied: You can only reset your own V2 license keys.'); return; }
     if (!window.state || !Array.isArray(window.state.licenses_v2)) return;
     const lic = window.state.licenses_v2.find(l => l.key.toLowerCase() === key.toLowerCase());
     if (lic) {
@@ -768,7 +781,7 @@
       syncV2ToCloud();
 
       if (typeof window.showToast === 'function') {
-        window.showToast('HWID Reset', `Hardware ID reset to "Not Bound" for V2 key "${key}".`, '✅');
+        window.showToast('HWID Reset', `Hardware ID reset to "Not Bound" for V2 key "${key}".`);
       }
       if (window.state && typeof window.state.addLog === 'function') {
         window.state.addLog('RESET_HWID_V2', `Reset HWID for key ${key}`);
@@ -781,7 +794,7 @@
 
   // Toggle Ban for V2
   window.toggleBanV2Live = function (key, currentStatus) {
-    if (!canAccessKeyV2(key)) { alert('⚠️ Access Denied: You can only ban/unban your own V2 license keys.'); return; }
+    if (!canAccessKeyV2(key)) { alert('Access Denied: You can only ban/unban your own V2 license keys.'); return; }
     if (!window.state || !Array.isArray(window.state.licenses_v2)) return;
     const lic = window.state.licenses_v2.find(l => l.key.toLowerCase() === key.toLowerCase());
     if (lic) {
@@ -792,7 +805,7 @@
       syncV2ToCloud();
 
       if (typeof window.showToast === 'function') {
-        window.showToast(newStatus === 'banned' ? 'Key Banned' : 'Key Unbanned', `V2 Key "${key}" is now ${newStatus}.`, newStatus === 'banned' ? '🚫' : '✅');
+        window.showToast(newStatus === 'banned' ? 'Key Banned' : 'Key Unbanned', `V2 Key "${key}" is now ${newStatus}.`);
       }
       if (window.state && typeof window.state.addLog === 'function') {
         window.state.addLog('TOGGLE_BAN_V2', `${newStatus === 'banned' ? 'Banned' : 'Unbanned'} key ${key}`);
@@ -805,7 +818,7 @@
 
   // Delete V2 Key
   window.deleteKeyV2Live = function (key) {
-    if (!canAccessKeyV2(key)) { alert('⚠️ Access Denied: You can only delete your own V2 license keys.'); return; }
+    if (!canAccessKeyV2(key)) { alert('Access Denied: You can only delete your own V2 license keys.'); return; }
     if (!confirm(`Are you sure you want to permanently delete V2 License Key:\n${key}?`)) return;
     if (!window.state || !Array.isArray(window.state.licenses_v2)) return;
     window.state.licenses_v2 = window.state.licenses_v2.filter(l => l.key.toLowerCase() !== key.toLowerCase());
@@ -814,7 +827,7 @@
     syncV2ToCloud();
 
     if (typeof window.showToast === 'function') {
-      window.showToast('Key Deleted', `V2 Key "${key}" permanently deleted.`, '🗑️');
+      window.showToast('Key Deleted', `V2 Key "${key}" permanently deleted.`);
     }
     if (window.state && typeof window.state.addLog === 'function') {
       window.state.addLog('DELETE_KEY_V2', `Deleted V2 key ${key}`);

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ==========================================================================
  * HYPER X // KEYAUTH ENGINE & DASHBOARD CONTROLLER
  * Live KeyAuth API Integration (prtvshow.online / api_admin.php)
@@ -183,19 +183,18 @@ function showHyperAlert(message, options = {}) {
       <div class="hyper-dialog-card" id="hyper-dialog-card">
         <div class="hyper-dialog-header">
           <span class="hyper-dialog-badge" id="hyper-dialog-badge">Notice</span>
-          <button type="button" class="hyper-dialog-close-btn" id="hyper-dialog-close-btn" onclick="closeHyperDialog()">✕</button>
+          <button type="button" class="hyper-dialog-close-btn" id="hyper-dialog-close-btn" onclick="closeHyperDialog()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
         </div>
         <div class="hyper-dialog-body">
           <div class="hyper-dialog-icon-wrap" id="hyper-dialog-icon-wrap">
-            <span id="hyper-dialog-icon">✓</span>
+            <span id="hyper-dialog-icon"></span>
           </div>
           <h3 class="hyper-dialog-title" id="hyper-dialog-title">Notification</h3>
           <div class="hyper-dialog-msg" id="hyper-dialog-msg"></div>
           <div class="hyper-dialog-info-card" id="hyper-dialog-info-card" style="display:none;">
             <div id="hyper-dialog-kv-list"></div>
             <button type="button" class="hyper-dialog-copy-btn" id="hyper-dialog-copy-btn" onclick="copyHyperDialogCreds()">
-              <span>📋</span>
-              <span id="hyper-dialog-copy-text">Copy Credentials</span>
+              <span id="hyper-dialog-copy-text">Copy credentials</span>
             </button>
           </div>
           <div class="hyper-dialog-actions" id="hyper-dialog-actions">
@@ -415,7 +414,7 @@ function copyHyperDialogCreds() {
     const copyText = document.getElementById('hyper-dialog-copy-text');
     if (copyText) {
       const orig = copyText.textContent;
-      copyText.textContent = '✓ Copied to Clipboard!';
+      copyText.textContent = 'Copied to Clipboard!';
       setTimeout(() => { copyText.textContent = orig; }, 2000);
     }
   }).catch(() => {});
@@ -484,7 +483,7 @@ function updateAdminUI() {
   const headerAdminName = document.getElementById('header-admin-name');
   if (headerAdminName) headerAdminName.textContent = 'Owner';
   const headerAdminIcon = document.getElementById('header-admin-icon');
-  if (headerAdminIcon) headerAdminIcon.textContent = '🛡️';
+  if (headerAdminIcon) headerAdminIcon.textContent = '';
 
   const avatarLetter = document.getElementById('sidebar-avatar-letter');
   if (avatarLetter && currentAdmin.length > 0) {
@@ -595,9 +594,9 @@ function submitChangeAdminCredentials(e) {
       msgBox.style.display = 'block';
       msgBox.style.background = 'rgba(239, 68, 68, 0.2)';
       msgBox.style.color = '#ef4444';
-      msgBox.textContent = `❌ Incorrect current password! (Default: ${DEFAULT_ADMIN_PASS})`;
+      msgBox.textContent = `Incorrect current password. (Default: ${DEFAULT_ADMIN_PASS})`;
     } else {
-      alert(`❌ Incorrect current password! (Default: ${DEFAULT_ADMIN_PASS})`);
+      alert(`Incorrect current password. (Default: ${DEFAULT_ADMIN_PASS})`);
     }
     return;
   }
@@ -612,9 +611,9 @@ function submitChangeAdminCredentials(e) {
       msgBox.style.display = 'block';
       msgBox.style.background = 'rgba(239, 68, 68, 0.2)';
       msgBox.style.color = '#ef4444';
-      msgBox.textContent = '❌ New password and Confirm password do not match!';
+      msgBox.textContent = 'New password and confirm password do not match.';
     } else {
-      alert('❌ Passwords do not match!');
+      alert('New password and confirm password do not match.');
     }
     return;
   }
@@ -637,7 +636,7 @@ function submitChangeAdminCredentials(e) {
 
   updateAdminUI();
   closeModal('modal-change-admin');
-  alert(`✓ Admin Credentials Successfully Changed!\n\nNew Username: ${newUsername}\nNew Password: ${newPass}`);
+  alert(`Admin Credentials Changed Successfully\n\nNew Username: ${newUsername}\nNew Password: ${newPass}`);
 }
 
 function resetDefaultAdminCredentials() {
@@ -655,7 +654,7 @@ function resetDefaultAdminCredentials() {
 
   updateAdminUI();
   closeModal('modal-change-admin');
-  alert('✓ Credentials reset to default:\nUsername: HYPER X\nPassword: admin123');
+  alert('Credentials reset to default:\nUsername: HYPER X\nPassword: admin123');
 }
 
 const DEFAULT_APP_ID = "9f087d585fbd666572fc24b7";
@@ -930,7 +929,7 @@ function updateDashboardStatsUI() {
         const headerAdminName = document.getElementById('header-admin-name');
         if (headerAdminName) headerAdminName.textContent = 'Reseller';
         const headerAdminIcon = document.getElementById('header-admin-icon');
-        if (headerAdminIcon) headerAdminIcon.textContent = '👤';
+        if (headerAdminIcon) headerAdminIcon.textContent = '';
         if (elRemaining) elRemaining.textContent = balance.toLocaleString();
         const dashQuotaNum = document.getElementById('dash-welcome-quota-num');
         if (dashQuotaNum) dashQuotaNum.textContent = balance.toLocaleString();
@@ -999,7 +998,7 @@ function updateDashboardStatsUI() {
   const headerAdminName = document.getElementById('header-admin-name');
   if (headerAdminName) headerAdminName.textContent = 'Owner';
   const headerAdminIcon = document.getElementById('header-admin-icon');
-  if (headerAdminIcon) headerAdminIcon.textContent = '🛡️';
+  if (headerAdminIcon) headerAdminIcon.textContent = '';
 
   // Update Summary Cards for Root Admin
   if (elCreated) elCreated.textContent = state.stats.keys_created;
@@ -1244,7 +1243,7 @@ window.onPackageSelectChange = onPackageSelectChange;
 function switchTab(tabId) {
   const role = getUserRole();
   if (role === 'reseller' && (tabId === 'resellers' || tabId === 'transfers' || tabId === 'licenses-v2')) {
-    alert('⛔ Access Denied: Reseller accounts cannot access Reseller Management. This section is restricted to the Root Owner.');
+    alert('Access Denied: Reseller accounts cannot access Reseller Management. This section is restricted to the Root Owner.');
     tabId = 'licenses';
   }
 
@@ -1399,20 +1398,29 @@ function renderLicensesTable() {
       const isBanned = lic.status === 'banned';
       const actionButtons = `
         <div style="display:flex;gap:6px;align-items:center;justify-content:center;white-space:nowrap;">
-          <button type="button" onclick="inspectKeyLive('${lic.key}')" class="btn-row-action" title="Inspect Key Info">🔍</button>
-          <button type="button" onclick="resetHwidLive('${lic.key}')" class="btn-row-action" title="Reset HWID">🔄</button>
-          <button type="button" onclick="toggleBanLive('${lic.key}', '${lic.status}')" class="btn-row-action" style="${isBanned ? 'color:#10b981;border-color:rgba(16,185,129,0.35);' : 'color:#f59e0b;border-color:rgba(245,158,11,0.35);'}" title="${isBanned ? 'Unban Key' : 'Ban Key'}">${isBanned ? '🔓' : '🚫'}</button>
-          <button type="button" onclick="deleteKeyLive('${lic.key}')" class="btn-row-action" style="color:#ef4444;border-color:rgba(239,68,68,0.35);" title="Delete Key">🗑️</button>
+          <button type="button" onclick="inspectKeyLive('${lic.key}')" class="btn-row-action" title="Inspect Key Info">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          </button>
+          <button type="button" onclick="resetHwidLive('${lic.key}')" class="btn-row-action" title="Reset HWID">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+          </button>
+          <button type="button" onclick="toggleBanLive('${lic.key}', '${lic.status}')" class="btn-row-action" style="${isBanned ? 'color:#4cc38a;border-color:rgba(76,195,138,0.3);' : 'color:#f59e0b;border-color:rgba(245,158,11,0.3);'}" title="${isBanned ? 'Unban Key' : 'Ban Key'}">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
+          </button>
+          <button type="button" onclick="deleteKeyLive('${lic.key}')" class="btn-row-action" style="color:#ef4444;border-color:rgba(239,68,68,0.3);" title="Delete Key">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+          </button>
         </div>
       `;
 
       return `
         <tr>
-          <td class="col-license-key" style="font-family:var(--font-mono);font-weight:700;color:#fff;white-space:nowrap;">
-            <span style="display:inline-flex;align-items:center;gap:4px;white-space:nowrap;">
-              <span style="color:#00f0ff;">🔑</span>
+          <td class="col-license-key" style="font-family:var(--font-mono);font-weight:600;color:#fff;white-space:nowrap;">
+            <span style="display:inline-flex;align-items:center;gap:6px;white-space:nowrap;">
               <span style="letter-spacing:0.02em;">${lic.key}</span>
-              <button onclick="copyText('${lic.key}')" class="btn-copy-inline" title="Copy Key">📋</button>
+              <button onclick="copyText('${lic.key}')" class="btn-copy-inline" title="Copy Key">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              </button>
             </span>
           </td>
           <td style="white-space:nowrap;">
@@ -1471,12 +1479,13 @@ function renderLicensesTable() {
         <div class="mobile-lic-card" id="mobile-card-${lic.key}">
           <!-- Top Row -->
           <div class="mobile-lic-top-row">
-            <!-- Col 1: Red Key Icon + Key String + Copy -->
+            <!-- Col 1: Key String + Copy -->
             <div class="mobile-lic-col-key-block">
-              <span class="mobile-lic-red-key">🗝️</span>
               <div class="mobile-lic-key-info">
                 <span class="mobile-lic-key-text" onclick="inspectKeyLive('${lic.key}')" title="Inspect Key">${lic.key}</span>
-                <button type="button" class="mobile-lic-copy-btn" onclick="copyText('${lic.key}')" title="Copy Key">📋</button>
+                <button type="button" class="mobile-lic-copy-btn" onclick="copyText('${lic.key}')" title="Copy Key">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                </button>
               </div>
             </div>
 
@@ -1507,7 +1516,6 @@ function renderLicensesTable() {
           <div class="mobile-lic-bot-row">
             <!-- Created -->
             <div class="mobile-lic-bot-item">
-              <span class="mobile-lic-bot-icon">📅</span>
               <div class="mobile-lic-bot-meta">
                 <span class="mobile-lic-bot-label">Created</span>
                 <span class="mobile-lic-bot-val">${createdDate}</span>
@@ -1516,7 +1524,6 @@ function renderLicensesTable() {
 
             <!-- Expires -->
             <div class="mobile-lic-bot-item">
-              <span class="mobile-lic-bot-icon">⌛</span>
               <div class="mobile-lic-bot-meta">
                 <span class="mobile-lic-bot-label">Expires</span>
                 <span class="mobile-lic-bot-val val-expiry">${expiryText}</span>
@@ -1525,7 +1532,6 @@ function renderLicensesTable() {
 
             <!-- Status -->
             <div class="mobile-lic-bot-item">
-              <span class="mobile-lic-bot-icon">📦</span>
               <div class="mobile-lic-bot-meta">
                 <span class="mobile-lic-bot-label">Status</span>
                 ${statusBadge}
@@ -1537,16 +1543,16 @@ function renderLicensesTable() {
               <button type="button" class="mobile-lic-dots-btn" onclick="toggleMobileKeyMenu(event, '${lic.key}')" title="Key Actions">⋮</button>
               <div class="mobile-lic-popover-menu" id="popover-${lic.key}" style="display:none;">
                 <button type="button" class="popover-btn" onclick="inspectKeyLive('${lic.key}');closeAllKeyPopovers();">
-                  <span>🔍</span><span>Inspect Key</span>
+                  <span>Inspect key</span>
                 </button>
                 <button type="button" class="popover-btn" onclick="resetHwidLive('${lic.key}');closeAllKeyPopovers();">
-                  <span>🔄</span><span>Reset HWID</span>
+                  <span>Reset HWID</span>
                 </button>
                 <button type="button" class="popover-btn ${isBanned ? 'popover-unban' : 'popover-ban'}" onclick="toggleBanLive('${lic.key}', '${lic.status}');closeAllKeyPopovers();">
-                  <span>${isBanned ? '🔓' : '🚫'}</span><span>${isBanned ? 'Unban Key' : 'Ban Key'}</span>
+                  <span>${isBanned ? 'Unban key' : 'Ban key'}</span>
                 </button>
                 <button type="button" class="popover-btn popover-delete" onclick="deleteKeyLive('${lic.key}');closeAllKeyPopovers();">
-                  <span>🗑️</span><span>Delete Key</span>
+                  <span>Delete key</span>
                 </button>
               </div>
             </div>
@@ -1611,7 +1617,7 @@ async function submitGenerateKeys(e) {
 
     if (currentReseller) {
       if (count > currentReseller.balance) {
-        alert(`❌ Insufficient Key Credits!\nYou only have ${currentReseller.balance} keys remaining in your balance, but you requested ${count}.`);
+        alert(`Insufficient Key Credits!\nYou only have ${currentReseller.balance} keys remaining in your balance, but you requested ${count}.`);
         return;
       }
       if (!user.startsWith(currentReseller.username + "_")) { user = `${currentReseller.username}_${user}`; }
@@ -1621,7 +1627,7 @@ async function submitGenerateKeys(e) {
   const btn = document.getElementById('btn-submit-generate');
   if (btn) {
     btn.disabled = true;
-    btn.innerHTML = '<span>⏳</span> Generating on API...';
+    btn.innerHTML = '<span>Generating on API...</span>';
   }
 
   const allPkgs = getAllAvailablePackages();
@@ -1681,7 +1687,7 @@ async function submitGenerateKeys(e) {
 
     if (btn) {
       btn.disabled = false;
-      btn.innerHTML = '<span>⚡</span> Generate Keys Now';
+      btn.innerHTML = '<span>Generate Keys Now</span>';
     }
 
     if (!res || !res.success || !Array.isArray(res.keys) || res.keys.length === 0) {
@@ -1784,15 +1790,15 @@ async function submitGenerateKeys(e) {
       // Show generated keys modal
       showGeneratedKeysModal(res.keys, res.package_name || pkgName, expiryText);
     } else {
-      alert('❌ Key Generation Failed: ' + (res.message || 'Unknown API error'));
+      alert('Key Generation Failed: ' + (res.message || 'Unknown API error'));
     }
   } catch (err) {
     console.error('Key generation error:', err);
-    alert('❌ Key Generation Failed: ' + (err.message || 'Error occurred'));
+    alert('Key Generation Failed: ' + (err.message || 'Error occurred'));
   } finally {
     if (btn) {
       btn.disabled = false;
-      btn.innerHTML = '<span>⚡</span> Generate Keys Now';
+      btn.innerHTML = '<span>Generate Keys Now</span>';
     }
   }
 }
@@ -1807,7 +1813,7 @@ function showGeneratedKeysModal(keys, pkgName, duration) {
     container.innerHTML = keys.map(k => `
       <div class="generated-key-row">
         <code>${k}</code>
-        <button class="btn-action-secondary" style="padding:4px 8px;font-size:11px;" onclick="copyText('${k}')">📋 Copy</button>
+        <button class="btn-action-secondary" style="padding:4px 8px;font-size:11px;" onclick="copyText('${k}')">Copy</button>
       </div>
     `).join('');
   }
@@ -1837,7 +1843,7 @@ function downloadGeneratedKeysTxt() {
 async function inspectKeyLive(key) {
   // SECURITY: Ownership check — reseller can only inspect their own keys
   if (!canAccessKey(key)) {
-    showHyperAlert('⛔ Access Denied: You can only inspect your own license keys.', { type: 'error', title: 'Permission Denied', btnText: 'OK' });
+    showHyperAlert('Access Denied: You can only inspect your own license keys.', { type: 'error', title: 'Permission Denied', btnText: 'OK' });
     return;
   }
   const isV2Key = key.toUpperCase().startsWith('HX2-');
@@ -1861,7 +1867,7 @@ async function inspectKeyLive(key) {
     window.currentInspectedKey = res.key;
     openModal('modal-key-inspector');
   } else {
-    alert('❌ Key Info Error: ' + (res.message || 'Key not found'));
+    alert('Key Info Error: ' + (res.message || 'Key not found'));
   }
 }
 
@@ -1884,11 +1890,11 @@ async function runQuickKeyAction(action) {
 
   resultBox.style.display = 'block';
   resultBox.className = 'quick-result-card';
-  resultBox.innerHTML = `<span>⏳ Processing ${action}...</span>`;
+  resultBox.innerHTML = `<span>Processing ${action}...</span>`;
 
   // SECURITY: Ownership check for quick-action bar
   if (!canAccessKey(key)) {
-    resultBox.innerHTML = `<span style="color:#ef4444;font-weight:700;">⛔ Access Denied: You can only perform actions on your own license keys.</span>`;
+    resultBox.innerHTML = `<span style="color:#ef4444;font-weight:600;">Access Denied: You can only perform actions on your own license keys.</span>`;
     return;
   }
 
@@ -1909,12 +1915,12 @@ async function runQuickKeyAction(action) {
     }
     if (res && res.success) {
       resultBox.innerHTML = `
-        <div style="color:#10b981;font-weight:700;margin-bottom:4px;">✓ Key Found: <span style="color:#00f0ff;">${res.key}</span></div>
+        <div style="color:#10b981;font-weight:600;margin-bottom:4px;">Key Found: <span style="color:#ededed;">${res.key}</span></div>
         <div style="color:#e2e8f0;margin-bottom:2px;"><strong>Package:</strong> <span style="color:#ff3b47;">${res.package_name}</span> | <strong>Status:</strong> <span style="color:${res.status === 'active' ? '#10b981' : '#ef4444'};">${res.status.toUpperCase()}</span></div>
-        <div style="color:#94a3b8;"><strong>HWID:</strong> <code style="color:#00f0ff;">${res.hwid}</code> | <strong>Expiry:</strong> ${res.expiry_date}</div>
+        <div style="color:#94a3b8;"><strong>HWID:</strong> <code style="color:#ededed;">${res.hwid}</code> | <strong>Expiry:</strong> ${res.expiry_date}</div>
       `;
     } else {
-      resultBox.innerHTML = `<span style="color:#ef4444;">❌ Error: ${res ? res.message : 'Key not found in database'}</span>`;
+      resultBox.innerHTML = `<span style="color:#ef4444;">Error: ${res ? res.message : 'Key not found in database'}</span>`;
     }
   } else if (action === 'reset_hwid') {
     let res = await callApi('reset_hwid', { key });
@@ -1922,9 +1928,9 @@ async function runQuickKeyAction(action) {
     if ((res && res.success) || localLic) {
       if (localLic) { localLic.hwid = 'Unbound'; state.save(); renderLicensesTable(); }
       state.addLog('hwid_reset', `HWID reset executed for key: ${key}`);
-      resultBox.innerHTML = `<span style="color:#10b981;font-weight:700;">✓ HWID Reset Successful for key: <code style="color:#00f0ff;">${key}</code></span>`;
+      resultBox.innerHTML = `<span style="color:#10b981;font-weight:600;">HWID Reset Successful for key: <code style="color:#ededed;">${key}</code></span>`;
     } else {
-      resultBox.innerHTML = `<span style="color:#ef4444;">❌ Reset Failed: ${(res && res.message) || 'Error'}</span>`;
+      resultBox.innerHTML = `<span style="color:#ef4444;">Reset Failed: ${(res && res.message) || 'Error'}</span>`;
     }
   } else if (action === 'ban' || action === 'unban') {
     const act = action === 'ban' ? 'ban_key' : 'unban_key';
@@ -1933,9 +1939,9 @@ async function runQuickKeyAction(action) {
     if ((res && res.success) || localLic) {
       if (localLic) { localLic.status = action === 'ban' ? 'banned' : 'active'; state.save(); renderLicensesTable(); }
       state.addLog(action === 'ban' ? 'key_ban' : 'key_unban', `Key ${action}ned: ${key}`);
-      resultBox.innerHTML = `<span style="color:#10b981;font-weight:700;">✓ Key <code style="color:#00f0ff;">${key}</code> has been ${action === 'ban' ? 'BANNED' : 'UNBANNED'} successfully.</span>`;
+      resultBox.innerHTML = `<span style="color:#10b981;font-weight:600;">Key <code style="color:#ededed;">${key}</code> has been ${action === 'ban' ? 'BANNED' : 'UNBANNED'} successfully.</span>`;
     } else {
-      resultBox.innerHTML = `<span style="color:#ef4444;">❌ Failed: ${(res && res.message) || 'Error'}</span>`;
+      resultBox.innerHTML = `<span style="color:#ef4444;">Failed: ${(res && res.message) || 'Error'}</span>`;
     }
   } else if (action === 'delete') {
     if (!confirm(`Are you sure you want to permanently delete key: ${key}?`)) return;
@@ -1946,9 +1952,9 @@ async function runQuickKeyAction(action) {
       state.save();
       renderLicensesTable();
       state.addLog('key_delete', `License key deleted: ${key}`);
-      resultBox.innerHTML = `<span style="color:#10b981;font-weight:700;">✓ Key <code style="color:#00f0ff;">${key}</code> deleted successfully.</span>`;
+      resultBox.innerHTML = `<span style="color:#10b981;font-weight:600;">Key <code style="color:#ededed;">${key}</code> deleted successfully.</span>`;
     } else {
-      resultBox.innerHTML = `<span style="color:#ef4444;">❌ Delete Failed: ${(res && res.message) || 'Error'}</span>`;
+      resultBox.innerHTML = `<span style="color:#ef4444;">Delete Failed: ${(res && res.message) || 'Error'}</span>`;
     }
   }
 }
@@ -1957,7 +1963,7 @@ async function runQuickKeyAction(action) {
 async function resetHwidLive(key) {
   // SECURITY: Ownership check — reseller can only reset their own keys
   if (!canAccessKey(key)) {
-    showHyperAlert('⛔ Access Denied: You can only reset HWID for your own license keys.', { type: 'error', title: 'Permission Denied', btnText: 'OK' });
+    showHyperAlert('Access Denied: You can only reset HWID for your own license keys.', { type: 'error', title: 'Permission Denied', btnText: 'OK' });
     return;
   }
   if (!confirm(`Reset Hardware HWID binding for key:\n${key}?`)) return;
@@ -1992,7 +1998,7 @@ async function resetHwidLive(key) {
 async function toggleBanLive(key, currentStatus) {
   // SECURITY: Ownership check — reseller can only ban/unban their own keys
   if (!canAccessKey(key)) {
-    showHyperAlert('⛔ Access Denied: You can only ban/unban your own license keys.', { type: 'error', title: 'Permission Denied', btnText: 'OK' });
+    showHyperAlert('Access Denied: You can only ban/unban your own license keys.', { type: 'error', title: 'Permission Denied', btnText: 'OK' });
     return;
   }
   const lic = state.licenses.find(l => l.key.toLowerCase() === key.toLowerCase());
@@ -2031,10 +2037,10 @@ async function toggleBanLive(key, currentStatus) {
 async function deleteKeyLive(key) {
   // SECURITY: Ownership check — reseller can only delete their own keys
   if (!canAccessKey(key)) {
-    showHyperAlert('⛔ Access Denied: You can only delete your own license keys.', { type: 'error', title: 'Permission Denied', btnText: 'OK' });
+    showHyperAlert('Access Denied: You can only delete your own license keys.', { type: 'error', title: 'Permission Denied', btnText: 'OK' });
     return;
   }
-  if (!confirm(`⚠️ PERMANENT ACTION:\nAre you sure you want to permanently delete license key:\n${key}?`)) return;
+  if (!confirm(`Are you sure you want to permanently delete license key:\n${key}?`)) return;
 
   const isV2Key = key.toUpperCase().startsWith('HX2-');
   const action = isV2Key ? 'delete_key_v2' : 'delete_key';
@@ -2186,8 +2192,8 @@ function renderDashboardPackagesSummary(pkgs) {
 
   tbody.innerHTML = pkgs.map(pkg => `
     <tr>
-      <td style="font-weight:700;color:#fff;">
-        <span style="margin-right:6px;">📦</span>${pkg.package_name}
+      <td style="font-weight:600;color:#fff;">
+        ${pkg.package_name}
       </td>
       <td style="font-family:var(--font-mono);color:#00f0ff;font-size:11.5px;">Custom work</td>
       <td><span class="badge-pill-status badge-active-green">Active</span></td>
@@ -2357,12 +2363,14 @@ function renderDashboardRecentLicenses() {
       <tr>
         <td>
           <div style="display:flex;align-items:center;gap:6px;">
-            <span style="font-family:var(--font-mono);font-size:12px;font-weight:700;color:#fff;">${lic.key}</span>
-            <button type="button" class="btn-copy-inline" onclick="copyText('${lic.key}')" title="Copy Key" style="padding:2px 5px;font-size:11px;cursor:pointer;border-radius:3px;">📋</button>
+            <span style="font-family:var(--font-mono);font-size:12px;font-weight:600;color:#fff;">${lic.key}</span>
+            <button type="button" class="btn-copy-inline" onclick="copyText('${lic.key}')" title="Copy Key" style="padding:2px 5px;font-size:11px;cursor:pointer;border-radius:3px;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            </button>
           </div>
         </td>
-        <td style="color:#e2e8f0;font-size:12px;font-weight:600;">${lic.user || 'Root Owner'}</td>
-        <td><span class="badge-plan-pill" style="background:rgba(229,24,31,0.12);border:1px solid rgba(229,24,31,0.3);color:#ff3b47;font-weight:700;">${lic.pkg || 'BASIC PANEL'}</span></td>
+        <td style="color:#e2e8f0;font-size:12px;font-weight:500;">${lic.user || 'Root Owner'}</td>
+        <td><span class="badge-plan-pill" style="background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);color:var(--accent-red);font-weight:600;">${lic.pkg || 'BASIC PANEL'}</span></td>
         <td style="font-family:var(--font-mono);font-size:11.5px;color:${hwidColor};">${hwidTxt}</td>
         <td>
           <span class="badge-pill-status ${isAct ? 'badge-active-green' : isBanned ? 'badge-banned-red' : 'badge-pending-amber'}">
@@ -2370,12 +2378,12 @@ function renderDashboardRecentLicenses() {
           </span>
         </td>
         <td style="text-align:right;white-space:nowrap;">
-          <button type="button" class="btn-sm-action" onclick="resetHwidLive('${lic.key}')" title="Reset HWID" style="padding:3px 8px;font-size:11px;margin-right:4px;background:rgba(6,182,212,0.18);border:1px solid #06b6d4;color:#00f0ff;cursor:pointer;border-radius:4px;">🔄 HWID</button>
-          <button type="button" class="btn-sm-action" onclick="toggleBanLive('${lic.key}', '${lic.status}')" title="${isBanned ? 'Unban' : 'Ban'}" style="padding:3px 8px;font-size:11px;background:${isBanned ? 'rgba(16,185,129,0.18)' : 'rgba(245,158,11,0.18)'};border:1px solid ${isBanned ? '#10b981' : '#f59e0b'};color:${isBanned ? '#34d399' : '#fbbf24'};cursor:pointer;border-radius:4px;margin-right:4px;">
-            ${isBanned ? '🔓 Unban' : '🚫 Ban'}
+          <button type="button" class="btn-sm-action" onclick="resetHwidLive('${lic.key}')" title="Reset HWID" style="padding:4px 8px;font-size:11px;margin-right:4px;background:#1a1e28;border:1px solid var(--border-color);color:#ededed;cursor:pointer;border-radius:4px;">HWID</button>
+          <button type="button" class="btn-sm-action" onclick="toggleBanLive('${lic.key}', '${lic.status}')" title="${isBanned ? 'Unban' : 'Ban'}" style="padding:4px 8px;font-size:11px;background:${isBanned ? 'rgba(76,195,138,0.12)' : 'rgba(245,158,11,0.12)'};border:1px solid ${isBanned ? 'rgba(76,195,138,0.3)' : 'rgba(245,158,11,0.3)'};color:${isBanned ? '#4cc38a' : '#fbbf24'};cursor:pointer;border-radius:4px;margin-right:4px;">
+            ${isBanned ? 'Unban' : 'Ban'}
           </button>
-          <button type="button" class="btn-sm-action" onclick="deleteKeyLive('${lic.key}')" title="Delete Key" style="padding:3px 8px;font-size:11px;background:rgba(239,68,68,0.18);border:1px solid #ef4444;color:#f87171;cursor:pointer;border-radius:4px;">
-            🗑️
+          <button type="button" class="btn-sm-action" onclick="deleteKeyLive('${lic.key}')" title="Delete Key" style="padding:4px 8px;font-size:11px;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);color:#ef4444;cursor:pointer;border-radius:4px;">
+            Delete
           </button>
         </td>
       </tr>
@@ -2740,14 +2748,16 @@ function renderResellersTable() {
           <td class="col-reseller-pwd col-mobile-hide">
             <span class="reseller-pass-cell" id="reseller-pass-${r.id}">
               <span class="pass-val">••••••••</span>
-              <button onclick="toggleResellerPassVisibility('${r.id}', '${passStr}')" class="btn-copy-inline" title="Reveal/Hide Password">👁️</button>
-              <button onclick="copyText('${passStr}')" class="btn-copy-inline" title="Copy Password">📋</button>
+              <button onclick="toggleResellerPassVisibility('${r.id}', '${passStr}')" class="btn-copy-inline" title="Reveal/Hide Password" style="font-size:11px;">Show</button>
+              <button onclick="copyText('${passStr}')" class="btn-copy-inline" title="Copy Password">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              </button>
             </span>
           </td>
           <td style="white-space:nowrap;">
             <div style="display:flex;align-items:center;gap:4px;">
-              <span style="font-family:var(--font-mono);font-weight:700;color:#f59e0b;font-size:13px;white-space:nowrap;">${r.balance} Keys</span>
-              <button onclick="openTransferModalForReseller('${r.id}')" class="btn-sm-action" style="color:#f59e0b;border-color:rgba(245,158,11,0.4);" title="Transfer Credits to ${r.username}">💸 Send</button>
+              <span style="font-family:var(--font-mono);font-weight:600;color:#fff;font-size:12.5px;white-space:nowrap;">${r.balance} Keys</span>
+              <button onclick="openTransferModalForReseller('${r.id}')" class="btn-sm-action" style="color:#ededed;border-color:var(--border-color);" title="Transfer Credits to ${r.username}">Transfer</button>
               <button onclick="quickAddResellerCredits('${r.id}')" class="btn-sm-action" title="Quick Add Quota">+ Quota</button>
             </div>
           </td>
@@ -2760,10 +2770,18 @@ function renderResellersTable() {
           <td style="white-space:nowrap;">${statusBadge}</td>
           <td style="white-space:nowrap;">
             <div style="display:flex;gap:6px;">
-              <button onclick="openTransferModalForReseller('${r.id}')" class="btn-row-action" style="color:#f59e0b;" title="Transfer Credits to ${r.username}">💸</button>
-              <button onclick="openEditResellerModal('${r.id}')" class="btn-row-action" title="Edit Permissions &amp; Credits">✏️</button>
-              <button onclick="toggleResellerStatus('${r.id}')" class="btn-row-action" title="${isSuspended ? 'Activate Account' : 'Suspend Account'}">${isSuspended ? '▶️' : '⏸️'}</button>
-              <button onclick="deleteReseller('${r.id}')" class="btn-row-action" style="color:#ef4444;" title="Delete Reseller">🗑️</button>
+              <button onclick="openTransferModalForReseller('${r.id}')" class="btn-row-action" title="Transfer Credits to ${r.username}">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+              </button>
+              <button onclick="openEditResellerModal('${r.id}')" class="btn-row-action" title="Edit Permissions &amp; Credits">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+              </button>
+              <button onclick="toggleResellerStatus('${r.id}')" class="btn-row-action" title="${isSuspended ? 'Activate Account' : 'Suspend Account'}">
+                ${isSuspended ? '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>' : '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>'}
+              </button>
+              <button onclick="deleteReseller('${r.id}')" class="btn-row-action" style="color:#ef4444;" title="Delete Reseller">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+              </button>
             </div>
           </td>
         </tr>
@@ -2798,8 +2816,10 @@ function renderResellersTable() {
             <div class="mobile-reseller-meta-row">
               <div class="mobile-reseller-pass-wrap">
                 <span class="mobile-reseller-pass-dots" id="${passId}">••••••••</span>
-                <button class="mobile-reseller-icon-btn" onclick="event.stopPropagation();var el=document.getElementById('${passId}');el.textContent=el.textContent==='••••••••'?'${passStr}':'••••••••';" title="Reveal">👁️</button>
-                <button class="mobile-reseller-icon-btn" onclick="event.stopPropagation();copyText('${passStr}');" title="Copy">📋</button>
+                <button class="mobile-reseller-icon-btn" onclick="event.stopPropagation();var el=document.getElementById('${passId}');el.textContent=el.textContent==='••••••••'?'${passStr}':'••••••••';" title="Reveal">Show</button>
+                <button class="mobile-reseller-icon-btn" onclick="event.stopPropagation();copyText('${passStr}');" title="Copy">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                </button>
               </div>
               <div class="mobile-reseller-credits">
                 <span class="mobile-reseller-credits-val" style="color:${creditsColor};">${(r.balance||0).toLocaleString()}</span>
@@ -2833,7 +2853,7 @@ async function submitAddReseller(e) {
   // Duplicate check
   const exists = state.resellers.some(r => r.username && r.username.toLowerCase() === username.toLowerCase());
   if (exists) {
-    alert(`⚠️ A reseller with username "${username}" already exists! Please choose a different name.`);
+    alert(`A reseller with username "${username}" already exists! Please choose a different name.`);
     return;
   }
 
@@ -2887,7 +2907,7 @@ async function submitAddReseller(e) {
   await syncCredentialsToServer({ tx99_resellers: state.resellers });
 
   const panelNamesStr = panelsToSave.includes('all') ? 'All Available Panels' : panelsToSave.join(', ');
-  alert(`✓ Reseller Account Successfully Created!\n\nUsername: ${username}\nPassword: ${password}\nCredits: ${quota} Keys\nPanels Access: ${panelNamesStr}`);
+  alert(`Reseller Account Successfully Created!\n\nUsername: ${username}\nPassword: ${password}\nCredits: ${quota} Keys\nPanels Access: ${panelNamesStr}`);
 }
 
 function openEditResellerModal(id) {
@@ -2951,7 +2971,7 @@ async function submitEditReseller(e) {
   renderResellersTable();
   closeModal('modal-edit-reseller');
   await syncCredentialsToServer({ tx99_resellers: state.resellers });
-  alert(`✓ Reseller "${username}" updated successfully!`);
+  alert(`Reseller "${username}" updated successfully!`);
 }
 
 // ── TOTP Helper Functions (Google Authenticator) ──────────────────
@@ -2968,7 +2988,7 @@ function resetReseller2FASetup() {
   if (!id) return;
   if (!confirm('Reset 2FA for this reseller? They will need to re-scan the QR code on next login.')) return;
   localStorage.removeItem('hyperx_2fa_setup_done_' + id);
-  alert('✓ 2FA setup reset. Reseller will be prompted to scan QR code on next login.');
+  alert('2FA setup reset. Reseller will be prompted to scan QR code on next login.');
 }
 
 async function quickAddResellerCredits(id) {
@@ -2989,7 +3009,7 @@ async function quickAddResellerCredits(id) {
   state.save();
   renderResellersTable();
   await syncCredentialsToServer({ tx99_resellers: state.resellers });
-  alert(`✓ Added ${addAmount} keys to ${r.username}. New Balance: ${r.balance} Keys (Total Quota: ${r.totalQuota} Keys)`);
+  alert(`Added ${addAmount} keys to ${r.username}. New Balance: ${r.balance} Keys (Total Quota: ${r.totalQuota} Keys)`);
 }
 
 async function toggleResellerStatus(id) {
@@ -3009,7 +3029,7 @@ async function deleteReseller(id) {
   const r = state.resellers.find(item => item.id === id);
   if (!r) return;
 
-  if (!confirm(`⚠️ PERMANENT ACTION:\nAre you sure you want to permanently delete reseller "${r.username}"?`)) return;
+  if (!confirm(`Are you sure you want to permanently delete reseller "${r.username}"?`)) return;
 
   // 1. Add to permanent tombstone blacklist
   let deletedIds = [];
@@ -3107,7 +3127,7 @@ function renderTransfersView() {
         <option value="">-- Select Target Reseller --</option>
         ${eligibleResellers.map(r => `
           <option value="${r.id}">
-            👤 ${r.username} (Current: ${r.balance} Keys)
+            ${r.username} (${r.balance} Keys)
           </option>
         `).join('')}
       `;
@@ -3145,7 +3165,7 @@ function renderTransfersView() {
         <option value="">-- Select Target Reseller --</option>
         ${eligibleResellers.map(r => `
           <option value="${r.id}">
-            👤 ${r.username} (Current: ${r.balance} Keys)
+            ${r.username} (${r.balance} Keys)
           </option>
         `).join('')}
       `;
@@ -3172,8 +3192,8 @@ function renderTransfersView() {
                 <div class="reseller-quick-bal">Balance: <strong>${r.balance} Keys</strong></div>
               </div>
             </div>
-            <button type="button" class="btn-sm-action" onclick="selectTransferRecipient('${r.id}')" style="color:#00f0ff;border-color:rgba(0,240,255,0.4);">
-              💸 Send
+            <button type="button" class="btn-sm-action" onclick="selectTransferRecipient('${r.id}')" style="color:#ededed;border-color:var(--border-color);">
+              Select
             </button>
           </div>
         `;
@@ -3222,9 +3242,9 @@ function renderTransfersHistoryTable(current) {
 
     let amtBadge = '';
     if (isSent) {
-      amtBadge = `<span class="badge-tx-sent">📤 -${tx.amount} Keys</span>`;
+      amtBadge = `<span class="badge-tx-sent">-${tx.amount} Keys</span>`;
     } else if (isRecv) {
-      amtBadge = `<span class="badge-tx-received">📥 +${tx.amount} Keys</span>`;
+      amtBadge = `<span class="badge-tx-received">+${tx.amount} Keys</span>`;
     } else {
       amtBadge = `<span class="badge-pill-status badge-active-green">${tx.amount} Keys</span>`;
     }
@@ -3242,17 +3262,17 @@ function renderTransfersHistoryTable(current) {
 
     return `
       <tr>
-        <td class="col-tx-id col-mobile-hide" style="font-family:var(--font-mono);font-size:11px;color:#00f0ff;font-weight:700;white-space:nowrap;">${tx.id}</td>
-        <td style="font-weight:700;color:${isSent ? '#ef4444' : '#fff'};white-space:nowrap;">
+        <td class="col-tx-id col-mobile-hide" style="font-family:var(--font-mono);font-size:11px;color:#fff;font-weight:600;white-space:nowrap;">${tx.id}</td>
+        <td style="font-weight:600;color:${isSent ? '#ef4444' : '#fff'};white-space:nowrap;">
           ${isSent ? '<strong>(You) ' + tx.from + '</strong>' : fromLabel}
         </td>
-        <td style="font-weight:700;color:${isRecv ? '#22c55e' : '#fff'};white-space:nowrap;">
+        <td style="font-weight:600;color:${isRecv ? '#4cc38a' : '#fff'};white-space:nowrap;">
           ${isRecv ? '<strong>(You) ' + tx.to + '</strong>' : tx.to}
         </td>
         <td style="white-space:nowrap;">${amtBadge}</td>
         <td class="col-tx-memo col-mobile-hide" style="color:#cbd5e1;font-size:11.5px;">${noteLabel}</td>
         <td style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);white-space:nowrap;">${tx.time}</td>
-        <td style="white-space:nowrap;"><span class="badge-pill-status badge-active-green">✓ ${tx.status || 'Completed'}</span></td>
+        <td style="white-space:nowrap;"><span class="badge-pill-status badge-active-green">${tx.status || 'Completed'}</span></td>
       </tr>
     `;
   }).join('');
@@ -3285,7 +3305,7 @@ function updateTransferCalcPreview() {
 
   const remaining = current.balance - amt;
   if (remaining < 0) {
-    preview.innerHTML = `<span style="color:#ef4444;font-weight:800;">❌ Insufficient Credits (Short by ${Math.abs(remaining)} Keys)</span>`;
+    preview.innerHTML = `<span style="color:#ef4444;font-weight:600;">Insufficient Credits (Short by ${Math.abs(remaining)} Keys)</span>`;
   } else {
     preview.innerHTML = `<span style="color:#10b981;font-weight:700;">${remaining.toLocaleString()} Keys</span> <span style="font-size:10px;color:var(--text-dim);">(-${amt} Keys)</span>`;
   }
@@ -3343,7 +3363,7 @@ function initModalTransfer(preselectedId = null) {
         <option value="">-- Select Target Reseller --</option>
         ${eligibleResellers.map(r => `
           <option value="${r.id}" ${r.id === preselectedId ? 'selected' : ''}>
-            👤 ${r.username} (Balance: ${r.balance} Keys)
+            ${r.username} (Balance: ${r.balance} Keys)
           </option>
         `).join('')}
       `;
@@ -3368,7 +3388,7 @@ function updateModalTransferCalcPreview() {
 
   const remaining = current.balance - amt;
   if (remaining < 0) {
-    preview.innerHTML = `<span style="color:#ef4444;font-weight:800;">❌ Insufficient Credits (Short by ${Math.abs(remaining)} Keys)</span>`;
+    preview.innerHTML = `<span style="color:#ef4444;font-weight:600;">Insufficient Credits (Short by ${Math.abs(remaining)} Keys)</span>`;
   } else {
     preview.innerHTML = `<span style="color:#10b981;font-weight:700;">${remaining.toLocaleString()} Keys</span>`;
   }
@@ -3400,7 +3420,7 @@ function openTransferModalForReseller(resellerId) {
 function executeCreditTransfer(targetIdOrUsername, amount, note) {
   const numAmount = parseInt(amount, 10);
   if (isNaN(numAmount) || numAmount <= 0) {
-    alert('❌ Please enter a valid transfer credit amount greater than 0.');
+    alert('Please enter a valid transfer credit amount greater than 0.');
     return false;
   }
 
@@ -3409,7 +3429,7 @@ function executeCreditTransfer(targetIdOrUsername, amount, note) {
   // If reseller, ensure sender has enough balance
   if (current.role === 'reseller') {
     if (numAmount > current.balance) {
-      alert(`❌ Insufficient Credits!\n\nYour Available Balance: ${current.balance} Keys\nRequested Amount: ${numAmount} Keys\n\nYour account does not have sufficient credits.`);
+      alert(`Insufficient Credits!\n\nYour Available Balance: ${current.balance} Keys\nRequested Amount: ${numAmount} Keys\n\nYour account does not have sufficient credits.`);
       return false;
     }
   }
@@ -3421,17 +3441,17 @@ function executeCreditTransfer(targetIdOrUsername, amount, note) {
   );
 
   if (!target) {
-    alert('❌ Target reseller not found. Please choose a valid reseller account.');
+    alert('Target reseller not found. Please choose a valid reseller account.');
     return false;
   }
 
   if (target.username.toLowerCase() === current.username.toLowerCase()) {
-    alert('❌ You cannot transfer credits to yourself!');
+    alert('You cannot transfer credits to yourself.');
     return false;
   }
 
   if (target.status === 'Suspended') {
-    alert(`❌ Target reseller "${target.username}" is Suspended. Credits cannot be transferred to suspended accounts.`);
+    alert(`Target reseller "${target.username}" is Suspended. Credits cannot be transferred to suspended accounts.`);
     return false;
   }
 
@@ -3493,7 +3513,7 @@ function executeCreditTransfer(targetIdOrUsername, amount, note) {
   }
 
   const updatedCurrent = getCurrentUserTransferDetails();
-  alert(`✓ Credit Transfer Successful!\n\nTransferred: ${numAmount} Credits\nRecipient: ${target.username}\nYour Remaining Balance: ${updatedCurrent.balance.toLocaleString()} Keys\nTransaction ID: ${tx.id}`);
+  alert(`Credit Transfer Successful!\n\nTransferred: ${numAmount} Credits\nRecipient: ${target.username}\nYour Remaining Balance: ${updatedCurrent.balance.toLocaleString()} Keys\nTransaction ID: ${tx.id}`);
   return true;
 }
 
@@ -3560,7 +3580,7 @@ function openModal(id) {
   const role = getUserRole();
   if (role === 'reseller') {
     if (id === 'modal-change-admin' || id === 'modal-add-reseller' || id === 'modal-edit-reseller' || id === 'modal-transfer-credit') {
-      alert('⛔ Access Denied: Reseller accounts cannot access Admin configurations.');
+      alert('Access Denied: Reseller accounts cannot access Admin configurations.');
       return;
     }
   }
@@ -3593,7 +3613,7 @@ function openModal(id) {
       const allowed = window.populateV2PackageDropdown();
       if (!allowed) {
         if (m) m.classList.remove('active');
-        alert('? Access Denied: You do not have permissions for any License V2 panels. Please contact Root Admin.');
+        alert('Access Denied: You do not have permissions for any License V2 panels. Please contact Root Admin.');
         return;
       }
     }
@@ -3690,9 +3710,9 @@ function submitChangeResellerPassword(e, source = 'dash') {
       msgBox.style.background = isError ? 'rgba(239, 68, 68, 0.18)' : 'rgba(16, 185, 129, 0.18)';
       msgBox.style.border = isError ? '1px solid rgba(239, 68, 68, 0.4)' : '1px solid rgba(16, 185, 129, 0.4)';
       msgBox.style.color = isError ? '#fca5a5' : '#86efac';
-      msgBox.innerHTML = (isError ? '❌ ' : '✅ ') + text;
+      msgBox.innerHTML = text;
     } else {
-      alert((isError ? '❌ ' : '✅ ') + text);
+      alert(text);
     }
   }
 
@@ -3764,7 +3784,7 @@ function submitChangeResellerPassword(e, source = 'dash') {
   }
 }
 
-function showToast(msg, duration = 2000) {
+function showToast(msgOrTitle, detailOrDuration = 2000) {
   let toast = document.getElementById('hyper-toast-notice');
   if (!toast) {
     toast = document.createElement('div');
@@ -3774,14 +3794,14 @@ function showToast(msg, duration = 2000) {
       bottom: 24px;
       left: 50%;
       transform: translateX(-50%) translateY(20px);
-      background: #0f172a;
-      border: 1px solid rgba(0, 240, 255, 0.4);
-      color: #00f0ff;
-      padding: 10px 18px;
-      border-radius: 8px;
+      background: #11141c;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #ededed;
+      padding: 9px 16px;
+      border-radius: 6px;
       font-size: 12px;
-      font-weight: 700;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.85);
+      font-weight: 500;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.7);
       z-index: 99999;
       opacity: 0;
       transition: opacity 0.2s ease, transform 0.2s ease;
@@ -3793,7 +3813,14 @@ function showToast(msg, duration = 2000) {
     `;
     document.body.appendChild(toast);
   }
-  toast.innerHTML = msg;
+  let duration = 2000;
+  let text = msgOrTitle;
+  if (typeof detailOrDuration === 'number') {
+    duration = detailOrDuration;
+  } else if (typeof detailOrDuration === 'string') {
+    text = `<strong>${msgOrTitle}</strong>: ${detailOrDuration}`;
+  }
+  toast.innerHTML = text;
   toast.style.opacity = '1';
   toast.style.transform = 'translateX(-50%) translateY(0)';
   clearTimeout(toast._timeout);
@@ -3806,12 +3833,12 @@ function showToast(msg, duration = 2000) {
 function copyText(str) {
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(str).then(() => {
-      showToast(`📋 Copied: <span style="color:#fff;font-family:var(--font-mono);">${str}</span>`);
+      showToast(`Copied: <span style="color:#fff;font-family:var(--font-mono);">${str}</span>`);
     }).catch(() => {
-      showToast(`📋 Copied: <span style="color:#fff;font-family:var(--font-mono);">${str}</span>`);
+      showToast(`Copied: <span style="color:#fff;font-family:var(--font-mono);">${str}</span>`);
     });
   } else {
-    showToast(`📋 Copied: <span style="color:#fff;font-family:var(--font-mono);">${str}</span>`);
+    showToast(`Copied: <span style="color:#fff;font-family:var(--font-mono);">${str}</span>`);
   }
 }
 
@@ -3866,7 +3893,7 @@ function renderResellerClientUsers(res) {
     tbody.innerHTML = `
       <tr>
         <td colspan="6" style="text-align:center;padding:24px;color:var(--text-dim);">
-          No client users generated yet. Use the <strong>⚡ Generate Key</strong> button above to create client licenses.
+          No client users generated yet. Use the <strong>Generate Key</strong> button above to create client licenses.
         </td>
       </tr>
     `;
@@ -3879,8 +3906,8 @@ function renderResellerClientUsers(res) {
       ? '<span class="badge-pill-status badge-auth-success">Active</span>'
       : (lic.status === 'banned' ? '<span class="badge-pill-status badge-auth-fail">Banned</span>' : '<span class="badge-pill-status" style="background:#334155;color:#94a3b8;">Expired</span>');
     const hwidBadge = lic.hwid && lic.hwid !== 'Not Bound' && lic.hwid !== 'Unbound'
-      ? `<span style="font-family:var(--font-mono);font-size:11px;color:#10b981;">🔒 ${lic.hwid}</span>`
-      : `<span style="font-family:var(--font-mono);font-size:11px;color:#f59e0b;">🔓 Unbound</span>`;
+      ? `<span style="font-family:var(--font-mono);font-size:11px;color:#4cc38a;">${lic.hwid}</span>`
+      : `<span style="font-family:var(--font-mono);font-size:11px;color:#f59e0b;">Unbound</span>`;
 
     return `
       <tr>
@@ -3983,7 +4010,7 @@ function initUserRoleSession() {
       const adminHeaderIcon = document.getElementById('header-admin-icon');
       const adminHeaderName = document.getElementById('header-admin-name');
       const adminHeaderAction = document.getElementById('header-admin-action');
-      if (adminHeaderIcon) adminHeaderIcon.textContent = '👤';
+      if (adminHeaderIcon) adminHeaderIcon.textContent = '';
       if (adminHeaderName) adminHeaderName.textContent = 'Reseller';
       if (adminHeaderAction) adminHeaderAction.textContent = '(Reseller)';
       if (adminHeaderBtn) {
@@ -4075,7 +4102,7 @@ function initUserRoleSession() {
     const adminHeaderBtn = document.getElementById('header-admin-btn');
     const adminHeaderIcon = document.getElementById('header-admin-icon');
     const adminHeaderName = document.getElementById('header-admin-name');
-    if (adminHeaderIcon) adminHeaderIcon.textContent = '🛡️';
+    if (adminHeaderIcon) adminHeaderIcon.textContent = '';
     if (adminHeaderName) adminHeaderName.textContent = 'Owner';
     if (adminHeaderBtn) {
       adminHeaderBtn.title = `Owner: ${adminUser}`;
@@ -4256,7 +4283,7 @@ async function handleAdminCoreUpload(event) {
 async function handleAdminCoreUploadFile(file) {
   const role = getUserRole();
   if (role === 'reseller') {
-    alert('⛔ Access Denied: Only Admin (Root Owner) can upload new master builds.');
+    alert('Access Denied: Only Admin (Root Owner) can upload new master builds.');
     return;
   }
 
@@ -4265,8 +4292,8 @@ async function handleAdminCoreUploadFile(file) {
 
   if (progressEl) {
     progressEl.style.display = 'block';
-    progressEl.style.color = '#00f0ff';
-    progressEl.textContent = `⏳ Uploading ${file.name} (${(file.size / (1024 * 1024)).toFixed(2)} MB)...`;
+    progressEl.style.color = '#ededed';
+    progressEl.textContent = `Uploading ${file.name} (${(file.size / (1024 * 1024)).toFixed(2)} MB)...`;
   }
 
   try {
@@ -4279,9 +4306,9 @@ async function handleAdminCoreUploadFile(file) {
     const data = await res.json();
     if (data.success) {
       if (progressEl) {
-        progressEl.style.color = '#22c55e';
-        progressEl.textContent = `✔ Deployed successfully to Resellers!`;
-        setTimeout(() => { progressEl.style.display = 'none'; progressEl.style.color = '#00f0ff'; }, 4000);
+        progressEl.style.color = '#10b981';
+        progressEl.textContent = 'Deployed successfully to Resellers!';
+        setTimeout(() => { progressEl.style.display = 'none'; progressEl.style.color = '#ededed'; }, 4000);
       }
       if (lastInfo) {
         lastInfo.style.display = 'block';
@@ -4289,14 +4316,14 @@ async function handleAdminCoreUploadFile(file) {
         lastInfo.textContent = `Last Upload: ${file.name} (${(file.size/(1024*1024)).toFixed(2)} MB) · ${now}`;
       }
       await fetchBuildMetadata();
-      alert(`✅ Master Core Successfully Uploaded!\n\nFile: ${file.name}\nSize: ${data.meta.masterSize || data.meta.exeSize}\nReseller Status: Automatic Push Deployed`);
+      alert(`Master Core Successfully Uploaded!\n\nFile: ${file.name}\nSize: ${data.meta.masterSize || data.meta.exeSize}\nReseller Status: Automatic Push Deployed`);
     } else {
       throw new Error(data.error || 'Upload failed');
     }
   } catch (err) {
     if (progressEl) {
       progressEl.style.color = '#ef4444';
-      progressEl.textContent = `❌ Upload failed: ${err.message}`;
+      progressEl.textContent = `Upload failed: ${err.message}`;
     }
     alert('Upload error: ' + err.message);
   }
@@ -4319,7 +4346,7 @@ function renderExeGeneratorView() {
     if (accNameEl) accNameEl.textContent = resName;
     if (roleBadgeEl) roleBadgeEl.innerHTML = '<span>●</span> Verified Reseller';
     if (masterActionBtn) {
-      masterActionBtn.innerHTML = '<span>⬇</span><span>Master Core ZIP – Ready</span>';
+      masterActionBtn.innerHTML = '<span>Master Core ZIP – Ready</span>';
       masterActionBtn.style.pointerEvents = 'none';
       masterActionBtn.style.cursor = 'default';
       masterActionBtn.style.opacity = '0.85';
@@ -4333,7 +4360,7 @@ function renderExeGeneratorView() {
   } else {
     if (accNameEl) accNameEl.textContent = 'HYPER X';
     if (roleBadgeEl) roleBadgeEl.innerHTML = '<span>●</span> Verified Owner';
-    if (masterActionBtn) masterActionBtn.innerHTML = '<span>✔</span><span>HMAC Protected Master Active</span>';
+    if (masterActionBtn) masterActionBtn.innerHTML = '<span>HMAC Protected Master Active</span>';
     if (brandTitleEl) brandTitleEl.textContent = 'HYPER X';
   }
 
@@ -4434,7 +4461,7 @@ function triggerGenerateCustomBuild() {
 
   let quota = getBuildQuota();
   if (quota <= 0) {
-    alert('❌ Build Quota Depleted: You have 0 credits remaining. Please contact Root Owner for quota replenishment.');
+    alert('Build Quota Depleted: You have 0 credits remaining. Please contact Root Owner for quota replenishment.');
     return;
   }
 
@@ -4445,7 +4472,7 @@ function triggerGenerateCustomBuild() {
   });
 
   if (selected.length === 0) {
-    alert('⚠️ Please select at least one module or panel to include in your build.');
+    alert('Please select at least one module or panel to include in your build.');
     return;
   }
 
@@ -4453,7 +4480,7 @@ function triggerGenerateCustomBuild() {
   const origHtml = btn ? btn.innerHTML : '';
   if (btn) {
     btn.disabled = true;
-    btn.innerHTML = '<span>⚡</span><span>COMPILING PE BINARY...</span>';
+    btn.innerHTML = '<span>COMPILING PE BINARY...</span>';
   }
 
   setTimeout(() => {
@@ -4637,12 +4664,12 @@ window.toggleRoleView = function() {
     if (role === 'reseller') {
       const res = getCurrentReseller() || { username: 'Reseller' };
       if (nameEl) nameEl.textContent = `${res.username} (Reseller)`;
-      if (iconEl) iconEl.textContent = '👥';
-      if (btn) { btn.style.background = '#059669'; btn.setAttribute('title', 'Reseller Mode (Click to switch to Owner view)'); }
+      if (iconEl) iconEl.textContent = '';
+      if (btn) { btn.style.background = '#1a1e28'; btn.setAttribute('title', 'Reseller Mode (Click to switch to Owner view)'); }
     } else {
       if (nameEl) nameEl.textContent = 'Owner';
-      if (iconEl) iconEl.textContent = '🛡️';
-      if (btn) { btn.style.background = '#0284c7'; btn.setAttribute('title', 'Root Owner (Click to switch to Reseller view)'); }
+      if (iconEl) iconEl.textContent = '';
+      if (btn) { btn.style.background = '#1a1e28'; btn.setAttribute('title', 'Root Owner (Click to switch to Reseller view)'); }
     }
   }
 
@@ -4755,8 +4782,8 @@ function renderNotificationDropdownItems(meta, isUnread) {
     listEl.innerHTML = `
       <div style="background:#131726;border:1px solid ${isUnread ? '#ef4444' : '#1e2438'};border-radius:6px;padding:10px;display:flex;flex-direction:column;gap:6px;">
         <div style="display:flex;align-items:center;justify-content:space-between;">
-          <span style="font-size:11.5px;font-weight:800;color:#ffffff;display:flex;align-items:center;gap:5px;">
-            <span style="color:#ef4444;">⚡</span> ${escapeHtml(meta.updateTitle)}
+          <span style="font-size:11.5px;font-weight:600;color:#ffffff;display:flex;align-items:center;gap:6px;">
+            <span style="color:#ef4444;font-size:8px;">●</span> ${escapeHtml(meta.updateTitle)}
           </span>
           <span style="font-size:10px;color:#64748b;font-family:var(--font-mono);">${escapeHtml(meta.lastUpdated || 'Just now')}</span>
         </div>
