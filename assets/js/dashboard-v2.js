@@ -237,7 +237,7 @@
         if (subEl) {
           if (role === 'reseller' && res) {
             subEl.style.display = 'block';
-            subEl.innerHTML = `Showing V2 license keys generated for reseller: <strong style="color:#00f0ff;">${res.username}</strong> | Available credit: <strong style="color:#10b981;">${res.balance} Keys</strong>`;
+            subEl.innerHTML = `Showing V2 license keys generated for reseller: <strong style="color:#eef0f5;">${res.username}</strong> | Available credit: <strong style="color:#4cc38a;">${res.balance} Keys</strong>`;
           } else {
             subEl.style.display = 'none';
           }
@@ -287,7 +287,7 @@
 
     if (list.length === 0) {
       if (tbody) tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--text-dim);">No V2 license keys found matching criteria.</td></tr>`;
-      if (mobileList) mobileList.innerHTML = `<div style="text-align:center;padding:24px;color:var(--text-dim);font-size:12px;background:#0c101b;border:1px solid #1a2235;border-radius:10px;">No V2 license keys found matching criteria.</div>`;
+      if (mobileList) mobileList.innerHTML = `<div style="text-align:center;padding:24px;color:var(--text-dim);font-size:12px;background:var(--bg-card);border:1px solid rgba(255, 255, 255, 0.08);border-radius:10px;">No V2 license keys found matching criteria.</div>`;
       return;
     }
 
@@ -295,7 +295,7 @@
     if (tbody) {
       tbody.innerHTML = list.map(lic => {
         let statusBadge = '<span class="badge-pill-status badge-auth-success">Active</span>';
-        if (lic.status === 'expired') statusBadge = '<span class="badge-pill-status" style="background:rgba(249,115,22,0.15);color:#f97316;border:1px solid #ea580c;">Expired</span>';
+        if (lic.status === 'expired') statusBadge = '<span class="badge-pill-status" style="background:rgba(245, 158, 11, 0.12);color:#f59e0b;border:1px solid #f59e0b;">Expired</span>';
         if (lic.status === 'banned') statusBadge = '<span class="badge-pill-status badge-auth-fail">Banned</span>';
 
         const isBanned = lic.status === 'banned';
@@ -306,16 +306,16 @@
         let hwidDisplay = '';
         if (!isLockOn) {
           hwidDisplay = `
-            <span class="badge" style="background:rgba(239,68,68,0.12);color:#ef4444;border:1px solid rgba(239,68,68,0.3);padding:3px 8px;border-radius:4px;font-size:11px;display:inline-flex;align-items:center;gap:4px;" title="HWID Lock is disabled. Multiple devices allowed.">
+            <span class="badge" style="background:rgba(229, 72, 77, 0.12);color:#e5484d;border:1px solid rgba(229, 72, 77, 0.28);padding:3px 8px;border-radius:4px;font-size:11px;display:inline-flex;align-items:center;gap:4px;" title="HWID Lock is disabled. Multiple devices allowed.">
               <span>Lock disabled</span>
-              ${isHwidBound ? `<span style="color:#94a3b8;font-size:10px;">(${lic.hwid.substring(0, 8)}...)</span>` : ''}
+              ${isHwidBound ? `<span style="color:#a3a9b8;font-size:10px;">(${lic.hwid.substring(0, 8)}...)</span>` : ''}
             </span>
           `;
         } else if (isHwidBound) {
           const shortHwid = lic.hwid.length > 16 ? lic.hwid.substring(0, 14) + '...' : lic.hwid;
           hwidDisplay = `
             <div style="display:inline-flex;align-items:center;gap:5px;">
-              <span class="badge" style="background:rgba(76,195,138,0.12);color:#4cc38a;border:1px solid rgba(76,195,138,0.3);padding:3px 8px;border-radius:4px;font-size:11px;font-family:var(--font-mono);cursor:pointer;" onclick="inspectKeyV2Live('${lic.key}')" title="Bound Device: ${lic.hwid} (Click to inspect)">
+              <span class="badge" style="background:rgba(76, 195, 138, 0.12);color:#4cc38a;border:1px solid rgba(76, 195, 138, 0.28);padding:3px 8px;border-radius:4px;font-size:11px;font-family:var(--font-mono);cursor:pointer;" onclick="inspectKeyV2Live('${lic.key}')" title="Bound Device: ${lic.hwid} (Click to inspect)">
                 ${shortHwid}
               </span>
               <button type="button" onclick="copyText('${lic.hwid}')" class="btn-copy-inline" title="Copy Device HWID">
@@ -325,7 +325,7 @@
           `;
         } else {
           hwidDisplay = `
-            <span class="badge" style="background:rgba(245,158,11,0.12);color:#fbbf24;border:1px solid rgba(245,158,11,0.3);padding:3px 8px;border-radius:4px;font-size:11px;display:inline-flex;align-items:center;gap:4px;" title="Awaiting first login">
+            <span class="badge" style="background:rgba(245, 158, 11, 0.12);color:#f59e0b;border:1px solid rgba(245, 158, 11, 0.28);padding:3px 8px;border-radius:4px;font-size:11px;display:inline-flex;align-items:center;gap:4px;" title="Awaiting first login">
               <span>Not bound</span>
             </span>
           `;
@@ -339,10 +339,10 @@
             <button type="button" onclick="resetHwidV2Live('${lic.key}')" class="btn-row-action" title="Reset Bound HWID">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
             </button>
-            <button type="button" onclick="toggleBanV2Live('${lic.key}', '${lic.status}')" class="btn-row-action" style="${isBanned ? 'color:#4cc38a;border-color:rgba(76,195,138,0.3);' : 'color:#f59e0b;border-color:rgba(245,158,11,0.3);'}" title="${isBanned ? 'Unban Key' : 'Ban Key'}">
+            <button type="button" onclick="toggleBanV2Live('${lic.key}', '${lic.status}')" class="btn-row-action" style="${isBanned ? 'color:#4cc38a;border-color:rgba(76, 195, 138, 0.28);' : 'color:#f59e0b;border-color:rgba(245, 158, 11, 0.28);'}" title="${isBanned ? 'Unban Key' : 'Ban Key'}">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
             </button>
-            <button type="button" onclick="deleteKeyV2Live('${lic.key}')" class="btn-row-action" style="color:#ef4444;border-color:rgba(239,68,68,0.3);" title="Delete Key">
+            <button type="button" onclick="deleteKeyV2Live('${lic.key}')" class="btn-row-action" style="color:#e5484d;border-color:rgba(229, 72, 77, 0.28);" title="Delete Key">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
             </button>
           </div>
@@ -362,9 +362,9 @@
               <span style="font-family:var(--font-mono);color:var(--text-main);display:block;font-weight:500;">${lic.pkg || 'AIMKILL PVT V2'}</span>
               <span style="font-size:10.5px;color:var(--text-dim);">${lic.app || KEYAUTH_V2_CONFIG.appName}</span>
             </td>
-            <td class="col-user col-mobile-hide" style="color:#cbd5e1;font-weight:500;white-space:nowrap;">${lic.user || 'Client_V2'}</td>
+            <td class="col-user col-mobile-hide" style="color:#a3a9b8;font-weight:500;white-space:nowrap;">${lic.user || 'Client_V2'}</td>
             <td class="col-hwid col-mobile-hide" style="white-space:nowrap;">${hwidDisplay}</td>
-            <td style="font-family:var(--font-mono);font-size:11px;color:#e2e8f0;white-space:nowrap;">${lic.expiry || 'Lifetime Access'}</td>
+            <td style="font-family:var(--font-mono);font-size:11px;color:#eef0f5;white-space:nowrap;">${lic.expiry || 'Lifetime Access'}</td>
             <td style="white-space:nowrap;">${statusBadge}</td>
             <td style="white-space:nowrap;text-align:center;">${actionButtons}</td>
           </tr>
@@ -424,7 +424,7 @@
               </div>
               <div class="mobile-lic-meta-item">
                 <span class="meta-label">HWID Lock</span>
-                <span class="meta-val" style="color:${isLockOn ? '#4cc38a' : '#ef4444'};font-weight:600;">${isLockOn ? 'Enabled' : 'Disabled'}</span>
+                <span class="meta-val" style="color:${isLockOn ? '#4cc38a' : '#e5484d'};font-weight:600;">${isLockOn ? 'Enabled' : 'Disabled'}</span>
               </div>
               <div class="mobile-lic-meta-item">
                 <span class="meta-label">Duration</span>
@@ -450,7 +450,7 @@
     document.querySelectorAll('.v2-filter-btn').forEach(b => {
       b.classList.remove('active');
       b.style.borderColor = 'rgba(255,255,255,0.08)';
-      b.style.background = '#0d1322';
+      b.style.background = 'var(--bg-raised)';
       b.style.color = 'var(--text-dim)';
     });
     if (btn) {
@@ -709,56 +709,56 @@
       modalBody.innerHTML = `
         <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;font-size:12px;">
           <!-- Key Display -->
-          <div style="grid-column:span 2;background:#090d16;padding:12px;border-radius:8px;border:1px solid #1a2235;">
+          <div style="grid-column:span 2;background:var(--bg-card);padding:12px;border-radius:8px;border:1px solid rgba(255, 255, 255, 0.08);">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-              <span style="color:#64748b;font-size:10px;font-weight:700;">KEYAUTH V2 LICENSE KEY</span>
-              <button onclick="copyText('${lic.key}')" class="btn-copy-inline" style="background:rgba(16,185,129,0.15);border:1px solid #10b981;color:#10b981;padding:2px 8px;border-radius:4px;font-size:11px;">Copy Key</button>
+              <span style="color:#7a8296;font-size:10px;font-weight:700;">KEYAUTH V2 LICENSE KEY</span>
+              <button onclick="copyText('${lic.key}')" class="btn-copy-inline" style="background:rgba(76, 195, 138, 0.12);border:1px solid #4cc38a;color:#4cc38a;padding:2px 8px;border-radius:4px;font-size:11px;">Copy Key</button>
             </div>
-            <span style="font-family:var(--font-mono);font-size:14px;color:#10b981;font-weight:700;">${lic.key}</span>
+            <span style="font-family:var(--font-mono);font-size:14px;color:#4cc38a;font-weight:700;">${lic.key}</span>
           </div>
 
           <!-- Full Device HWID Display with Copy -->
-          <div style="grid-column:span 2;background:#090d16;padding:12px;border-radius:8px;border:1px solid ${isBound ? 'rgba(16,185,129,0.3)' : '#1a2235'};">
+          <div style="grid-column:span 2;background:var(--bg-card);padding:12px;border-radius:8px;border:1px solid ${isBound ? 'rgba(76, 195, 138, 0.28)' : 'rgba(255, 255, 255, 0.08)'};">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-              <span style="color:#64748b;font-size:10px;font-weight:700;">BOUND DEVICE HARDWARE ID (HWID)</span>
-              ${isBound ? `<button onclick="copyText('${lic.hwid}')" style="background:rgba(56,189,248,0.15);border:1px solid #38bdf8;color:#38bdf8;border-radius:4px;padding:2px 8px;font-size:11px;cursor:pointer;">Copy Device HWID</button>` : ''}
+              <span style="color:#7a8296;font-size:10px;font-weight:700;">BOUND DEVICE HARDWARE ID (HWID)</span>
+              ${isBound ? `<button onclick="copyText('${lic.hwid}')" style="background:rgba(96, 165, 250, 0.12);border:1px solid #60a5fa;color:#60a5fa;border-radius:4px;padding:2px 8px;font-size:11px;cursor:pointer;">Copy Device HWID</button>` : ''}
             </div>
-            <span style="font-family:var(--font-mono);font-size:12px;color:${isBound ? '#38bdf8' : '#f59e0b'};word-break:break-all;font-weight:600;">
+            <span style="font-family:var(--font-mono);font-size:12px;color:${isBound ? '#60a5fa' : '#f59e0b'};word-break:break-all;font-weight:600;">
               ${isBound ? lic.hwid : 'Not Bound (Device has not logged in yet)'}
             </span>
           </div>
 
           <!-- HWID Lock Toggle Box -->
-          <div style="grid-column:span 2;background:#090d16;padding:12px;border-radius:8px;border:1px solid #1a2235;display:flex;justify-content:space-between;align-items:center;">
+          <div style="grid-column:span 2;background:var(--bg-card);padding:12px;border-radius:8px;border:1px solid rgba(255, 255, 255, 0.08);display:flex;justify-content:space-between;align-items:center;">
             <div>
-              <span style="color:#64748b;display:block;font-size:10px;font-weight:700;">HWID LOCK STATUS</span>
-              <span style="color:${isLockOn ? '#10b981' : '#f87171'};font-weight:700;font-size:13px;">
+              <span style="color:#7a8296;display:block;font-size:10px;font-weight:700;">HWID LOCK STATUS</span>
+              <span style="color:${isLockOn ? '#4cc38a' : '#e5484d'};font-weight:700;font-size:13px;">
                 ${isLockOn ? 'LOCKED (Strict 1-Device Binding)' : 'UNLOCKED (Multiple Devices Allowed)'}
               </span>
             </div>
-            <button type="button" onclick="toggleHwidLockV2Live('${lic.key}');inspectKeyV2Live('${lic.key}');" style="padding:6px 14px;font-size:11.5px;font-weight:700;border-radius:6px;cursor:pointer;background:${isLockOn ? 'rgba(239,68,68,0.15)' : 'rgba(16,185,129,0.15)'};border:1px solid ${isLockOn ? '#ef4444' : '#10b981'};color:${isLockOn ? '#ef4444' : '#10b981'};">
+            <button type="button" onclick="toggleHwidLockV2Live('${lic.key}');inspectKeyV2Live('${lic.key}');" style="padding:6px 14px;font-size:11.5px;font-weight:700;border-radius:6px;cursor:pointer;background:${isLockOn ? 'rgba(229, 72, 77, 0.12)' : 'rgba(76, 195, 138, 0.12)'};border:1px solid ${isLockOn ? '#e5484d' : '#4cc38a'};color:${isLockOn ? '#e5484d' : '#4cc38a'};">
               ${isLockOn ? 'Turn Lock OFF' : 'Turn Lock ON'}
             </button>
           </div>
 
-          <div style="background:#090d16;padding:10px;border-radius:6px;border:1px solid #1a2235;">
-            <span style="color:#64748b;display:block;font-size:10px;">APPLICATION</span>
+          <div style="background:var(--bg-card);padding:10px;border-radius:6px;border:1px solid rgba(255, 255, 255, 0.08);">
+            <span style="color:#7a8296;display:block;font-size:10px;">APPLICATION</span>
             <span style="color:#fff;font-weight:600;">${lic.app || KEYAUTH_V2_CONFIG.appName}</span>
           </div>
-          <div style="background:#090d16;padding:10px;border-radius:6px;border:1px solid #1a2235;">
-            <span style="color:#64748b;display:block;font-size:10px;">PACKAGE</span>
-            <span style="color:#34d399;font-weight:700;">${lic.pkg}</span>
+          <div style="background:var(--bg-card);padding:10px;border-radius:6px;border:1px solid rgba(255, 255, 255, 0.08);">
+            <span style="color:#7a8296;display:block;font-size:10px;">PACKAGE</span>
+            <span style="color:#4cc38a;font-weight:700;">${lic.pkg}</span>
           </div>
-          <div style="background:#090d16;padding:10px;border-radius:6px;border:1px solid #1a2235;">
-            <span style="color:#64748b;display:block;font-size:10px;">STATUS</span>
-            <span style="color:${lic.status === 'active' ? '#10b981' : (lic.status === 'banned' ? '#ef4444' : '#f59e0b')};font-weight:700;text-transform:uppercase;">${lic.status}</span>
+          <div style="background:var(--bg-card);padding:10px;border-radius:6px;border:1px solid rgba(255, 255, 255, 0.08);">
+            <span style="color:#7a8296;display:block;font-size:10px;">STATUS</span>
+            <span style="color:${lic.status === 'active' ? '#4cc38a' : (lic.status === 'banned' ? '#e5484d' : '#f59e0b')};font-weight:700;text-transform:uppercase;">${lic.status}</span>
           </div>
-          <div style="background:#090d16;padding:10px;border-radius:6px;border:1px solid #1a2235;">
-            <span style="color:#64748b;display:block;font-size:10px;">ASSIGNED USER</span>
+          <div style="background:var(--bg-card);padding:10px;border-radius:6px;border:1px solid rgba(255, 255, 255, 0.08);">
+            <span style="color:#7a8296;display:block;font-size:10px;">ASSIGNED USER</span>
             <span style="color:#fff;">${lic.user || 'None'}</span>
           </div>
-          <div style="grid-column:span 2;background:#090d16;padding:10px;border-radius:6px;border:1px solid #1a2235;">
-            <span style="color:#64748b;display:block;font-size:10px;">VALIDITY / EXPIRY</span>
+          <div style="grid-column:span 2;background:var(--bg-card);padding:10px;border-radius:6px;border:1px solid rgba(255, 255, 255, 0.08);">
+            <span style="color:#7a8296;display:block;font-size:10px;">VALIDITY / EXPIRY</span>
             <span style="color:#fff;font-weight:600;">${lic.expiry || 'Lifetime Access'}</span>
           </div>
         </div>

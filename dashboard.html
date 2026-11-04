@@ -62,7 +62,7 @@
       transition: border-color 140ms ease !important;
     }
     .brand-link-wrap:hover .brand-badge-premium {
-      border-color: rgba(239, 68, 68, 0.4) !important;
+      border-color: rgba(229, 72, 77, 0.28) !important;
     }
     .badge-logo-img {
       height: 18px !important;
@@ -92,7 +92,7 @@
       align-items: center !important;
     }
     .brand-x-accent {
-      color: #ef4444 !important;
+      color: #e5484d !important;
       margin-left: 1px !important;
     }
     .status-beacon-wrap {
@@ -137,9 +137,9 @@
       flex-shrink: 0 !important;
     }
     .btn-profile-logout:hover {
-      background: rgba(239, 68, 68, 0.12) !important;
-      border-color: rgba(239, 68, 68, 0.3) !important;
-      color: #ef4444 !important;
+      background: rgba(229, 72, 77, 0.12) !important;
+      border-color: rgba(229, 72, 77, 0.28) !important;
+      color: #e5484d !important;
     }
     .btn-profile-logout svg {
       display: block !important;
@@ -287,8 +287,8 @@
         <div class="navbar-right">
           <!-- Keys Stat -->
           <div class="header-pill-stat" title="Total Keys Quota" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.03);padding:4px 10px;border-radius:6px;border:1px solid rgba(255,255,255,0.06);font-size:12px;">
-            <span style="color:#7a8296;font-size:12px;">Keys:</span>
-            <span class="stat-keys-tag" id="header-keys-stat" style="color:#ededed;font-family:var(--font-mono);font-weight:500;">122 / 9999</span>
+            <span style="color:var(--text-dim);font-size:12px;">Keys:</span>
+            <span class="stat-keys-tag" id="header-keys-stat" style="color:var(--text-main);font-family:var(--font-mono);font-weight:500;">122 / 9999</span>
           </div>
 
           <!-- Notification Bell Wrap -->
@@ -298,21 +298,21 @@
                 <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
                 <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
               </svg>
-              <span id="bell-unread-dot" style="display:none;position:absolute;top:2px;right:2px;width:6px;height:6px;border-radius:50%;background:#ef4444;"></span>
+              <span id="bell-unread-dot" style="display:none;position:absolute;top:2px;right:2px;width:6px;height:6px;border-radius:50%;background:#e5484d;"></span>
             </button>
 
             <!-- Notification Dropdown Menu -->
             <div id="notification-dropdown" style="display:none;position:absolute;right:0;top:42px;width:320px;background:#11141c;border:1px solid rgba(255,255,255,0.08);border-radius:8px;box-shadow:0 8px 30px rgba(0,0,0,0.6);z-index:9999;padding:12px;font-family:var(--font-sans);">
               <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:10px;">
-                <span style="font-size:12px;font-weight:500;color:#ededed;">Notifications</span>
-                <span id="notif-count-badge" style="font-size:10px;font-family:var(--font-mono);color:#7a8296;">Active</span>
+                <span style="font-size:12px;font-weight:500;color:var(--text-main);">Notifications</span>
+                <span id="notif-count-badge" style="font-size:10px;font-family:var(--font-mono);color:var(--text-dim);">Active</span>
               </div>
               <div id="notif-items-list" style="max-height:240px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;"></div>
             </div>
           </div>
 
           <!-- Admin User Badge -->
-          <div class="header-pill-admin" id="header-admin-btn" style="background:#1a1e28;color:#ededed;border:1px solid rgba(255,255,255,0.08);padding:4px 10px;border-radius:6px;font-size:12px;font-weight:500;display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
+          <div class="header-pill-admin" id="header-admin-btn" style="background:#1a1e28;color:var(--text-main);border:1px solid rgba(255,255,255,0.08);padding:4px 10px;border-radius:6px;font-size:12px;font-weight:500;display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
             <span id="header-admin-name">Owner</span>
           </div>
         </div>
@@ -324,7 +324,7 @@
         <!-- Reseller Live Update Alert Banner -->
         <div id="reseller-update-banner" style="display:none;margin-bottom:16px;background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.25);border-radius:8px;padding:12px 16px;align-items:center;justify-content:space-between;">
           <div style="display:flex;align-items:center;gap:12px;">
-            <div style="width:32px;height:32px;border-radius:6px;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);display:flex;align-items:center;justify-content:center;color:#ef4444;flex-shrink:0;">
+            <div style="width:32px;height:32px;border-radius:6px;background:rgba(229, 72, 77, 0.12);border:1px solid rgba(229, 72, 77, 0.28);display:flex;align-items:center;justify-content:center;color:#e5484d;flex-shrink:0;">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                 <polyline points="7 10 12 15 17 10"></polyline>
@@ -333,8 +333,8 @@
             </div>
             <div>
               <div style="display:flex;align-items:center;gap:8px;">
-                <span style="color:#ededed;font-size:13px;font-weight:500;" id="banner-update-title">Client update available</span>
-                <span style="background:rgba(239,68,68,0.15);color:#ef4444;font-size:10px;padding:1px 6px;border-radius:4px;font-family:var(--font-mono);">Build v1.12</span>
+                <span style="color:var(--text-main);font-size:13px;font-weight:500;" id="banner-update-title">Client update available</span>
+                <span style="background:rgba(229, 72, 77, 0.12);color:#e5484d;font-size:10px;padding:1px 6px;border-radius:4px;font-family:var(--font-mono);">Build v1.12</span>
               </div>
               <p style="color:#a3a9b8;font-size:12px;margin-top:2px;" id="banner-update-desc">
                 Updated Master Core binary is ready for distribution.
@@ -345,7 +345,7 @@
             <button type="button" class="btn-exe-primary" style="width:auto;padding:6px 14px;font-size:12px;display:inline-flex;align-items:center;gap:6px;" onclick="downloadLatestUpdateAndDismiss()">
               <span>Download</span>
             </button>
-            <button type="button" onclick="dismissUpdateBanner()" style="background:transparent;border:none;color:#7a8296;font-size:14px;cursor:pointer;padding:4px 6px;" title="Dismiss">
+            <button type="button" onclick="dismissUpdateBanner()" style="background:transparent;border:none;color:var(--text-dim);font-size:14px;cursor:pointer;padding:4px 6px;" title="Dismiss">
               ✕
             </button>
           </div>
@@ -413,7 +413,7 @@
                     var hKeys = document.getElementById('header-keys-stat');
                     if (hKeys) { hKeys.textContent = uUsed + ' / ' + uTotal; }
                     var dAv = document.getElementById('dash-user-avatar');
-                    if (dAv) { dAv.textContent = uInitial; dAv.style.background = 'rgba(245,158,11,0.15)'; dAv.style.borderColor = 'rgba(245,158,11,0.4)'; dAv.style.color = '#fbbf24'; }
+                    if (dAv) { dAv.textContent = uInitial; dAv.style.background = 'rgba(245, 158, 11, 0.12)'; dAv.style.borderColor = 'rgba(245,158,11,0.4)'; dAv.style.color = '#f59e0b'; }
                     var dBadge = document.getElementById('dash-welcome-role-badge');
                     if (dBadge) { dBadge.className = 'dash-role-pill reseller'; }
                     var dRoleText = document.getElementById('dash-welcome-role-text');
@@ -527,14 +527,14 @@
                 <div class="card-micro-tag">Operations</div>
                 <h3 class="card-main-title">Quick License Key Manager</h3>
               </div>
-              <span class="badge-pill-status" style="font-size:11px;font-family:var(--font-mono);color:#7a8296;">API connected</span>
+              <span class="badge-pill-status" style="font-size:11px;font-family:var(--font-mono);color:var(--text-dim);">API connected</span>
             </div>
             <p style="font-size:12px;color:#a3a9b8;margin-bottom:12px;">Instant key diagnostics, HWID unbind, ban/unban, or deletion directly via live API.</p>
             <div class="quick-tools-row">
-              <input type="text" id="quick-key-input" class="cyber-input" placeholder="Paste license key (e.g. HPERX-8F92-41AC-90B2-110A)..." style="flex:1;min-width:240px;height:38px;padding:8px 14px;background:#1a1e28;border:1px solid rgba(255,255,255,0.08);border-radius:6px;color:#ededed;font-family:var(--font-mono);font-size:12px;" />
+              <input type="text" id="quick-key-input" class="cyber-input" placeholder="Paste license key (e.g. HPERX-8F92-41AC-90B2-110A)..." style="flex:1;min-width:240px;height:38px;padding:8px 14px;background:#1a1e28;border:1px solid rgba(255,255,255,0.08);border-radius:6px;color:var(--text-main);font-family:var(--font-mono);font-size:12px;" />
               <div class="quick-tools-actions" style="display:flex;gap:8px;flex-wrap:wrap;">
-                <button type="button" class="btn-action-primary" onclick="runQuickKeyAction('inspect')" style="background:#1a1e28;border:1px solid rgba(255,255,255,0.08);color:#ededed;padding:8px 14px;border-radius:6px;font-weight:500;font-size:12px;cursor:pointer;">Inspect</button>
-                <button type="button" class="btn-action-primary" onclick="runQuickKeyAction('reset_hwid')" style="background:#1a1e28;border:1px solid rgba(255,255,255,0.08);color:#ededed;padding:8px 14px;border-radius:6px;font-weight:500;font-size:12px;cursor:pointer;">Reset HWID</button>
+                <button type="button" class="btn-action-primary" onclick="runQuickKeyAction('inspect')" style="background:#1a1e28;border:1px solid rgba(255,255,255,0.08);color:var(--text-main);padding:8px 14px;border-radius:6px;font-weight:500;font-size:12px;cursor:pointer;">Inspect</button>
+                <button type="button" class="btn-action-primary" onclick="runQuickKeyAction('reset_hwid')" style="background:#1a1e28;border:1px solid rgba(255,255,255,0.08);color:var(--text-main);padding:8px 14px;border-radius:6px;font-weight:500;font-size:12px;cursor:pointer;">Reset HWID</button>
                 <button type="button" class="btn-action-primary" onclick="runQuickKeyAction('ban')" style="background:rgba(229,72,77,0.12);border:1px solid rgba(229,72,77,0.3);color:#e5484d;padding:8px 14px;border-radius:6px;font-weight:500;font-size:12px;cursor:pointer;">Ban</button>
                 <button type="button" class="btn-action-primary" onclick="runQuickKeyAction('unban')" style="background:rgba(76,195,138,0.12);border:1px solid rgba(76,195,138,0.3);color:#4cc38a;padding:8px 14px;border-radius:6px;font-weight:500;font-size:12px;cursor:pointer;">Unban</button>
                 <button type="button" class="btn-action-primary" onclick="runQuickKeyAction('delete')" style="background:rgba(229,72,77,0.12);border:1px solid rgba(229,72,77,0.3);color:#e5484d;padding:8px 14px;border-radius:6px;font-weight:500;font-size:12px;cursor:pointer;">Delete</button>
@@ -676,7 +676,7 @@
                   </div>
                   <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border-color);padding-bottom:8px;">
                     <span style="color:var(--text-dim);">Portal role</span>
-                    <span class="badge-pill-status" style="background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);color:#fbbf24;">Reseller</span>
+                    <span class="badge-pill-status" style="background:rgba(245, 158, 11, 0.12);border:1px solid rgba(245, 158, 11, 0.28);color:#f59e0b;">Reseller</span>
                   </div>
                   <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border-color);padding-bottom:8px;">
                     <span style="color:var(--text-dim);">Available balance</span>
@@ -738,7 +738,7 @@
 
           <!-- Quick Key Remote Tools Bar -->
           <div class="quick-key-card">
-            <span class="quick-key-title" style="font-weight:500;font-size:13px;color:#ededed;display:block;margin-bottom:8px;">Remote Key Operations</span>
+            <span class="quick-key-title" style="font-weight:500;font-size:13px;color:var(--text-main);display:block;margin-bottom:8px;">Remote Key Operations</span>
             <div class="quick-tools-row">
               <input type="text" id="quick-key-input" class="form-input-box" placeholder="Paste license key (e.g. HPERX-XXXX-XXXX...)">
               <button class="btn-action-secondary btn-quick-inspect" onclick="runQuickKeyAction('inspect')">Inspect</button>
@@ -806,7 +806,7 @@
 
           <!-- Quick Key Remote Tools Bar for V2 -->
           <div class="quick-key-card">
-            <span class="quick-key-title" style="font-weight:500;font-size:13px;color:#ededed;display:block;margin-bottom:8px;">Remote Key Operations (V2)</span>
+            <span class="quick-key-title" style="font-weight:500;font-size:13px;color:var(--text-main);display:block;margin-bottom:8px;">Remote Key Operations (V2)</span>
             <div class="quick-tools-row">
               <input type="text" id="quick-key-input-v2" class="form-input-box" placeholder="Paste V2 license key (e.g. HX2-VIP-XXXX-XXXX...)">
               <button class="btn-action-secondary btn-quick-inspect" onclick="runQuickKeyActionV2('inspect')">Inspect</button>
@@ -864,7 +864,7 @@
               <h2 class="view-heading-title" id="view-logs-title" style="font-size:16px;font-weight:600;color:#fff;margin-bottom:4px;">Authentication &amp; security logs</h2>
               <p class="view-sub-text" id="view-logs-sub" style="font-size:11.5px;color:var(--text-dim);margin:0;">Captured authentication attempts and API proxy transactions.</p>
             </div>
-            <button class="btn-action-primary btn-export-logs-red" onclick="exportLogsToCsv()" style="background:#1a1e28;border:1px solid rgba(255,255,255,0.08);color:#ededed;font-weight:500;font-size:12px;padding:7px 14px;border-radius:6px;display:flex;align-items:center;gap:6px;cursor:pointer;">
+            <button class="btn-action-primary btn-export-logs-red" onclick="exportLogsToCsv()" style="background:#1a1e28;border:1px solid rgba(255,255,255,0.08);color:var(--text-main);font-weight:500;font-size:12px;padding:7px 14px;border-radius:6px;display:flex;align-items:center;gap:6px;cursor:pointer;">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                 <polyline points="7 10 12 15 17 10"></polyline>
@@ -888,43 +888,43 @@
                 <tr>
                   <td><span class="badge-pill-status badge-auth-success" style="font-weight:700;">auth_success</span></td>
                   <td style="color:#fff;font-weight:500;">Key authenticated for app: Custom work (FPS BOOST)</td>
-                  <td class="col-log-ip col-mobile-hide" style="font-family:var(--font-mono);color:#06b6d4;font-size:11.5px;">45.118.67.22</td>
+                  <td class="col-log-ip col-mobile-hide" style="font-family:var(--font-mono);color:var(--accent-blue);font-size:11.5px;">45.118.67.22</td>
                   <td style="font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);">2 minutes ago</td>
                 </tr>
                 <tr>
                   <td><span class="badge-pill-status badge-auth-success" style="font-weight:700;">auth_success</span></td>
                   <td style="color:#fff;font-weight:500;">Key authenticated for app: Custom work (FPS BOOST)</td>
-                  <td class="col-log-ip col-mobile-hide" style="font-family:var(--font-mono);color:#06b6d4;font-size:11.5px;">45.118.67.22</td>
+                  <td class="col-log-ip col-mobile-hide" style="font-family:var(--font-mono);color:var(--accent-blue);font-size:11.5px;">45.118.67.22</td>
                   <td style="font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);">5 minutes ago</td>
                 </tr>
                 <tr>
                   <td><span class="badge-pill-status badge-auth-success" style="font-weight:700;">key_gen</span></td>
                   <td style="color:#fff;font-weight:500;">Generated 1 key(s) for BASIC PANEL (1 Days) by test2_Client</td>
-                  <td class="col-log-ip col-mobile-hide" style="font-family:var(--font-mono);color:#06b6d4;font-size:11.5px;">127.0.0.1</td>
+                  <td class="col-log-ip col-mobile-hide" style="font-family:var(--font-mono);color:var(--accent-blue);font-size:11.5px;">127.0.0.1</td>
                   <td style="font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);">12 minutes ago</td>
                 </tr>
                 <tr>
                   <td><span class="badge-pill-status badge-auth-success" style="font-weight:700;">auth_success</span></td>
                   <td style="color:#fff;font-weight:500;">Key authenticated for app: Custom work (BASIC PANEL)</td>
-                  <td class="col-log-ip col-mobile-hide" style="font-family:var(--font-mono);color:#06b6d4;font-size:11.5px;">45.118.67.22</td>
+                  <td class="col-log-ip col-mobile-hide" style="font-family:var(--font-mono);color:var(--accent-blue);font-size:11.5px;">45.118.67.22</td>
                   <td style="font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);">18 minutes ago</td>
                 </tr>
                 <tr>
                   <td><span class="badge-pill-status badge-auth-success" style="font-weight:700;">key_gen</span></td>
                   <td style="color:#fff;font-weight:500;">License key created: HPERX-8F92-41AC-90B2-110A</td>
-                  <td class="col-log-ip col-mobile-hide" style="font-family:var(--font-mono);color:#06b6d4;font-size:11.5px;">127.0.0.1</td>
+                  <td class="col-log-ip col-mobile-hide" style="font-family:var(--font-mono);color:var(--accent-blue);font-size:11.5px;">127.0.0.1</td>
                   <td style="font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);">28 minutes ago</td>
                 </tr>
                 <tr>
-                  <td><span class="badge-pill-status" style="background:rgba(234,179,8,0.15);border:1px solid rgba(234,179,8,0.4);color:#eab308;font-weight:700;">hwid_reset</span></td>
+                  <td><span class="badge-pill-status" style="background:rgba(245, 158, 11, 0.12);border:1px solid rgba(245, 158, 11, 0.28);color:#f59e0b;font-weight:700;">hwid_reset</span></td>
                   <td style="color:#fff;font-weight:500;">HWID reset executed for HPERX-32KA-991L-M08P</td>
-                  <td class="col-log-ip col-mobile-hide" style="font-family:var(--font-mono);color:#06b6d4;font-size:11.5px;">127.0.0.1</td>
+                  <td class="col-log-ip col-mobile-hide" style="font-family:var(--font-mono);color:var(--accent-blue);font-size:11.5px;">127.0.0.1</td>
                   <td style="font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);">41 minutes ago</td>
                 </tr>
                 <tr>
                   <td><span class="badge-pill-status badge-auth-success" style="font-weight:700;">auth_success</span></td>
                   <td style="color:#fff;font-weight:500;">Client handshake v1.0.0 verified successfully</td>
-                  <td class="col-log-ip col-mobile-hide" style="font-family:var(--font-mono);color:#06b6d4;font-size:11.5px;">194.26.29.13</td>
+                  <td class="col-log-ip col-mobile-hide" style="font-family:var(--font-mono);color:var(--accent-blue);font-size:11.5px;">194.26.29.13</td>
                   <td style="font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);">1 hour ago</td>
                 </tr>
               </tbody>
@@ -1209,7 +1209,7 @@
             <div class="apps-header-intro">
               <h2 class="view-heading-title" id="view-apps-title" style="font-size:16px;font-weight:600;color:#fff;margin-bottom:4px;">Application &amp; packages registry</h2>
               <p class="view-sub-text" id="view-apps-sub" style="font-size:11.5px;color:var(--text-dim);margin:0;">
-                Directly linked to App ID: <span style="color:#ededed;font-family:var(--font-mono);font-weight:500;" id="view-apps-appid">9f087d585fbd666572fc24b7</span> <span style="color:var(--text-dim);">(Custom work)</span>
+                Directly linked to App ID: <span style="color:var(--text-main);font-family:var(--font-mono);font-weight:500;" id="view-apps-appid">9f087d585fbd666572fc24b7</span> <span style="color:var(--text-dim);">(Custom work)</span>
               </p>
             </div>
           </div>
@@ -1227,66 +1227,66 @@
               </thead>
               <tbody id="packages-tbody">
                 <tr>
-                  <td style="font-family:var(--font-mono);font-weight:700;color:#ef4444;">#1</td>
+                  <td style="font-family:var(--font-mono);font-weight:700;color:#e5484d;">#1</td>
                   <td style="font-weight:700;color:#fff;font-size:13px;">BASIC PANEL</td>
-                  <td class="col-pkg-id col-mobile-hide" style="font-family:var(--font-mono);color:#cbd5e1;font-size:11.5px;">e52c1515c53453b85d0d4e87</td>
-                  <td style="color:#ef4444;font-weight:600;">Custom work</td>
+                  <td class="col-pkg-id col-mobile-hide" style="font-family:var(--font-mono);color:var(--text-muted);font-size:11.5px;">e52c1515c53453b85d0d4e87</td>
+                  <td style="color:#e5484d;font-weight:600;">Custom work</td>
                   <td><span class="badge-pill-status badge-active-green">Active</span></td>
                 </tr>
                 <tr>
-                  <td style="font-family:var(--font-mono);font-weight:700;color:#ef4444;">#2</td>
+                  <td style="font-family:var(--font-mono);font-weight:700;color:#e5484d;">#2</td>
                   <td style="font-weight:700;color:#fff;font-size:13px;">AIMSILENT EXE</td>
-                  <td class="col-pkg-id col-mobile-hide" style="font-family:var(--font-mono);color:#cbd5e1;font-size:11.5px;">affc8da8fd5ace99981ab877</td>
-                  <td style="color:#ef4444;font-weight:600;">Custom work</td>
+                  <td class="col-pkg-id col-mobile-hide" style="font-family:var(--font-mono);color:var(--text-muted);font-size:11.5px;">affc8da8fd5ace99981ab877</td>
+                  <td style="color:#e5484d;font-weight:600;">Custom work</td>
                   <td><span class="badge-pill-status badge-active-green">Active</span></td>
                 </tr>
                 <tr>
-                  <td style="font-family:var(--font-mono);font-weight:700;color:#ef4444;">#3</td>
+                  <td style="font-family:var(--font-mono);font-weight:700;color:#e5484d;">#3</td>
                   <td style="font-weight:700;color:#fff;font-size:13px;">UID BYPASS</td>
-                  <td class="col-pkg-id col-mobile-hide" style="font-family:var(--font-mono);color:#cbd5e1;font-size:11.5px;">cb921031dc43197e8ccb6828</td>
-                  <td style="color:#ef4444;font-weight:600;">Custom work</td>
+                  <td class="col-pkg-id col-mobile-hide" style="font-family:var(--font-mono);color:var(--text-muted);font-size:11.5px;">cb921031dc43197e8ccb6828</td>
+                  <td style="color:#e5484d;font-weight:600;">Custom work</td>
                   <td><span class="badge-pill-status badge-active-green">Active</span></td>
                 </tr>
                 <tr>
-                  <td style="font-family:var(--font-mono);font-weight:700;color:#ef4444;">#4</td>
+                  <td style="font-family:var(--font-mono);font-weight:700;color:#e5484d;">#4</td>
                   <td style="font-weight:700;color:#fff;font-size:13px;">EXTERNAL PANEL</td>
-                  <td class="col-pkg-id col-mobile-hide" style="font-family:var(--font-mono);color:#cbd5e1;font-size:11.5px;">3d1c6c948b4715fbd2fada2d</td>
-                  <td style="color:#ef4444;font-weight:600;">Custom work</td>
+                  <td class="col-pkg-id col-mobile-hide" style="font-family:var(--font-mono);color:var(--text-muted);font-size:11.5px;">3d1c6c948b4715fbd2fada2d</td>
+                  <td style="color:#e5484d;font-weight:600;">Custom work</td>
                   <td><span class="badge-pill-status badge-active-green">Active</span></td>
                 </tr>
                 <tr>
-                  <td style="font-family:var(--font-mono);font-weight:700;color:#ef4444;">#5</td>
+                  <td style="font-family:var(--font-mono);font-weight:700;color:#e5484d;">#5</td>
                   <td style="font-weight:700;color:#fff;font-size:13px;">PVT AIMKILL</td>
-                  <td class="col-pkg-id col-mobile-hide" style="font-family:var(--font-mono);color:#cbd5e1;font-size:11.5px;">d4f0ce93349f236711344cb5</td>
-                  <td style="color:#ef4444;font-weight:600;">Custom work</td>
+                  <td class="col-pkg-id col-mobile-hide" style="font-family:var(--font-mono);color:var(--text-muted);font-size:11.5px;">d4f0ce93349f236711344cb5</td>
+                  <td style="color:#e5484d;font-weight:600;">Custom work</td>
                   <td><span class="badge-pill-status badge-active-green">Active</span></td>
                 </tr>
                 <tr>
-                  <td style="font-family:var(--font-mono);font-weight:700;color:#ef4444;">#6</td>
+                  <td style="font-family:var(--font-mono);font-weight:700;color:#e5484d;">#6</td>
                   <td style="font-weight:700;color:#fff;font-size:13px;">VAULT PANEL</td>
-                  <td class="col-pkg-id col-mobile-hide" style="font-family:var(--font-mono);color:#cbd5e1;font-size:11.5px;">154d1edaddd7203fbfd847f4</td>
-                  <td style="color:#ef4444;font-weight:600;">Custom work</td>
+                  <td class="col-pkg-id col-mobile-hide" style="font-family:var(--font-mono);color:var(--text-muted);font-size:11.5px;">154d1edaddd7203fbfd847f4</td>
+                  <td style="color:#e5484d;font-weight:600;">Custom work</td>
                   <td><span class="badge-pill-status badge-active-green">Active</span></td>
                 </tr>
                 <tr>
-                  <td style="font-family:var(--font-mono);font-weight:700;color:#ef4444;">#7</td>
+                  <td style="font-family:var(--font-mono);font-weight:700;color:#e5484d;">#7</td>
                   <td style="font-weight:700;color:#fff;font-size:13px;">LIB BYPASS</td>
-                  <td class="col-pkg-id col-mobile-hide" style="font-family:var(--font-mono);color:#cbd5e1;font-size:11.5px;">db3b90e8134ec738b94a9b05</td>
-                  <td style="color:#ef4444;font-weight:600;">Custom work</td>
+                  <td class="col-pkg-id col-mobile-hide" style="font-family:var(--font-mono);color:var(--text-muted);font-size:11.5px;">db3b90e8134ec738b94a9b05</td>
+                  <td style="color:#e5484d;font-weight:600;">Custom work</td>
                   <td><span class="badge-pill-status badge-active-green">Active</span></td>
                 </tr>
                 <tr>
-                  <td style="font-family:var(--font-mono);font-weight:700;color:#ef4444;">#8</td>
+                  <td style="font-family:var(--font-mono);font-weight:700;color:#e5484d;">#8</td>
                   <td style="font-weight:700;color:#fff;font-size:13px;">FPS BOOSTER</td>
-                  <td class="col-pkg-id col-mobile-hide" style="font-family:var(--font-mono);color:#cbd5e1;font-size:11.5px;">2411bc9db9f9a66c6e876ad2</td>
-                  <td style="color:#ef4444;font-weight:600;">Custom work</td>
+                  <td class="col-pkg-id col-mobile-hide" style="font-family:var(--font-mono);color:var(--text-muted);font-size:11.5px;">2411bc9db9f9a66c6e876ad2</td>
+                  <td style="color:#e5484d;font-weight:600;">Custom work</td>
                   <td><span class="badge-pill-status badge-active-green">Active</span></td>
                 </tr>
                 <tr>
-                  <td style="font-family:var(--font-mono);font-weight:700;color:#ef4444;">#9</td>
+                  <td style="font-family:var(--font-mono);font-weight:700;color:#e5484d;">#9</td>
                   <td style="font-weight:700;color:#fff;font-size:13px;">PHONE PANEL</td>
-                  <td class="col-pkg-id col-mobile-hide" style="font-family:var(--font-mono);color:#cbd5e1;font-size:11.5px;">phone_panel_001</td>
-                  <td style="color:#ef4444;font-weight:600;">Custom work</td>
+                  <td class="col-pkg-id col-mobile-hide" style="font-family:var(--font-mono);color:var(--text-muted);font-size:11.5px;">phone_panel_001</td>
+                  <td style="color:#e5484d;font-weight:600;">Custom work</td>
                   <td><span class="badge-pill-status badge-active-green">Active</span></td>
                 </tr>
               </tbody>
@@ -1524,7 +1524,7 @@
               <p class="view-sub-text" id="view-resellers-sub" style="font-size:11.5px;color:var(--text-dim);margin:0;">Authorize reseller accounts, grant key quotas, and assign panel access permissions.</p>
             </div>
             <div style="display:flex;gap:10px;flex-wrap:wrap;flex-shrink:0;">
-              <button class="btn-action-secondary" onclick="openModal('modal-transfer-credit')" style="background:#1a1e28;border:1px solid rgba(255,255,255,0.08);color:#ededed;font-weight:500;padding:8px 14px;border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:6px;">
+              <button class="btn-action-secondary" onclick="openModal('modal-transfer-credit')" style="background:#1a1e28;border:1px solid rgba(255,255,255,0.08);color:var(--text-main);font-weight:500;padding:8px 14px;border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:6px;">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <line x1="7" y1="17" x2="17" y2="7"></line>
                   <polyline points="7 7 17 7 17 17"></polyline>
@@ -1616,7 +1616,7 @@
           <!-- Mobile Card List -->
           <div class="mobile-resellers-cards-wrap" id="resellers-mobile-list">
             <div class="mobile-reseller-card">
-              <div class="mobile-reseller-avatar" style="background:rgba(239,68,68,0.15);border-color:rgba(239,68,68,0.4);color:#ef4444;">H</div>
+              <div class="mobile-reseller-avatar" style="background:rgba(229, 72, 77, 0.12);border-color:rgba(229, 72, 77, 0.28);color:#e5484d;">H</div>
               <div class="mobile-reseller-main">
                 <div class="mobile-reseller-name">HYPER X <span style="color:#f59e0b;font-size:10px;font-weight:600;">(Root Owner)</span></div>
                 <div class="mobile-reseller-email">admin@prtvshow.online</div>
@@ -1635,7 +1635,7 @@
               <div class="mobile-reseller-chevron">›</div>
             </div>
             <div class="mobile-reseller-card">
-              <div class="mobile-reseller-avatar" style="background:rgba(168,85,247,0.15);border-color:rgba(168,85,247,0.35);color:#a855f7;">A</div>
+              <div class="mobile-reseller-avatar" style="background:var(--bg-raised);border:1px solid var(--border-color);color:var(--text-main);">A</div>
               <div class="mobile-reseller-main">
                 <div class="mobile-reseller-name">AlphaDistro</div>
                 <div class="mobile-reseller-email">alpha.dist@outlook.com</div>
@@ -1654,7 +1654,7 @@
               <div class="mobile-reseller-chevron">›</div>
             </div>
             <div class="mobile-reseller-card">
-              <div class="mobile-reseller-avatar" style="background:rgba(16,185,129,0.15);border-color:rgba(16,185,129,0.35);color:#10b981;">V</div>
+              <div class="mobile-reseller-avatar" style="background:var(--bg-raised);border:1px solid var(--border-color);color:var(--text-main);">V</div>
               <div class="mobile-reseller-main">
                 <div class="mobile-reseller-name">ViperKeys</div>
                 <div class="mobile-reseller-email">viper.resell@yahoo.com</div>
@@ -1673,7 +1673,7 @@
               <div class="mobile-reseller-chevron">›</div>
             </div>
             <div class="mobile-reseller-card">
-              <div class="mobile-reseller-avatar" style="background:rgba(239,68,68,0.12);border-color:rgba(239,68,68,0.3);color:#ef4444;">M</div>
+              <div class="mobile-reseller-avatar" style="background:rgba(229, 72, 77, 0.12);border-color:rgba(229, 72, 77, 0.28);color:#e5484d;">M</div>
               <div class="mobile-reseller-main">
                 <div class="mobile-reseller-name">madhukar</div>
                 <div class="mobile-reseller-email">madhukar@reseller.local</div>
@@ -1692,7 +1692,7 @@
               <div class="mobile-reseller-chevron">›</div>
             </div>
             <div class="mobile-reseller-card">
-              <div class="mobile-reseller-avatar" style="background:rgba(239,68,68,0.12);border-color:rgba(239,68,68,0.3);color:#ef4444;">M</div>
+              <div class="mobile-reseller-avatar" style="background:rgba(229, 72, 77, 0.12);border-color:rgba(229, 72, 77, 0.28);color:#e5484d;">M</div>
               <div class="mobile-reseller-main">
                 <div class="mobile-reseller-name">MADHUKARBETA</div>
                 <div class="mobile-reseller-email">madhukarsarkar004@gmail.com</div>
@@ -1711,7 +1711,7 @@
               <div class="mobile-reseller-chevron">›</div>
             </div>
             <div class="mobile-reseller-card">
-              <div class="mobile-reseller-avatar" style="background:rgba(59,130,246,0.15);border-color:rgba(59,130,246,0.35);color:#3b82f6;">T</div>
+              <div class="mobile-reseller-avatar" style="background:var(--bg-raised);border:1px solid var(--border-color);color:var(--text-main);">T</div>
               <div class="mobile-reseller-main">
                 <div class="mobile-reseller-name">test2_Client</div>
                 <div class="mobile-reseller-email">test2@client.com</div>
@@ -1820,7 +1820,7 @@
                   </div>
                   <div style="text-align:right;">
                     <span style="color:var(--text-dim);font-size:11px;display:block;">Available balance</span>
-                    <strong id="transfer-sender-avail" style="color:#ededed;font-size:13px;font-family:var(--font-mono);">9,922 Keys</strong>
+                    <strong id="transfer-sender-avail" style="color:var(--text-main);font-size:13px;font-family:var(--font-mono);">9,922 Keys</strong>
                   </div>
                 </div>
 
@@ -1940,7 +1940,7 @@
                     </div>
                   </div>
                   <div style="display:flex;align-items:center;gap:6px;">
-                    <span class="exe-badge-amber" id="card2-update-alert-badge" style="display:none;background:rgba(239,68,68,0.15);border:1px solid #ef4444;color:#ef4444;font-size:10px;padding:2px 6px;border-radius:4px;font-weight:600;">Update available</span>
+                    <span class="exe-badge-amber" id="card2-update-alert-badge" style="display:none;background:rgba(229, 72, 77, 0.12);border:1px solid #e5484d;color:#e5484d;font-size:10px;padding:2px 6px;border-radius:4px;font-weight:600;">Update available</span>
                     <span class="exe-badge-green" id="master-core-size-badge" style="font-size:10.5px;padding:3px 8px;font-family:var(--font-mono);">1.98 MB</span>
                   </div>
                 </div>
@@ -2006,7 +2006,7 @@
                       <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path>
                     </svg>
                   </div>
-                  <div style="font-size:12.5px;font-weight:500;color:#ededed;margin-bottom:2px;">Drop .zip / .exe here</div>
+                  <div style="font-size:12.5px;font-weight:500;color:var(--text-main);margin-bottom:2px;">Drop .zip / .exe here</div>
                   <div style="font-size:11px;color:var(--text-dim);">or click to browse files</div>
                 </div>
 
@@ -2148,7 +2148,7 @@
     <div class="modal-box-card">
       <div class="modal-header-strip">
         <span class="modal-title-text">Generate KeyAuth license keys</span>
-        <button onclick="closeModal('modal-add-key')" style="background:transparent;border:none;color:#94a3b8;cursor:pointer;font-size:16px;">✕</button>
+        <button onclick="closeModal('modal-add-key')" style="background:transparent;border:none;color:var(--text-muted);cursor:pointer;font-size:16px;">✕</button>
       </div>
 
       <form onsubmit="submitGenerateKeys(event)">
@@ -2228,7 +2228,7 @@
     <div class="modal-box-card">
       <div class="modal-header-strip">
         <span class="modal-title-text">Generate KeyAuth license keys (V2)</span>
-        <button onclick="closeModal('modal-add-key-v2')" style="background:transparent;border:none;color:#94a3b8;cursor:pointer;font-size:16px;">✕</button>
+        <button onclick="closeModal('modal-add-key-v2')" style="background:transparent;border:none;color:var(--text-muted);cursor:pointer;font-size:16px;">✕</button>
       </div>
 
       <form onsubmit="submitGenerateKeysV2(event)">
@@ -2303,7 +2303,7 @@
     <div class="modal-box-card" style="max-width:540px;">
       <div class="modal-header-strip">
         <span class="modal-title-text" id="generated-keys-title">License keys generated</span>
-        <button onclick="closeModal('modal-generated-keys')" style="background:transparent;border:none;color:#94a3b8;cursor:pointer;font-size:16px;">✕</button>
+        <button onclick="closeModal('modal-generated-keys')" style="background:transparent;border:none;color:var(--text-muted);cursor:pointer;font-size:16px;">✕</button>
       </div>
 
       <div class="modal-body-content">
@@ -2328,7 +2328,7 @@
     <div class="modal-box-card" style="max-width:480px;">
       <div class="modal-header-strip">
         <span class="modal-title-text">License key details</span>
-        <button onclick="closeModal('modal-key-inspector')" style="background:transparent;border:none;color:#94a3b8;cursor:pointer;font-size:16px;">✕</button>
+        <button onclick="closeModal('modal-key-inspector')" style="background:transparent;border:none;color:var(--text-muted);cursor:pointer;font-size:16px;">✕</button>
       </div>
 
       <div class="modal-body-content" id="key-inspect-body">
@@ -2338,7 +2338,7 @@
       <div class="modal-footer-strip" style="display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;">
         <button type="button" class="btn-action-secondary" onclick="resetHwidLive(window.currentInspectedKey)">Reset HWID</button>
         <button type="button" class="btn-action-secondary" style="color:#f59e0b;" onclick="toggleBanLive(window.currentInspectedKey);closeModal('modal-key-inspector');">Ban / Unban</button>
-        <button type="button" class="btn-action-secondary" style="color:#ef4444;" onclick="deleteKeyLive(window.currentInspectedKey);closeModal('modal-key-inspector');">Delete</button>
+        <button type="button" class="btn-action-secondary" style="color:#e5484d;" onclick="deleteKeyLive(window.currentInspectedKey);closeModal('modal-key-inspector');">Delete</button>
         <button type="button" class="btn-action-primary" onclick="closeModal('modal-key-inspector')">Close</button>
       </div>
     </div>
@@ -2351,7 +2351,7 @@
     <div class="modal-box-card" style="max-width:540px;">
       <div class="modal-header-strip">
         <span class="modal-title-text">Create reseller account</span>
-        <button onclick="closeModal('modal-add-reseller')" style="background:transparent;border:none;color:#94a3b8;cursor:pointer;font-size:16px;">✕</button>
+        <button onclick="closeModal('modal-add-reseller')" style="background:transparent;border:none;color:var(--text-muted);cursor:pointer;font-size:16px;">✕</button>
       </div>
 
       <form onsubmit="submitAddReseller(event)">
@@ -2437,7 +2437,7 @@
     <div class="modal-box-card" style="max-width:540px;">
       <div class="modal-header-strip">
         <span class="modal-title-text">Edit reseller permissions &amp; credits</span>
-        <button onclick="closeModal('modal-edit-reseller')" style="background:transparent;border:none;color:#94a3b8;cursor:pointer;font-size:16px;">✕</button>
+        <button onclick="closeModal('modal-edit-reseller')" style="background:transparent;border:none;color:var(--text-muted);cursor:pointer;font-size:16px;">✕</button>
       </div>
 
       <form onsubmit="submitEditReseller(event)">
@@ -2530,7 +2530,7 @@
     <div class="modal-box-card" style="max-width:480px;">
       <div class="modal-header-strip">
         <span class="modal-title-text">Admin credentials &amp; settings</span>
-        <button onclick="closeModal('modal-change-admin')" style="background:transparent;border:none;color:#94a3b8;cursor:pointer;font-size:16px;">✕</button>
+        <button onclick="closeModal('modal-change-admin')" style="background:transparent;border:none;color:var(--text-muted);cursor:pointer;font-size:16px;">✕</button>
       </div>
 
       <form onsubmit="submitChangeAdminCredentials(event)">
@@ -2541,7 +2541,7 @@
 
           <div class="form-group-item">
             <label class="form-label-title">Admin username / identifier</label>
-            <input type="text" id="cfg-admin-username" class="form-input-box" placeholder="e.g. HYPER X or admin" required style="color:#ededed;">
+            <input type="text" id="cfg-admin-username" class="form-input-box" placeholder="e.g. HYPER X or admin" required style="color:var(--text-main);">
           </div>
 
           <div class="form-group-item">
@@ -2580,7 +2580,7 @@
     <div class="modal-box-card" style="max-width:480px;">
       <div class="modal-header-strip">
         <span class="modal-title-text">Transfer credits to reseller</span>
-        <button onclick="closeModal('modal-transfer-credit')" style="background:transparent;border:none;color:#94a3b8;cursor:pointer;font-size:16px;">✕</button>
+        <button onclick="closeModal('modal-transfer-credit')" style="background:transparent;border:none;color:var(--text-muted);cursor:pointer;font-size:16px;">✕</button>
       </div>
 
       <form onsubmit="submitModalTransferCredits(event)">
@@ -2593,7 +2593,7 @@
             </div>
             <div style="text-align:right;">
               <span style="color:var(--text-dim);font-size:10.5px;display:block;">Available balance:</span>
-              <strong id="modal-transfer-sender-avail" style="color:#ededed;font-size:12.5px;font-family:var(--font-mono);">9,922 Keys</strong>
+              <strong id="modal-transfer-sender-avail" style="color:var(--text-main);font-size:12.5px;font-family:var(--font-mono);">9,922 Keys</strong>
             </div>
           </div>
 
@@ -2647,7 +2647,7 @@
     <div class="modal-box-card" style="max-width:460px;">
       <div class="modal-header-strip">
         <span class="modal-title-text">Reseller settings &amp; password</span>
-        <button onclick="closeModal('modal-change-reseller-password')" style="background:transparent;border:none;color:#94a3b8;cursor:pointer;font-size:16px;">✕</button>
+        <button onclick="closeModal('modal-change-reseller-password')" style="background:transparent;border:none;color:var(--text-muted);cursor:pointer;font-size:16px;">✕</button>
       </div>
 
       <form onsubmit="submitChangeResellerPassword(event, 'modal')">

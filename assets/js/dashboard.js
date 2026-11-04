@@ -325,13 +325,13 @@ function showHyperAlert(message, options = {}) {
 
   if (iconEl) {
     if (type === 'success') {
-      iconEl.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>`;
+      iconEl.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4cc38a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>`;
     } else if (type === 'error') {
-      iconEl.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`;
+      iconEl.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#e5484d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`;
     } else if (type === 'warning') {
       iconEl.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`;
     } else {
-      iconEl.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`;
+      iconEl.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`;
     }
   }
 
@@ -593,7 +593,7 @@ function submitChangeAdminCredentials(e) {
     if (msgBox) {
       msgBox.style.display = 'block';
       msgBox.style.background = 'rgba(239, 68, 68, 0.2)';
-      msgBox.style.color = '#ef4444';
+      msgBox.style.color = '#e5484d';
       msgBox.textContent = `Incorrect current password. (Default: ${DEFAULT_ADMIN_PASS})`;
     } else {
       alert(`Incorrect current password. (Default: ${DEFAULT_ADMIN_PASS})`);
@@ -610,7 +610,7 @@ function submitChangeAdminCredentials(e) {
     if (msgBox) {
       msgBox.style.display = 'block';
       msgBox.style.background = 'rgba(239, 68, 68, 0.2)';
-      msgBox.style.color = '#ef4444';
+      msgBox.style.color = '#e5484d';
       msgBox.textContent = 'New password and confirm password do not match.';
     } else {
       alert('New password and confirm password do not match.');
@@ -946,7 +946,7 @@ function updateDashboardStatsUI() {
         if (statKeyLimit) {
           statKeyLimit.textContent = totalQuota.toLocaleString();
           statKeyLimit.style.fontSize = '';
-          statKeyLimit.style.color = '#00f0ff';
+          statKeyLimit.style.color = 'var(--accent-blue)';
         }
         if (statKeyLimitTitle) statKeyLimitTitle.textContent = 'TOTAL QUOTA';
 
@@ -955,7 +955,7 @@ function updateDashboardStatsUI() {
         if (statBannedKeys) {
           statBannedKeys.textContent = res.status || 'Active';
           statBannedKeys.style.fontSize = '14.5px';
-          statBannedKeys.style.color = '#10b981';
+          statBannedKeys.style.color = '#4cc38a';
         }
         if (statBannedTitle) statBannedTitle.textContent = 'ACCOUNT STATUS';
 
@@ -1384,7 +1384,7 @@ function renderLicensesTable() {
 
   if (list.length === 0) {
     if (tbody) tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--text-dim);">No license keys found matching criteria.</td></tr>`;
-    if (mobileList) mobileList.innerHTML = `<div style="text-align:center;padding:24px;color:var(--text-dim);font-size:12px;background:#0c101b;border:1px solid #1a2235;border-radius:10px;">No license keys found matching criteria.</div>`;
+    if (mobileList) mobileList.innerHTML = `<div style="text-align:center;padding:24px;color:var(--text-dim);font-size:12px;background:#0b0d14;border:1px solid rgba(255, 255, 255, 0.08);border-radius:10px;">No license keys found matching criteria.</div>`;
     return;
   }
 
@@ -1392,7 +1392,7 @@ function renderLicensesTable() {
   if (tbody) {
     tbody.innerHTML = list.map(lic => {
       let statusBadge = '<span class="badge-pill-status badge-auth-success">Active</span>';
-      if (lic.status === 'expired') statusBadge = '<span class="badge-pill-status" style="background:rgba(249,115,22,0.15);color:#f97316;border:1px solid #ea580c;">Expired</span>';
+      if (lic.status === 'expired') statusBadge = '<span class="badge-pill-status" style="background:rgba(245, 158, 11, 0.12);color:#f59e0b;border:1px solid #f59e0b;">Expired</span>';
       if (lic.status === 'banned') statusBadge = '<span class="badge-pill-status badge-auth-fail">Banned</span>';
 
       const isBanned = lic.status === 'banned';
@@ -1404,10 +1404,10 @@ function renderLicensesTable() {
           <button type="button" onclick="resetHwidLive('${lic.key}')" class="btn-row-action" title="Reset HWID">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
           </button>
-          <button type="button" onclick="toggleBanLive('${lic.key}', '${lic.status}')" class="btn-row-action" style="${isBanned ? 'color:#4cc38a;border-color:rgba(76,195,138,0.3);' : 'color:#f59e0b;border-color:rgba(245,158,11,0.3);'}" title="${isBanned ? 'Unban Key' : 'Ban Key'}">
+          <button type="button" onclick="toggleBanLive('${lic.key}', '${lic.status}')" class="btn-row-action" style="${isBanned ? 'color:#4cc38a;border-color:rgba(76, 195, 138, 0.28);' : 'color:#f59e0b;border-color:rgba(245, 158, 11, 0.28);'}" title="${isBanned ? 'Unban Key' : 'Ban Key'}">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
           </button>
-          <button type="button" onclick="deleteKeyLive('${lic.key}')" class="btn-row-action" style="color:#ef4444;border-color:rgba(239,68,68,0.3);" title="Delete Key">
+          <button type="button" onclick="deleteKeyLive('${lic.key}')" class="btn-row-action" style="color:#e5484d;border-color:rgba(229, 72, 77, 0.28);" title="Delete Key">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
           </button>
         </div>
@@ -1424,12 +1424,12 @@ function renderLicensesTable() {
             </span>
           </td>
           <td style="white-space:nowrap;">
-            <span style="font-family:var(--font-mono);color:#38bdf8;display:block;font-weight:600;">${lic.pkg || 'BASIC PANEL'}</span>
+            <span style="font-family:var(--font-mono);color:#60a5fa;display:block;font-weight:600;">${lic.pkg || 'BASIC PANEL'}</span>
             <span style="font-size:10.5px;color:var(--text-dim);">${lic.app || 'Custom work'}</span>
           </td>
-          <td class="col-user col-mobile-hide" style="color:#cbd5e1;font-weight:600;white-space:nowrap;">${lic.user || 'Root Admin'}</td>
-          <td class="col-hwid col-mobile-hide" style="font-family:var(--font-mono);font-size:11px;white-space:nowrap;color:${lic.hwid === 'Unbound' || lic.hwid === 'Not Bound' ? '#f59e0b' : '#8e95aa'};">${lic.hwid || 'Not Bound'}</td>
-          <td style="font-family:var(--font-mono);font-size:11px;color:#e2e8f0;white-space:nowrap;">${lic.expiry || 'Lifetime'}</td>
+          <td class="col-user col-mobile-hide" style="color:#a3a9b8;font-weight:600;white-space:nowrap;">${lic.user || 'Root Admin'}</td>
+          <td class="col-hwid col-mobile-hide" style="font-family:var(--font-mono);font-size:11px;white-space:nowrap;color:${lic.hwid === 'Unbound' || lic.hwid === 'Not Bound' ? '#f59e0b' : '#a3a9b8'};">${lic.hwid || 'Not Bound'}</td>
+          <td style="font-family:var(--font-mono);font-size:11px;color:#eef0f5;white-space:nowrap;">${lic.expiry || 'Lifetime'}</td>
           <td style="white-space:nowrap;">${statusBadge}</td>
           <td style="white-space:nowrap;text-align:center;">${actionButtons}</td>
         </tr>
@@ -1851,9 +1851,9 @@ async function inspectKeyLive(key) {
   if (res && res.success) {
     const details = `
       <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;">
-        <div><strong>Key:</strong> <code style="color:#00f0ff;">${res.key}</code></div>
+        <div><strong>Key:</strong> <code style="color:#eef0f5;">${res.key}</code></div>
         <div><strong>Application:</strong> ${res.app_name}</div>
-        <div><strong>Package:</strong> <span style="color:#38bdf8;">${res.package_name}</span></div>
+        <div><strong>Package:</strong> <span style="color:#60a5fa;">${res.package_name}</span></div>
         <div><strong>Status:</strong> <span class="badge-pill-status badge-auth-success">${res.status}</span></div>
         <div><strong>HWID:</strong> <code>${res.hwid}</code></div>
         <div><strong>Duration:</strong> ${res.duration_days == 0 ? 'Lifetime' : res.duration_days + ' Days'}</div>
@@ -1894,7 +1894,7 @@ async function runQuickKeyAction(action) {
 
   // SECURITY: Ownership check for quick-action bar
   if (!canAccessKey(key)) {
-    resultBox.innerHTML = `<span style="color:#ef4444;font-weight:600;">Access Denied: You can only perform actions on your own license keys.</span>`;
+    resultBox.innerHTML = `<span style="color:#e5484d;font-weight:600;">Access Denied: You can only perform actions on your own license keys.</span>`;
     return;
   }
 
@@ -1915,12 +1915,12 @@ async function runQuickKeyAction(action) {
     }
     if (res && res.success) {
       resultBox.innerHTML = `
-        <div style="color:#10b981;font-weight:600;margin-bottom:4px;">Key Found: <span style="color:#ededed;">${res.key}</span></div>
-        <div style="color:#e2e8f0;margin-bottom:2px;"><strong>Package:</strong> <span style="color:#ff3b47;">${res.package_name}</span> | <strong>Status:</strong> <span style="color:${res.status === 'active' ? '#10b981' : '#ef4444'};">${res.status.toUpperCase()}</span></div>
-        <div style="color:#94a3b8;"><strong>HWID:</strong> <code style="color:#ededed;">${res.hwid}</code> | <strong>Expiry:</strong> ${res.expiry_date}</div>
+        <div style="color:#4cc38a;font-weight:600;margin-bottom:4px;">Key Found: <span style="color:#eef0f5;">${res.key}</span></div>
+        <div style="color:#eef0f5;margin-bottom:2px;"><strong>Package:</strong> <span style="color:#e5484d;">${res.package_name}</span> | <strong>Status:</strong> <span style="color:${res.status === 'active' ? '#4cc38a' : '#e5484d'};">${res.status.toUpperCase()}</span></div>
+        <div style="color:#a3a9b8;"><strong>HWID:</strong> <code style="color:#eef0f5;">${res.hwid}</code> | <strong>Expiry:</strong> ${res.expiry_date}</div>
       `;
     } else {
-      resultBox.innerHTML = `<span style="color:#ef4444;">Error: ${res ? res.message : 'Key not found in database'}</span>`;
+      resultBox.innerHTML = `<span style="color:#e5484d;">Error: ${res ? res.message : 'Key not found in database'}</span>`;
     }
   } else if (action === 'reset_hwid') {
     let res = await callApi('reset_hwid', { key });
@@ -1928,9 +1928,9 @@ async function runQuickKeyAction(action) {
     if ((res && res.success) || localLic) {
       if (localLic) { localLic.hwid = 'Unbound'; state.save(); renderLicensesTable(); }
       state.addLog('hwid_reset', `HWID reset executed for key: ${key}`);
-      resultBox.innerHTML = `<span style="color:#10b981;font-weight:600;">HWID Reset Successful for key: <code style="color:#ededed;">${key}</code></span>`;
+      resultBox.innerHTML = `<span style="color:#4cc38a;font-weight:600;">HWID Reset Successful for key: <code style="color:#eef0f5;">${key}</code></span>`;
     } else {
-      resultBox.innerHTML = `<span style="color:#ef4444;">Reset Failed: ${(res && res.message) || 'Error'}</span>`;
+      resultBox.innerHTML = `<span style="color:#e5484d;">Reset Failed: ${(res && res.message) || 'Error'}</span>`;
     }
   } else if (action === 'ban' || action === 'unban') {
     const act = action === 'ban' ? 'ban_key' : 'unban_key';
@@ -1939,9 +1939,9 @@ async function runQuickKeyAction(action) {
     if ((res && res.success) || localLic) {
       if (localLic) { localLic.status = action === 'ban' ? 'banned' : 'active'; state.save(); renderLicensesTable(); }
       state.addLog(action === 'ban' ? 'key_ban' : 'key_unban', `Key ${action}ned: ${key}`);
-      resultBox.innerHTML = `<span style="color:#10b981;font-weight:600;">Key <code style="color:#ededed;">${key}</code> has been ${action === 'ban' ? 'BANNED' : 'UNBANNED'} successfully.</span>`;
+      resultBox.innerHTML = `<span style="color:#4cc38a;font-weight:600;">Key <code style="color:#eef0f5;">${key}</code> has been ${action === 'ban' ? 'BANNED' : 'UNBANNED'} successfully.</span>`;
     } else {
-      resultBox.innerHTML = `<span style="color:#ef4444;">Failed: ${(res && res.message) || 'Error'}</span>`;
+      resultBox.innerHTML = `<span style="color:#e5484d;">Failed: ${(res && res.message) || 'Error'}</span>`;
     }
   } else if (action === 'delete') {
     if (!confirm(`Are you sure you want to permanently delete key: ${key}?`)) return;
@@ -1952,9 +1952,9 @@ async function runQuickKeyAction(action) {
       state.save();
       renderLicensesTable();
       state.addLog('key_delete', `License key deleted: ${key}`);
-      resultBox.innerHTML = `<span style="color:#10b981;font-weight:600;">Key <code style="color:#ededed;">${key}</code> deleted successfully.</span>`;
+      resultBox.innerHTML = `<span style="color:#4cc38a;font-weight:600;">Key <code style="color:#eef0f5;">${key}</code> deleted successfully.</span>`;
     } else {
-      resultBox.innerHTML = `<span style="color:#ef4444;">Delete Failed: ${(res && res.message) || 'Error'}</span>`;
+      resultBox.innerHTML = `<span style="color:#e5484d;">Delete Failed: ${(res && res.message) || 'Error'}</span>`;
     }
   }
 }
@@ -2116,9 +2116,9 @@ function renderApplicationsTable() {
   const appsSub = document.getElementById('view-apps-sub');
   if (appsSub) {
     if (role === 'reseller') {
-      appsSub.innerHTML = `Showing only the <strong style="color:#ef4444;">${allowedPkgs.length} panels</strong> authorized for your reseller account.`;
+      appsSub.innerHTML = `Showing only the <strong style="color:#e5484d;">${allowedPkgs.length} panels</strong> authorized for your reseller account.`;
     } else {
-      appsSub.innerHTML = `Directly linked to App ID: <span style="color:#00f0ff;font-family:var(--font-mono);font-weight:700;">${getActiveAppId()}</span> <span style="color:var(--text-dim);">(Custom work)</span>`;
+      appsSub.innerHTML = `Directly linked to App ID: <span style="color:#eef0f5;font-family:var(--font-mono);font-weight:700;">${getActiveAppId()}</span> <span style="color:var(--text-dim);">(Custom work)</span>`;
     }
   }
 
@@ -2133,10 +2133,10 @@ function renderApplicationsTable() {
   if (tbody) {
     tbody.innerHTML = allowedPkgs.map((pkg, idx) => `
       <tr>
-        <td style="font-family:var(--font-mono);font-weight:700;color:#ef4444;white-space:nowrap;">#${idx + 1}</td>
+        <td style="font-family:var(--font-mono);font-weight:700;color:#e5484d;white-space:nowrap;">#${idx + 1}</td>
         <td style="font-weight:700;color:#fff;font-size:13px;white-space:nowrap;">${pkg.package_name}</td>
-        <td class="col-pkg-id col-mobile-hide" style="font-family:var(--font-mono);color:#cbd5e1;font-size:11.5px;">${pkg.package_id}</td>
-        <td style="color:#ef4444;font-weight:600;white-space:nowrap;">${pkg.app_name || 'Custom work'}</td>
+        <td class="col-pkg-id col-mobile-hide" style="font-family:var(--font-mono);color:#a3a9b8;font-size:11.5px;">${pkg.package_id}</td>
+        <td style="color:#e5484d;font-weight:600;white-space:nowrap;">${pkg.app_name || 'Custom work'}</td>
         <td style="white-space:nowrap;"><span class="badge-pill-status badge-active-green">Active</span></td>
       </tr>
     `).join('');
@@ -2195,10 +2195,10 @@ function renderDashboardPackagesSummary(pkgs) {
       <td style="font-weight:600;color:#fff;">
         ${pkg.package_name}
       </td>
-      <td style="font-family:var(--font-mono);color:#00f0ff;font-size:11.5px;">Custom work</td>
+      <td style="font-family:var(--font-mono);color:#eef0f5;font-size:11.5px;">Custom work</td>
       <td><span class="badge-pill-status badge-active-green">Active</span></td>
       <td style="text-align:right;">
-        <button type="button" class="btn-sm-action" onclick="openGenModalForPackage('${pkg.package_id || pkg.package_name}')" style="padding:3px 8px;font-size:11px;background:rgba(229,24,31,0.18);border:1px solid rgba(229,24,31,0.4);color:#ff3b47;font-weight:700;cursor:pointer;border-radius:4px;" title="Generate key for this package">+ Key</button>
+        <button type="button" class="btn-sm-action" onclick="openGenModalForPackage('${pkg.package_id || pkg.package_name}')" style="padding:3px 8px;font-size:11px;background:rgba(229,24,31,0.18);border:1px solid rgba(229,24,31,0.4);color:#e5484d;font-weight:700;cursor:pointer;border-radius:4px;" title="Generate key for this package">+ Key</button>
       </td>
     </tr>
   `).join('');
@@ -2220,11 +2220,11 @@ function formatLogBadge(action) {
   } else if (a.includes('fail') || a.includes('ban') || a.includes('delete') || a.includes('tamper')) {
     return `<span class="badge-pill-status badge-auth-fail" style="font-weight:700;">${action}</span>`;
   } else if (a.includes('transfer') || a.includes('quota') || a.includes('credit')) {
-    return `<span class="badge-pill-status" style="background:rgba(56,189,248,0.15);border:1px solid rgba(56,189,248,0.4);color:#38bdf8;font-weight:700;">${action}</span>`;
+    return `<span class="badge-pill-status" style="background:rgba(56,189,248,0.15);border:1px solid rgba(56,189,248,0.4);color:#60a5fa;font-weight:700;">${action}</span>`;
   } else if (a.includes('hwid') || a.includes('reset')) {
-    return `<span class="badge-pill-status" style="background:rgba(234,179,8,0.15);border:1px solid rgba(234,179,8,0.4);color:#eab308;font-weight:700;">${action}</span>`;
+    return `<span class="badge-pill-status" style="background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.28);color:#f59e0b;font-weight:600;">${action}</span>`;
   }
-  return `<span class="badge-pill-status" style="background:rgba(148,163,184,0.15);border:1px solid rgba(148,163,184,0.3);color:#cbd5e1;font-weight:700;">${action}</span>`;
+  return `<span class="badge-pill-status" style="background:rgba(148,163,184,0.15);border:1px solid rgba(148,163,184,0.3);color:#a3a9b8;font-weight:700;">${action}</span>`;
 }
 
 function getFilteredLogsForCurrentSession() {
@@ -2321,15 +2321,15 @@ function renderDashboardRecentActivity() {
 
   const items = logs.slice(0, 6);
   if (items.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;padding:16px;color:#64748b;">No recent activity logs.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;padding:16px;color:#7a8296;">No recent activity logs.</td></tr>`;
     return;
   }
 
   tbody.innerHTML = items.map(item => `
     <tr>
       <td style="width:115px;">${formatLogBadge(item.action)}</td>
-      <td style="color:#e2e8f0;font-size:12.5px;font-family:var(--font-sans);">${item.detail}</td>
-      <td style="font-family:var(--font-mono);font-size:11px;color:#64748b;text-align:right;white-space:nowrap;">${item.time || 'Just now'}</td>
+      <td style="color:#eef0f5;font-size:12.5px;font-family:var(--font-sans);">${item.detail}</td>
+      <td style="font-family:var(--font-mono);font-size:11px;color:#7a8296;text-align:right;white-space:nowrap;">${item.time || 'Just now'}</td>
     </tr>
   `).join('');
 }
@@ -2350,7 +2350,7 @@ function renderDashboardRecentLicenses() {
 
   const items = licList.slice(0, 8);
   if (items.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:24px;color:#64748b;">No license keys found. Generate a key using the button above!</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:24px;color:#7a8296;">No license keys found. Generate a key using the button above!</td></tr>`;
     return;
   }
 
@@ -2358,7 +2358,7 @@ function renderDashboardRecentLicenses() {
     const isAct = lic.status === 'active';
     const isBanned = lic.status === 'banned';
     const hwidTxt = lic.hwid && lic.hwid !== 'Unbound' && lic.hwid !== 'Not Bound' ? lic.hwid : 'Unbound';
-    const hwidColor = hwidTxt === 'Unbound' ? '#f59e0b' : '#00f0ff';
+    const hwidColor = hwidTxt === 'Unbound' ? '#f59e0b' : '#eef0f5';
     return `
       <tr>
         <td>
@@ -2369,8 +2369,8 @@ function renderDashboardRecentLicenses() {
             </button>
           </div>
         </td>
-        <td style="color:#e2e8f0;font-size:12px;font-weight:500;">${lic.user || 'Root Owner'}</td>
-        <td><span class="badge-plan-pill" style="background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);color:var(--accent-red);font-weight:600;">${lic.pkg || 'BASIC PANEL'}</span></td>
+        <td style="color:#eef0f5;font-size:12px;font-weight:500;">${lic.user || 'Root Owner'}</td>
+        <td><span class="badge-plan-pill" style="background:rgba(229, 72, 77, 0.12);border:1px solid rgba(229, 72, 77, 0.28);color:var(--accent-red);font-weight:600;">${lic.pkg || 'BASIC PANEL'}</span></td>
         <td style="font-family:var(--font-mono);font-size:11.5px;color:${hwidColor};">${hwidTxt}</td>
         <td>
           <span class="badge-pill-status ${isAct ? 'badge-active-green' : isBanned ? 'badge-banned-red' : 'badge-pending-amber'}">
@@ -2378,11 +2378,11 @@ function renderDashboardRecentLicenses() {
           </span>
         </td>
         <td style="text-align:right;white-space:nowrap;">
-          <button type="button" class="btn-sm-action" onclick="resetHwidLive('${lic.key}')" title="Reset HWID" style="padding:4px 8px;font-size:11px;margin-right:4px;background:#1a1e28;border:1px solid var(--border-color);color:#ededed;cursor:pointer;border-radius:4px;">HWID</button>
-          <button type="button" class="btn-sm-action" onclick="toggleBanLive('${lic.key}', '${lic.status}')" title="${isBanned ? 'Unban' : 'Ban'}" style="padding:4px 8px;font-size:11px;background:${isBanned ? 'rgba(76,195,138,0.12)' : 'rgba(245,158,11,0.12)'};border:1px solid ${isBanned ? 'rgba(76,195,138,0.3)' : 'rgba(245,158,11,0.3)'};color:${isBanned ? '#4cc38a' : '#fbbf24'};cursor:pointer;border-radius:4px;margin-right:4px;">
+          <button type="button" class="btn-sm-action" onclick="resetHwidLive('${lic.key}')" title="Reset HWID" style="padding:4px 8px;font-size:11px;margin-right:4px;background:#1a1e28;border:1px solid var(--border-color);color:#eef0f5;cursor:pointer;border-radius:4px;">HWID</button>
+          <button type="button" class="btn-sm-action" onclick="toggleBanLive('${lic.key}', '${lic.status}')" title="${isBanned ? 'Unban' : 'Ban'}" style="padding:4px 8px;font-size:11px;background:${isBanned ? 'rgba(76,195,138,0.12)' : 'rgba(245,158,11,0.12)'};border:1px solid ${isBanned ? 'rgba(76, 195, 138, 0.28)' : 'rgba(245, 158, 11, 0.28)'};color:${isBanned ? '#4cc38a' : '#f59e0b'};cursor:pointer;border-radius:4px;margin-right:4px;">
             ${isBanned ? 'Unban' : 'Ban'}
           </button>
-          <button type="button" class="btn-sm-action" onclick="deleteKeyLive('${lic.key}')" title="Delete Key" style="padding:4px 8px;font-size:11px;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);color:#ef4444;cursor:pointer;border-radius:4px;">
+          <button type="button" class="btn-sm-action" onclick="deleteKeyLive('${lic.key}')" title="Delete Key" style="padding:4px 8px;font-size:11px;background:rgba(229, 72, 77, 0.12);border:1px solid rgba(229, 72, 77, 0.28);color:#e5484d;cursor:pointer;border-radius:4px;">
             Delete
           </button>
         </td>
@@ -2488,7 +2488,7 @@ function copyLogItem(str, btn) {
   copyText(str);
   if (btn) {
     const orig = btn.innerHTML;
-    btn.innerHTML = `<svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14" style="color:#10b981;"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>`;
+    btn.innerHTML = `<svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14" style="color:#4cc38a;"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>`;
     setTimeout(() => {
       btn.innerHTML = orig;
     }, 1200);
@@ -2505,7 +2505,7 @@ function renderFullLogsTable() {
       <tr>
         <td style="white-space:nowrap;">${formatLogBadge(log.action)}</td>
         <td style="color:#fff;font-weight:500;">${log.detail}</td>
-        <td class="col-log-ip col-mobile-hide" style="font-family:var(--font-mono);color:#06b6d4;font-size:11.5px;white-space:nowrap;">${log.ip || '127.0.0.1'}</td>
+        <td class="col-log-ip col-mobile-hide" style="font-family:var(--font-mono);color:var(--accent-blue);font-size:11.5px;white-space:nowrap;">${log.ip || '127.0.0.1'}</td>
         <td style="font-family:var(--font-mono);font-size:11.5px;color:var(--text-dim);white-space:nowrap;">${log.time}</td>
       </tr>
     `).join('');
@@ -2601,7 +2601,7 @@ function populateResellerPanelsCheckboxes(mode, selectedPanels = []) {
 
   container.innerHTML = pkgs.map((pkg, idx) => {
     const isChecked = isAll || selectedPanels.includes(pkg.package_name) || selectedPanels.includes(pkg.package_id);
-    const v2Badge = pkg.isV2 ? '<span style="background:rgba(16,185,129,0.18);color:#34d399;font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;margin-left:6px;border:1px solid rgba(16,185,129,0.4);letter-spacing:0.04em;">V2</span>' : '';
+    const v2Badge = pkg.isV2 ? '<span style="background:rgba(76,195,138,0.12);color:#4cc38a;font-size:10px;font-weight:600;padding:1px 6px;border-radius:4px;margin-left:6px;border:1px solid rgba(76,195,138,0.28);letter-spacing:0.04em;">V2</span>' : '';
     return `
       <label class="panel-checkbox-item ${isChecked ? 'checked' : ''}" id="panel-box-${mode}-${idx}">
         <input type="checkbox" name="reseller-panel-${mode}" value="${pkg.package_name}" ${isChecked ? 'checked' : ''} onchange="onPanelCheckboxChange(this, 'panel-box-${mode}-${idx}')">
@@ -2667,8 +2667,8 @@ function toggleResellerPassVisibility(id, pass) {
   if (!valSpan) return;
   if (valSpan.textContent === '••••••••') {
     valSpan.textContent = pass;
-    valSpan.style.color = '#a855f7';
-    valSpan.style.fontWeight = '700';
+    valSpan.style.color = 'var(--text-main)';
+    valSpan.style.fontWeight = '600';
   } else {
     valSpan.textContent = '••••••••';
     valSpan.style.color = '';
@@ -2723,7 +2723,7 @@ function renderResellersTable() {
       } else if (Array.isArray(r.panels) && r.panels.length > 0) {
         panelsHtml = r.panels.map(p => `<span class="badge-panel-pill">${p}</span>`).join('');
       } else {
-        panelsHtml = `<span style="color:#ef4444;font-size:11px;">No Access</span>`;
+        panelsHtml = `<span style="color:#e5484d;font-size:11px;">No Access</span>`;
       }
 
       const isSuspended = r.status === 'Suspended';
@@ -2738,7 +2738,7 @@ function renderResellersTable() {
         <tr>
           <td>
             <div style="display:flex;align-items:center;gap:10px;white-space:nowrap;">
-              <div class="profile-avatar" style="width:30px;height:30px;font-size:12px;font-weight:800;border-color:rgba(239,68,68,0.3);">${avatarLetter}</div>
+              <div class="profile-avatar" style="width:30px;height:30px;font-size:12px;font-weight:800;border-color:rgba(229, 72, 77, 0.28);">${avatarLetter}</div>
               <div>
                 <div style="font-weight:800;color:#fff;">${r.username}</div>
                 <div style="font-family:var(--font-mono);color:var(--text-dim);font-size:11px;">${r.email || 'No email'}</div>
@@ -2757,7 +2757,7 @@ function renderResellersTable() {
           <td style="white-space:nowrap;">
             <div style="display:flex;align-items:center;gap:4px;">
               <span style="font-family:var(--font-mono);font-weight:600;color:#fff;font-size:12.5px;white-space:nowrap;">${r.balance} Keys</span>
-              <button onclick="openTransferModalForReseller('${r.id}')" class="btn-sm-action" style="color:#ededed;border-color:var(--border-color);" title="Transfer Credits to ${r.username}">Transfer</button>
+              <button onclick="openTransferModalForReseller('${r.id}')" class="btn-sm-action" style="color:#eef0f5;border-color:var(--border-color);" title="Transfer Credits to ${r.username}">Transfer</button>
               <button onclick="quickAddResellerCredits('${r.id}')" class="btn-sm-action" title="Quick Add Quota">+ Quota</button>
             </div>
           </td>
@@ -2766,7 +2766,7 @@ function renderResellersTable() {
               ${panelsHtml}
             </div>
           </td>
-          <td class="col-reseller-keys col-mobile-hide" style="font-family:var(--font-mono);color:#cbd5e1;text-align:center;">${r.createdKeys || 0}</td>
+          <td class="col-reseller-keys col-mobile-hide" style="font-family:var(--font-mono);color:#a3a9b8;text-align:center;">${r.createdKeys || 0}</td>
           <td style="white-space:nowrap;">${statusBadge}</td>
           <td style="white-space:nowrap;">
             <div style="display:flex;gap:6px;">
@@ -2779,7 +2779,7 @@ function renderResellersTable() {
               <button onclick="toggleResellerStatus('${r.id}')" class="btn-row-action" title="${isSuspended ? 'Activate Account' : 'Suspend Account'}">
                 ${isSuspended ? '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>' : '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>'}
               </button>
-              <button onclick="deleteReseller('${r.id}')" class="btn-row-action" style="color:#ef4444;" title="Delete Reseller">
+              <button onclick="deleteReseller('${r.id}')" class="btn-row-action" style="color:#e5484d;" title="Delete Reseller">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
               </button>
             </div>
@@ -2792,11 +2792,7 @@ function renderResellersTable() {
   // ── Mobile Cards ──
   if (mobileList) {
     const AVATAR_COLORS = [
-      { bg: 'rgba(239,68,68,0.15)', border: 'rgba(239,68,68,0.4)', color: '#ef4444' },
-      { bg: 'rgba(168,85,247,0.15)', border: 'rgba(168,85,247,0.35)', color: '#a855f7' },
-      { bg: 'rgba(16,185,129,0.15)', border: 'rgba(16,185,129,0.35)', color: '#10b981' },
-      { bg: 'rgba(59,130,246,0.15)', border: 'rgba(59,130,246,0.35)', color: '#3b82f6' },
-      { bg: 'rgba(245,158,11,0.15)', border: 'rgba(245,158,11,0.35)', color: '#f59e0b' },
+      { bg: 'var(--bg-raised)', border: 'var(--border-color)', color: 'var(--text-main)' },
     ];
 
     mobileList.innerHTML = state.resellers.map((r, idx) => {
@@ -2805,13 +2801,13 @@ function renderResellersTable() {
       const passStr = r.password || 'reseller123';
       const passId = `mob-res-pass-${r.id}`;
       const isSuspended = r.status === 'Suspended';
-      const creditsColor = isSuspended ? '#ef4444' : '#f59e0b';
+      const creditsColor = isSuspended ? '#e5484d' : '#f59e0b';
 
       return `
         <div class="mobile-reseller-card" onclick="openEditResellerModal('${r.id}')">
           <div class="mobile-reseller-avatar" style="background:${col.bg};border-color:${col.border};color:${col.color};">${avatarLetter}</div>
           <div class="mobile-reseller-main">
-            <div class="mobile-reseller-name">${r.username}${isSuspended ? ' <span style="color:#ef4444;font-size:10px;">[Suspended]</span>' : ''}</div>
+            <div class="mobile-reseller-name">${r.username}${isSuspended ? ' <span style="color:#e5484d;font-size:10px;">[Suspended]</span>' : ''}</div>
             <div class="mobile-reseller-email">${r.email || r.username.toLowerCase() + '@reseller.local'}</div>
             <div class="mobile-reseller-meta-row">
               <div class="mobile-reseller-pass-wrap">
@@ -3192,7 +3188,7 @@ function renderTransfersView() {
                 <div class="reseller-quick-bal">Balance: <strong>${r.balance} Keys</strong></div>
               </div>
             </div>
-            <button type="button" class="btn-sm-action" onclick="selectTransferRecipient('${r.id}')" style="color:#ededed;border-color:var(--border-color);">
+            <button type="button" class="btn-sm-action" onclick="selectTransferRecipient('${r.id}')" style="color:#eef0f5;border-color:var(--border-color);">
               Select
             </button>
           </div>
@@ -3263,14 +3259,14 @@ function renderTransfersHistoryTable(current) {
     return `
       <tr>
         <td class="col-tx-id col-mobile-hide" style="font-family:var(--font-mono);font-size:11px;color:#fff;font-weight:600;white-space:nowrap;">${tx.id}</td>
-        <td style="font-weight:600;color:${isSent ? '#ef4444' : '#fff'};white-space:nowrap;">
+        <td style="font-weight:600;color:${isSent ? '#e5484d' : '#fff'};white-space:nowrap;">
           ${isSent ? '<strong>(You) ' + tx.from + '</strong>' : fromLabel}
         </td>
         <td style="font-weight:600;color:${isRecv ? '#4cc38a' : '#fff'};white-space:nowrap;">
           ${isRecv ? '<strong>(You) ' + tx.to + '</strong>' : tx.to}
         </td>
         <td style="white-space:nowrap;">${amtBadge}</td>
-        <td class="col-tx-memo col-mobile-hide" style="color:#cbd5e1;font-size:11.5px;">${noteLabel}</td>
+        <td class="col-tx-memo col-mobile-hide" style="color:#a3a9b8;font-size:11.5px;">${noteLabel}</td>
         <td style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);white-space:nowrap;">${tx.time}</td>
         <td style="white-space:nowrap;"><span class="badge-pill-status badge-active-green">${tx.status || 'Completed'}</span></td>
       </tr>
@@ -3299,15 +3295,15 @@ function updateTransferCalcPreview() {
 
   const amt = parseInt(amtInput.value, 10);
   if (isNaN(amt) || amt <= 0) {
-    preview.innerHTML = `<span style="color:#00f0ff;">${current.balance.toLocaleString()} Keys</span>`;
+    preview.innerHTML = `<span style="color:#eef0f5;">${current.balance.toLocaleString()} Keys</span>`;
     return;
   }
 
   const remaining = current.balance - amt;
   if (remaining < 0) {
-    preview.innerHTML = `<span style="color:#ef4444;font-weight:600;">Insufficient Credits (Short by ${Math.abs(remaining)} Keys)</span>`;
+    preview.innerHTML = `<span style="color:#e5484d;font-weight:600;">Insufficient Credits (Short by ${Math.abs(remaining)} Keys)</span>`;
   } else {
-    preview.innerHTML = `<span style="color:#10b981;font-weight:700;">${remaining.toLocaleString()} Keys</span> <span style="font-size:10px;color:var(--text-dim);">(-${amt} Keys)</span>`;
+    preview.innerHTML = `<span style="color:#4cc38a;font-weight:700;">${remaining.toLocaleString()} Keys</span> <span style="font-size:10px;color:var(--text-dim);">(-${amt} Keys)</span>`;
   }
 }
 
@@ -3382,15 +3378,15 @@ function updateModalTransferCalcPreview() {
 
   const amt = parseInt(amtInput.value, 10);
   if (isNaN(amt) || amt <= 0) {
-    preview.innerHTML = `<span style="color:#00f0ff;">${current.balance.toLocaleString()} Keys</span>`;
+    preview.innerHTML = `<span style="color:#eef0f5;">${current.balance.toLocaleString()} Keys</span>`;
     return;
   }
 
   const remaining = current.balance - amt;
   if (remaining < 0) {
-    preview.innerHTML = `<span style="color:#ef4444;font-weight:600;">Insufficient Credits (Short by ${Math.abs(remaining)} Keys)</span>`;
+    preview.innerHTML = `<span style="color:#e5484d;font-weight:600;">Insufficient Credits (Short by ${Math.abs(remaining)} Keys)</span>`;
   } else {
-    preview.innerHTML = `<span style="color:#10b981;font-weight:700;">${remaining.toLocaleString()} Keys</span>`;
+    preview.innerHTML = `<span style="color:#4cc38a;font-weight:700;">${remaining.toLocaleString()} Keys</span>`;
   }
 }
 
@@ -3709,7 +3705,7 @@ function submitChangeResellerPassword(e, source = 'dash') {
       msgBox.style.display = 'block';
       msgBox.style.background = isError ? 'rgba(239, 68, 68, 0.18)' : 'rgba(16, 185, 129, 0.18)';
       msgBox.style.border = isError ? '1px solid rgba(239, 68, 68, 0.4)' : '1px solid rgba(16, 185, 129, 0.4)';
-      msgBox.style.color = isError ? '#fca5a5' : '#86efac';
+      msgBox.style.color = isError ? '#fca5a5' : '#4cc38a';
       msgBox.innerHTML = text;
     } else {
       alert(text);
@@ -3796,7 +3792,7 @@ function showToast(msgOrTitle, detailOrDuration = 2000) {
       transform: translateX(-50%) translateY(20px);
       background: #11141c;
       border: 1px solid rgba(255, 255, 255, 0.12);
-      color: #ededed;
+      color: #eef0f5;
       padding: 9px 16px;
       border-radius: 6px;
       font-size: 12px;
@@ -3886,7 +3882,7 @@ function renderResellerClientUsers(res) {
   const myKeys = getResellerOwnedKeys();
 
   if (title) {
-    title.innerHTML = `Your Generated Client Users &amp; Licenses (<strong style="color:#00f0ff;">${myKeys.length} Registered</strong>)`;
+    title.innerHTML = `Your Generated Client Users &amp; Licenses (<strong style="color:#eef0f5;">${myKeys.length} Registered</strong>)`;
   }
 
   if (myKeys.length === 0) {
@@ -3904,18 +3900,18 @@ function renderResellerClientUsers(res) {
     const isAct = lic.status === 'active';
     const statusBadge = isAct
       ? '<span class="badge-pill-status badge-auth-success">Active</span>'
-      : (lic.status === 'banned' ? '<span class="badge-pill-status badge-auth-fail">Banned</span>' : '<span class="badge-pill-status" style="background:#334155;color:#94a3b8;">Expired</span>');
+      : (lic.status === 'banned' ? '<span class="badge-pill-status badge-auth-fail">Banned</span>' : '<span class="badge-pill-status" style="background:rgba(255,255,255,0.06);border:1px solid var(--border-color);color:var(--text-dim);">Expired</span>');
     const hwidBadge = lic.hwid && lic.hwid !== 'Not Bound' && lic.hwid !== 'Unbound'
       ? `<span style="font-family:var(--font-mono);font-size:11px;color:#4cc38a;">${lic.hwid}</span>`
       : `<span style="font-family:var(--font-mono);font-size:11px;color:#f59e0b;">Unbound</span>`;
 
     return `
       <tr>
-        <td style="font-weight:700;color:#00f0ff;font-family:var(--font-mono);font-size:12.5px;white-space:nowrap;">${lic.user || res.username}</td>
+        <td style="font-weight:700;color:#eef0f5;font-family:var(--font-mono);font-size:12.5px;white-space:nowrap;">${lic.user || res.username}</td>
         <td style="white-space:nowrap;"><code style="background:rgba(0,0,0,0.4);padding:3px 6px;border-radius:4px;border:1px solid rgba(255,255,255,0.08);color:#fff;font-family:var(--font-mono);font-size:11px;white-space:nowrap;">${lic.key}</code></td>
-        <td style="color:#38bdf8;font-weight:600;white-space:nowrap;">${lic.pkg}</td>
+        <td style="color:#60a5fa;font-weight:600;white-space:nowrap;">${lic.pkg}</td>
         <td class="col-hwid col-mobile-hide" style="white-space:nowrap;">${hwidBadge}</td>
-        <td style="color:#cbd5e1;font-size:11.5px;white-space:nowrap;">${lic.expiry}</td>
+        <td style="color:#a3a9b8;font-size:11.5px;white-space:nowrap;">${lic.expiry}</td>
         <td style="white-space:nowrap;">${statusBadge}</td>
       </tr>
     `;
@@ -3967,7 +3963,7 @@ function initUserRoleSession() {
         dashAvatar.textContent = res.username.charAt(0).toUpperCase();
         dashAvatar.style.background = 'rgba(245, 158, 11, 0.15)';
         dashAvatar.style.borderColor = 'rgba(245, 158, 11, 0.35)';
-        dashAvatar.style.color = '#fbbf24';
+        dashAvatar.style.color = '#f59e0b';
         dashAvatar.style.boxShadow = '0 0 14px rgba(245,158,11,0.25)';
       }
       const dashName = document.getElementById('dash-welcome-username');
@@ -3985,7 +3981,7 @@ function initUserRoleSession() {
 
       const dashRoleDesc = document.getElementById('dash-welcome-role-desc');
       if (dashRoleDesc) {
-        dashRoleDesc.innerHTML = `Reseller Session • Logged in as: <strong>${res.username}</strong> • Available Balance: <strong style="color:#10b981;">${balance.toLocaleString()} Keys</strong> • Used: <strong style="color:#38bdf8;">${usedCount.toLocaleString()} Keys</strong> • Total Quota: <strong style="color:#f59e0b;">${totalQuota.toLocaleString()} Keys</strong>`;
+        dashRoleDesc.innerHTML = `Reseller Session • Logged in as: <strong>${res.username}</strong> • Available Balance: <strong style="color:#4cc38a;">${balance.toLocaleString()} Keys</strong> • Used: <strong style="color:#60a5fa;">${usedCount.toLocaleString()} Keys</strong> • Total Quota: <strong style="color:#f59e0b;">${totalQuota.toLocaleString()} Keys</strong>`;
       }
 
       const dashQuotaBox = document.getElementById('dash-welcome-quota-box');
@@ -4053,14 +4049,14 @@ function initUserRoleSession() {
       if (viewAppsTitle) viewAppsTitle.textContent = `Assigned Application Panels (${allowedPkgs.length})`;
       if (viewAppsSub) {
         const pNames = (!res.panels || res.panels.includes('all')) ? 'All Packages' : res.panels.join(', ');
-        viewAppsSub.innerHTML = `Panels assigned to reseller account: <strong style="color:#00f0ff;">${res.username}</strong> (${pNames}) | Available credit: <strong style="color:#38bdf8;">${res.balance} Keys</strong>`;
+        viewAppsSub.innerHTML = `Panels assigned to reseller account: <strong style="color:#eef0f5;">${res.username}</strong> (${pNames}) | Available credit: <strong style="color:#60a5fa;">${res.balance} Keys</strong>`;
       }
 
       const viewLicTitle = document.getElementById('view-licenses-title');
       const viewLicSub = document.getElementById('view-licenses-sub');
       if (viewLicTitle) viewLicTitle.textContent = `Reseller License Keys (${res.username})`;
       if (viewLicSub) {
-        viewLicSub.innerHTML = `Showing license keys generated for reseller: <strong style="color:#00f0ff;">${res.username}</strong> | Available credit: <strong style="color:#38bdf8;">${res.balance} Keys</strong>`;
+        viewLicSub.innerHTML = `Showing license keys generated for reseller: <strong style="color:#eef0f5;">${res.username}</strong> | Available credit: <strong style="color:#60a5fa;">${res.balance} Keys</strong>`;
       }
 
       // Ensure Reseller Mode Banner is removed from dashboard
@@ -4084,7 +4080,7 @@ function initUserRoleSession() {
 
       const viewLogsSub = document.querySelector('#view-logs .view-sub-text');
       if (viewLogsSub) {
-        viewLogsSub.innerHTML = `Showing active authentication and transaction logs for: <strong style="color:#00f0ff;">${res.username}</strong>`;
+        viewLogsSub.innerHTML = `Showing active authentication and transaction logs for: <strong style="color:#eef0f5;">${res.username}</strong>`;
       }
     } catch (e) {
       console.error('Error initializing reseller session:', e);
@@ -4292,7 +4288,7 @@ async function handleAdminCoreUploadFile(file) {
 
   if (progressEl) {
     progressEl.style.display = 'block';
-    progressEl.style.color = '#ededed';
+    progressEl.style.color = '#eef0f5';
     progressEl.textContent = `Uploading ${file.name} (${(file.size / (1024 * 1024)).toFixed(2)} MB)...`;
   }
 
@@ -4306,9 +4302,9 @@ async function handleAdminCoreUploadFile(file) {
     const data = await res.json();
     if (data.success) {
       if (progressEl) {
-        progressEl.style.color = '#10b981';
+        progressEl.style.color = '#4cc38a';
         progressEl.textContent = 'Deployed successfully to Resellers!';
-        setTimeout(() => { progressEl.style.display = 'none'; progressEl.style.color = '#ededed'; }, 4000);
+        setTimeout(() => { progressEl.style.display = 'none'; progressEl.style.color = '#eef0f5'; }, 4000);
       }
       if (lastInfo) {
         lastInfo.style.display = 'block';
@@ -4322,7 +4318,7 @@ async function handleAdminCoreUploadFile(file) {
     }
   } catch (err) {
     if (progressEl) {
-      progressEl.style.color = '#ef4444';
+      progressEl.style.color = '#e5484d';
       progressEl.textContent = `Upload failed: ${err.message}`;
     }
     alert('Upload error: ' + err.message);
@@ -4386,7 +4382,7 @@ function renderExeGeneratorView() {
   if (presets.length === 0) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="4" style="text-align:center;padding:24px;color:#64748b;">
+        <td colspan="4" style="text-align:center;padding:24px;color:#7a8296;">
           No custom client presets saved yet.
         </td>
       </tr>
@@ -4780,33 +4776,33 @@ function renderNotificationDropdownItems(meta, isUnread) {
 
   if (meta && meta.updateTitle) {
     listEl.innerHTML = `
-      <div style="background:#131726;border:1px solid ${isUnread ? '#ef4444' : '#1e2438'};border-radius:6px;padding:10px;display:flex;flex-direction:column;gap:6px;">
+      <div style="background:#0b0d14;border:1px solid ${isUnread ? '#e5484d' : 'rgba(255, 255, 255, 0.08)'};border-radius:6px;padding:10px;display:flex;flex-direction:column;gap:6px;">
         <div style="display:flex;align-items:center;justify-content:space-between;">
           <span style="font-size:11.5px;font-weight:600;color:#ffffff;display:flex;align-items:center;gap:6px;">
-            <span style="color:#ef4444;font-size:8px;">●</span> ${escapeHtml(meta.updateTitle)}
+            <span style="color:#e5484d;font-size:8px;">●</span> ${escapeHtml(meta.updateTitle)}
           </span>
-          <span style="font-size:10px;color:#64748b;font-family:var(--font-mono);">${escapeHtml(meta.lastUpdated || 'Just now')}</span>
+          <span style="font-size:10px;color:#7a8296;font-family:var(--font-mono);">${escapeHtml(meta.lastUpdated || 'Just now')}</span>
         </div>
-        <p style="font-size:11px;color:#94a3b8;line-height:1.4;margin:0;">
+        <p style="font-size:11px;color:#a3a9b8;line-height:1.4;margin:0;">
           ${escapeHtml(meta.updateDesc || 'Admin released a new client core update.')}
         </p>
         <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px;">
-          <span style="font-size:10px;color:#22c55e;font-weight:700;">Size: ${escapeHtml(meta.masterSize || '1.98 MB')}</span>
+          <span style="font-size:10px;color:#4cc38a;font-weight:700;">Size: ${escapeHtml(meta.masterSize || '1.98 MB')}</span>
           <button type="button" class="btn-exe-download" style="padding:3px 10px;font-size:10.5px;" onclick="downloadLatestUpdateAndDismiss()">
             <span>⬇</span> Download
           </button>
         </div>
       </div>
-      <div style="background:#111420;border:1px solid #1a1e2e;border-radius:6px;padding:8px 10px;display:flex;align-items:center;justify-content:space-between;">
-        <div style="font-size:11px;color:#cbd5e1;display:flex;align-items:center;gap:5px;">
-          <span style="color:#22c55e;">●</span> KeyAuth Gateway Operational
+      <div style="background:#0b0d14;border:1px solid rgba(255, 255, 255, 0.08);border-radius:6px;padding:8px 10px;display:flex;align-items:center;justify-content:space-between;">
+        <div style="font-size:11px;color:#a3a9b8;display:flex;align-items:center;gap:5px;">
+          <span style="color:#4cc38a;">●</span> KeyAuth Gateway Operational
         </div>
-        <span style="font-size:9.5px;color:#64748b;">HMAC-SHA256</span>
+        <span style="font-size:9.5px;color:#7a8296;">HMAC-SHA256</span>
       </div>
     `;
   } else {
     listEl.innerHTML = `
-      <div style="padding:16px;text-align:center;color:#64748b;font-size:11.5px;">
+      <div style="padding:16px;text-align:center;color:#7a8296;font-size:11.5px;">
         No active update alerts. System is up to date.
       </div>
     `;
