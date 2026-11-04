@@ -108,7 +108,7 @@
       align-items: center;
       justify-content: center;
       padding: 56px 40px;
-      max-width: 1160px;
+      max-width: 1140px;
       margin: 0 auto;
       width: 100%;
     }
@@ -124,14 +124,14 @@
     /* Left: Product Information */
     .hero-left {
       flex: 1;
-      max-width: 530px;
+      max-width: 520px;
     }
 
     .hero-status-pill {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 5px 12px;
+      padding: 4px 11px;
       background: #0f121a;
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 999px;
@@ -139,8 +139,8 @@
       font-size: 11px;
       font-weight: 500;
       color: #94a3b8;
-      letter-spacing: 0.04em;
-      margin-bottom: 22px;
+      letter-spacing: 0.02em;
+      margin-bottom: 20px;
     }
 
     .hero-status-dot {
@@ -148,26 +148,17 @@
       height: 6px;
       border-radius: 50%;
       background: #10b981;
-      box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+      box-shadow: 0 0 6px rgba(16, 185, 129, 0.5);
       flex-shrink: 0;
     }
 
-    .hero-status-divider {
-      color: rgba(255, 255, 255, 0.2);
-      font-size: 10px;
-    }
-
-    .hero-status-sub {
-      color: #64748b;
-    }
-
     .hero-main-title {
-      font-size: 48px;
+      font-size: 46px;
       font-weight: 700;
       line-height: 1.08;
       letter-spacing: -0.03em;
       color: #ffffff;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .hero-main-title .brand-x {
@@ -176,61 +167,51 @@
     }
 
     .hero-sub-title {
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 500;
       color: #94a3b8;
       letter-spacing: -0.01em;
       margin-bottom: 14px;
+      line-height: 1.4;
     }
 
     .hero-description {
-      font-size: 14px;
-      color: #64748b;
-      line-height: 1.65;
-      margin-bottom: 28px;
-      max-width: 450px;
+      font-size: 13.5px;
+      color: #71717a;
+      line-height: 1.6;
+      margin-bottom: 24px;
+      max-width: 440px;
     }
 
-    /* Technical Spec Grid */
-    .hero-spec-grid {
+    /* Natural Feature Points */
+    .hero-points-list {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 18px;
       flex-wrap: wrap;
       padding-top: 20px;
       border-top: 1px solid var(--border-hairline);
     }
 
-    .hero-spec-chip {
+    .hero-point-item {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 6px 11px;
-      background: #0d1017;
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      border-radius: 6px;
-      font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 500;
       color: #94a3b8;
-      letter-spacing: 0.02em;
-      transition: border-color 0.15s ease, background-color 0.15s ease;
+      letter-spacing: 0.01em;
     }
 
-    .hero-spec-chip:hover {
-      border-color: rgba(255, 255, 255, 0.14);
-      background: #11151f;
-      color: #e2e8f0;
-    }
-
-    .hero-spec-chip .spec-icon {
+    .point-bullet {
       color: var(--accent-crimson);
-      flex-shrink: 0;
+      font-size: 14px;
+      line-height: 1;
     }
 
     /* Right: Card Viewport */
     .hero-right {
-      width: 390px;
+      width: 380px;
       flex-shrink: 0;
     }
 
@@ -238,17 +219,17 @@
       background: #0d1017;
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 12px;
-      padding: 30px;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 16px 40px -8px rgba(0, 0, 0, 0.6);
+      padding: 28px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 16px 40px -8px rgba(0, 0, 0, 0.55);
       position: relative;
     }
 
     .card-header-group {
-      margin-bottom: 22px;
+      margin-bottom: 20px;
     }
 
     .card-main-title {
-      font-size: 19px;
+      font-size: 18px;
       font-weight: 600;
       letter-spacing: -0.01em;
       color: #ffffff;
@@ -258,7 +239,7 @@
     .card-subtitle {
       font-size: 12.5px;
       color: #71717a;
-      line-height: 1.45;
+      line-height: 1.4;
     }
 
     /* Form Fields */
@@ -585,7 +566,7 @@
       line-height: 1.4;
     }
 
-    /* Responsive Suite (Tablet & Mobile Perfection) */
+    /* Responsive Suite (UI UX Pro Max) */
     @media (max-width: 900px) {
       .top-header {
         padding: 0 20px;
@@ -596,7 +577,7 @@
       }
       .hero-wrapper {
         flex-direction: column;
-        gap: 36px;
+        gap: 32px;
       }
       .hero-left {
         max-width: 480px;
@@ -606,57 +587,58 @@
         font-size: 38px;
       }
       .hero-description {
-        margin: 0 auto 24px;
+        margin: 0 auto 20px;
       }
-      .hero-spec-grid {
+      .hero-points-list {
         justify-content: center;
+        gap: 14px;
       }
       .hero-right {
         width: 100%;
-        max-width: 400px;
+        max-width: 390px;
       }
     }
 
     @media (max-width: 600px) {
       .top-header {
         padding: 0 16px;
-        height: 54px;
+        height: 52px;
       }
       .hero-main-area {
-        padding: 24px 16px 36px;
+        padding: 20px 16px 32px;
       }
       .hero-wrapper {
-        gap: 28px;
+        gap: 24px;
       }
       .hero-status-pill {
-        margin-bottom: 16px;
+        margin-bottom: 12px;
         font-size: 10px;
-        padding: 4px 10px;
+        padding: 3px 9px;
       }
       .hero-main-title {
-        font-size: 30px;
+        font-size: 28px;
         line-height: 1.15;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
       }
       .hero-sub-title {
-        font-size: 14.5px;
-        margin-bottom: 10px;
+        font-size: 14px;
+        margin-bottom: 8px;
       }
       .hero-description {
         font-size: 13px;
-        line-height: 1.55;
-        margin-bottom: 18px;
+        line-height: 1.5;
+        margin-bottom: 16px;
       }
-      .hero-spec-grid {
-        gap: 6px;
-        padding-top: 16px;
+      .hero-points-list {
+        gap: 10px;
+        padding-top: 14px;
+        justify-content: center;
       }
-      .hero-spec-chip {
-        font-size: 10px;
-        padding: 5px 9px;
+      .hero-point-item {
+        font-size: 11px;
       }
       .login-card {
-        padding: 22px 18px;
+        padding: 20px 16px;
         border-radius: 10px;
       }
       .input-field-wrapper {
@@ -692,38 +674,28 @@
       <div class="hero-left">
         <div class="hero-status-pill">
           <span class="hero-status-dot"></span>
-          <span class="hero-status-text">GATEWAY SYSTEM ACTIVE</span>
-          <span class="hero-status-divider">•</span>
-          <span class="hero-status-sub">TLS 1.3 / HMAC</span>
+          <span>System Operational</span>
         </div>
 
         <h1 class="hero-main-title">HYPER<span class="brand-x">X</span></h1>
-        <h2 class="hero-sub-title">Software Licensing &amp; Telemetry Gateway</h2>
+        <h2 class="hero-sub-title">Software Licensing &amp; Client Distribution Portal</h2>
 
         <p class="hero-description">
-          Cryptographically locked key provisioning, hardware binding, and automated reseller quota control for authorized clients.
+          Manage license keys, hardware device bindings, and reseller quotas with real-time API telemetry in one unified console.
         </p>
 
-        <div class="hero-spec-grid">
-          <div class="hero-spec-chip">
-            <svg class="spec-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-            </svg>
-            <span>HMAC-SHA256</span>
+        <div class="hero-points-list">
+          <div class="hero-point-item">
+            <span class="point-bullet">•</span>
+            <span>HMAC-SHA256 Signed</span>
           </div>
-          <div class="hero-spec-chip">
-            <svg class="spec-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
-              <line x1="8" y1="21" x2="16" y2="21"/>
-              <line x1="12" y1="17" x2="12" y2="21"/>
-            </svg>
-            <span>HWID BINDING</span>
+          <div class="hero-point-item">
+            <span class="point-bullet">•</span>
+            <span>Hardware ID Locking</span>
           </div>
-          <div class="hero-spec-chip">
-            <svg class="spec-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-            </svg>
-            <span>API V1 / V2 LIVE</span>
+          <div class="hero-point-item">
+            <span class="point-bullet">•</span>
+            <span>KeyAuth V1 &amp; V2 Engine</span>
           </div>
         </div>
       </div>
@@ -733,7 +705,7 @@
         <div class="login-card">
           <div class="card-header-group">
             <h2 class="card-main-title">Sign In</h2>
-            <p class="card-subtitle">Enter administrator or authorized reseller credentials to continue.</p>
+            <p class="card-subtitle">Enter your account identifier and password to continue.</p>
           </div>
 
           <!-- Authentication Form -->
