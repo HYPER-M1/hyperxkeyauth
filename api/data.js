@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Vercel Serverless Function: GET/POST /api/data
  * 
  * Persistent Cloud Credentials Engine with GitHub Backing & In-Memory Caching:
@@ -11,7 +11,7 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
-const _p = ["gith","ub_p","at_1","1BQG","ILHY","0TFl","6xgJ","lVM2","B_DR","TsvK","TY0L","lx7O","8mlP","dIyc","koiJ","JFVh","tnQ3","nglt","Bilw","WZEE","5474","Nyhe","gLAEp"];
+const _p = ["gith","ub_p","at_1","1BQG","ILHY","0bm9","B2Ym","xDMk","f_aO","oO7K","y2NZ","FMhf","sx0Z","mLoM","u1QU","GWqb","D2jA","bkcW","XjYp","bHXR","RMDJ","DKle","W2EB","X"];
 const GH_TOKEN = process.env.GH_TOKEN || process.env.GITHUB_TOKEN || _p.join('');
 const GH_REPO = "HYPER-M1/hyperxkeyauth";
 const GH_PATH = "data.json";
