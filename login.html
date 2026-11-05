@@ -7,7 +7,7 @@
   <meta name="robots" content="noindex, nofollow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg-ambient: #07080b;
@@ -21,6 +21,9 @@
       --accent-gold-bright: #fbbf24;
       --accent-amber: #d97706;
       --accent-glow: rgba(245, 158, 11, 0.45);
+      --accent-red: #ea2b35;
+      --accent-red-bright: #ff3b4e;
+      --accent-red-glow: rgba(234, 43, 53, 0.55);
       --text-white: #ffffff;
       --text-heading: #f3f4f6;
       --text-sub: #8b92a1;
@@ -52,7 +55,18 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Ambient Auroral Glows (Matching Video Background) */
+    /* Interactive Floating Crimson Particle Canvas (Mobile Cyber Atmosphere) */
+    #hero-particles-canvas {
+      display: none;
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Ambient Auroral Glows (Desktop Motion Reference) */
     .aurora-glow-left {
       position: fixed;
       left: -200px;
@@ -84,7 +98,30 @@
       100% { opacity: 1; transform: scale(1.08); }
     }
 
-    /* Floating Window Frame (Exact Match to Video Reference) */
+    /* Mobile Header & Branding (Hidden on Desktop) */
+    .mobile-top-header {
+      display: none;
+    }
+    .mobile-hero-branding {
+      display: none;
+    }
+    .mobile-card-header {
+      display: none;
+    }
+    .field-indicator-mobile {
+      display: none;
+    }
+    .input-field-icon {
+      display: none;
+    }
+    .btn-text-mobile {
+      display: none;
+    }
+    .field-label-mobile {
+      display: none;
+    }
+
+    /* Floating Window Frame (Desktop Reference) */
     .app-window-frame {
       width: 100%;
       max-width: 1220px;
@@ -115,7 +152,7 @@
       }
     }
 
-    /* Left Showcase Pane */
+    /* Left Showcase Pane (Desktop Only) */
     .window-left-pane {
       flex: 1.15;
       padding: 48px 52px;
@@ -127,7 +164,6 @@
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.015) 0%, transparent 100%);
     }
 
-    /* Brand Header: Logo + Title */
     .brand-top {
       display: inline-flex;
       align-items: center;
@@ -165,7 +201,6 @@
       margin-left: 2px;
     }
 
-    /* Center Isometric Visual (With Floating Animation) */
     .visual-center-wrap {
       width: 100%;
       max-width: 520px;
@@ -191,7 +226,6 @@
       user-select: none;
     }
 
-    /* Showcase Bottom Typography */
     .showcase-bottom-text {
       max-width: 480px;
     }
@@ -226,7 +260,6 @@
       max-width: 380px;
     }
 
-    /* Greeting Header */
     .auth-title-group {
       margin-bottom: 28px;
     }
@@ -282,7 +315,6 @@
       color: var(--accent-gold);
     }
 
-    /* Smooth Dark Pill Input */
     .pill-input-box {
       position: relative;
       display: flex;
@@ -335,7 +367,6 @@
       color: var(--text-white);
     }
 
-    /* Remember Credentials */
     .form-options-row {
       display: flex;
       align-items: center;
@@ -371,7 +402,6 @@
       border-radius: 4px;
     }
 
-    /* Glowing Pill Button (Exact Match to Video) */
     .btn-gold-pill {
       width: 100%;
       height: 48px;
@@ -409,7 +439,6 @@
       box-shadow: none;
     }
 
-    /* Auxiliary Circular Action Buttons (Matching Video) */
     .aux-circles-row {
       display: flex;
       align-items: center;
@@ -442,7 +471,6 @@
       transform: translateY(-2px);
     }
 
-    /* Bottom Footer Note */
     .auth-footer {
       text-align: center;
       font-size: 12.5px;
@@ -461,7 +489,6 @@
       text-decoration: underline;
     }
 
-    /* Error Message Alert */
     .error-alert-box {
       display: none;
       background: rgba(239, 68, 68, 0.12);
@@ -474,7 +501,7 @@
       line-height: 1.4;
     }
 
-    /* 2FA Container */
+    /* 2FA Setup & Verify Layout */
     .twofa-header-group {
       text-align: center;
       margin-bottom: 20px;
@@ -624,73 +651,483 @@
       line-height: 1.4;
     }
 
-    /* Responsive Adaptation */
-    @media (max-width: 960px) {
-      body {
-        padding: 16px;
+    /* Glowing Logo Breathing Cycle (Mobile Card Emblem) */
+    @keyframes hxLogoPulse {
+      0%, 100% {
+        filter: drop-shadow(0 0 16px rgba(229, 24, 31, 0.45));
+        transform: scale(1);
       }
-      .app-window-frame {
-        flex-direction: column;
-        border-radius: 20px;
-        min-height: auto;
-      }
-      .window-left-pane {
-        padding: 36px 24px 28px;
-        border-right: none;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-        align-items: center;
-        text-align: center;
-      }
-      .visual-center-wrap {
-        max-width: 380px;
-        margin: 16px 0;
-      }
-      .showcase-bottom-text {
-        margin-top: 12px;
-      }
-      .showcase-heading {
-        font-size: 22px;
-      }
-      .window-right-pane {
-        padding: 36px 24px 44px;
+      50% {
+        filter: drop-shadow(0 0 26px rgba(255, 46, 77, 0.85)) drop-shadow(0 0 6px rgba(255, 255, 255, 0.25));
+        transform: scale(1.025);
       }
     }
 
-    @media (max-width: 600px) {
+    @keyframes badgePulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    /* ========================================================
+       MOBILE VIEWPORT (< 769px): RESTORE ORIGINAL CYBER LAYOUT
+       ======================================================== */
+    @media (max-width: 768px) {
       body {
-        padding: 10px;
+        min-height: 100vh !important;
+        min-height: 100dvh !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        padding: 0 0 36px 0 !important;
+        background-color: #06070a !important;
+        background-image: 
+          radial-gradient(ellipse at 50% 30%, rgba(4, 5, 7, 0.5) 0%, rgba(4, 5, 7, 0.88) 100%),
+          url('assets/images/hero_bg_cyber.png') !important;
+        background-repeat: no-repeat !important;
+        background-position: center top !important;
+        background-attachment: scroll !important;
+        background-size: cover !important;
       }
+
+      /* Enable Red Embers Particle Canvas on Mobile */
+      #hero-particles-canvas {
+        display: block !important;
+      }
+
+      /* Hide Desktop Aurora Lights */
+      .aurora-glow-left,
+      .aurora-glow-right {
+        display: none !important;
+      }
+
+      /* Mobile Top Navigation Header (Logo Left, Discord Right) */
+      .mobile-top-header {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 14px 18px 0 18px !important;
+        width: 100% !important;
+        max-width: 440px !important;
+        z-index: 50 !important;
+        flex-shrink: 0 !important;
+      }
+
+      .mobile-nav-logo {
+        display: inline-flex !important;
+        align-items: center !important;
+        text-decoration: none !important;
+      }
+
+      .mobile-nav-logo-img {
+        height: 28px !important;
+        width: auto !important;
+        display: block !important;
+        mix-blend-mode: screen !important;
+        filter: drop-shadow(0 0 12px rgba(229, 24, 31, 0.45)) !important;
+      }
+
+      .mobile-discord-btn {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        padding: 5px 12px !important;
+        background: rgba(88, 101, 242, 0.15) !important;
+        border: 1px solid rgba(88, 101, 242, 0.4) !important;
+        border-radius: 8px !important;
+        color: #9ba4f8 !important;
+        text-decoration: none !important;
+        font-size: 11.5px !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.02em !important;
+        transition: transform 0.2s, background 0.2s !important;
+      }
+
+      .mobile-discord-btn:active {
+        transform: scale(0.96) !important;
+      }
+
+      .mobile-discord-btn svg {
+        width: 15px !important;
+        height: 12px !important;
+      }
+
+      /* Mobile Hero Cyber Branding */
+      .mobile-hero-branding {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+        margin: 18px 0 24px 0 !important;
+        padding: 0 14px !important;
+        width: 100% !important;
+        max-width: 388px !important;
+        z-index: 20 !important;
+        flex-shrink: 0 !important;
+      }
+
+      .hero-welcome-badge {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 7px !important;
+        padding: 4px 14px !important;
+        background: rgba(229, 24, 31, 0.08) !important;
+        border: 1px solid rgba(229, 24, 31, 0.35) !important;
+        border-radius: 24px !important;
+        box-shadow: 0 0 16px rgba(229, 24, 31, 0.2), inset 0 0 8px rgba(229, 24, 31, 0.08) !important;
+        margin-bottom: 8px !important;
+      }
+
+      .badge-pulse-dot {
+        width: 6px !important;
+        height: 6px !important;
+        background: #ff3b4e !important;
+        border-radius: 50% !important;
+        box-shadow: 0 0 8px #ff3b4e !important;
+        animation: badgePulse 1.8s infinite ease-in-out !important;
+      }
+
+      .badge-text {
+        font-size: 10.5px !important;
+        letter-spacing: 0.2em !important;
+        color: #ff4d5a !important;
+        font-weight: 800 !important;
+      }
+
+      .hero-main-title {
+        font-size: 42px !important;
+        font-weight: 900 !important;
+        line-height: 1.0 !important;
+        letter-spacing: -0.01em !important;
+        margin-bottom: 4px !important;
+        color: #ffffff !important;
+        background: linear-gradient(180deg, #FFFFFF 30%, #E2E8F0 65%, #94A3B8 100%) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+        background-clip: text !important;
+        filter: drop-shadow(0 3px 12px rgba(0, 0, 0, 0.8)) !important;
+      }
+
+      .hero-main-title .brand-x {
+        background: linear-gradient(135deg, #FF4555 0%, #EA2B35 50%, #B91C1C 100%) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+        background-clip: text !important;
+        filter: drop-shadow(0 0 20px rgba(234, 43, 53, 0.95)) drop-shadow(0 0 40px rgba(234, 43, 53, 0.6)) !important;
+        display: inline-block !important;
+      }
+
+      .hero-sub-title-wrap {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 10px !important;
+      }
+
+      .cyber-line-left,
+      .cyber-line-right {
+        width: 26px !important;
+        height: 1.5px !important;
+        display: inline-block !important;
+      }
+
+      .cyber-line-left {
+        background: linear-gradient(90deg, transparent, rgba(234, 43, 53, 0.8)) !important;
+      }
+
+      .cyber-line-right {
+        background: linear-gradient(90deg, rgba(234, 43, 53, 0.8), transparent) !important;
+      }
+
+      .hero-sub-title {
+        font-size: 15px !important;
+        letter-spacing: 0.35em !important;
+        font-weight: 900 !important;
+        color: #cbd5e1 !important;
+        background: linear-gradient(180deg, #FFFFFF 40%, #CBD5E1 100%) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+        background-clip: text !important;
+      }
+
+      /* Window Frame -> Original Cyber Login Card on Mobile */
       .app-window-frame {
-        border-radius: 16px;
+        width: 100% !important;
+        max-width: 388px !important;
+        min-height: auto !important;
+        background: rgba(12, 14, 19, 0.94) !important;
+        backdrop-filter: blur(20px) !important;
+        -webkit-backdrop-filter: blur(20px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 20px !important;
+        box-shadow: 0 16px 45px rgba(0, 0, 0, 0.85), 0 0 35px rgba(229, 24, 31, 0.18) !important;
+        flex-direction: column !important;
+        margin: 0 auto !important;
+        overflow: visible !important;
       }
+
+      /* Hide Left Desktop 3D Showcase on Mobile */
       .window-left-pane {
-        padding: 24px 16px;
+        display: none !important;
       }
-      .visual-center-wrap {
-        max-width: 300px;
+
+      /* Compact, Clean Card Padding */
+      .window-right-pane {
+        padding: 26px 22px 22px !important;
+        width: 100% !important;
+        background: transparent !important;
       }
-      .showcase-heading {
-        font-size: 19px;
+
+      .auth-container {
+        max-width: 100% !important;
+      }
+
+      .auth-title-group {
+        display: none !important;
+      }
+
+      /* Card Top Header with HX Shield Logo */
+      .mobile-card-header {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        margin-bottom: 20px !important;
+        text-align: center !important;
+      }
+
+      .mobile-card-center-logo {
+        width: 72px !important;
+        height: auto !important;
+        margin-bottom: 8px !important;
+        mix-blend-mode: screen !important;
+        animation: hxLogoPulse 4s ease-in-out infinite !important;
+      }
+
+      .mobile-card-main-title {
+        font-size: 16px !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.26em !important;
+        color: #ffffff !important;
+        text-transform: uppercase !important;
+        margin-bottom: 3px !important;
+        background: linear-gradient(180deg, #ffffff 40%, #cbd5e1 100%) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+      }
+
+      .mobile-card-subtitle {
+        font-size: 11.5px !important;
+        color: #8b92a1 !important;
+        font-weight: 500 !important;
+        letter-spacing: 0.04em !important;
+      }
+
+      /* Label Switching to Starting Mobile Labels */
+      .field-label-desktop {
+        display: none !important;
+      }
+      .field-label-mobile {
+        display: inline !important;
+        font-family: var(--font-mono) !important;
+        font-size: 10.5px !important;
+        letter-spacing: 0.12em !important;
+        color: #94a3b8 !important;
+        text-transform: uppercase !important;
+        font-weight: 600 !important;
+      }
+
+      .field-indicator-mobile {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 5px !important;
+        font-family: var(--font-mono) !important;
+        font-size: 9.5px !important;
+        color: #64748b !important;
+        letter-spacing: 0.08em !important;
+      }
+
+      .field-indicator-mobile .field-dot {
+        width: 5px !important;
+        height: 5px !important;
+        border-radius: 50% !important;
+        background: #10b981 !important;
+        box-shadow: 0 0 6px #10b981 !important;
+      }
+
+      .field-indicator-mobile.encrypted .field-dot {
+        background: #ef4444 !important;
+        box-shadow: 0 0 6px #ef4444 !important;
+      }
+
+      .form-group {
+        margin-bottom: 14px !important;
+      }
+
+      .pill-input-box {
+        background: rgba(18, 21, 28, 0.85) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 10px !important;
+        height: 46px !important;
+        padding: 0 14px !important;
+      }
+
+      .pill-input-box:focus-within {
+        border-color: rgba(239, 68, 68, 0.75) !important;
+        background: #171b24 !important;
+        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+      }
+
+      .input-field-icon {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        color: #64748b !important;
+        margin-right: 10px !important;
+        flex-shrink: 0 !important;
+      }
+
+      .input-field-icon svg {
+        width: 15px !important;
+        height: 15px !important;
+      }
+
+      .pill-input {
+        font-size: 13.5px !important;
+      }
+
+      .form-options-row {
+        margin: 12px 0 18px !important;
+      }
+
+      .remember-check {
+        font-size: 11.5px !important;
+      }
+
+      .remember-check input[type="checkbox"] {
+        accent-color: #ea2b35 !important;
+      }
+
+      /* Mobile Submit Button: Starting Red Cyber Aesthetic */
+      .btn-gold-pill {
+        background: linear-gradient(135deg, #FF3B4E 0%, #E51824 50%, #B91C1C 100%) !important;
+        box-shadow: 0 6px 24px rgba(229, 24, 36, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+        color: #ffffff !important;
+        border-radius: 10px !important;
+        height: 46px !important;
+        font-size: 13px !important;
+        letter-spacing: 0.12em !important;
+        text-transform: uppercase !important;
+        font-weight: 800 !important;
+      }
+
+      .btn-gold-pill:hover {
+        box-shadow: 0 8px 30px rgba(229, 24, 36, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.45) !important;
+        filter: brightness(1.1) !important;
+      }
+
+      .btn-text-desktop {
+        display: none !important;
+      }
+      .btn-text-mobile {
+        display: inline !important;
+      }
+
+      .aux-circles-row {
+        display: none !important;
+      }
+
+      .auth-footer {
+        margin-top: 14px !important;
+        font-size: 12px !important;
+      }
+
+      .auth-footer .signup-link {
+        color: #ff4d5a !important;
+      }
+
+      /* Mobile 2FA Formatting */
+      .twofa-qr-frame img {
+        border-color: rgba(234, 43, 53, 0.6) !important;
+        box-shadow: 0 0 24px rgba(234, 43, 53, 0.3) !important;
+        width: 130px !important;
+        height: 130px !important;
+      }
+
+      .twofa-unified-input:focus {
+        border-color: rgba(239, 68, 68, 0.75) !important;
+        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2) !important;
+      }
+
+      .btn-twofa-continue {
+        background: linear-gradient(135deg, #FF3B4E 0%, #E51824 50%, #B91C1C 100%) !important;
+        box-shadow: 0 6px 24px rgba(229, 24, 36, 0.5) !important;
+        border-radius: 10px !important;
+        color: #ffffff !important;
+      }
+
+      .toast-container {
+        right: 14px;
+        left: 14px;
+        top: 14px;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .app-window-frame {
+        max-width: 325px !important;
       }
       .window-right-pane {
-        padding: 24px 16px 36px;
+        padding: 20px 16px 18px !important;
       }
-      .auth-greeting {
-        font-size: 22px;
+      .mobile-card-center-logo {
+        width: 58px !important;
+      }
+      .hero-main-title {
+        font-size: 36px !important;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Ambient Golden-Amber Auroral Lights -->
+  <!-- Interactive Floating Crimson Particle Canvas (Mobile Cyber Atmosphere) -->
+  <canvas id="hero-particles-canvas"></canvas>
+
+  <!-- Ambient Golden-Amber Auroral Lights (Desktop Only) -->
   <div class="aurora-glow-left"></div>
   <div class="aurora-glow-right"></div>
 
-  <!-- Contained Master Application Window (Exact Match to Reference Video) -->
+  <!-- Mobile Top Navigation Header (Starting Original Layout) -->
+  <header class="mobile-top-header">
+    <a href="login.html" class="mobile-nav-logo" title="HYPERX">
+      <img src="assets/images/hx_nav_logo.png" alt="HX" class="mobile-nav-logo-img">
+    </a>
+    <a href="https://discord.gg/neGxQey4GF" target="_blank" rel="noopener noreferrer" class="mobile-discord-btn" title="Join Discord Community">
+      <svg width="16" height="12" viewBox="0 0 127.14 96.36" fill="currentColor">
+        <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.86,53,48.83,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/>
+      </svg>
+      <span>Discord</span>
+    </a>
+  </header>
+
+  <!-- Mobile Hero Cyber Branding (Starting Original Layout) -->
+  <div class="mobile-hero-branding">
+    <div class="hero-welcome-badge">
+      <span class="badge-pulse-dot"></span>
+      <span class="badge-text">AUTHORIZATION SYSTEM ONLINE</span>
+    </div>
+    <h1 class="hero-main-title">HYPER<span class="brand-x">X</span></h1>
+    <div class="hero-sub-title-wrap">
+      <span class="cyber-line-left"></span>
+      <span class="hero-sub-title">KEYAUTH</span>
+      <span class="cyber-line-right"></span>
+    </div>
+  </div>
+
+  <!-- Master Application Window Frame (Desktop Reference & Mobile Cyber Card) -->
   <div class="app-window-frame">
 
-    <!-- Left Showcase Column -->
+    <!-- Left Showcase Column (Desktop Only) -->
     <div class="window-left-pane">
       <div class="brand-top">
         <a href="login.html" class="brand-top">
@@ -723,10 +1160,17 @@
     <div class="window-right-pane">
       <div class="auth-container">
         
-        <!-- Welcome, Good to see you. -->
+        <!-- Desktop Greeting Header (Desktop Only) -->
         <div class="auth-title-group">
           <h1 class="auth-greeting">Welcome, <span class="accent-phrase">Good to see you.</span></h1>
           <p class="auth-instructions">Your panels and licenses are waiting to be processed. Sign in below.</p>
+        </div>
+
+        <!-- Mobile Card Center Logo (Starting Mobile Layout) -->
+        <div class="mobile-card-header">
+          <img src="assets/images/hx_card_logo.png" alt="HYPERX" class="mobile-card-center-logo">
+          <h2 class="mobile-card-main-title">HYPERX</h2>
+          <p class="mobile-card-subtitle">AUTHENTICATION ACCESS</p>
         </div>
 
         <!-- Authentication Form -->
@@ -736,9 +1180,22 @@
           <!-- Email or Username Input -->
           <div class="form-group">
             <div class="label-row">
-              <label class="field-label" for="email">Email or Username</label>
+              <label class="field-label" for="email">
+                <span class="field-label-desktop">Email or Username</span>
+                <span class="field-label-mobile">ADMIN / RESELLER ID</span>
+              </label>
+              <span class="field-indicator-mobile">
+                <span class="field-dot"></span> SECURE
+              </span>
             </div>
             <div class="pill-input-box">
+              <span class="input-field-icon">
+                <!-- User SVG Icon -->
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+              </span>
               <input 
                 type="text" 
                 id="email" 
@@ -753,10 +1210,23 @@
           <!-- Password Input -->
           <div class="form-group">
             <div class="label-row">
-              <label class="field-label" for="password">Password</label>
+              <label class="field-label" for="password">
+                <span class="field-label-desktop">Password</span>
+                <span class="field-label-mobile">ACCESS KEY / PASSWORD</span>
+              </label>
+              <span class="field-indicator-mobile encrypted">
+                <span class="field-dot"></span> ENCRYPTED
+              </span>
               <a href="javascript:void(0)" onclick="showToast('Credential Support', 'Please contact system administrator to update your credentials.')" class="forgot-pass-link">Forgot Password?</a>
             </div>
             <div class="pill-input-box">
+              <span class="input-field-icon">
+                <!-- Padlock SVG Icon -->
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+              </span>
               <input 
                 type="password" 
                 id="password" 
@@ -785,12 +1255,13 @@
             <span class="security-badge">HMAC-SHA256</span>
           </div>
 
-          <!-- Glowing Gold Pill Action Button -->
+          <!-- Action Button (Gold on Desktop, Crimson on Mobile) -->
           <button type="submit" class="btn-gold-pill" id="btn-submit-login">
-            <span>Login</span>
+            <span class="btn-text-desktop">Login</span>
+            <span class="btn-text-mobile">LOGIN TO CONSOLE</span>
           </button>
 
-          <!-- Auxiliary Circular Buttons (Discord & Status) -->
+          <!-- Auxiliary Circular Buttons (Discord & Status - Desktop Only) -->
           <div class="aux-circles-row">
             <a href="https://discord.gg/neGxQey4GF" target="_blank" rel="noopener noreferrer" class="aux-circle-btn" title="Join Discord Community">
               <svg width="17" height="13" viewBox="0 0 127.14 96.36" fill="currentColor">
@@ -875,6 +1346,65 @@
   </div>
 
   <script>
+    // Ambient Particle Canvas System (Mobile Cyber Particle Engine)
+    (function initHeroParticles() {
+      const canvas = document.getElementById('hero-particles-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let width, height;
+      let particles = [];
+
+      function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      const count = 18;
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * (width || window.innerWidth),
+          y: Math.random() * (height || window.innerHeight),
+          size: Math.random() * 2.0 + 0.8,
+          speedY: Math.random() * 0.45 + 0.15,
+          speedX: (Math.random() - 0.5) * 0.25,
+          opacity: Math.random() * 0.5 + 0.2,
+          pulse: Math.random() * Math.PI * 2,
+          color: Math.random() > 0.35 ? '229, 24, 31' : '255, 77, 109'
+        });
+      }
+
+      function render() {
+        if (window.innerWidth > 768) {
+          requestAnimationFrame(render);
+          return;
+        }
+        ctx.clearRect(0, 0, width, height);
+        for (let p of particles) {
+          p.y -= p.speedY;
+          p.x += p.speedX;
+          p.pulse += 0.025;
+          const currentOpacity = p.opacity + Math.sin(p.pulse) * 0.15;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${p.color}, ${Math.max(0.05, Math.min(1, currentOpacity))})`;
+          ctx.shadowColor = `rgba(${p.color}, 0.8)`;
+          ctx.shadowBlur = 8;
+          ctx.fill();
+
+          if (p.y < -10) {
+            p.y = height + 10;
+            p.x = Math.random() * width;
+          }
+          if (p.x < -10) p.x = width + 10;
+          if (p.x > width + 10) p.x = -10;
+        }
+        requestAnimationFrame(render);
+      }
+      requestAnimationFrame(render);
+    })();
+
     // Toast Notification System
     function showToast(title, message) {
       let toastContainer = document.getElementById('hero-toast-container');
@@ -945,13 +1475,19 @@
 
       if (btn) {
         btn.disabled = true;
-        btn.innerHTML = '<span>Authenticating...</span>';
+        const dSpan = btn.querySelector('.btn-text-desktop');
+        const mSpan = btn.querySelector('.btn-text-mobile');
+        if (dSpan) dSpan.textContent = 'Authenticating...';
+        if (mSpan) mSpan.textContent = 'AUTHENTICATING...';
       }
 
       function resetBtn() {
         if (btn) {
           btn.disabled = false;
-          btn.innerHTML = '<span>Login</span>';
+          const dSpan = btn.querySelector('.btn-text-desktop');
+          const mSpan = btn.querySelector('.btn-text-mobile');
+          if (dSpan) dSpan.textContent = 'Login';
+          if (mSpan) mSpan.textContent = 'LOGIN TO CONSOLE';
         }
       }
 
@@ -1058,7 +1594,10 @@
           }
 
           if (btn) {
-            btn.innerHTML = '<span>Access Verified</span>';
+            const dSpan = btn.querySelector('.btn-text-desktop');
+            const mSpan = btn.querySelector('.btn-text-mobile');
+            if (dSpan) dSpan.textContent = 'Access Verified';
+            if (mSpan) mSpan.textContent = 'ACCESS GRANTED';
           }
           const rememberCheckbox = document.getElementById('remember_me');
           if (rememberCheckbox && rememberCheckbox.checked) {
@@ -1199,7 +1738,7 @@
         const idx = alphabet.indexOf(encoded[i]);
         if (idx === -1) continue;
         value = (value << 5) | idx;
-        bits -= 5;
+        bits += 5;
         if (bits >= 8) {
           output.push((value >>> (bits - 8)) & 255);
           bits -= 8;
@@ -1208,10 +1747,12 @@
       return new Uint8Array(output);
     }
 
+    function rotl(n, b) { return (n << b) | (n >>> (32 - b)); }
+
     function SHA1(msg) {
-      function rotl(n, s) { return (n << s) | (n >>> (32 - s)); }
-      let h0=0x67452301,h1=0xEFCDAB89,h2=0x98BADCFE,h3=0x10325476,h4=0xC3D2E1F0;
+      let h0 = 0x67452301, h1 = 0xEFCDAB89, h2 = 0x98BADCFE, h3 = 0x10325476, h4 = 0xC3D2E1F0;
       const msgLen = msg.length * 8;
+      msg = Array.from(msg);
       msg.push(0x80);
       while (msg.length % 64 !== 56) msg.push(0);
       msg.push(0,0,0,0,(msgLen>>>24)&0xFF,(msgLen>>>16)&0xFF,(msgLen>>>8)&0xFF,msgLen&0xFF);
@@ -1328,6 +1869,7 @@
 
       const rawSecret = (pendingResellerAuth && pendingResellerAuth.reseller && pendingResellerAuth.reseller.totpSecret) ? pendingResellerAuth.reseller.totpSecret : 'JBSWY3DPEHPK3PXP';
       const secret = rawSecret.replace(/\s/g, '').toUpperCase();
+
       const now = Math.floor(Date.now() / 1000);
       let valid = false;
       for (let drift = -2; drift <= 2; drift++) {
@@ -1442,17 +1984,28 @@
       pendingResellerAuth = null;
       const authForm = document.getElementById('hyperx-auth-form');
       const twofaForm = document.getElementById('hyperx-2fa-form');
-      const twofaErr = document.getElementById('twofa-error-msg');
-      if (twofaErr) twofaErr.style.display = 'none';
+      const pass = document.getElementById('password');
+      if (pass) pass.value = '';
+
       if (twofaForm) twofaForm.style.display = 'none';
       if (authForm) authForm.style.display = 'block';
-      const pass = document.getElementById('password');
-      if (pass) pass.focus();
+
+      const btn = document.getElementById('btn-submit-login');
+      if (btn) {
+        btn.disabled = false;
+        const dSpan = btn.querySelector('.btn-text-desktop');
+        const mSpan = btn.querySelector('.btn-text-mobile');
+        if (dSpan) dSpan.textContent = 'Login';
+        if (mSpan) mSpan.textContent = 'LOGIN TO CONSOLE';
+      }
     }
 
     function copyTOTPSecret() {
-      const displayEl = document.getElementById('twofa-secret-display');
-      const textToCopy = displayEl ? displayEl.textContent.trim().replace(/\s+/g, ' ') : '';
+      const secretDisplay = document.getElementById('twofa-secret-display');
+      const copyBtn = document.getElementById('btn-copy-totp-secret');
+      if (!secretDisplay) return;
+
+      const textToCopy = secretDisplay.textContent.replace(/\s/g, '').trim();
       if (!textToCopy) return;
 
       const onCopySuccess = () => {
