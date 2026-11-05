@@ -7,27 +7,30 @@
   <meta name="robots" content="noindex, nofollow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-canvas: #090a0d;
-      --bg-surface: #101217;
-      --bg-input: #15181f;
-      --bg-input-focus: #181c25;
-      --border-subtle: rgba(255, 255, 255, 0.08);
-      --border-hover: rgba(255, 255, 255, 0.16);
-      --border-focus: rgba(239, 68, 68, 0.7);
+      --bg-base: #07080b;
+      --bg-card: #0d0f14;
+      --bg-card-raised: #12151c;
+      --bg-input: #151821;
+      --bg-input-focus: #181c27;
+      --border-subtle: rgba(255, 255, 255, 0.07);
+      --border-hover: rgba(255, 255, 255, 0.14);
+      --border-focus: rgba(239, 68, 68, 0.65);
       --accent-red: #ef4444;
-      --accent-coral: #f43f5e;
-      --accent-dark: #dc2626;
-      --accent-glow: rgba(239, 68, 68, 0.42);
-      --text-white: #ffffff;
-      --text-heading: #f1f3f7;
-      --text-body: #9ca3af;
-      --text-muted: #717888;
-      --text-placeholder: #555c6b;
-      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --accent-hover: #dc2626;
+      --accent-glow: rgba(239, 68, 68, 0.32);
+      --text-primary: #ededed;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --text-placeholder: #475569;
+      --status-green: #10b981;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
+      --radius-sm: 8px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
     }
 
     * {
@@ -37,188 +40,172 @@
     }
 
     body {
-      background-color: var(--bg-canvas);
-      background-image: radial-gradient(circle 800px at 30% 45%, rgba(239, 68, 68, 0.035) 0%, transparent 70%);
-      color: var(--text-white);
+      background-color: var(--bg-base);
+      background-image: 
+        radial-gradient(ellipse 70% 45% at 50% -5%, rgba(239, 68, 68, 0.06), transparent 70%),
+        radial-gradient(circle 600px at 50% 105%, rgba(239, 68, 68, 0.025), transparent 70%);
+      color: var(--text-primary);
       font-family: var(--font-sans);
       font-size: 14px;
       line-height: 1.5;
       min-height: 100vh;
       display: flex;
-      align-items: center;
-      justify-content: center;
+      flex-direction: column;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Outer Centered Master Frame */
-    .master-frame {
+    /* Minimal Top Navigation Bar */
+    .top-navbar {
       width: 100%;
-      max-width: 1380px;
-      min-height: 100vh;
-      margin: 0 auto;
+      height: 64px;
+      padding: 0 40px;
       display: flex;
-      align-items: stretch;
-      position: relative;
-    }
-
-    /* Left Showcase Pane (Matching Reference Layout) */
-    .showcase-pane {
-      flex: 1.18;
-      display: flex;
-      flex-direction: column;
+      align-items: center;
       justify-content: space-between;
-      padding: 56px 64px;
-      position: relative;
+      border-bottom: 1px solid var(--border-subtle);
+      background: rgba(7, 8, 11, 0.85);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
     }
 
-    /* Brand Header Top-Left */
-    .brand-top {
-      margin-bottom: 24px;
-    }
-
-    .brand-header {
+    .brand-link {
       display: inline-flex;
       align-items: center;
       gap: 12px;
       text-decoration: none;
-      color: var(--text-white);
-      width: fit-content;
-      transition: opacity 140ms ease;
+      color: var(--text-primary);
     }
 
-    .brand-header:hover {
-      opacity: 0.9;
+    .brand-logo-img {
+      height: 28px;
+      width: auto;
+      display: block;
     }
 
-    .brand-mark {
-      width: 34px;
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 4px 10px;
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      color: #34d399;
+      letter-spacing: 0.02em;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--status-green);
+      box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
+      flex-shrink: 0;
+    }
+
+    .discord-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 14px;
       height: 34px;
-      border-radius: 9px;
-      background: #14171e;
+      background: var(--bg-card-raised);
       border: 1px solid var(--border-subtle);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 12.5px;
+      font-weight: 500;
+      transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+    }
+
+    .discord-btn:hover {
+      background: #1c212c;
+      border-color: var(--border-hover);
+      color: var(--text-primary);
+    }
+
+    /* Main Centered Viewport */
+    .viewport-main {
+      flex: 1;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-    }
-
-    .brand-title {
-      font-size: 17px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      color: #ffffff;
-    }
-
-    .brand-title .red-x {
-      color: var(--accent-red);
-      font-weight: 700;
-    }
-
-    /* Center Visual Container */
-    .visual-container {
-      width: 100%;
-      max-width: 620px;
-      margin: 12px 0 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      padding: 48px 24px;
       position: relative;
     }
 
-    .visual-render-img {
-      width: 100%;
-      height: auto;
-      max-height: 420px;
-      object-fit: contain;
-      border-radius: 16px;
-      filter: drop-shadow(0 24px 48px rgba(0, 0, 0, 0.75));
-      pointer-events: none;
-      user-select: none;
-    }
-
-    /* Showcase Bottom Copy */
-    .showcase-footer {
-      max-width: 500px;
-    }
-
-    .showcase-headline {
-      font-size: 30px;
-      font-weight: 700;
-      line-height: 1.22;
-      letter-spacing: -0.028em;
-      color: var(--text-heading);
-      margin-bottom: 12px;
-    }
-
-    .showcase-subtext {
-      font-size: 14px;
-      color: var(--text-muted);
-      line-height: 1.62;
-    }
-
-    /* Right Authentication Pane */
-    .auth-pane {
-      flex: 0.92;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 56px 64px;
-      position: relative;
-    }
-
-    .auth-card-wrap {
+    /* Centered SaaS Auth Card */
+    .auth-card-container {
       width: 100%;
       max-width: 410px;
     }
 
-    /* Header: Welcome, Good to see you. */
-    .auth-header {
-      margin-bottom: 30px;
+    .auth-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 36px 32px;
+      box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.07),
+        0 24px 60px -12px rgba(0, 0, 0, 0.8),
+        0 0 0 1px rgba(0, 0, 0, 0.4);
+      position: relative;
     }
 
-    .welcome-title {
-      font-size: 30px;
-      font-weight: 700;
-      letter-spacing: -0.025em;
+    /* Card Header */
+    .card-header {
+      margin-bottom: 26px;
+    }
+
+    .card-title {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
       color: #ffffff;
-      line-height: 1.22;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
-    .welcome-title .accent-phrase {
-      color: var(--accent-red);
-      font-weight: 700;
-    }
-
-    .welcome-subtitle {
-      font-size: 13.5px;
+    .card-subtitle {
+      font-size: 13px;
       color: var(--text-muted);
       line-height: 1.45;
     }
 
-    /* Form Fields */
+    /* Form Groups */
     .form-group {
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .label-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 8px;
+      margin-bottom: 7px;
     }
 
-    .input-label {
-      font-size: 13px;
+    .field-label {
+      font-size: 12.5px;
       font-weight: 500;
-      color: var(--text-body);
+      color: var(--text-secondary);
       letter-spacing: -0.01em;
     }
 
     .forgot-link {
-      font-size: 12.5px;
-      font-weight: 500;
+      font-size: 12px;
       color: var(--text-muted);
       text-decoration: none;
       transition: color 140ms ease;
@@ -228,38 +215,47 @@
       color: var(--accent-red);
     }
 
-    /* Rounded Pill Input matching Reference */
-    .pill-input-box {
+    /* Tactile Input Box */
+    .input-box {
       position: relative;
       display: flex;
       align-items: center;
       background: var(--bg-input);
       border: 1px solid var(--border-subtle);
-      border-radius: 14px;
-      height: 52px;
-      padding: 0 18px;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      border-radius: var(--radius-md);
+      height: 46px;
+      padding: 0 14px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
       transition: border-color 140ms ease, background-color 140ms ease, box-shadow 140ms ease;
     }
 
-    .pill-input-box:focus-within {
+    .input-box:focus-within {
       border-color: var(--border-focus);
       background: var(--bg-input-focus);
-      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.06);
     }
 
-    .pill-input {
+    .input-icon {
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-right: 10px;
+    }
+
+    .text-input {
       width: 100%;
       background: transparent;
       border: none;
       outline: none;
-      color: var(--text-white);
+      color: var(--text-primary);
       font-family: var(--font-sans);
-      font-size: 14.5px;
+      font-size: 13.5px;
       font-weight: 500;
     }
 
-    .pill-input::placeholder {
+    .text-input::placeholder {
       color: var(--text-placeholder);
       font-weight: 400;
     }
@@ -271,168 +267,157 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 6px;
+      padding: 4px;
       color: var(--text-muted);
       transition: color 140ms ease;
-      margin-left: 8px;
+      margin-left: 6px;
     }
 
     .eye-btn:hover {
-      color: var(--text-white);
+      color: var(--text-primary);
     }
 
-    /* Remember Credentials */
+    /* Remember Credentials Row */
     .form-options {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin: 18px 0 24px;
+      margin: 18px 0 22px;
     }
 
     .remember-label {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      font-size: 13px;
-      color: var(--text-body);
+      font-size: 12.5px;
+      color: var(--text-secondary);
       cursor: pointer;
       user-select: none;
     }
 
     .remember-label input[type="checkbox"] {
-      width: 16px;
-      height: 16px;
+      width: 15px;
+      height: 15px;
       accent-color: var(--accent-red);
       cursor: pointer;
-      border-radius: 4px;
+      border-radius: 3px;
     }
 
-    .security-tag {
+    .security-chip {
       font-family: var(--font-mono);
       font-size: 11px;
       color: var(--text-muted);
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.06);
-      padding: 3px 8px;
-      border-radius: 6px;
+      padding: 2px 7px;
+      border-radius: 4px;
     }
 
-    /* Big Pill Action Button matching Reference */
-    .btn-login-pill {
+    /* Primary Submit Button */
+    .btn-submit {
       width: 100%;
-      height: 52px;
-      background: linear-gradient(135deg, var(--accent-coral) 0%, var(--accent-red) 45%, var(--accent-dark) 100%);
-      border: none;
-      border-radius: 9999px;
+      height: 46px;
+      background: linear-gradient(135deg, var(--accent-red) 0%, var(--accent-hover) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-md);
       color: #ffffff;
       font-family: var(--font-sans);
-      font-size: 15.5px;
+      font-size: 14px;
       font-weight: 600;
       letter-spacing: 0.01em;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 8px 24px -2px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+      gap: 8px;
+      box-shadow: 0 4px 18px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.2);
       transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
     }
 
-    .btn-login-pill:hover {
+    .btn-submit:hover {
       filter: brightness(1.08);
-      box-shadow: 0 12px 28px -2px rgba(239, 68, 68, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      box-shadow: 0 6px 24px rgba(239, 68, 68, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25);
       transform: translateY(-1px);
     }
 
-    .btn-login-pill:active {
+    .btn-submit:active {
       transform: scale(0.985);
     }
 
-    .btn-login-pill:disabled {
+    .btn-submit:disabled {
       opacity: 0.6;
       cursor: not-allowed;
       box-shadow: none;
     }
 
-    /* Auxiliary Circular Icons matching Reference */
-    .aux-row {
+    /* Error Message Alert */
+    .error-alert {
+      display: none;
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      color: #fca5a5;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 12.5px;
+      margin-bottom: 18px;
+      line-height: 1.4;
+    }
+
+    /* Card Footer Note */
+    .card-footer-note {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 16px;
-      margin-top: 24px;
-      margin-bottom: 24px;
-    }
-
-    .aux-circle-btn {
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      background: var(--bg-input);
-      border: 1px solid var(--border-subtle);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 4px 12px rgba(0, 0, 0, 0.3);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-body);
-      text-decoration: none;
-      cursor: pointer;
-      transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease, transform 120ms ease;
-    }
-
-    .aux-circle-btn:hover {
-      background: #1c212b;
-      border-color: var(--border-hover);
-      color: var(--text-white);
-      transform: translateY(-2px);
-    }
-
-    /* Card Footer Link */
-    .auth-bottom-footer {
-      text-align: center;
-      font-size: 13px;
+      gap: 7px;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 11.5px;
       color: var(--text-muted);
     }
 
-    .auth-bottom-footer .accent-link {
+    .footer-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--status-green);
+      flex-shrink: 0;
+    }
+
+    /* Outer Help Link */
+    .outer-footer-link {
+      margin-top: 22px;
+      text-align: center;
+      font-size: 12.5px;
+      color: var(--text-muted);
+    }
+
+    .outer-footer-link a {
       color: var(--accent-red);
-      font-weight: 600;
       text-decoration: none;
+      font-weight: 500;
       margin-left: 4px;
-      transition: opacity 140ms ease;
+      transition: text-decoration 140ms ease;
     }
 
-    .auth-bottom-footer .accent-link:hover {
+    .outer-footer-link a:hover {
       text-decoration: underline;
-    }
-
-    /* Error Banner */
-    .error-alert-pill {
-      display: none;
-      background: rgba(239, 68, 68, 0.12);
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      color: #fca5a5;
-      padding: 11px 16px;
-      border-radius: 12px;
-      font-size: 13px;
-      margin-bottom: 20px;
-      line-height: 1.4;
     }
 
     /* 2FA Container */
     .twofa-header-group {
       text-align: center;
-      margin-bottom: 22px;
+      margin-bottom: 20px;
     }
 
     .twofa-title {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 600;
-      color: var(--text-white);
+      color: var(--text-primary);
       margin-bottom: 6px;
     }
 
     .twofa-subtitle {
-      font-size: 13px;
+      font-size: 12.5px;
       color: var(--text-muted);
       line-height: 1.45;
     }
@@ -440,13 +425,13 @@
     .twofa-qr-frame {
       display: flex;
       justify-content: center;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
 
     .twofa-qr-frame img {
-      width: 160px;
-      height: 160px;
-      border-radius: 12px;
+      width: 150px;
+      height: 150px;
+      border-radius: var(--radius-sm);
       border: 1px solid var(--border-subtle);
       background: #ffffff;
       padding: 6px;
@@ -455,54 +440,54 @@
     .twofa-manual-key-box {
       background: var(--bg-input);
       border: 1px solid var(--border-subtle);
-      border-radius: 12px;
-      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      padding: 9px 12px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
 
     .twofa-key-mono {
       font-family: var(--font-mono);
-      font-size: 12.5px;
-      color: var(--text-white);
+      font-size: 12px;
+      color: var(--text-primary);
       letter-spacing: 0.08em;
     }
 
     .twofa-unified-input {
       width: 100%;
-      height: 52px;
+      height: 48px;
       background: var(--bg-input);
       border: 1px solid var(--border-subtle);
-      border-radius: 14px;
-      color: var(--text-white);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
       font-family: var(--font-mono);
       font-size: 20px;
       text-align: center;
       letter-spacing: 0.25em;
       outline: none;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
       transition: border-color 140ms ease, box-shadow 140ms ease;
     }
 
     .twofa-unified-input:focus {
       border-color: var(--border-focus);
-      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
     }
 
     .btn-twofa-continue {
       width: 100%;
-      height: 52px;
-      background: linear-gradient(135deg, var(--accent-coral) 0%, var(--accent-red) 45%, var(--accent-dark) 100%);
-      border: none;
-      border-radius: 9999px;
+      height: 44px;
+      background: linear-gradient(135deg, var(--accent-red) 0%, var(--accent-hover) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-md);
       color: #ffffff;
-      font-size: 14.5px;
+      font-size: 13.5px;
       font-weight: 600;
       cursor: pointer;
-      margin-bottom: 14px;
-      box-shadow: 0 8px 24px -2px var(--accent-glow);
+      margin-bottom: 12px;
+      box-shadow: 0 4px 16px var(--accent-glow);
       transition: background-color 140ms ease, transform 120ms ease;
     }
 
@@ -515,13 +500,13 @@
       background: transparent;
       border: none;
       color: var(--text-muted);
-      font-size: 13px;
+      font-size: 12.5px;
       cursor: pointer;
       transition: color 140ms ease;
     }
 
     .btn-twofa-cancel:hover {
-      color: var(--text-white);
+      color: var(--text-primary);
     }
 
     /* Toast Notification System */
@@ -538,13 +523,13 @@
 
     .hero-toast-item {
       pointer-events: auto;
-      background: #14171f;
+      background: var(--bg-card);
       border: 1px solid var(--border-subtle);
-      border-radius: 12px;
-      padding: 12px 18px;
-      min-width: 270px;
-      max-width: 350px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      min-width: 260px;
+      max-width: 340px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
       opacity: 0;
       transform: translateY(-8px);
       transition: opacity 160ms ease, transform 160ms ease;
@@ -556,128 +541,97 @@
     }
 
     .toast-title {
-      font-size: 12.5px;
+      font-size: 12px;
       font-weight: 600;
-      color: var(--text-white);
+      color: var(--text-primary);
       margin-bottom: 2px;
     }
 
     .toast-msg {
-      font-size: 12px;
-      color: var(--text-body);
+      font-size: 11.5px;
+      color: var(--text-secondary);
       line-height: 1.4;
     }
 
     /* Responsive Adaptation */
-    @media (max-width: 960px) {
-      .master-frame {
-        flex-direction: column;
-      }
-      .showcase-pane {
-        padding: 40px 24px 32px;
-        align-items: center;
-        text-align: center;
-      }
-      .visual-container {
-        max-width: 480px;
-        margin: 18px 0;
-      }
-      .showcase-footer {
-        margin-top: 18px;
-      }
-      .showcase-headline {
-        font-size: 24px;
-      }
-      .auth-pane {
-        padding: 32px 24px 60px;
-      }
-    }
-
     @media (max-width: 600px) {
-      .showcase-pane {
-        padding: 24px 18px;
+      .top-navbar {
+        padding: 0 18px;
+        height: 56px;
       }
-      .visual-container {
-        max-width: 340px;
+      .brand-logo-img {
+        height: 24px;
       }
-      .showcase-headline {
-        font-size: 20px;
+      .viewport-main {
+        padding: 24px 16px 40px;
       }
-      .auth-pane {
-        padding: 24px 18px 48px;
+      .auth-card {
+        padding: 28px 20px;
+        border-radius: 12px;
       }
-      .welcome-title {
-        font-size: 24px;
+      .input-box {
+        height: 44px;
       }
-      .pill-input-box {
-        height: 48px;
-      }
-      .btn-login-pill {
-        height: 48px;
+      .btn-submit {
+        height: 44px;
       }
     }
   </style>
 </head>
 <body>
 
-  <div class="master-frame">
-    
-    <!-- Left Showcase Pane (Matching Reference Visual Layout) -->
-    <div class="showcase-pane">
-      <div class="brand-top">
-        <a href="login.html" class="brand-header">
-          <div class="brand-mark">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path d="M4 4L12 12L4 20" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M20 4L12 12L20 20" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <span class="brand-title">HYPER <span class="red-x">X</span></span>
-        </a>
+  <!-- Minimal Top Navigation Bar -->
+  <header class="top-navbar">
+    <a href="login.html" class="brand-link" title="HYPER X">
+      <img src="assets/images/hx_nav_logo.png" alt="HYPER X" class="brand-logo-img">
+    </a>
+    <div class="nav-actions">
+      <div class="status-badge">
+        <span class="status-dot"></span>
+        <span>Systems Active</span>
       </div>
-
-      <!-- Center Visual: Ultra-High-End 3D Isometric Pipeline Render -->
-      <div class="visual-container">
-        <img 
-          src="assets/images/hx_isometric_pipeline.jpg" 
-          alt="HYPER X Cryptographic Licensing Pipeline" 
-          class="visual-render-img"
-          loading="eager"
-        >
-      </div>
-
-      <!-- Showcase Bottom Typography -->
-      <div class="showcase-footer">
-        <h2 class="showcase-headline">Your licenses secured. Your distribution is already running.</h2>
-        <p class="showcase-subtext">HYPER X validates cryptographic signatures the moment clients connect, locking hardware bindings, enforcing panel isolation, and syncing reseller quotas.</p>
-      </div>
+      <a href="https://discord.gg/neGxQey4GF" target="_blank" rel="noopener noreferrer" class="discord-btn" title="Community Gateway">
+        <svg width="16" height="12" viewBox="0 0 127.14 96.36" fill="currentColor">
+          <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.86,53,48.83,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/>
+        </svg>
+        <span>Discord</span>
+      </a>
     </div>
+  </header>
 
-    <!-- Right Authentication Pane (Exact Reference Layout) -->
-    <div class="auth-pane">
-      <div class="auth-card-wrap">
+  <!-- Centered SaaS Login Viewport -->
+  <main class="viewport-main">
+    <div class="auth-card-container">
+      
+      <div class="auth-card">
         
-        <!-- Header: Welcome, Good to see you. -->
-        <div class="auth-header">
-          <h1 class="welcome-title">Welcome, <span class="accent-phrase">Good to see you.</span></h1>
-          <p class="welcome-subtitle">Your panels and licenses are waiting. Sign in to continue.</p>
+        <!-- Header -->
+        <div class="card-header">
+          <h1 class="card-title">Sign In to HYPER X</h1>
+          <p class="card-subtitle">Enter your credentials to access the software licensing portal.</p>
         </div>
 
         <!-- Authentication Form -->
         <form id="hyperx-auth-form" onsubmit="handleLogin(event)">
-          <div id="login-error-msg" class="error-alert-pill"></div>
+          <div id="login-error-msg" class="error-alert"></div>
 
-          <!-- Account Identifier Input -->
+          <!-- Email or Username Input -->
           <div class="form-group">
             <div class="label-row">
-              <label class="input-label" for="email">Email or Username</label>
+              <label class="field-label" for="email">Account Identifier</label>
             </div>
-            <div class="pill-input-box">
+            <div class="input-box">
+              <span class="input-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+              </span>
               <input 
                 type="text" 
                 id="email" 
-                class="pill-input" 
-                placeholder="e.g. myname@gmail.com" 
+                class="text-input" 
+                placeholder="Username or Email" 
                 required 
                 autocomplete="username"
               >
@@ -687,15 +641,21 @@
           <!-- Password Input -->
           <div class="form-group">
             <div class="label-row">
-              <label class="input-label" for="password">Password</label>
+              <label class="field-label" for="password">Password</label>
               <a href="javascript:void(0)" onclick="showToast('Credential Support', 'Please contact system administrator to update your credentials.')" class="forgot-link">Forgot Password?</a>
             </div>
-            <div class="pill-input-box">
+            <div class="input-box">
+              <span class="input-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+              </span>
               <input 
                 type="password" 
                 id="password" 
-                class="pill-input" 
-                placeholder="Enter your password" 
+                class="text-input" 
+                placeholder="Enter password" 
                 required 
                 autocomplete="current-password"
               >
@@ -710,44 +670,30 @@
             </div>
           </div>
 
-          <!-- Remember Me & Security Tag -->
+          <!-- Options Row -->
           <div class="form-options">
             <label class="remember-label">
               <input type="checkbox" id="remember_me" checked>
               <span>Remember credentials</span>
             </label>
-            <span class="security-tag">HMAC-SHA256</span>
+            <span class="security-chip">HMAC-SHA256</span>
           </div>
 
-          <!-- Primary Submit Pill Button -->
-          <button type="submit" class="btn-login-pill" id="btn-submit-login">
-            <span>Login</span>
+          <!-- Primary Submit Button -->
+          <button type="submit" class="btn-submit" id="btn-submit-login">
+            <span>Sign In to Dashboard</span>
           </button>
 
-          <!-- Auxiliary Circular Buttons (Matching Reference) -->
-          <div class="aux-row">
-            <a href="https://discord.gg/neGxQey4GF" target="_blank" rel="noopener noreferrer" class="aux-circle-btn" title="Discord Community">
-              <svg width="18" height="14" viewBox="0 0 127.14 96.36" fill="currentColor">
-                <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.86,53,48.83,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/>
-              </svg>
-            </a>
-            <button type="button" class="aux-circle-btn" onclick="showToast('System Health', 'API Gateways and KeyAuth Cloud Nodes Active.')" title="System Status">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-              </svg>
-            </button>
-          </div>
-
-          <!-- Bottom Footer -->
-          <div class="auth-bottom-footer">
-            <span>Don't have an account?</span>
-            <a href="https://discord.gg/neGxQey4GF" target="_blank" rel="noopener noreferrer" class="accent-link">Contact Owner</a>
+          <!-- Security Footer Note -->
+          <div class="card-footer-note">
+            <span class="footer-dot"></span>
+            <span>Encrypted hardware binding &amp; authenticated session verification active.</span>
           </div>
         </form>
 
         <!-- 2FA Authentication Flow (Preserving Complete Logic) -->
         <form id="hyperx-2fa-form" style="display: none;" onsubmit="handle2FASubmit(event)">
-          <div id="twofa-error-msg" class="error-alert-pill"></div>
+          <div id="twofa-error-msg" class="error-alert"></div>
 
           <!-- Step 1: QR Setup -->
           <div id="twofa-setup-step" style="display:none;">
@@ -762,7 +708,7 @@
 
             <div class="twofa-manual-key-box">
               <span class="twofa-key-mono" id="twofa-secret-display">---- ---- ---- ----</span>
-              <button type="button" id="btn-copy-totp-secret" onclick="copyTOTPSecret()" title="Copy Key" style="background:transparent;border:none;color:var(--text-body);cursor:pointer;padding:4px;">
+              <button type="button" id="btn-copy-totp-secret" onclick="copyTOTPSecret()" title="Copy Key" style="background:transparent;border:none;color:var(--text-secondary);cursor:pointer;padding:4px;">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                   <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                   <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
@@ -804,9 +750,15 @@
         </form>
 
       </div>
-    </div>
 
-  </div>
+      <!-- Outer Link -->
+      <div class="outer-footer-link">
+        <span>Need access or assistance?</span>
+        <a href="https://discord.gg/neGxQey4GF" target="_blank" rel="noopener noreferrer">Contact Administrator</a>
+      </div>
+
+    </div>
+  </main>
 
   <script>
     // Toast Notification System
@@ -885,7 +837,7 @@
       function resetBtn() {
         if (btn) {
           btn.disabled = false;
-          btn.innerHTML = '<span>Login</span>';
+          btn.innerHTML = '<span>Sign In to Dashboard</span>';
         }
       }
 
@@ -1308,7 +1260,7 @@
       if (twofaErr) twofaErr.style.display = 'none';
       const btn2fa = document.getElementById('btn-submit-2fa');
       if (btn2fa) {
-        btn2fa.style.background = '#4cc38a';
+        btn2fa.style.background = '#10b981';
         btn2fa.disabled = true;
         btn2fa.innerHTML = '<span>Verified</span>';
       }
