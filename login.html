@@ -777,13 +777,13 @@
         flex-shrink: 0 !important;
       }
 
-      /* Mobile Hero Cyber Branding (Calibrated Pro Spacing) */
+      /* Mobile Hero Section: UI UX Pro Max Minimalist Human-Crafted Architecture */
       .mobile-hero-branding {
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
         text-align: center !important;
-        margin: 14px auto 18px auto !important;
+        margin: 16px auto 20px auto !important;
         padding: 0 !important;
         width: calc(100% - 32px) !important;
         max-width: 380px !important;
@@ -792,89 +792,110 @@
         flex-shrink: 0 !important;
       }
 
-      .hero-welcome-badge {
+      /* Operational Status Pill (UI UX Pro Max) */
+      .hero-status-pill {
         display: inline-flex !important;
         align-items: center !important;
-        gap: 6px !important;
+        gap: 7px !important;
         padding: 4px 12px !important;
-        background: rgba(229, 24, 31, 0.06) !important;
-        border: 1px solid rgba(229, 24, 31, 0.28) !important;
+        background: #0d1017 !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
         border-radius: 9999px !important;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4), inset 0 0 8px rgba(229, 24, 31, 0.06) !important;
-        margin-bottom: 7px !important;
+        font-family: var(--font-mono) !important;
+        font-size: 10px !important;
+        font-weight: 500 !important;
+        color: #94a3b8 !important;
+        letter-spacing: 0.03em !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+        margin-bottom: 10px !important;
       }
 
-      .badge-pulse-dot {
-        width: 5px !important;
-        height: 5px !important;
-        background: #ef4444 !important;
+      .hero-status-dot {
+        width: 6px !important;
+        height: 6px !important;
         border-radius: 50% !important;
-        box-shadow: 0 0 6px #ef4444 !important;
-        animation: badgePulse 1.8s infinite ease-in-out !important;
+        background: #10b981 !important;
+        box-shadow: 0 0 8px rgba(16, 185, 129, 0.6) !important;
         flex-shrink: 0 !important;
       }
 
-      .badge-text {
-        font-family: var(--font-mono) !important;
-        font-size: 9.5px !important;
-        letter-spacing: 0.12em !important;
-        color: #f87171 !important;
-        font-weight: 700 !important;
-        text-transform: uppercase !important;
+      .hero-status-divider {
+        color: rgba(255, 255, 255, 0.18) !important;
+        font-size: 9px !important;
       }
 
+      .hero-status-sub {
+        color: #64748b !important;
+      }
+
+      /* Hero Main Title (UI UX Pro Max) */
       .hero-main-title {
         font-size: 34px !important;
         font-weight: 800 !important;
         line-height: 1.05 !important;
-        letter-spacing: -0.025em !important;
-        margin-bottom: 4px !important;
+        letter-spacing: -0.03em !important;
         color: #ffffff !important;
-        background: linear-gradient(180deg, #FFFFFF 50%, #CBD5E1 100%) !important;
-        -webkit-background-clip: text !important;
-        -webkit-text-fill-color: transparent !important;
-        background-clip: text !important;
-        filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.9)) !important;
+        margin-bottom: 6px !important;
       }
 
       .hero-main-title .brand-x {
-        background: linear-gradient(135deg, #FF3B4E 0%, #EA2B35 60%, #B91C1C 100%) !important;
-        -webkit-background-clip: text !important;
-        -webkit-text-fill-color: transparent !important;
-        background-clip: text !important;
-        filter: drop-shadow(0 0 14px rgba(234, 43, 53, 0.55)) !important;
+        color: #ea2b35 !important;
+        font-weight: 800 !important;
+        filter: drop-shadow(0 0 12px rgba(234, 43, 53, 0.5)) !important;
         display: inline-block !important;
       }
 
-      .hero-sub-title-wrap {
-        display: inline-flex !important;
+      /* Hero Subtitle / Product Definition */
+      .hero-sub-title {
+        font-size: 13.5px !important;
+        font-weight: 500 !important;
+        color: #94a3b8 !important;
+        letter-spacing: -0.01em !important;
+        margin-bottom: 6px !important;
+        line-height: 1.35 !important;
+      }
+
+      /* Concise Description */
+      .hero-description {
+        font-size: 11.5px !important;
+        color: #64748b !important;
+        line-height: 1.5 !important;
+        margin-bottom: 12px !important;
+        max-width: 320px !important;
+      }
+
+      /* UI UX Pro Max Micro Spec Grid */
+      .hero-spec-grid {
+        display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        gap: 8px !important;
+        gap: 6px !important;
+        flex-wrap: wrap !important;
+        margin-bottom: 2px !important;
       }
 
-      .cyber-line-left,
-      .cyber-line-right {
-        width: 20px !important;
-        height: 1px !important;
-        display: inline-block !important;
-      }
-
-      .cyber-line-left {
-        background: linear-gradient(90deg, transparent, rgba(234, 43, 53, 0.6)) !important;
-      }
-
-      .cyber-line-right {
-        background: linear-gradient(90deg, rgba(234, 43, 53, 0.6), transparent) !important;
-      }
-
-      .hero-sub-title {
+      .hero-spec-chip {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 5px !important;
+        padding: 4px 8px !important;
+        background: #0d1017 !important;
+        border: 1px solid rgba(255, 255, 255, 0.07) !important;
+        border-radius: 6px !important;
         font-family: var(--font-mono) !important;
-        font-size: 10.5px !important;
-        letter-spacing: 0.18em !important;
-        font-weight: 700 !important;
+        font-size: 9.5px !important;
+        font-weight: 500 !important;
         color: #94a3b8 !important;
-        text-transform: uppercase !important;
+        letter-spacing: 0.02em !important;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3) !important;
+      }
+
+      .hero-spec-chip .spec-icon {
+        color: #ef4444 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex-shrink: 0 !important;
       }
 
       /* Window Frame -> Sleek Contained Cyber Login Card on Mobile */
@@ -1181,17 +1202,53 @@
     </a>
   </header>
 
-  <!-- Mobile Hero Cyber Branding (Unslop Precision Typography) -->
+  <!-- Mobile Hero Section (UI UX Pro Max Enterprise SaaS Layout) -->
   <div class="mobile-hero-branding">
-    <div class="hero-welcome-badge">
-      <span class="badge-pulse-dot"></span>
-      <span class="badge-text">SYSTEM ONLINE &bull; SECURE GATEWAY</span>
+    <!-- Live Operational Status Pill -->
+    <div class="hero-status-pill">
+      <span class="hero-status-dot"></span>
+      <span class="hero-status-text">Operational</span>
+      <span class="hero-status-divider">&bull;</span>
+      <span class="hero-status-sub">Global Node 01</span>
     </div>
+
+    <!-- Main Gateway Title -->
     <h1 class="hero-main-title">HYPER<span class="brand-x">X</span></h1>
-    <div class="hero-sub-title-wrap">
-      <span class="cyber-line-left"></span>
-      <span class="hero-sub-title">KEYAUTH CLOUD GATEWAY</span>
-      <span class="cyber-line-right"></span>
+    <h2 class="hero-sub-title">Software Licensing &amp; Telemetry Gateway</h2>
+
+    <!-- Concise Value Proposition -->
+    <p class="hero-description">
+      Hardware-bound key authorization and automated reseller distribution.
+    </p>
+
+    <!-- UI UX Pro Max Micro Spec Chips -->
+    <div class="hero-spec-grid">
+      <div class="hero-spec-chip">
+        <span class="spec-icon">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </span>
+        <span>HMAC-SHA256</span>
+      </div>
+      <div class="hero-spec-chip">
+        <span class="spec-icon">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+            <line x1="8" y1="21" x2="16" y2="21"/>
+            <line x1="12" y1="17" x2="12" y2="21"/>
+          </svg>
+        </span>
+        <span>HWID Lock</span>
+      </div>
+      <div class="hero-spec-chip">
+        <span class="spec-icon">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+          </svg>
+        </span>
+        <span>Instant Sync</span>
+      </div>
     </div>
   </div>
 
