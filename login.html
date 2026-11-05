@@ -11,18 +11,21 @@
   <style>
     :root {
       --bg-canvas: #090a0d;
-      --bg-surface: #101216;
-      --bg-input: #15181d;
-      --border-quiet: rgba(255, 255, 255, 0.08);
+      --bg-surface: #101217;
+      --bg-input: #15181f;
+      --bg-input-focus: #181c25;
+      --border-subtle: rgba(255, 255, 255, 0.08);
       --border-hover: rgba(255, 255, 255, 0.16);
-      --border-focus: rgba(239, 68, 68, 0.6);
+      --border-focus: rgba(239, 68, 68, 0.7);
       --accent-red: #ef4444;
+      --accent-coral: #f43f5e;
       --accent-dark: #dc2626;
-      --accent-glow: rgba(239, 68, 68, 0.35);
+      --accent-glow: rgba(239, 68, 68, 0.42);
       --text-white: #ffffff;
+      --text-heading: #f1f3f7;
       --text-body: #9ca3af;
-      --text-muted: #5e6573;
-      --text-placeholder: #474f5d;
+      --text-muted: #717888;
+      --text-placeholder: #555c6b;
       --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
     }
@@ -35,37 +38,45 @@
 
     body {
       background-color: var(--bg-canvas);
+      background-image: radial-gradient(circle 800px at 30% 45%, rgba(239, 68, 68, 0.035) 0%, transparent 70%);
       color: var(--text-white);
       font-family: var(--font-sans);
       font-size: 14px;
       line-height: 1.5;
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Split Screen Layout matching Reference */
-    .split-layout {
-      display: flex;
-      min-height: 100vh;
+    /* Outer Centered Master Frame */
+    .master-frame {
       width: 100%;
+      max-width: 1380px;
+      min-height: 100vh;
+      margin: 0 auto;
+      display: flex;
+      align-items: stretch;
+      position: relative;
     }
 
-    /* Left Showcase Pane */
+    /* Left Showcase Pane (Matching Reference Layout) */
     .showcase-pane {
-      flex: 1.15;
+      flex: 1.18;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       padding: 56px 64px;
-      background: #08090b;
       position: relative;
-      border-right: 1px solid var(--border-quiet);
     }
 
     /* Brand Header Top-Left */
+    .brand-top {
+      margin-bottom: 24px;
+    }
+
     .brand-header {
       display: inline-flex;
       align-items: center;
@@ -73,14 +84,20 @@
       text-decoration: none;
       color: var(--text-white);
       width: fit-content;
+      transition: opacity 140ms ease;
+    }
+
+    .brand-header:hover {
+      opacity: 0.9;
     }
 
     .brand-mark {
-      width: 32px;
-      height: 32px;
+      width: 34px;
+      height: 34px;
       border-radius: 9px;
-      background: #14171d;
-      border: 1px solid var(--border-quiet);
+      background: #14171e;
+      border: 1px solid var(--border-subtle);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -98,79 +115,84 @@
       font-weight: 700;
     }
 
-    /* Center Isometric Tech Visual */
+    /* Center Visual Container */
     .visual-container {
       width: 100%;
-      max-width: 580px;
-      margin: 24px auto;
+      max-width: 620px;
+      margin: 12px 0 28px;
       display: flex;
       align-items: center;
       justify-content: center;
+      position: relative;
     }
 
-    .tech-svg-art {
+    .visual-render-img {
       width: 100%;
       height: auto;
-      display: block;
-      filter: drop-shadow(0 20px 40px rgba(0,0,0,0.6));
+      max-height: 420px;
+      object-fit: contain;
+      border-radius: 16px;
+      filter: drop-shadow(0 24px 48px rgba(0, 0, 0, 0.75));
+      pointer-events: none;
+      user-select: none;
     }
 
     /* Showcase Bottom Copy */
     .showcase-footer {
-      max-width: 480px;
+      max-width: 500px;
     }
 
     .showcase-headline {
-      font-size: 26px;
-      font-weight: 600;
-      line-height: 1.28;
-      letter-spacing: -0.02em;
-      color: #f1f3f7;
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 1.22;
+      letter-spacing: -0.028em;
+      color: var(--text-heading);
       margin-bottom: 12px;
     }
 
     .showcase-subtext {
-      font-size: 13.5px;
+      font-size: 14px;
       color: var(--text-muted);
-      line-height: 1.6;
+      line-height: 1.62;
     }
 
     /* Right Authentication Pane */
     .auth-pane {
-      flex: 0.95;
+      flex: 0.92;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 48px 48px;
-      background-color: var(--bg-canvas);
+      padding: 56px 64px;
+      position: relative;
     }
 
     .auth-card-wrap {
       width: 100%;
-      max-width: 390px;
+      max-width: 410px;
     }
 
-    /* Heading matching Reference */
+    /* Header: Welcome, Good to see you. */
     .auth-header {
-      margin-bottom: 32px;
+      margin-bottom: 30px;
     }
 
     .welcome-title {
-      font-size: 26px;
-      font-weight: 600;
-      letter-spacing: -0.02em;
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: -0.025em;
       color: #ffffff;
-      line-height: 1.25;
+      line-height: 1.22;
       margin-bottom: 8px;
     }
 
     .welcome-title .accent-phrase {
       color: var(--accent-red);
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .welcome-subtitle {
-      font-size: 13px;
+      font-size: 13.5px;
       color: var(--text-muted);
       line-height: 1.45;
     }
@@ -188,21 +210,22 @@
     }
 
     .input-label {
-      font-size: 12.5px;
+      font-size: 13px;
       font-weight: 500;
       color: var(--text-body);
       letter-spacing: -0.01em;
     }
 
     .forgot-link {
-      font-size: 12px;
+      font-size: 12.5px;
+      font-weight: 500;
       color: var(--text-muted);
       text-decoration: none;
       transition: color 140ms ease;
     }
 
     .forgot-link:hover {
-      color: var(--text-white);
+      color: var(--accent-red);
     }
 
     /* Rounded Pill Input matching Reference */
@@ -211,17 +234,18 @@
       display: flex;
       align-items: center;
       background: var(--bg-input);
-      border: 1px solid var(--border-quiet);
-      border-radius: 12px;
-      height: 48px;
-      padding: 0 16px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      height: 52px;
+      padding: 0 18px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
       transition: border-color 140ms ease, background-color 140ms ease, box-shadow 140ms ease;
     }
 
     .pill-input-box:focus-within {
       border-color: var(--border-focus);
-      background: #181b22;
-      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
+      background: var(--bg-input-focus);
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.08);
     }
 
     .pill-input {
@@ -231,11 +255,13 @@
       outline: none;
       color: var(--text-white);
       font-family: var(--font-sans);
-      font-size: 13.5px;
+      font-size: 14.5px;
+      font-weight: 500;
     }
 
     .pill-input::placeholder {
       color: var(--text-placeholder);
+      font-weight: 400;
     }
 
     .eye-btn {
@@ -245,7 +271,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 4px;
+      padding: 6px;
       color: var(--text-muted);
       transition: color 140ms ease;
       margin-left: 8px;
@@ -267,15 +293,15 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      font-size: 12.5px;
-      color: var(--text-muted);
+      font-size: 13px;
+      color: var(--text-body);
       cursor: pointer;
       user-select: none;
     }
 
     .remember-label input[type="checkbox"] {
-      width: 15px;
-      height: 15px;
+      width: 16px;
+      height: 16px;
       accent-color: var(--accent-red);
       cursor: pointer;
       border-radius: 4px;
@@ -284,32 +310,37 @@
     .security-tag {
       font-family: var(--font-mono);
       font-size: 11px;
-      color: #555c6b;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 3px 8px;
+      border-radius: 6px;
     }
 
     /* Big Pill Action Button matching Reference */
     .btn-login-pill {
       width: 100%;
-      height: 48px;
-      background: linear-gradient(135deg, var(--accent-red) 0%, var(--accent-dark) 100%);
+      height: 52px;
+      background: linear-gradient(135deg, var(--accent-coral) 0%, var(--accent-red) 45%, var(--accent-dark) 100%);
       border: none;
       border-radius: 9999px;
       color: #ffffff;
       font-family: var(--font-sans);
-      font-size: 14.5px;
+      font-size: 15.5px;
       font-weight: 600;
       letter-spacing: 0.01em;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 6px 20px -2px var(--accent-glow);
+      box-shadow: 0 8px 24px -2px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.25);
       transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
     }
 
     .btn-login-pill:hover {
       filter: brightness(1.08);
-      box-shadow: 0 8px 24px -2px rgba(239, 68, 68, 0.45);
+      box-shadow: 0 12px 28px -2px rgba(239, 68, 68, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      transform: translateY(-1px);
     }
 
     .btn-login-pill:active {
@@ -333,11 +364,12 @@
     }
 
     .aux-circle-btn {
-      width: 44px;
-      height: 44px;
+      width: 46px;
+      height: 46px;
       border-radius: 50%;
-      background: #14171d;
-      border: 1px solid var(--border-quiet);
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 4px 12px rgba(0, 0, 0, 0.3);
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -348,22 +380,22 @@
     }
 
     .aux-circle-btn:hover {
-      background: #1c2028;
+      background: #1c212b;
       border-color: var(--border-hover);
       color: var(--text-white);
-      transform: translateY(-1px);
+      transform: translateY(-2px);
     }
 
     /* Card Footer Link */
     .auth-bottom-footer {
       text-align: center;
-      font-size: 12.5px;
+      font-size: 13px;
       color: var(--text-muted);
     }
 
     .auth-bottom-footer .accent-link {
       color: var(--accent-red);
-      font-weight: 500;
+      font-weight: 600;
       text-decoration: none;
       margin-left: 4px;
       transition: opacity 140ms ease;
@@ -376,31 +408,31 @@
     /* Error Banner */
     .error-alert-pill {
       display: none;
-      background: rgba(239, 68, 68, 0.1);
+      background: rgba(239, 68, 68, 0.12);
       border: 1px solid rgba(239, 68, 68, 0.3);
       color: #fca5a5;
-      padding: 10px 14px;
-      border-radius: 10px;
-      font-size: 12.5px;
-      margin-bottom: 18px;
+      padding: 11px 16px;
+      border-radius: 12px;
+      font-size: 13px;
+      margin-bottom: 20px;
       line-height: 1.4;
     }
 
     /* 2FA Container */
     .twofa-header-group {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 22px;
     }
 
     .twofa-title {
-      font-size: 17px;
+      font-size: 18px;
       font-weight: 600;
       color: var(--text-white);
       margin-bottom: 6px;
     }
 
     .twofa-subtitle {
-      font-size: 12.5px;
+      font-size: 13px;
       color: var(--text-muted);
       line-height: 1.45;
     }
@@ -415,16 +447,16 @@
       width: 160px;
       height: 160px;
       border-radius: 12px;
-      border: 1px solid var(--border-quiet);
+      border: 1px solid var(--border-subtle);
       background: #ffffff;
       padding: 6px;
     }
 
     .twofa-manual-key-box {
       background: var(--bg-input);
-      border: 1px solid var(--border-quiet);
-      border-radius: 10px;
-      padding: 9px 14px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 10px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -433,17 +465,17 @@
 
     .twofa-key-mono {
       font-family: var(--font-mono);
-      font-size: 12px;
+      font-size: 12.5px;
       color: var(--text-white);
       letter-spacing: 0.08em;
     }
 
     .twofa-unified-input {
       width: 100%;
-      height: 48px;
+      height: 52px;
       background: var(--bg-input);
-      border: 1px solid var(--border-quiet);
-      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
       color: var(--text-white);
       font-family: var(--font-mono);
       font-size: 20px;
@@ -456,29 +488,34 @@
 
     .twofa-unified-input:focus {
       border-color: var(--border-focus);
-      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
     }
 
     .btn-twofa-continue {
       width: 100%;
-      height: 48px;
-      background: linear-gradient(135deg, var(--accent-red) 0%, var(--accent-dark) 100%);
+      height: 52px;
+      background: linear-gradient(135deg, var(--accent-coral) 0%, var(--accent-red) 45%, var(--accent-dark) 100%);
       border: none;
       border-radius: 9999px;
       color: #ffffff;
-      font-size: 14px;
+      font-size: 14.5px;
       font-weight: 600;
       cursor: pointer;
       margin-bottom: 14px;
-      box-shadow: 0 6px 20px -2px var(--accent-glow);
-      transition: background-color 140ms ease;
+      box-shadow: 0 8px 24px -2px var(--accent-glow);
+      transition: background-color 140ms ease, transform 120ms ease;
+    }
+
+    .btn-twofa-continue:hover {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
     }
 
     .btn-twofa-cancel {
       background: transparent;
       border: none;
       color: var(--text-muted);
-      font-size: 12.5px;
+      font-size: 13px;
       cursor: pointer;
       transition: color 140ms ease;
     }
@@ -501,13 +538,13 @@
 
     .hero-toast-item {
       pointer-events: auto;
-      background: #14171e;
-      border: 1px solid var(--border-quiet);
-      border-radius: 10px;
-      padding: 12px 16px;
-      min-width: 260px;
-      max-width: 340px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      background: #14171f;
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 12px 18px;
+      min-width: 270px;
+      max-width: 350px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
       opacity: 0;
       transform: translateY(-8px);
       transition: opacity 160ms ease, transform 160ms ease;
@@ -519,70 +556,78 @@
     }
 
     .toast-title {
-      font-size: 12px;
+      font-size: 12.5px;
       font-weight: 600;
       color: var(--text-white);
       margin-bottom: 2px;
     }
 
     .toast-msg {
-      font-size: 11.5px;
+      font-size: 12px;
       color: var(--text-body);
       line-height: 1.4;
     }
 
     /* Responsive Adaptation */
     @media (max-width: 960px) {
-      .split-layout {
+      .master-frame {
         flex-direction: column;
       }
       .showcase-pane {
-        padding: 40px 28px;
-        border-right: none;
-        border-bottom: 1px solid var(--border-quiet);
+        padding: 40px 24px 32px;
         align-items: center;
         text-align: center;
       }
+      .visual-container {
+        max-width: 480px;
+        margin: 18px 0;
+      }
       .showcase-footer {
-        margin-top: 24px;
+        margin-top: 18px;
       }
       .showcase-headline {
-        font-size: 22px;
+        font-size: 24px;
       }
       .auth-pane {
-        padding: 40px 24px 60px;
+        padding: 32px 24px 60px;
       }
     }
 
     @media (max-width: 600px) {
       .showcase-pane {
-        padding: 28px 20px;
+        padding: 24px 18px;
       }
       .visual-container {
-        max-width: 360px;
+        max-width: 340px;
       }
       .showcase-headline {
-        font-size: 19px;
+        font-size: 20px;
       }
       .auth-pane {
-        padding: 32px 18px 48px;
+        padding: 24px 18px 48px;
       }
       .welcome-title {
-        font-size: 22px;
+        font-size: 24px;
+      }
+      .pill-input-box {
+        height: 48px;
+      }
+      .btn-login-pill {
+        height: 48px;
       }
     }
   </style>
 </head>
 <body>
 
-  <div class="split-layout">
+  <div class="master-frame">
     
     <!-- Left Showcase Pane (Matching Reference Visual Layout) -->
     <div class="showcase-pane">
       <div class="brand-top">
         <a href="login.html" class="brand-header">
           <div class="brand-mark">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
               <path d="M4 4L12 12L4 20" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
               <path d="M20 4L12 12L20 20" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -591,171 +636,14 @@
         </a>
       </div>
 
-      <!-- Center Isometric Pipeline Diagram (Pure SVG Vector Craft) -->
+      <!-- Center Visual: Ultra-High-End 3D Isometric Pipeline Render -->
       <div class="visual-container">
-        <svg class="tech-svg-art" viewBox="0 0 540 330" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <!-- Metallic Ribbon Gradient -->
-            <linearGradient id="ribbonGrad" x1="80" y1="210" x2="460" y2="120" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#ef4444" stop-opacity="0.9"/>
-              <stop offset="35%" stop-color="#f59e0b" stop-opacity="0.95"/>
-              <stop offset="70%" stop-color="#ef4444" stop-opacity="0.9"/>
-              <stop offset="100%" stop-color="#f43f5e" stop-opacity="0.85"/>
-            </linearGradient>
-            
-            <!-- Platform Surface Gradients -->
-            <linearGradient id="platTopGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#222631"/>
-              <stop offset="100%" stop-color="#151820"/>
-            </linearGradient>
-            <linearGradient id="platSideLGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#12151b"/>
-              <stop offset="100%" stop-color="#0a0c0f"/>
-            </linearGradient>
-            <linearGradient id="platSideRGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#181c24"/>
-              <stop offset="100%" stop-color="#0e1015"/>
-            </linearGradient>
-
-            <!-- Sphere Core Gradient -->
-            <radialGradient id="sphereGrad" cx="35%" cy="35%" r="65%">
-              <stop offset="0%" stop-color="#ffffff"/>
-              <stop offset="25%" stop-color="#fed7aa"/>
-              <stop offset="65%" stop-color="#f59e0b"/>
-              <stop offset="100%" stop-color="#9a3412"/>
-            </radialGradient>
-
-            <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="4" result="blur"/>
-              <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-            </filter>
-          </defs>
-
-          <!-- Ambient Platform Shadows -->
-          <ellipse cx="115" cy="235" rx="55" ry="24" fill="#000000" fill-opacity="0.6"/>
-          <ellipse cx="270" cy="205" rx="70" ry="30" fill="#000000" fill-opacity="0.7"/>
-          <ellipse cx="370" cy="265" rx="50" ry="22" fill="#000000" fill-opacity="0.6"/>
-          <ellipse cx="445" cy="165" rx="60" ry="26" fill="#000000" fill-opacity="0.7"/>
-
-          <!-- Connecting Metallic Conduit Ribbon (Pass 1 - Bottom Glow) -->
-          <path d="M 115 210 Q 190 240 270 170 T 370 235 T 445 135" 
-                stroke="#ef4444" stroke-width="10" stroke-linecap="round" stroke-opacity="0.2" filter="url(#softGlow)"/>
-
-          <!-- Platform 1 (Left - Client Handshake Node) -->
-          <g transform="translate(65, 175)">
-            <!-- Left Face -->
-            <path d="M 0 25 L 50 50 L 50 68 L 0 43 Z" fill="url(#platSideLGrad)"/>
-            <!-- Right Face -->
-            <path d="M 50 50 L 100 25 L 100 43 L 50 68 Z" fill="url(#platSideRGrad)"/>
-            <!-- Top Face -->
-            <path d="M 50 0 L 100 25 L 50 50 L 0 25 Z" fill="url(#platTopGrad)" stroke="rgba(255,255,255,0.12)" stroke-width="0.8"/>
-            <!-- Wave Rings / Handshake Icon -->
-            <ellipse cx="50" cy="25" rx="20" ry="10" stroke="rgba(239,68,68,0.4)" stroke-width="1.5" fill="none"/>
-            <ellipse cx="50" cy="25" rx="10" ry="5" stroke="#ef4444" stroke-width="1.5" fill="none"/>
-            <circle cx="50" cy="25" r="3" fill="#ffffff"/>
-            <!-- Soundwave / Handshake arcs -->
-            <path d="M 32 18 Q 30 25 32 32" stroke="rgba(255,255,255,0.4)" stroke-width="1.2" stroke-linecap="round" fill="none"/>
-            <path d="M 68 18 Q 70 25 68 32" stroke="rgba(255,255,255,0.4)" stroke-width="1.2" stroke-linecap="round" fill="none"/>
-          </g>
-
-          <!-- Platform 3 (Lower Center - HWID Lock & Hardware Matrix) -->
-          <g transform="translate(320, 205)">
-            <!-- Left Face -->
-            <path d="M 0 25 L 50 50 L 50 66 L 0 41 Z" fill="url(#platSideLGrad)"/>
-            <!-- Right Face -->
-            <path d="M 50 50 L 100 25 L 100 41 L 50 66 Z" fill="url(#platSideRGrad)"/>
-            <!-- Top Face -->
-            <path d="M 50 0 L 100 25 L 50 50 L 0 25 Z" fill="url(#platTopGrad)" stroke="rgba(255,255,255,0.1)" stroke-width="0.8"/>
-            <!-- Isometric Chip / Lens Module -->
-            <g transform="translate(32, 12)">
-              <path d="M 18 0 L 36 9 L 18 18 L 0 9 Z" fill="#1b1f28" stroke="rgba(245,158,11,0.5)" stroke-width="1"/>
-              <circle cx="18" cy="9" r="4" fill="#f59e0b"/>
-              <!-- Small Status Dot -->
-              <circle cx="28" cy="4" r="1.5" fill="#10b981"/>
-            </g>
-          </g>
-
-          <!-- Connecting Metallic Conduit Ribbon (Pass 2 - Main Sharp Stroke) -->
-          <path d="M 115 200 Q 190 230 270 160 Q 330 195 370 220 Q 410 180 445 125" 
-                stroke="url(#ribbonGrad)" stroke-width="5" stroke-linecap="round" fill="none"/>
-          <path d="M 115 200 Q 190 230 270 160 Q 330 195 370 220 Q 410 180 445 125" 
-                stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="4 14" fill="none" opacity="0.7"/>
-
-          <!-- Platform 2 (Center Raised - Cryptographic HMAC Core) -->
-          <g transform="translate(205, 120)">
-            <!-- Base Pedestal Left Face -->
-            <path d="M 0 35 L 65 68 L 65 92 L 0 59 Z" fill="url(#platSideLGrad)"/>
-            <!-- Base Pedestal Right Face -->
-            <path d="M 65 68 L 130 35 L 130 59 L 65 92 Z" fill="url(#platSideRGrad)"/>
-            <!-- Base Pedestal Top Face -->
-            <path d="M 65 0 L 130 35 L 65 68 L 0 35 Z" fill="url(#platTopGrad)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
-            
-            <!-- Raised Secondary Pedestal -->
-            <g transform="translate(25, 12)">
-              <path d="M 0 20 L 40 40 L 40 50 L 0 30 Z" fill="#0d0f14"/>
-              <path d="M 40 40 L 80 20 L 80 30 L 40 50 Z" fill="#161920"/>
-              <path d="M 40 0 L 80 20 L 40 40 L 0 20 Z" fill="#252a36" stroke="rgba(245,158,11,0.4)" stroke-width="1"/>
-            </g>
-
-            <!-- Luminous Cryptographic Sphere Orb with Orbit Gimbal Rings -->
-            <g transform="translate(65, 20)">
-              <!-- Outer Gimbal Orbit Ring -->
-              <ellipse cx="0" cy="0" rx="26" ry="11" stroke="#f59e0b" stroke-width="1.5" fill="none" opacity="0.8" transform="rotate(-15)"/>
-              <ellipse cx="0" cy="0" rx="22" ry="9" stroke="rgba(255,255,255,0.4)" stroke-width="1" fill="none" stroke-dasharray="3 3"/>
-              <!-- Glowing Orb -->
-              <circle cx="0" cy="-2" r="13" fill="url(#sphereGrad)" filter="url(#softGlow)"/>
-              <circle cx="0" cy="-2" r="11" fill="url(#sphereGrad)"/>
-              <circle cx="-3" cy="-5" r="3" fill="#ffffff" opacity="0.75"/>
-            </g>
-          </g>
-
-          <!-- Platform 4 (Upper Right - License Inventory & Reseller Panel Stack) -->
-          <g transform="translate(385, 90)">
-            <!-- Pedestal Left Face -->
-            <path d="M 0 30 L 60 60 L 60 78 L 0 48 Z" fill="url(#platSideLGrad)"/>
-            <!-- Pedestal Right Face -->
-            <path d="M 60 60 L 120 30 L 120 48 L 60 78 Z" fill="url(#platSideRGrad)"/>
-            <!-- Pedestal Top Face -->
-            <path d="M 60 0 L 120 30 L 60 60 L 0 30 Z" fill="url(#platTopGrad)" stroke="rgba(255,255,255,0.12)" stroke-width="0.8"/>
-            
-            <!-- Isometric Console Terminal / Document Block -->
-            <g transform="translate(35, -20)">
-              <!-- Back Card -->
-              <rect x="0" y="0" width="46" height="58" rx="6" fill="#1b1f28" stroke="rgba(255,255,255,0.12)" stroke-width="1" transform="skewY(-14)"/>
-              <!-- Card Internal Lines -->
-              <line x1="8" y1="12" x2="38" y2="12" stroke="#475569" stroke-width="2" stroke-linecap="round" transform="skewY(-14)"/>
-              <line x1="8" y1="20" x2="32" y2="20" stroke="#334155" stroke-width="2" stroke-linecap="round" transform="skewY(-14)"/>
-              <line x1="8" y1="28" x2="26" y2="28" stroke="#334155" stroke-width="2" stroke-linecap="round" transform="skewY(-14)"/>
-
-              <!-- Floating License Notification Pill 1 -->
-              <g transform="translate(-20, 10)">
-                <rect x="0" y="0" width="22" height="12" rx="4" fill="#14171f" stroke="#10b981" stroke-width="0.8"/>
-                <circle cx="6" cy="6" r="2" fill="#10b981"/>
-                <line x1="11" y1="6" x2="18" y2="6" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round"/>
-              </g>
-
-              <!-- Floating License Notification Pill 2 -->
-              <g transform="translate(38, -6)">
-                <rect x="0" y="0" width="22" height="12" rx="4" fill="#14171f" stroke="#ef4444" stroke-width="0.8"/>
-                <circle cx="6" cy="6" r="2" fill="#ef4444"/>
-                <line x1="11" y1="6" x2="18" y2="6" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round"/>
-              </g>
-
-              <!-- Floating License Notification Pill 3 -->
-              <g transform="translate(42, 28)">
-                <rect x="0" y="0" width="20" height="11" rx="4" fill="#14171f" stroke="rgba(255,255,255,0.2)" stroke-width="0.8"/>
-                <circle cx="5" cy="5.5" r="1.8" fill="#f59e0b"/>
-                <line x1="9" y1="5.5" x2="16" y2="5.5" stroke="#ffffff" stroke-width="1" stroke-linecap="round"/>
-              </g>
-            </g>
-          </g>
-
-          <!-- Top-Right Accent Beacon -->
-          <g transform="translate(450, 40)">
-            <polygon points="12,0 24,7 12,14 0,7" fill="#f59e0b" opacity="0.8"/>
-            <polygon points="12,0 24,7 12,9 0,7" fill="#ffffff" opacity="0.5"/>
-          </g>
-        </svg>
+        <img 
+          src="assets/images/hx_isometric_pipeline.jpg" 
+          alt="HYPER X Cryptographic Licensing Pipeline" 
+          class="visual-render-img"
+          loading="eager"
+        >
       </div>
 
       <!-- Showcase Bottom Typography -->
@@ -839,12 +727,12 @@
           <!-- Auxiliary Circular Buttons (Matching Reference) -->
           <div class="aux-row">
             <a href="https://discord.gg/neGxQey4GF" target="_blank" rel="noopener noreferrer" class="aux-circle-btn" title="Discord Community">
-              <svg width="17" height="13" viewBox="0 0 127.14 96.36" fill="currentColor">
+              <svg width="18" height="14" viewBox="0 0 127.14 96.36" fill="currentColor">
                 <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.86,53,48.83,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/>
               </svg>
             </a>
             <button type="button" class="aux-circle-btn" onclick="showToast('System Health', 'API Gateways and KeyAuth Cloud Nodes Active.')" title="System Status">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
               </svg>
             </button>
