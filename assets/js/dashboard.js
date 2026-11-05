@@ -994,7 +994,7 @@ function updateDashboardStatsUI() {
         const statAppsCount = document.getElementById('stat-apps-count');
         if (statAppsCount) statAppsCount.textContent = allowedPkgs.length;
         const statAppsBadge = document.getElementById('stat-apps-badge');
-        if (statAppsBadge) statAppsBadge.textContent = `${allowedPkgs.length} ${allowedPkgs.length === 1 ? 'PANEL' : 'PANELS'}`;
+        if (statAppsBadge) statAppsBadge.textContent = 'PANELS';
         const statAppsLabel = document.getElementById('stat-apps-label');
         if (statAppsLabel) statAppsLabel.textContent = 'PACKAGE INVENTORY';
 
@@ -1071,7 +1071,7 @@ function updateDashboardStatsUI() {
   const statAppsCount = document.getElementById('stat-apps-count');
   if (statAppsCount) statAppsCount.textContent = allPkgs.length;
   const statAppsBadge = document.getElementById('stat-apps-badge');
-  if (statAppsBadge) statAppsBadge.textContent = `${allPkgs.length} PANELS`;
+  if (statAppsBadge) statAppsBadge.textContent = 'PANELS';
   const statAppsLabel = document.getElementById('stat-apps-label');
   if (statAppsLabel) statAppsLabel.textContent = 'PACKAGE INVENTORY';
 
@@ -2148,7 +2148,7 @@ function renderApplicationsTable() {
   if (statAppsCount) statAppsCount.textContent = allowedPkgs.length;
 
   const statAppsBadge = document.getElementById('stat-apps-badge');
-  if (statAppsBadge) statAppsBadge.textContent = `${allowedPkgs.length} ${allowedPkgs.length === 1 ? 'PANEL' : 'PANELS'}`;
+  if (statAppsBadge) statAppsBadge.textContent = 'PANELS';
 
   const statAppsLabel = document.getElementById('stat-apps-label');
   if (statAppsLabel) statAppsLabel.textContent = 'PACKAGE INVENTORY';
