@@ -484,6 +484,19 @@ function updateAdminUI() {
   if (headerAdminName) headerAdminName.textContent = 'Owner';
   const headerAdminIcon = document.getElementById('header-admin-icon');
   if (headerAdminIcon) headerAdminIcon.textContent = '';
+  const headerAdminBtn = document.getElementById('header-admin-btn');
+  if (headerAdminBtn) {
+    headerAdminBtn.classList.remove('role-reseller');
+    headerAdminBtn.classList.add('role-owner');
+    headerAdminBtn.style.background = '';
+    headerAdminBtn.style.color = '';
+    headerAdminBtn.style.borderColor = '';
+  }
+  const headerAdminDot = document.getElementById('header-admin-dot');
+  if (headerAdminDot) {
+    headerAdminDot.classList.remove('dot-blue');
+    headerAdminDot.classList.add('dot-red');
+  }
 
   const avatarLetter = document.getElementById('sidebar-avatar-letter');
   if (avatarLetter && currentAdmin.length > 0) {
@@ -930,6 +943,19 @@ function updateDashboardStatsUI() {
         if (headerAdminName) headerAdminName.textContent = 'Reseller';
         const headerAdminIcon = document.getElementById('header-admin-icon');
         if (headerAdminIcon) headerAdminIcon.textContent = '';
+        const headerAdminBtn = document.getElementById('header-admin-btn');
+        if (headerAdminBtn) {
+          headerAdminBtn.classList.remove('role-owner');
+          headerAdminBtn.classList.add('role-reseller');
+          headerAdminBtn.style.background = '';
+          headerAdminBtn.style.color = '';
+          headerAdminBtn.style.borderColor = '';
+        }
+        const headerAdminDot = document.getElementById('header-admin-dot');
+        if (headerAdminDot) {
+          headerAdminDot.classList.remove('dot-red');
+          headerAdminDot.classList.add('dot-blue');
+        }
         if (elRemaining) elRemaining.textContent = balance.toLocaleString();
         const dashQuotaNum = document.getElementById('dash-welcome-quota-num');
         if (dashQuotaNum) dashQuotaNum.textContent = balance.toLocaleString();
@@ -999,6 +1025,19 @@ function updateDashboardStatsUI() {
   if (headerAdminName) headerAdminName.textContent = 'Owner';
   const headerAdminIcon = document.getElementById('header-admin-icon');
   if (headerAdminIcon) headerAdminIcon.textContent = '';
+  const headerAdminBtn = document.getElementById('header-admin-btn');
+  if (headerAdminBtn) {
+    headerAdminBtn.classList.remove('role-reseller');
+    headerAdminBtn.classList.add('role-owner');
+    headerAdminBtn.style.background = '';
+    headerAdminBtn.style.color = '';
+    headerAdminBtn.style.borderColor = '';
+  }
+  const headerAdminDot = document.getElementById('header-admin-dot');
+  if (headerAdminDot) {
+    headerAdminDot.classList.remove('dot-blue');
+    headerAdminDot.classList.add('dot-red');
+  }
 
   // Update Summary Cards for Root Admin
   if (elCreated) elCreated.textContent = state.stats.keys_created;
@@ -4027,10 +4066,20 @@ function initUserRoleSession() {
       const adminHeaderIcon = document.getElementById('header-admin-icon');
       const adminHeaderName = document.getElementById('header-admin-name');
       const adminHeaderAction = document.getElementById('header-admin-action');
+      const adminHeaderDot = document.getElementById('header-admin-dot');
       if (adminHeaderIcon) adminHeaderIcon.textContent = '';
       if (adminHeaderName) adminHeaderName.textContent = 'Reseller';
       if (adminHeaderAction) adminHeaderAction.textContent = '(Reseller)';
+      if (adminHeaderDot) {
+        adminHeaderDot.classList.remove('dot-red');
+        adminHeaderDot.classList.add('dot-blue');
+      }
       if (adminHeaderBtn) {
+        adminHeaderBtn.classList.remove('role-owner');
+        adminHeaderBtn.classList.add('role-reseller');
+        adminHeaderBtn.style.background = '';
+        adminHeaderBtn.style.color = '';
+        adminHeaderBtn.style.borderColor = '';
         adminHeaderBtn.title = `Reseller: ${res.username} (${usedCount}/${totalQuota} Used • ${balance} Available)`;
       }
 
@@ -4119,9 +4168,19 @@ function initUserRoleSession() {
     const adminHeaderBtn = document.getElementById('header-admin-btn');
     const adminHeaderIcon = document.getElementById('header-admin-icon');
     const adminHeaderName = document.getElementById('header-admin-name');
+    const adminHeaderDot = document.getElementById('header-admin-dot');
     if (adminHeaderIcon) adminHeaderIcon.textContent = '';
     if (adminHeaderName) adminHeaderName.textContent = 'Owner';
+    if (adminHeaderDot) {
+      adminHeaderDot.classList.remove('dot-blue');
+      adminHeaderDot.classList.add('dot-red');
+    }
     if (adminHeaderBtn) {
+      adminHeaderBtn.classList.remove('role-reseller');
+      adminHeaderBtn.classList.add('role-owner');
+      adminHeaderBtn.style.background = '';
+      adminHeaderBtn.style.color = '';
+      adminHeaderBtn.style.borderColor = '';
       adminHeaderBtn.title = `Owner: ${adminUser}`;
     }
 
@@ -4678,15 +4737,39 @@ window.toggleRoleView = function() {
       btn.onclick = window.toggleRoleView;
     }
 
+    const dotEl = document.getElementById('header-admin-dot');
+
     if (role === 'reseller') {
       const res = getCurrentReseller() || { username: 'Reseller' };
       if (nameEl) nameEl.textContent = `${res.username} (Reseller)`;
       if (iconEl) iconEl.textContent = '';
-      if (btn) { btn.style.background = '#1a1e28'; btn.setAttribute('title', 'Reseller Mode (Click to switch to Owner view)'); }
+      if (dotEl) {
+        dotEl.classList.remove('dot-red');
+        dotEl.classList.add('dot-blue');
+      }
+      if (btn) {
+        btn.classList.remove('role-owner');
+        btn.classList.add('role-reseller');
+        btn.style.background = '';
+        btn.style.color = '';
+        btn.style.borderColor = '';
+        btn.setAttribute('title', 'Reseller Mode (Click to switch to Owner view)');
+      }
     } else {
       if (nameEl) nameEl.textContent = 'Owner';
       if (iconEl) iconEl.textContent = '';
-      if (btn) { btn.style.background = '#1a1e28'; btn.setAttribute('title', 'Root Owner (Click to switch to Reseller view)'); }
+      if (dotEl) {
+        dotEl.classList.remove('dot-blue');
+        dotEl.classList.add('dot-red');
+      }
+      if (btn) {
+        btn.classList.remove('role-reseller');
+        btn.classList.add('role-owner');
+        btn.style.background = '';
+        btn.style.color = '';
+        btn.style.borderColor = '';
+        btn.setAttribute('title', 'Root Owner (Click to switch to Reseller view)');
+      }
     }
   }
 

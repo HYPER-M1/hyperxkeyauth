@@ -312,7 +312,8 @@
           </div>
 
           <!-- Admin User Badge -->
-          <div class="header-pill-admin" id="header-admin-btn" style="background:#1a1e28;color:var(--text-main);border:1px solid rgba(255,255,255,0.08);padding:4px 10px;border-radius:6px;font-size:12px;font-weight:500;display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
+          <div class="header-pill-admin role-owner" id="header-admin-btn" role="button" tabindex="0" title="Click to toggle Owner / Reseller view">
+            <span class="role-pill-dot dot-red" id="header-admin-dot"></span>
             <span id="header-admin-name">Owner</span>
           </div>
         </div>
@@ -407,6 +408,16 @@
                     if (sRole) sRole.textContent = 'Reseller (' + (res.balance || 0) + ' Keys)';
                     var hName = document.getElementById('header-admin-name');
                     if (hName) hName.textContent = 'Reseller';
+                    var hBtn = document.getElementById('header-admin-btn');
+                    if (hBtn) {
+                      hBtn.classList.remove('role-owner');
+                      hBtn.classList.add('role-reseller');
+                    }
+                    var hDot = document.getElementById('header-admin-dot');
+                    if (hDot) {
+                      hDot.classList.remove('dot-red');
+                      hDot.classList.add('dot-blue');
+                    }
                     var hIcon = document.getElementById('header-admin-icon');
                     var uUsed = (res.createdKeys !== undefined && res.createdKeys !== null) ? res.createdKeys : 0;
                     var uTotal = res.totalQuota || ((res.balance || 0) + uUsed);
