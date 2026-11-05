@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $authenticated = false;
 
         // Check default root admin
-        if ($email === ADMIN_EMAIL && ($password === 'admin123' || password_verify($password, ADMIN_PASSWORD_HASH))) {
+        if ($email === ADMIN_EMAIL && password_verify($password, ADMIN_PASSWORD_HASH)) {
             $authenticated = true;
             $admin_user = [
                 'id' => 1,
@@ -412,7 +412,7 @@ $csrf_token = generate_csrf_token();
               name="password"
               class="form-input"
               placeholder="••••••••••••"
-              value="admin123"
+              value=""
               required
               autocomplete="current-password"
             >
@@ -438,7 +438,7 @@ $csrf_token = generate_csrf_token();
         <div class="demo-credentials-box">
           <div><strong>Default Root Login:</strong></div>
           <div style="font-family:var(--font-mono);margin-top:2px;">
-            Email: <span style="color:#00f0ff;">admin@prtvshow.online</span> | Pass: <span style="color:#00f0ff;">admin123</span>
+            Email: <span style="color:#00f0ff;">admin@prtvshow.online</span> | Pass: <span style="color:#00f0ff;">[Configured in .env]</span>
           </div>
         </div>
       </form>

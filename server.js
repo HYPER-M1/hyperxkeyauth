@@ -7,6 +7,43 @@ const PORT = process.env.PORT || 3000;
 const PUBLIC_DIR = __dirname;
 const DOWNLOADS_DIR = path.join(PUBLIC_DIR, 'downloads');
 
+// Load local environment variables if available
+const envFile = path.join(__dirname, '.env');
+if (fs.existsSync(envFile)) {
+  try {
+    fs.readFileSync(envFile, 'utf8').split('\n').forEach(line => {
+      const match = line.match(/^\s*([\w.-]+)\s*=\s*(.*)?\s*$/);
+      if (match && !process.env[match[1]]) {
+        let val = (match[2] || '').trim();
+        if (val.startsWith('"') && val.endsWith('"')) val = val.slice(1, -1);
+        process.env[match[1]] = val;
+      }
+    });
+  } catch (_) {}
+}
+
+const HMAC_SECRET = process.env.HMAC_SECRET || '4f9b8c2d1e0a7f6b5c4d3e2a1f0e9d8c7b6a5f4e3d2c1b0a9f8e7d6c5b4a3f2e';
+
+function verifySessionToken(token) {
+  if (!token || typeof token !== 'string') return null;
+  const parts = token.split('.');
+  if (parts.length !== 2) return null;
+  try {
+    const expectedSig = crypto.createHmac('sha256', HMAC_SECRET).update(parts[0]).digest('hex');
+    const bSig = Buffer.from(parts[1], 'hex');
+    const bExp = Buffer.from(expectedSig, 'hex');
+    if (bSig.length !== bExp.length || !crypto.timingSafeEqual(bSig, bExp)) {
+      return null;
+    }
+    const decoded = JSON.parse(Buffer.from(parts[0], 'base64url').toString('utf8'));
+    if (decoded.exp && Date.now() > decoded.exp) return null;
+    return decoded;
+  } catch (_) {
+    return null;
+  }
+}
+
+
 // Ensure downloads directory exists
 if (!fs.existsSync(DOWNLOADS_DIR)) {
   fs.mkdirSync(DOWNLOADS_DIR, { recursive: true });
@@ -151,6 +188,15 @@ const server = http.createServer((req, res) => {
 
   // 2. POST UPLOAD (ADMIN CORE UPLOAD)
   if (pathname === '/api/upload' && req.method === 'POST') {
+    // Authenticate executable uploads on the server before opening write stream
+    const authHeader = req.headers['authorization'] || req.headers['x-session-token'] || parsedUrl.searchParams.get('token') || '';
+    const token = authHeader.replace(/^Bearer\s+/i, '').trim();
+    const verified = verifySessionToken(token);
+    if (!verified || (verified.role !== 'admin' && verified.role !== 'owner')) {
+      res.writeHead(401, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: false, error: 'Unauthorized: Server-verified owner authorization required' }));
+      return;
+    }
     const rawFilename = parsedUrl.searchParams.get('filename') || 'Master_Core_KERNEL_CSHARP_v1.0.0.zip';
     const cleanFilename = path.basename(rawFilename).replace(/[^a-zA-Z0-9_\-\.]/g, '_');
     const isZip = cleanFilename.toLowerCase().endsWith('.zip');
@@ -317,6 +363,24 @@ const server = http.createServer((req, res) => {
   // 5. STATIC FILES
   if (pathname === '/') {
     pathname = '/login.html';
+  }
+
+  // Explicitly block credential stores, secrets, and server-side code from static file serving
+  const blockedFiles = [
+    '/data.json',
+    '/hyperm-mobile-config.json',
+    '/hyperm-mobile-data.json',
+    '/keyauth-hyperx-config.json',
+    '/package.json',
+    '/package-lock.json',
+    '/.env'
+  ];
+  const isBlockedExt = /\.(php|sql|env|log|bat|sh|ps1|bak|config)$/i.test(pathname);
+  const isBlockedFile = blockedFiles.some(f => pathname.toLowerCase() === f || pathname.toLowerCase().endsWith(f));
+  if (isBlockedExt || isBlockedFile || pathname.includes('.git')) {
+    res.writeHead(403, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: '403 Forbidden: Direct static access to this resource is prohibited' }));
+    return;
   }
 
   // Prevent directory traversal

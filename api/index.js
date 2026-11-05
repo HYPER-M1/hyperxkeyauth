@@ -15,7 +15,25 @@ const path = require('path');
 const REMOTE_API_URL = 'https://prtvshow.online/api_admin.php';
 const REMOTE_API_KEY = 'TX999_API_bc186f5d73bd492e6d52095e5a7bfd78';
 const DEFAULT_APP_ID = '9f087d585fbd666572fc24b7';
-const HMAC_SECRET = process.env.HMAC_SECRET || '7f99a801e82b7c02b92138a011cd48f9';
+// Load local environment variables if available
+const envFile = path.join(__dirname, '..', '.env');
+if (fs.existsSync(envFile)) {
+  try {
+    fs.readFileSync(envFile, 'utf8').split('\n').forEach(line => {
+      const match = line.match(/^\s*([\w.-]+)\s*=\s*(.*)?\s*$/);
+      if (match && !process.env[match[1]]) {
+        let val = (match[2] || '').trim();
+        if (val.startsWith('"') && val.endsWith('"')) val = val.slice(1, -1);
+        process.env[match[1]] = val;
+      }
+    });
+  } catch (_) {}
+}
+
+const HMAC_SECRET = process.env.HMAC_SECRET;
+if (!HMAC_SECRET) {
+  throw new Error('HMAC_SECRET must be set');
+}
 
 // ============================================================================
 // CONFIGURATION 2: NEW PANEL KEYAUTH LICENSE V2 APPLICATION (SEPARATE SLOT)
@@ -212,7 +230,7 @@ function getAuthenticatedUser(req, body, storeData) {
       const adminUser = storeData.hyperx_admin_user || 'HYPER X';
       const adminPass = storeData.hyperx_admin_pass || 'hyperm2000';
       if ((authUser.toLowerCase() === adminUser.toLowerCase() || authUser.toLowerCase() === 'admin' || authUser.toLowerCase() === 'hyperm575@gmail.com') &&
-          (authPass === adminPass || authPass === 'admin123')) {
+          (authPass === adminPass)) {
         return {
           role: 'admin',
           username: adminUser,
@@ -481,7 +499,7 @@ module.exports = async (req, res) => {
     const adminUser = storeData.hyperx_admin_user || 'HYPER X';
     const adminPass = storeData.hyperx_admin_pass || 'hyperm2000';
     const isAdmin = (user.toLowerCase() === adminUser.toLowerCase() || user.toLowerCase() === 'admin' || user.toLowerCase() === 'hyperm575@gmail.com') &&
-                    (pass === adminPass || pass === 'admin123');
+                    (pass === adminPass);
 
     if (isAdmin) {
       const token = createSessionToken({

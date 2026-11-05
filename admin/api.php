@@ -99,7 +99,7 @@ function get_authenticated_user($body, $store = null) {
         $adminUser = $store['hyperx_admin_user'] ?? 'HYPER X';
         $adminPass = $store['hyperx_admin_pass'] ?? 'hyperm2000';
         if ((strtolower($user) === strtolower($adminUser) || strtolower($user) === 'admin' || strtolower($user) === 'hyperm575@gmail.com') &&
-            ($pass === $adminPass || $pass === 'admin123')) {
+            ($pass === $adminPass)) {
             return [
                 'role'       => 'admin',
                 'resellerId' => 'owner',
@@ -133,7 +133,7 @@ if ($action === 'session_auth' || $action === 'login') {
     $adminUser = $store['hyperx_admin_user'] ?? 'HYPER X';
     $adminPass = $store['hyperx_admin_pass'] ?? 'hyperm2000';
 
-    if ((strtolower($user) === strtolower($adminUser) || strtolower($user) === 'admin') && ($pass === $adminPass || $pass === 'admin123')) {
+    if ((strtolower($user) === strtolower($adminUser) || strtolower($user) === 'admin') && ($pass === $adminPass)) {
         $payload = [
             'role'       => 'admin',
             'resellerId' => 'owner',

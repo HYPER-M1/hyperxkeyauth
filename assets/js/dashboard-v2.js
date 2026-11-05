@@ -95,7 +95,13 @@
     // 2. Direct fallback to /api/data GitHub persistence
     if (!serverLicenses || serverLicenses.length === 0) {
       try {
-        const resp = await fetch('/api/data', { cache: 'no-store' });
+        const authT = sessionStorage.getItem('hyperx_auth_token') || localStorage.getItem('hyperx_auth_token') || localStorage.getItem('hyperx_session_token') || '';
+        const resp = await fetch('/api/data', {
+          cache: 'no-store',
+          headers: {
+            ...(authT ? { 'Authorization': `Bearer ${authT}` } : {})
+          }
+        });
         if (resp.ok) {
           const data = await resp.json();
           if (data && Array.isArray(data.tx99_licenses_v2) && data.tx99_licenses_v2.length > 0) {
@@ -114,9 +120,13 @@
   // Push V2 state to cloud storage for cross-device & cross-logout persistence
   function syncV2ToCloud() {
     try {
+      const authT = sessionStorage.getItem('hyperx_auth_token') || localStorage.getItem('hyperx_auth_token') || localStorage.getItem('hyperx_session_token') || '';
       fetch('/api/data', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(authT ? { 'Authorization': `Bearer ${authT}` } : {})
+        },
         body: JSON.stringify({
           tx99_licenses_v2: window.state ? (window.state.licenses_v2 || []) : []
         })

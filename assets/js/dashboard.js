@@ -522,9 +522,13 @@ async function syncCredentialsToServer(updates = {}) {
     };
     if (adminPass) payload.hyperx_admin_pass = adminPass;
 
+    const authT = (typeof ensureSessionToken === 'function' ? await ensureSessionToken() : '') || sessionStorage.getItem('hyperx_auth_token') || localStorage.getItem('hyperx_auth_token') || localStorage.getItem('hyperx_session_token') || '';
     const res = await fetch('/api/data', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        ...(authT ? { 'Authorization': `Bearer ${authT}` } : {})
+      },
       body: JSON.stringify(payload)
     });
     if (res.ok) {
@@ -540,7 +544,13 @@ async function loadResellersFromServer() {
   if (role === 'reseller') return;
 
   try {
-    const res = await fetch('/api/data', { cache: 'no-store' });
+    const authT = (typeof ensureSessionToken === 'function' ? await ensureSessionToken() : '') || sessionStorage.getItem('hyperx_auth_token') || localStorage.getItem('hyperx_auth_token') || localStorage.getItem('hyperx_session_token') || '';
+    const res = await fetch('/api/data', {
+      cache: 'no-store',
+      headers: {
+        ...(authT ? { 'Authorization': `Bearer ${authT}` } : {})
+      }
+    });
     if (res.ok) {
       const data = await res.json();
       if (data && Array.isArray(data.tx99_resellers)) {
@@ -667,7 +677,7 @@ function resetDefaultAdminCredentials() {
 
   updateAdminUI();
   closeModal('modal-change-admin');
-  alert('Credentials reset to default:\nUsername: HYPER X\nPassword: admin123');
+  alert('Credentials reset to default:\nUsername: ' + DEFAULT_ADMIN_USER + '\nPassword: ' + DEFAULT_ADMIN_PASS);
 }
 
 const DEFAULT_APP_ID = "9f087d585fbd666572fc24b7";
@@ -1820,9 +1830,13 @@ async function submitGenerateKeys(e) {
         });
         try {
           localStorage.setItem('tx99_licenses_v2', JSON.stringify(window.state.licenses_v2));
+          const authT = sessionStorage.getItem('hyperx_auth_token') || localStorage.getItem('hyperx_auth_token') || localStorage.getItem('hyperx_session_token') || '';
           fetch('/api/data', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+              'Content-Type': 'application/json',
+              ...(authT ? { 'Authorization': `Bearer ${authT}` } : {})
+            },
             body: JSON.stringify({ tx99_licenses_v2: window.state.licenses_v2 })
           }).catch(() => {});
         } catch (_) {}
@@ -2107,9 +2121,13 @@ async function deleteKeyLive(key) {
     window.state.licenses_v2 = window.state.licenses_v2.filter(l => l.key.toLowerCase() !== key.toLowerCase());
     try {
       localStorage.setItem('tx99_licenses_v2', JSON.stringify(window.state.licenses_v2));
+      const authT = sessionStorage.getItem('hyperx_auth_token') || localStorage.getItem('hyperx_auth_token') || localStorage.getItem('hyperx_session_token') || '';
       fetch('/api/data', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(authT ? { 'Authorization': `Bearer ${authT}` } : {})
+        },
         body: JSON.stringify({ tx99_licenses_v2: window.state.licenses_v2 })
       }).catch(() => {});
     } catch (_) {}
@@ -4373,9 +4391,13 @@ async function handleAdminCoreUploadFile(file) {
   }
 
   try {
+    const authT = (typeof ensureSessionToken === 'function' ? await ensureSessionToken() : '') || sessionStorage.getItem('hyperx_auth_token') || localStorage.getItem('hyperx_auth_token') || localStorage.getItem('hyperx_session_token') || '';
     const res = await fetch(`/api/upload?filename=${encodeURIComponent(file.name)}`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/octet-stream' },
+      headers: {
+        'Content-Type': 'application/octet-stream',
+        ...(authT ? { 'Authorization': `Bearer ${authT}` } : {})
+      },
       body: file
     });
 

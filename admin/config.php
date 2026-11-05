@@ -18,7 +18,21 @@ if (session_status() === PHP_SESSION_NONE) {
 // Global System Constants
 define('APP_NAME', 'HYPER X // KEYAUTH PORTAL');
 define('APP_VERSION', 'v2.6.4');
-define('HMAC_SECRET_KEY', '7f99a801e82b7c02b92138a011cd48f9'); // Change this in production
+$envSecret = getenv('HMAC_SECRET_KEY') ?: (getenv('HMAC_SECRET') ?: '');
+if (empty($envSecret) && file_exists(__DIR__ . '/../.env')) {
+    $envLines = file(__DIR__ . '/../.env', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($envLines as $envLine) {
+        if (strpos(trim($envLine), '#') === 0) continue;
+        if (strpos($envLine, '=') !== false) {
+            list($envK, $envV) = explode('=', $envLine, 2);
+            if (trim($envK) === 'HMAC_SECRET' || trim($envK) === 'HMAC_SECRET_KEY') {
+                $envSecret = trim($envV);
+                break;
+            }
+        }
+    }
+}
+define('HMAC_SECRET_KEY', $envSecret);
 
 // Remote KeyAuth Engine Credentials
 define('REMOTE_API_URL', 'https://prtvshow.online/api_admin.php');
@@ -27,7 +41,6 @@ define('REMOTE_APP_ID', '9f087d585fbd666572fc24b7');
 
 // Default Root Admin Credentials (BCrypt Hashed)
 define('ADMIN_EMAIL', 'admin@prtvshow.online');
-// Default password is: admin123
 define('ADMIN_PASSWORD_HASH', '$2y$10$w095H8kZf4y9m5tQ.z5eEeN5bM0gq7L3A2X3o5lM6u9P7s2e5o1G6');
 
 // Database Configuration (MySQL / MariaDB)

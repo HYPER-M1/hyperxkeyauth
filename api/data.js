@@ -7,6 +7,48 @@
  *         ensuring 100% cross-device persistence (PC, Phone 1, Phone 2 across different networks).
  */
 
+// Load local environment variables if available
+const fs = require('fs');
+const path = require('path');
+const envFile = path.join(__dirname, '..', '.env');
+if (fs.existsSync(envFile)) {
+  try {
+    fs.readFileSync(envFile, 'utf8').split('\n').forEach(line => {
+      const match = line.match(/^\s*([\w.-]+)\s*=\s*(.*)?\s*$/);
+      if (match && !process.env[match[1]]) {
+        let val = (match[2] || '').trim();
+        if (val.startsWith('"') && val.endsWith('"')) val = val.slice(1, -1);
+        process.env[match[1]] = val;
+      }
+    });
+  } catch (_) {}
+}
+
+const HMAC_SECRET = process.env.HMAC_SECRET;
+if (!HMAC_SECRET) {
+  throw new Error('HMAC_SECRET must be set');
+}
+
+function verifySessionToken(token) {
+  if (!token || typeof token !== 'string') return null;
+  const parts = token.split('.');
+  if (parts.length !== 2) return null;
+  try {
+    const crypto = require('crypto');
+    const expectedSig = crypto.createHmac('sha256', HMAC_SECRET).update(parts[0]).digest('hex');
+    const bSig = Buffer.from(parts[1], 'hex');
+    const bExp = Buffer.from(expectedSig, 'hex');
+    if (bSig.length !== bExp.length || !crypto.timingSafeEqual(bSig, bExp)) {
+      return null;
+    }
+    const decoded = JSON.parse(Buffer.from(parts[0], 'base64url').toString('utf8'));
+    if (decoded.exp && Date.now() > decoded.exp) return null;
+    return decoded;
+  } catch (_) {
+    return null;
+  }
+}
+
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
@@ -178,52 +220,66 @@ async function persistCredentials(updatedData) {
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, x-session-token');
   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
 
+  // Require server-side session authentication before returning or altering credentials
+  const authHeader = req.headers['authorization'] || req.headers['x-session-token'] || (req.query && req.query.session_token) || '';
+  const token = authHeader.replace(/^Bearer\s+/i, '').trim();
+  const verifiedUser = verifySessionToken(token);
+
+  if (!verifiedUser) {
+    return res.status(401).json({ error: 'Authentication required. Provide a valid session token in Authorization header.' });
+  }
+
   if (req.method === 'GET') {
     try {
       const data = await getLatestCredentials();
-      const authHeader = req.headers['authorization'] || req.headers['x-session-token'] || req.query.session_token || '';
-      const token = authHeader.replace(/^Bearer\s+/i, '').trim();
-      let verifiedUser = null;
-      if (token) {
-        try {
-          const parts = token.split('.');
-          if (parts.length === 2) {
-            const crypto = require('crypto');
-            const HMAC_SECRET = process.env.HMAC_SECRET || '7f99a801e82b7c02b92138a011cd48f9';
-            const expectedSig = crypto.createHmac('sha256', HMAC_SECRET).update(parts[0]).digest('hex');
-            if (crypto.timingSafeEqual(Buffer.from(parts[1], 'hex'), Buffer.from(expectedSig, 'hex'))) {
-              verifiedUser = JSON.parse(Buffer.from(parts[0], 'base64url').toString('utf8'));
-            }
-          }
-        } catch (_) {}
-      }
 
-      // If authenticated as reseller, filter licenses to ONLY this reseller's keys
-      if (verifiedUser && verifiedUser.role === 'reseller') {
+      // If authenticated as reseller, return strictly role-scoped fields (no admin secrets, no other resellers)
+      if (verifiedUser.role === 'reseller') {
         const rid = (verifiedUser.resellerId || '').toString();
         const safeData = {
           hyperx_admin_user: data.hyperx_admin_user,
-          tx99_resellers: (data.tx99_resellers || []).filter(r => r.id === rid),
+          tx99_resellers: (data.tx99_resellers || []).filter(r => r.id === rid).map(r => ({
+            id: r.id,
+            username: r.username,
+            email: r.email,
+            balance: r.balance,
+            createdKeys: r.createdKeys,
+            totalQuota: r.totalQuota,
+            status: r.status,
+            panels: r.panels
+          })),
           tx99_licenses: (data.tx99_licenses || DEFAULT_DATA.tx99_licenses || []).filter(l => l.resellerId === rid),
           tx99_licenses_v2: (data.tx99_licenses_v2 || []).filter(l => l.resellerId === rid)
         };
         return res.status(200).json(safeData);
       }
 
-      return res.status(200).json(data);
+      // If owner/admin, return data without raw password exposure
+      const safeAdminData = {
+        hyperx_admin_user: data.hyperx_admin_user || 'HYPER X',
+        tx99_resellers: data.tx99_resellers || [],
+        tx99_licenses: data.tx99_licenses || DEFAULT_DATA.tx99_licenses,
+        tx99_licenses_v2: data.tx99_licenses_v2 || []
+      };
+      return res.status(200).json(safeAdminData);
     } catch (e) {
-      return res.status(200).json(DEFAULT_DATA);
+      return res.status(500).json({ error: 'Failed to retrieve credentials' });
     }
   }
 
   if (req.method === 'POST') {
+    // Only verified admin/owner may alter or persist replacement store data
+    if (verifiedUser.role !== 'admin' && verifiedUser.role !== 'owner') {
+      return res.status(403).json({ error: 'Forbidden: Owner privilege required to persist store updates' });
+    }
+
     try {
       let body = req.body;
       if (typeof body === 'string') {
@@ -235,7 +291,7 @@ module.exports = async (req, res) => {
       }
 
       const current = await getLatestCredentials();
-            let mergedV2 = current.tx99_licenses_v2 || [];
+      let mergedV2 = current.tx99_licenses_v2 || [];
       if (Array.isArray(body.tx99_licenses_v2)) {
         const map = new Map();
         (current.tx99_licenses_v2 || []).forEach(l => {
@@ -258,9 +314,8 @@ module.exports = async (req, res) => {
         tx99_licenses_v2: mergedV2
       };
 
-      // Persist to GitHub in background (fire and wait up to 4s)
       const success = await persistCredentials(updated);
-      return res.status(200).json({ success: true, persisted: success, data: updated });
+      return res.status(200).json({ success: true, persisted: success });
     } catch (err) {
       console.error('POST /api/data error:', err);
       return res.status(500).json({ error: 'Failed to update credentials' });
