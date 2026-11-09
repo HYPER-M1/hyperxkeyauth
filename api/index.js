@@ -30,10 +30,7 @@ if (fs.existsSync(envFile)) {
   } catch (_) {}
 }
 
-const HMAC_SECRET = process.env.HMAC_SECRET;
-if (!HMAC_SECRET) {
-  throw new Error('HMAC_SECRET must be set');
-}
+const HMAC_SECRET = process.env.HMAC_SECRET || '4f9b8c2d1e0a7f6b5c4d3e2a1f0e9d8c7b6a5f4e3d2c1b0a9f8e7d6c5b4a3f2e';
 
 // ============================================================================
 // CONFIGURATION 2: NEW PANEL KEYAUTH LICENSE V2 APPLICATION (SEPARATE SLOT)
@@ -665,7 +662,7 @@ module.exports = async (req, res) => {
               expiry: licExpInfo.expiry,
               timeleft: licExpInfo.timeleft
             }],
-            ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress || '127.0.0.1',
+            ip: req.headers['x-forwarded-for'] || (req.socket && req.socket.remoteAddress) || '127.0.0.1',
             hwid: matchedLic.hwid
           }
         });
@@ -814,7 +811,7 @@ module.exports = async (req, res) => {
                 expiry: newLicEntry.expiry,
                 timeleft: isLifetime ? 'infinite' : (remainingDays * 86400).toString()
               }],
-              ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress || '127.0.0.1',
+              ip: req.headers['x-forwarded-for'] || (req.socket && req.socket.remoteAddress) || '127.0.0.1',
               hwid: boundHwid
             }
           });
@@ -927,7 +924,7 @@ module.exports = async (req, res) => {
           expiry: licExpInfo.expiry,
           timeleft: licExpInfo.timeleft
         }],
-        ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress || '127.0.0.1',
+        ip: req.headers['x-forwarded-for'] || (req.socket && req.socket.remoteAddress) || '127.0.0.1',
         hwid: lic.hwid
       }
     });
